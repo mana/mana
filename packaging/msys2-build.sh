@@ -3,6 +3,7 @@
 pacman --noconfirm -S \
         mingw-w64-ucrt-x86_64-gcc \
         mingw-w64-ucrt-x86_64-cmake \
+        mingw-w64-ucrt-x86_64-enet \
         mingw-w64-ucrt-x86_64-physfs \
         mingw-w64-ucrt-x86_64-curl-winssl \
         mingw-w64-ucrt-x86_64-SDL2_image \

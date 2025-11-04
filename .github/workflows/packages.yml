@@ -20,6 +20,7 @@ jobs:
             git
             mingw-w64-ucrt-x86_64-gcc
             mingw-w64-ucrt-x86_64-cmake
+            mingw-w64-ucrt-x86_64-enet
             mingw-w64-ucrt-x86_64-physfs
             mingw-w64-ucrt-x86_64-curl-winssl
             mingw-w64-ucrt-x86_64-SDL2_image
@@ -74,9 +75,9 @@ jobs:
       matrix:
         include:
           - arch: arm64
-            runner: macos-latest
+            runner: macos-15
           - arch: x86_64
-            runner: macos-13
+            runner: macos-15-intel
     runs-on: ${{ matrix.runner }}
     env:
       CMAKE_C_COMPILER_LAUNCHER: ccache
@@ -96,6 +97,7 @@ jobs:
           brew update
           brew upgrade
           brew install \
+            enet \
             guichan \
             physfs \
             sdl2 \

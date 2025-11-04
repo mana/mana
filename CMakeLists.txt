@@ -33,7 +33,7 @@ find_package(Gettext)
 option(WITH_OPENGL "Enable OpenGL support" ON)
 option(ENABLE_NLS "Enable building of translations" ON)
 option(ENABLE_MANASERV "Enable Manaserv support" ON)
-option(USE_SYSTEM_ENET "Use system ENet" OFF)
+option(USE_SYSTEM_ENET "Use system ENet" ON)
 option(USE_SYSTEM_GUICHAN "Use system Guichan" ON)
 
 if(WIN32)

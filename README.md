@@ -123,23 +123,24 @@ Installing the dependencies on Ubuntu:
                      libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev \
                      libsdl2-net-dev libsdl2-ttf-dev \
                      libcurl4-openssl-dev libphysfs-dev libxml2-dev \
-                     libguichan-dev libpng-dev gettext
+                     libenet-dev libguichan-dev libpng-dev gettext
 
 Installing the dependencies on macOS (with Homebrew):
 
     brew install sdl2 sdl2_image sdl2_mixer sdl2_net sdl2_ttf \
-                 physfs curl guichan
+                 enet physfs curl guichan
 
 Installing the dependencies on Fedora:
 
     sudo dnf install gcc-c++ cmake physfs-devel libcurl-devel guichan-devel \
-                     SDL2_image-devel SDL2_mixer-devel SDL2_net-devel \
-                     SDL2_ttf-devel
+                     enet-devel SDL2_image-devel SDL2_mixer-devel \
+                     SDL2_net-devel SDL2_ttf-devel
 
 Installing the dependencies on Windows (using MSYS2 UCRT64):
 
     pacman -S mingw-w64-ucrt-x86_64-gcc \
               mingw-w64-ucrt-x86_64-cmake \
+              mingw-w64-ucrt-x86_64-enet \
               mingw-w64-ucrt-x86_64-physfs \
               mingw-w64-ucrt-x86_64-curl-winssl \
               mingw-w64-ucrt-x86_64-SDL2_image \

@@ -27,6 +27,7 @@ ubuntu-build:
         cmake
         gettext
         libcurl4-openssl-dev
+        libenet-dev
         libguichan-dev
         libphysfs-dev
         libpng-dev

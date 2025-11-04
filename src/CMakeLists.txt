@@ -634,6 +634,11 @@ target_link_libraries(
           ${OPENGL_LIBRARIES}
           ${Intl_LIBRARIES})
 
+# Link with ws2_32 when using "system" ENet on Windows
+if(WIN32 AND ENABLE_MANASERV AND USE_SYSTEM_ENET)
+  target_link_libraries(mana PRIVATE ws2_32)
+endif()
+
 set_target_properties(
   mana
   PROPERTIES MACOSX_BUNDLE TRUE
