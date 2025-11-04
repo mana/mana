@@ -50,6 +50,21 @@
 
 #include <string>
 
+// These names are here because we want translations for these "use button"
+// texts to be available since they are used by items read from XML.
+static constexpr const char *useTexts[] = {
+    N_("Activate"),
+    N_("Dig"),
+    N_("Drink"),
+    N_("Eat"),
+    N_("Open"),
+    N_("Read"),
+    N_("Recall"),
+    N_("Squeeze"),
+    N_("Unbundle"),
+    N_("Use"),
+};
+
 InventoryWindow::WindowList InventoryWindow::instances;
 
 InventoryWindow::InventoryWindow(Inventory *inventory):
@@ -320,7 +335,10 @@ void InventoryWindow::updateButtons()
     mEquipButton->setEnabled(item->isEquippable());
     mEquipButton->adjustSize();
 
-    mUseButton->setEnabled(item->getInfo().activatable);
+    auto &itemInfo = item->getInfo();
+    mUseButton->setEnabled(itemInfo.activatable);
+    mUseButton->setCaption(gettext(
+        itemInfo.useText.empty() ? useTexts[0] : itemInfo.useText.c_str()));
 
     mDropButton->setCaption(item->getQuantity() > 1 ? _("Drop...") : _("Drop"));
     mDropButton->adjustSize();

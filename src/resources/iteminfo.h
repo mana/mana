@@ -114,6 +114,7 @@ public:
     SpriteDisplay display;              /**< Display info (like icon) */
     std::string description;            /**< Short description. */
     std::vector<std::string> effect;    /**< Description of effects. */
+    std::string useText;                /**< Button text for using the item. */
     int weight = 0;                     /**< Weight in grams. */
 
     /** Effects to be shown when weapon attacks - see also effects.xml */

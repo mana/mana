@@ -343,15 +343,22 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
             mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
         }
 
-        if (item->isEquippable())
+        auto &itemInfo = item->getInfo();
+
+        if (itemInfo.equippable)
         {
             if (item->isEquipped())
                 mBrowserBox->addRow(strprintf("@@unequip|%s@@", _("Unequip")));
             else
                 mBrowserBox->addRow(strprintf("@@equip|%s@@", _("Equip")));
         }
-        if (item->getInfo().activatable)
-            mBrowserBox->addRow(strprintf("@@activate|%s@@", _("Activate")));
+        if (itemInfo.activatable)
+        {
+            mBrowserBox->addRow(strprintf(
+                "@@activate|%s@@",
+                itemInfo.useText.empty() ? _("Activate")
+                                         : gettext(itemInfo.useText.c_str())));
+        }
 
         if (canDrop)
         {

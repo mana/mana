@@ -280,7 +280,7 @@ void ItemDB::unload()
 
 void ItemDB::loadCommonRef(ItemInfo &itemInfo, XML::Node node, const std::string &filename)
 {
-    itemInfo.id = node.getProperty("id", 0);
+    node.attribute("id", itemInfo.id);
 
     if (!itemInfo.id)
     {
@@ -293,13 +293,15 @@ void ItemDB::loadCommonRef(ItemInfo &itemInfo, XML::Node node, const std::string
         Log::info("ItemDB: Redefinition of item Id %d in %s", itemInfo.id, filename.c_str());
     }
 
-    itemInfo.mView = node.getProperty("view", 0);
-    itemInfo.name = node.getProperty("name", std::string());
-    itemInfo.display.image = node.getProperty("image", std::string());
-    itemInfo.description = node.getProperty("description", std::string());
-    itemInfo.attackAction = node.getProperty("attack-action", SpriteAction::INVALID);
-    itemInfo.attackRange = node.getProperty("attack-range", 0);
-    itemInfo.missileParticleFile = node.getProperty("missile-particle", std::string());
+    node.attribute("view", itemInfo.mView);
+    node.attribute("name", itemInfo.name);
+    node.attribute("image", itemInfo.display.image);
+    node.attribute("description", itemInfo.description);
+    if (!node.attribute("use-text", itemInfo.useText))
+        node.attribute("useButton", itemInfo.useText);  // supported for compatibility
+    node.attribute("attack-action", itemInfo.attackAction);
+    node.attribute("attack-range", itemInfo.attackRange);
+    node.attribute("missile-particle", itemInfo.missileParticleFile);
     itemInfo.hitEffectId = node.getProperty("hit-effect-id",
                                             paths.getIntValue("hitEffectId"));
     itemInfo.criticalHitEffectId = node.getProperty("critical-hit-effect-id",
@@ -308,7 +310,7 @@ void ItemDB::loadCommonRef(ItemInfo &itemInfo, XML::Node node, const std::string
     // Load Ta Item Type
     std::string typeStr = node.getProperty("type", "other");
     itemInfo.type = itemTypeFromString(typeStr);
-    itemInfo.weight = node.getProperty("weight", 0);
+    node.attribute("weight", itemInfo.weight);
 
     for (auto itemChild : node.children())
     {
