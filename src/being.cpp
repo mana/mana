@@ -1017,7 +1017,9 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
         const auto fontHeight = gui->getFont()->getHeight();
         const auto nameY = mDispName ? mDispName->getY() : (getPixelY() - getHeight() - 15);
 
-        const int barWidth = std::max(30, getWidth());
+        const int spriteWidth = getWidth();
+        const int barWidth = (spriteWidth < 30)
+            ? 30 : std::lround(30.0 + (30.0 * std::log(spriteWidth / 30.0)));
         const int barX = px - (barWidth / 2);
         const int barY = nameY + fontHeight + backgroundSkin.spacing - offsetY;
         const float hpPercent = static_cast<float>(mHp) / static_cast<float>(mMaxHp);
