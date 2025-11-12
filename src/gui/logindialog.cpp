@@ -22,6 +22,7 @@
 #include "gui/logindialog.h"
 
 #include "client.h"
+#include "configuration.h"
 
 #include "gui/okdialog.h"
 #include "gui/sdlinput.h"
@@ -49,7 +50,7 @@ LoginDialog::LoginDialog(LoginData *loginData):
     mUserField = new TextField(mLoginData->username);
     mPassField = new PasswordField(mLoginData->password);
 
-    mKeepCheck = new CheckBox(_("Remember username"), mLoginData->remember);
+    mKeepCheck = new CheckBox(_("Remember username"), config.remember);
     mRegisterButton = new Button(_("Register"), "register", this);
     mServerButton = new Button(_("Change Server"), "server", this);
     mLoginButton = new Button(_("Login"), "login", this);
@@ -91,9 +92,10 @@ void LoginDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "login" && canSubmit())
     {
+        config.remember = mKeepCheck->isSelected();
+
         mLoginData->username = mUserField->getText();
         mLoginData->password = mPassField->getText();
-        mLoginData->remember = mKeepCheck->isSelected();
         mLoginData->registerLogin = false;
 
         mRegisterButton->setEnabled(false);

@@ -41,29 +41,12 @@ public:
 
     Gender gender = Gender::Neutral;
 
-    bool remember;            /**< Whether to store the username. */
-    bool registerLogin;       /**< Whether an account is being registered. */
+    bool registerLogin = false;         /**< Whether an account is being registered. */
 
     unsigned short characterSlots = 3;  /**< The number of character slots */
 
-    /**
-     * Initialize character slots to 3 for backwards compatibility
-     */
-    void resetCharacterSlots()
-    {
-        characterSlots = 3;
-    }
-
     void clear()
     {
-        username.clear();
-        password.clear();
-        randomSeed.clear();
-        newPassword.clear();
-        updateHost.clear();
-        email.clear();
-        captchaResponse.clear();
-        gender = Gender::Neutral;
-        resetCharacterSlots();
+        *this = LoginData();
     }
 };

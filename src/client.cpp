@@ -351,8 +351,6 @@ Client::Client(const Options &options):
     mCurrentServer.type = options.serverType;
     loginData.username = options.username;
     loginData.password = options.password;
-    loginData.remember = config.remember;
-    loginData.registerLogin = false;
 
     if (mCurrentServer.type == ServerType::Unknown && mCurrentServer.port != 0)
     {
@@ -381,7 +379,7 @@ Client::Client(const Options &options):
     if (chatLogger)
         chatLogger->setServerName(mCurrentServer.hostname);
 
-    if (loginData.username.empty() && loginData.remember)
+    if (loginData.username.empty() && config.remember)
         loginData.username = config.username;
 
     if (mState != State::Error)
@@ -1234,9 +1232,8 @@ void Client::accountLogin(LoginData *loginData)
 
     // TODO This is not the best place to save the config, but at least better
     // than the login gui window
-    if (loginData->remember)
+    if (config.remember)
         config.username = loginData->username;
-    config.remember = loginData->remember;
 }
 
 void Client::handleWindowSizeChanged(int width, int height)
