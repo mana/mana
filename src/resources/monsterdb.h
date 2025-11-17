@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
- *  Copyright (C) 2009-2013  The Mana Developers
+ *  Copyright (C) 2009-2026  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *

@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2026  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -24,7 +24,7 @@
 #include "gui/widgets/channeltab.h"
 
 Channel::Channel(short id,
-                 const std::string &name, 
+                 const std::string &name,
                  const std::string &announcement) :
     mId(id),
     mName(name),

@@ -1,7 +1,7 @@
 /*
  *  Configurable text colors
  *  Copyright (C) 2008  Douglas Boffey <dougaboffey@netscape.net>
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2026  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *

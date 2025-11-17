@@ -1,7 +1,7 @@
 /*
  *  Character creation settings
  *  Copyright (C) 2011-2013  The ManaPlus Developers
- *  Copyright (C) 2013  The Mana Developers
+ *  Copyright (C) 2013-2026  The Mana Developers
  *
  *  This file is part of The ManaPlus Client.
  *

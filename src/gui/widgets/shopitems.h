@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2026  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -99,7 +99,7 @@ class ShopItems : public gcn::ListModel
         /**
          * Searches the current items in the shop for the specified
          * id and returns the item if found, or 0 else.
-         * 
+         *
          * @return the item found or 0
          */
         ShopItem *findItem(int id);

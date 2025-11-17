@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (c) 2009  Aethyra Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2026  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *

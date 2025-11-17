@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2026  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -283,7 +283,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "money")
     {
-        if (mStatus != PREPARING) 
+        if (mStatus != PREPARING)
             return;
 
         int v = atoi(mMoneyField->getText().c_str());

@@ -1,7 +1,7 @@
 /*
  *  The Mana Client
  *  Copyright (C) 2004-2009  The Mana World Development Team
- *  Copyright (C) 2009-2012  The Mana Developers
+ *  Copyright (C) 2009-2026  The Mana Developers
  *
  *  This file is part of The Mana Client.
  *
@@ -266,7 +266,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
             int count = (length - 4) / 31;
             std::vector<Avatar*> players;
             mOnlinePlayerNames.clear();
-            
+
             for (int i = 0; i < count; i++)
             {
                 msg.readInt32();    // account id
@@ -285,7 +285,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
 
             break;
         }
-        
+
     }
 }
 
