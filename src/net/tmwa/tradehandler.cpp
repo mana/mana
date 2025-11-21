@@ -24,20 +24,15 @@
 #include "event.h"
 #include "inventory.h"
 #include "item.h"
-#include "localplayer.h"
 #include "playerinfo.h"
 #include "playerrelations.h"
 
 #include "gui/confirmdialog.h"
 #include "gui/tradewindow.h"
 
-#include "net/inventoryhandler.h"
-
 #include "net/tmwa/messagein.h"
 #include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
-
-#include "resources/iteminfo.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"

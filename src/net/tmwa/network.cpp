@@ -366,11 +366,8 @@ void Network::dispatchMessages()
 {
     MutexLocker lock(&mMutex);
 
-    while (true) {
-        // Not even a message ID has been received
-        if (mInSize < 2)
-            break;
-
+    while (mInSize >= 2)    // We need at least a message ID
+    {
         const uint16_t msgId = readWord(0);
 
         auto packetInfoIt = mPacketInfo.find(msgId);

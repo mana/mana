@@ -27,6 +27,8 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
+#include <algorithm>
+
 static constexpr const char *ColorTypeNames[] = {
     "Being",
     "Player",
@@ -112,26 +114,21 @@ void UserPalette::setColor(int type, int r, int g, int b)
 void UserPalette::setGradient(int type, GradientType grad)
 {
     ColorElem *elem = &mColors[type];
-    if (elem->grad != STATIC && grad == STATIC)
+    if (elem->grad == grad)
+        return;
+
+    if (grad == STATIC)
     {
-        for (size_t i = 0; i < mGradVector.size(); i++)
-        {
-            if (mGradVector[i] == elem)
-            {
-                mGradVector.erase(mGradVector.begin() + i);
-                break;
-            }
-        }
+        auto it = std::find(mGradVector.begin(), mGradVector.end(), elem);
+        if (it != mGradVector.end())
+            mGradVector.erase(it);
     }
-    else if (elem->grad == STATIC && grad != STATIC)
+    else if (elem->grad == STATIC)
     {
         mGradVector.push_back(elem);
     }
 
-    if (elem->grad != grad)
-    {
-        elem->grad = grad;
-    }
+    elem->grad = grad;
 }
 
 std::string UserPalette::getElementAt(int i)

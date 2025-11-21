@@ -45,6 +45,7 @@
 #include "utils/stringutils.h"
 
 #include <guichan/widgets/tabbedarea.hpp>
+#include <iomanip>
 
 ChatTab::ChatTab(const std::string &name)
 {
@@ -208,11 +209,10 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
 
     // Format the time string properly
     std::stringstream timeStr;
-    timeStr << "[" << ((((t / 60) / 60) % 24 < 10) ? "0" : "")
-        << (int) (((t / 60) / 60) % 24)
-        << ":" << (((t / 60) % 60 < 10) ? "0" : "")
-        << (int) ((t / 60) % 60)
-        << "] ";
+    timeStr << std::setw(2) << std::setfill('0')
+            << "[" << (t / 3600) % 24
+            << ":" << (t / 60) % 60
+            << "] ";
 
     line = lineColor + timeStr.str() + tmp.nick + tmp.text;
 
@@ -321,7 +321,7 @@ void ChatTab::handleInput(const std::string &msg)
 
 void ChatTab::handleCommand(const std::string &msg)
 {
-    commandHandler->handleCommand(msg, this);
+    CommandHandler::handleCommand(msg, this);
 }
 
 bool ChatTab::checkNotify(Own own) const

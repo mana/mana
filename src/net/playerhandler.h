@@ -22,9 +22,10 @@
 #pragma once
 
 #include "being.h"
-#include "flooritem.h"
 
 #include "resources/questdb.h"
+
+class FloorItem;
 
 namespace Net {
 

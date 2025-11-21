@@ -26,7 +26,6 @@
 #include "game.h"
 #include "inventory.h"
 #include "item.h"
-#include "itemshortcut.h"
 #include "localplayer.h"
 #include "log.h"
 
@@ -59,9 +58,7 @@ static const EquipmentSlot EQUIP_POINTS[EQUIP_VECTOR_END] = {
 static int getSlot(int eAthenaSlot)
 {
     if (eAthenaSlot == 0)
-    {
         return EQUIP_VECTOR_END;
-    }
 
     if (eAthenaSlot & 0x8000)
         return EQUIP_PROJECTILE_SLOT;

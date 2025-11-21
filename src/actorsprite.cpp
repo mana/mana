@@ -38,8 +38,6 @@
 #include <algorithm>
 #include <cassert>
 
-#define EFFECTS_FILE "effects.xml"
-
 ResourceRef<ImageSet> ActorSprite::targetCursorImages[2][NUM_TC];
 SimpleAnimation *ActorSprite::targetCursor[2][NUM_TC];
 bool ActorSprite::loaded = false;

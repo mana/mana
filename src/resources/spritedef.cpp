@@ -31,7 +31,6 @@
 
 #include "configuration.h"
 
-#include "utils/dtor.h"
 #include "utils/xml.h"
 
 #include <set>
@@ -39,13 +38,9 @@
 static std::set<std::string> processedFiles;
 
 
-Action::Action() = default;
-Action::~Action()
-{
-    delete_all(mAnimations);
-}
+Action::~Action() = default;
 
-Animation *Action::getAnimation(int direction) const
+const Animation *Action::getAnimation(int direction) const
 {
     auto i = mAnimations.find(direction);
 
@@ -54,14 +49,33 @@ Animation *Action::getAnimation(int direction) const
     if (i == mAnimations.end())
         i = mAnimations.begin();
 
-    return (i == mAnimations.end()) ? nullptr : i->second;
+    return i == mAnimations.end() ? nullptr : &i->second;
 }
 
-void Action::setAnimation(int direction, Animation *animation)
+void Action::setAnimation(int direction, Animation animation)
 {
-    mAnimations[direction] = animation;
+    mAnimations[direction] = std::move(animation);
 }
 
+
+/**
+ * Converts a string into a SpriteDirection enum.
+ */
+static SpriteDirection makeSpriteDirection(const std::string &direction)
+{
+    if (direction.empty() || direction == "default")
+        return DIRECTION_DEFAULT;
+    if (direction == "up")
+        return DIRECTION_UP;
+    if (direction == "left")
+        return DIRECTION_LEFT;
+    if (direction == "right")
+        return DIRECTION_RIGHT;
+    if (direction == "down")
+        return DIRECTION_DOWN;
+
+    return DIRECTION_INVALID;
+}
 
 Action *SpriteDef::getAction(const std::string &action) const
 {
@@ -109,7 +123,7 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
     return def;
 }
 
-void SpriteDef::substituteAction(std::string complete, std::string with)
+void SpriteDef::substituteAction(const std::string &complete, const std::string &with)
 {
     if (mActions.find(complete) == mActions.end())
     {
@@ -245,14 +259,12 @@ void SpriteDef::loadAnimation(XML::Node animationNode,
         return;
     }
 
-    auto *animation = new Animation;
-    action->setAnimation(directionType, animation);
+    Animation animation;
 
     // Get animation frames
     for (auto frameNode : animationNode.children())
     {
-        const int delay = frameNode.getProperty("delay",
-                                           DEFAULT_FRAME_DELAY);
+        const int delay = frameNode.getProperty("delay", DEFAULT_FRAME_DELAY);
         int offsetX = frameNode.getProperty("offsetX", 0) +
                 imageSet->getOffsetX();
         int offsetY = frameNode.getProperty("offsetY", 0) +
@@ -276,7 +288,7 @@ void SpriteDef::loadAnimation(XML::Node animationNode,
                 continue;
             }
 
-            animation->addFrame(img, delay, offsetX, offsetY);
+            animation.addFrame(img, delay, offsetX, offsetY);
         }
         else if (frameNode.name() == "sequence")
         {
@@ -299,15 +311,17 @@ void SpriteDef::loadAnimation(XML::Node animationNode,
                     break;
                 }
 
-                animation->addFrame(img, delay, offsetX, offsetY);
+                animation.addFrame(img, delay, offsetX, offsetY);
                 start++;
             }
         }
         else if (frameNode.name() == "end")
         {
-            animation->addTerminator();
+            animation.addTerminator();
         }
     } // for frameNode
+
+    action->setAnimation(directionType, std::move(animation));
 }
 
 void SpriteDef::includeSprite(XML::Node includeNode)
@@ -342,29 +356,9 @@ SpriteDef::~SpriteDef()
 {
     // Actions are shared, so ensure they are deleted only once.
     std::set<Action*> actions;
-    for (const auto &action : mActions)
-    {
-        actions.insert(action.second);
-    }
+    for (const auto &[_, action] : mActions)
+        actions.insert(action);
 
     for (auto action : actions)
-    {
         delete action;
-    }
-}
-
-SpriteDirection SpriteDef::makeSpriteDirection(const std::string &direction)
-{
-    if (direction.empty() || direction == "default")
-        return DIRECTION_DEFAULT;
-    if (direction == "up")
-        return DIRECTION_UP;
-    if (direction == "left")
-        return DIRECTION_LEFT;
-    if (direction == "right")
-        return DIRECTION_RIGHT;
-    if (direction == "down")
-        return DIRECTION_DOWN;
-
-    return DIRECTION_INVALID;
 }

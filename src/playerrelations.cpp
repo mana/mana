@@ -72,9 +72,8 @@ void PlayerRelationsManager::signalUpdate()
         listener->playerRelationsUpdated();
 }
 
-unsigned int PlayerRelationsManager::checkPermissionSilently(
-                                                  const std::string &playerName,
-                                                  unsigned int flags)
+unsigned int PlayerRelationsManager::checkPermissionSilently(const std::string &playerName,
+                                                             unsigned int flags) const
 {
     unsigned int permissions = config.defaultPlayerPermissions;
 

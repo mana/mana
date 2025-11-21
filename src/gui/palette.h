@@ -43,11 +43,11 @@ class Palette
     public:
         Palette(int size);
         Palette(const Palette &) = delete;
-        Palette(Palette &&);
+        Palette(Palette &&) noexcept;
         ~Palette();
 
         Palette &operator=(const Palette &) = delete;
-        Palette &operator=(Palette &&);
+        Palette &operator=(Palette &&) noexcept;
 
         /** Colors can be static or can alter over time. */
         enum GradientType {
@@ -111,10 +111,6 @@ class Palette
         static void advanceGradients();
 
     protected:
-        /** Colors used for the rainbow gradient */
-        static const gcn::Color RAINBOW_COLORS[];
-        static const int RAINBOW_COLOR_COUNT;
-
         /** Timer used when updating gradient-type colors. */
         static Timer mRainbowTimer;
 

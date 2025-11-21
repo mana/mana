@@ -65,7 +65,6 @@ class PlayerHandler final : public MessageHandler, public Net::PlayerHandler
         int getJobLocation() override;
 
         Vector getDefaultMoveSpeed() const override;
-
         Vector getPixelsPerSecondMoveSpeed(const Vector &speed, Map *map = nullptr) override;
 
         bool usePixelPrecision() override

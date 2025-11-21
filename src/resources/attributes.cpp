@@ -333,10 +333,8 @@ namespace Attributes {
         Log::info("Found %d tags for %d attributes.", int(tags.size()),
                                                       int(attributes.size()));
 
-        if (attributes.size() == 0)
-        {
+        if (attributes.empty())
             loadBuiltins();
-        }
 
         fillLabels();
 

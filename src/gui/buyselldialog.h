@@ -56,9 +56,8 @@ class BuySellDialog : public Window, public gcn::ActionListener
         static void closeAll();
 
     private:
-        using DialogList = std::list<BuySellDialog *>;
-        static DialogList instances;
+        static std::list<BuySellDialog *> instances;
 
         int mNpcId;
-        gcn::Button *mBuyButton;
+        gcn::Button *mBuyButton = nullptr;
 };

@@ -72,7 +72,7 @@ class SimpleAnimation final
         int mAnimationPhase = 0;
 
         /** Current animation phase. */
-        Frame *mCurrentFrame = nullptr;
+        const Frame *mCurrentFrame = nullptr;
 
         /**  Tell whether the animation is ready */
         bool mInitialized = false;

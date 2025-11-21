@@ -21,8 +21,6 @@
 
 #pragma once
 
-#include <iosfwd>
-
 namespace Net {
 
 class GameHandler
@@ -46,12 +44,12 @@ class GameHandler
         virtual bool canUseMagicBar() const = 0;
 
         /**
-         * Tells the range is pixel where the player can pickup items from.
+         * Tells the range in pixels where the player can pickup items from.
          */
         virtual int getPickupRange() const = 0;
 
         /**
-         * Tells the range is pixel where the player can talk to an NPC from.
+         * Tells the range in pixels where the player can talk to an NPC from.
          */
         virtual int getNpcTalkRange() const = 0;
 };

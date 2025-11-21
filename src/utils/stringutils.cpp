@@ -21,10 +21,10 @@
 
 #include "utils/stringutils.h"
 
-#include <cstring>
 #include <algorithm>
 #include <cstdarg>
 #include <cstdio>
+#include <cstring>
 
 std::string &trim(std::string &str)
 {

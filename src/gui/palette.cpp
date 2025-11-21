@@ -22,13 +22,15 @@
 
 #include "palette.h"
 
+#include <array>
 #include <cmath>
 
 static constexpr double PI = 3.14159265;
 Timer Palette::mRainbowTimer;
 Palette::Palettes Palette::mInstances;
 
-const gcn::Color Palette::RAINBOW_COLORS[7] = {
+/** Colors used for the rainbow gradient */
+static const std::array RAINBOW_COLORS {
     gcn::Color(255, 0, 0),
     gcn::Color(255, 153, 0),
     gcn::Color(255, 255, 0),
@@ -37,8 +39,6 @@ const gcn::Color Palette::RAINBOW_COLORS[7] = {
     gcn::Color(51, 0, 153),
     gcn::Color(153, 0, 153)
 };
-/** Number of Elemets of RAINBOW_COLORS */
-const int Palette::RAINBOW_COLOR_COUNT = 7;
 
 Palette::Palette(int size) :
     mColors(size)
@@ -46,7 +46,7 @@ Palette::Palette(int size) :
     mInstances.insert(this);
 }
 
-Palette::Palette(Palette &&pal)
+Palette::Palette(Palette &&pal) noexcept
     : mColors(std::move(pal.mColors))
     , mGradVector(std::move(pal.mGradVector))
 {
@@ -58,7 +58,7 @@ Palette::~Palette()
     mInstances.erase(this);
 }
 
-Palette &Palette::operator=(Palette &&pal)
+Palette &Palette::operator=(Palette &&pal) noexcept
 {
     if (this != &pal)
     {
@@ -102,7 +102,7 @@ void Palette::advanceGradient(int advance)
 
         const int numOfColors = (elem->grad == SPECTRUM ? 6 :
                                  elem->grad == PULSE ? 127 :
-                                 RAINBOW_COLOR_COUNT);
+                                 RAINBOW_COLORS.size());
 
         elem->gradientIndex = (elem->gradientIndex + advance) %
                               (delay * numOfColors);

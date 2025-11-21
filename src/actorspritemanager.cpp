@@ -347,11 +347,6 @@ Being *ActorSpriteManager::findNearestLivingBeing(Being *aroundBeing,
                                   aroundBeing);
 }
 
-bool ActorSpriteManager::hasActorSprite(ActorSprite *someActor) const
-{
-    return mActors.find(someActor) != mActors.end();
-}
-
 AutoCompleteLister *ActorSpriteManager::getPlayerNameLister() const
 {
     return mPlayerNames.get();

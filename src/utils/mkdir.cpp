@@ -18,11 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <climits>
-#include <cstring>
-#include <cerrno>
 #include <filesystem>
-#include <iostream>
 
 #ifdef MKDIR_TEST
 // compile with -DMKDIR_TEST to get a standalone binary

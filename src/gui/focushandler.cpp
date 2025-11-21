@@ -48,7 +48,7 @@ void FocusHandler::releaseModalFocus(gcn::Widget *widget)
         /* Check if there were any previously modal widgets that'd still like
          * to regain their modal focus.
          */
-        if (mModalStack.size() > 0)
+        if (!mModalStack.empty())
         {
             gcn::FocusHandler::requestModalFocus(mModalStack.front());
             mModalStack.pop_front();

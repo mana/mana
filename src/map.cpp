@@ -40,9 +40,11 @@
 #include "utils/dtor.h"
 #include "utils/stringutils.h"
 
+#include <algorithm>
 #include <cassert>
 #include <climits>
 #include <cstdlib>
+#include <cstring>
 #include <queue>
 
 /**
@@ -518,24 +520,25 @@ void Map::blockTile(int x, int y, BlockType type)
 
     const int tileNum = x + y * mWidth;
 
-    if (mOccupation[type][tileNum] < UINT_MAX &&
-        (++mOccupation[type][tileNum]) > 0)
+    if (mOccupation[type][tileNum] == UINT_MAX)
+        return;
+
+    ++mOccupation[type][tileNum];
+
+    switch (type)
     {
-        switch (type)
-        {
-            case BLOCKTYPE_WALL:
-                mMetaTiles[tileNum].blockmask |= BLOCKMASK_WALL;
-                break;
-            case BLOCKTYPE_CHARACTER:
-                mMetaTiles[tileNum].blockmask |= BLOCKMASK_CHARACTER;
-                break;
-            case BLOCKTYPE_MONSTER:
-                mMetaTiles[tileNum].blockmask |= BLOCKMASK_MONSTER;
-                break;
-            default:
-                // Do nothing.
-                break;
-        }
+        case BLOCKTYPE_WALL:
+            mMetaTiles[tileNum].blockmask |= BLOCKMASK_WALL;
+            break;
+        case BLOCKTYPE_CHARACTER:
+            mMetaTiles[tileNum].blockmask |= BLOCKMASK_CHARACTER;
+            break;
+        case BLOCKTYPE_MONSTER:
+            mMetaTiles[tileNum].blockmask |= BLOCKMASK_MONSTER;
+            break;
+        default:
+            // Do nothing.
+            break;
     }
 }
 
@@ -563,11 +566,10 @@ bool Map::occupied(int x, int y) const
 
 Vector Map::getTileCenter(int x, int y) const
 {
-    Vector tileCenterPos;
-
-    tileCenterPos.x = x * mTileWidth + mTileWidth / 2;
-    tileCenterPos.y = y * mTileHeight + mTileHeight / 2;
-    return tileCenterPos;
+    return {
+        static_cast<float>(x * mTileWidth + mTileWidth * 0.5f),
+        static_cast<float>(y * mTileHeight + mTileHeight * 0.5f)
+    };
 }
 
 bool Map::contains(int x, int y) const
@@ -607,8 +609,8 @@ std::string Map::getName() const
 std::string Map::getFilename() const
 {
     std::string fileName = getProperty("_filename");
-    int lastSlash = fileName.rfind("/") + 1;
-    int lastDot = fileName.rfind(".");
+    int lastSlash = fileName.rfind('/') + 1;
+    int lastDot = fileName.rfind('.');
 
     return fileName.substr(lastSlash, lastDot - lastSlash);
 }

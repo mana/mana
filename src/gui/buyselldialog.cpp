@@ -30,25 +30,24 @@
 
 #include "utils/gettext.h"
 
-BuySellDialog::DialogList BuySellDialog::instances;
+std::list<BuySellDialog *> BuySellDialog::instances;
 
 BuySellDialog::BuySellDialog(int npcId):
     Window(_("Shop")),
-    mNpcId(npcId),
-    mBuyButton(nullptr)
+    mNpcId(npcId)
 {
     setWindowName("BuySell");
     //setupWindow->registerWindowForReset(this);
     setCloseButton(true);
 
-    static const char *buttonNames[] = {
-        N_("Buy"), N_("Sell"), N_("Cancel"), nullptr
+    constexpr const char *buttonNames[] = {
+        N_("Buy"), N_("Sell"), N_("Cancel")
     };
     int x = 10, y = 10;
 
-    for (const char **curBtn = buttonNames; *curBtn; curBtn++)
+    for (const char *curBtn : buttonNames)
     {
-        auto *btn = new Button(gettext(*curBtn), *curBtn, this);
+        auto *btn = new Button(gettext(curBtn), curBtn, this);
         if (!mBuyButton)
             mBuyButton = btn; // For focus request
         btn->setPosition(x, y);
@@ -107,6 +106,6 @@ void BuySellDialog::action(const gcn::ActionEvent &event)
 
 void BuySellDialog::closeAll()
 {
-    for (auto &instance : instances)
-        instance->close();
+    for (auto dialog : instances)
+        dialog->close();
 }

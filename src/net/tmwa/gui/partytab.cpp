@@ -135,9 +135,7 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
             }
         }
 
-        char opt = CommandHandler::parseBoolean(args);
-
-        switch (opt)
+        switch (CommandHandler::parseBoolean(args))
         {
             case 1:
                 Net::getPartyHandler()->setShareItems(PARTY_SHARE);
@@ -170,9 +168,7 @@ bool PartyTab::handleCommand(const std::string &type, const std::string &args)
             }
         }
 
-        char opt = CommandHandler::parseBoolean(args);
-
-        switch (opt)
+        switch (CommandHandler::parseBoolean(args))
         {
             case 1:
                 Net::getPartyHandler()->setShareExperience(PARTY_SHARE);

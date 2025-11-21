@@ -35,16 +35,15 @@ std::string booleanOptionInstructions(const char *command);
 class CommandHandler
 {
     public:
-        CommandHandler();
-
-        ~CommandHandler() {}
+        CommandHandler() = default;
+        ~CommandHandler() = default;
 
         /**
          * Parse and handle the given command.
          */
-        void handleCommand(const std::string &command, ChatTab *tab = localChatTab);
+        static void handleCommand(const std::string &command, ChatTab *tab = localChatTab);
 
-        static char parseBoolean(const std::string &value);
+        static int parseBoolean(const std::string &value);
 
     protected:
         friend class ChatTab;
@@ -53,92 +52,92 @@ class CommandHandler
         /**
          * Handle a help command.
          */
-        void handleHelp(const std::string &args, ChatTab *tab);
+        static void handleHelp(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a where command.
          */
-        void handleWhere(const std::string &args, ChatTab *tab);
+        static void handleWhere(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a who command.
          */
-        void handleWho(const std::string &args, ChatTab *tab);
+        static void handleWho(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a msg command.
          */
-        void handleMsg(const std::string &args, ChatTab *tab);
+        static void handleMsg(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a msg tab request.
          */
-        void handleQuery(const std::string &args, ChatTab *tab);
+        static void handleQuery(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a join command.
          */
-        void handleJoin(const std::string &args, ChatTab *tab);
+        static void handleJoin(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a listchannels command.
          */
-        void handleListChannels(const std::string &args, ChatTab *tab);
+        static void handleListChannels(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a clear command.
          */
-        void handleClear(const std::string &args, ChatTab *tab);
+        static void handleClear(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a createparty command.
          */
-        void handleCreateParty(const std::string &args, ChatTab *tab);
+        static void handleCreateParty(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a party command.
          */
-        void handleParty(const std::string &args, ChatTab *tab);
+        static void handleParty(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a me command.
          */
-        void handleMe(const std::string &args, ChatTab *tab);
+        static void handleMe(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a record command.
          */
-        void handleRecord(const std::string &args, ChatTab *tab);
+        static void handleRecord(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a toggle command.
          */
-        void handleToggle(const std::string &args, ChatTab *tab);
+        static void handleToggle(const std::string &args, ChatTab *tab);
 
         /**
          * Handle a present command.
          */
-        void handlePresent(const std::string &args, ChatTab *tab);
+        static void handlePresent(const std::string &args, ChatTab *tab);
 
         /**
          * Handle an ignore command.
          */
-        void handleIgnore(const std::string &args, ChatTab *tab);
+        static void handleIgnore(const std::string &args, ChatTab *tab);
 
         /**
          * Handle an unignore command.
          */
-        void handleUnignore(const std::string &args, ChatTab *tab);
+        static void handleUnignore(const std::string &args, ChatTab *tab);
 
         /**
          * Handle away command.
          */
-        void handleAway(const std::string &args, ChatTab *tab);
+        static void handleAway(const std::string &args, ChatTab *tab);
 
         /*
          * Handle showip command.
          */
-        void handleShowIp(const std::string &args, ChatTab *tab);
+        static void handleShowIp(const std::string &args, ChatTab *tab);
 };
 
 extern CommandHandler *commandHandler;

@@ -52,6 +52,7 @@
 #include <guichan/font.hpp>
 
 #include <algorithm>
+#include <limits>
 
 #define CAPTION_WAITING _("Waiting for server")
 #define CAPTION_NEXT _("Next")
@@ -586,7 +587,7 @@ void NpcEventListener::event(Event::Channel channel,
 
         int defaultValue = event.getInt("default", 0);
         int min = event.getInt("min", 0);
-        int max = event.getInt("max", 2147483647);
+        int max = event.getInt("max", std::numeric_limits<int>::max());
 
         dialog->integerRequest(defaultValue, min, max);
     }

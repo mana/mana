@@ -21,11 +21,9 @@
 
 #include "net/tmwa/buysellhandler.h"
 
-#include "actorspritemanager.h"
 #include "event.h"
 #include "inventory.h"
 #include "item.h"
-#include "localplayer.h"
 #include "playerinfo.h"
 
 #include "gui/buydialog.h"

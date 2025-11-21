@@ -287,7 +287,8 @@ void ItemDB::loadCommonRef(ItemInfo &itemInfo, XML::Node node, const std::string
         Log::info("ItemDB: Invalid or missing item Id in %s!", filename.c_str());
         return;
     }
-    else if (mItemInfos.find(itemInfo.id) != mItemInfos.end())
+
+    if (mItemInfos.find(itemInfo.id) != mItemInfos.end())
     {
         Log::info("ItemDB: Redefinition of item Id %d in %s", itemInfo.id, filename.c_str());
     }

@@ -41,7 +41,7 @@ Inventory::Inventory(Type type, int size)
 
 void Inventory::setSize(int size)
 {
-    if (mItems.size() == size)
+    if (size < 0 || mItems.size() == static_cast<size_t>(size))
         return;
 
     mItems.resize(size);

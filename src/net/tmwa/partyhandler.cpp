@@ -139,12 +139,9 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 int id = msg.readInt32();
                 std::string partyName = msg.readString(24);
                 std::string nick;
-                Being *being;
 
-                if ((being = actorSpriteManager->findBeing(id)))
-                {
+                if (Being *being = actorSpriteManager->findBeing(id))
                     nick = being->getName();
-                }
 
                 socialWindow->showPartyInvite(nick, partyName);
                 break;

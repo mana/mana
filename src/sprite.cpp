@@ -70,7 +70,7 @@ bool Sprite::play(const std::string &spriteAction)
         return false;
 
     mAction = action;
-    Animation *animation = mAction->getAnimation(mDirection);
+    auto animation = mAction->getAnimation(mDirection);
 
     if (animation && animation != mAnimation && animation->getLength() > 0)
     {
@@ -88,8 +88,8 @@ bool Sprite::update(int dt)
     if (!mAnimation)
         return false;
 
-    Animation *animation = mAnimation;
-    Frame *frame = mFrame;
+    const Animation *animation = mAnimation;
+    const Frame *frame = mFrame;
 
     if (!updateCurrentAnimation(dt))
     {
@@ -154,7 +154,7 @@ bool Sprite::setDirection(SpriteDirection direction)
         if (!mAction)
             return false;
 
-        Animation *animation = mAction->getAnimation(mDirection);
+        auto animation = mAction->getAnimation(mDirection);
 
         if (animation && animation != mAnimation && animation->getLength() > 0)
         {

@@ -86,14 +86,14 @@ enum SpriteDirection
 class Action
 {
     public:
-        Action();
+        Action() = default;
         ~Action();
 
-        void setAnimation(int direction, Animation *animation);
-        Animation *getAnimation(int direction) const;
+        void setAnimation(int direction, Animation animation);
+        const Animation *getAnimation(int direction) const;
 
     protected:
-        std::map<int, Animation *> mAnimations;
+        std::map<int, Animation> mAnimations;
 };
 
 /**
@@ -111,12 +111,6 @@ class SpriteDef : public Resource
          * Returns the specified action.
          */
         Action *getAction(const std::string &action) const;
-
-        /**
-         * Converts a string into a SpriteDirection enum.
-         */
-        static SpriteDirection
-        makeSpriteDirection(const std::string &direction);
 
     private:
         SpriteDef() {}
@@ -160,7 +154,7 @@ class SpriteDef : public Resource
          * When there are no animations defined for the action "complete", its
          * animations become a copy of those of the action "with".
          */
-        void substituteAction(std::string complete, std::string with);
+        void substituteAction(const std::string &complete, const std::string &with);
 
         std::map<std::string, ResourceRef<ImageSet>> mImageSets;
         std::map<std::string, Action *> mActions;

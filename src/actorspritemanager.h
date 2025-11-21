@@ -140,14 +140,6 @@ class ActorSpriteManager : public EventListener
         const ActorSprites &getAll() const;
 
         /**
-         * Returns true if the given ActorSprite is in the manager's list,
-         * false otherwise.
-         *
-         * \param someActor the ActorSprite to search for
-         */
-        bool hasActorSprite(ActorSprite *someActor) const;
-
-        /**
          * Performs ActorSprite logic and deletes ActorSprite scheduled to be
          * deleted.
          */

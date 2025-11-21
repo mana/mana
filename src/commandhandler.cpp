@@ -43,9 +43,6 @@ std::string booleanOptionInstructions(const char *command)
                      command);
 }
 
-CommandHandler::CommandHandler()
-{}
-
 void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
 {
     std::string::size_type pos = command.find(' ');
@@ -136,20 +133,22 @@ void CommandHandler::handleCommand(const std::string &command, ChatTab *tab)
     }
 }
 
-char CommandHandler::parseBoolean(const std::string &value)
+int CommandHandler::parseBoolean(const std::string &value)
 {
-    std::string opt = value.substr(0, 1);
-
-    if (opt == "1" ||
-        opt == "y" || opt == "Y" ||
-        opt == "t" || opt == "T")
+    switch (value.empty() ? 0 : value[0]) {
+    case '1':
+    case 'y': case 'Y':
+    case 't': case 'T':
         return 1;
-    else if (opt == "0" ||
-             opt == "n" || opt == "N" ||
-             opt == "f" || opt == "F")
+
+    case '0':
+    case 'n': case 'N':
+    case 'f': case 'F':
         return 0;
-    else
+
+    default:
         return -1;
+    }
 }
 
 void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
@@ -355,7 +354,7 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
     }
     else
     {
-        const std::string::size_type pos = args.find(" ");
+        const std::string::size_type pos = args.find(' ');
         if (pos != std::string::npos)
         {
             recvnick = args.substr(0, pos);
@@ -371,7 +370,7 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
 
     trim(msg);
 
-    if (msg.length() > 0)
+    if (!msg.empty())
     {
         std::string playerName = local_player->getName();
         std::string tempNick = recvnick;
@@ -379,7 +378,7 @@ void CommandHandler::handleMsg(const std::string &args, ChatTab *tab)
         toLower(playerName);
         toLower(tempNick);
 
-        if (tempNick.compare(playerName) == 0 || args.empty())
+        if (tempNick == playerName || args.empty())
             return;
 
         chatWindow->whisper(recvnick, msg, BY_PLAYER);
@@ -464,9 +463,7 @@ void CommandHandler::handleToggle(const std::string &args, ChatTab *tab)
         return;
     }
 
-    char opt = parseBoolean(args);
-
-    switch (opt)
+    switch (parseBoolean(args))
     {
         case 1:
             tab->chatLog(_("Return now toggles chat."));
@@ -490,9 +487,7 @@ void CommandHandler::handleShowIp(const std::string &args, ChatTab *tab)
         return;
     }
 
-    char opt = parseBoolean(args);
-
-    switch (opt)
+    switch (parseBoolean(args))
     {
         case 0:
             tab->chatLog(_("Show IP: Off"));

@@ -34,6 +34,8 @@
 
 #include "utils/stringutils.h"
 
+#include <algorithm>
+
 extern Net::NpcHandler *npcHandler;
 
 static void parseMenu(Event &event, const std::string &options)
@@ -134,7 +136,7 @@ void NpcHandler::handleMessage(MessageIn &msg)
             break;
         case NPC_REQUEST_ITEM: {
             Event event { Event::ItemInput };
-            event.setInt("amount", idOrAmount ? idOrAmount : 1);
+            event.setInt("amount", std::clamp<int>(idOrAmount, 1, 16));
             triggerNpcEvent(std::move(event));
             break;
         }

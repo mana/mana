@@ -158,7 +158,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
 
             std::string::size_type pos = chatMsg.find(" : ", 0);
             std::string sender_name = ((pos == std::string::npos)
-                                       ? "" : chatMsg.substr(0, pos));
+                                       ? std::string() : chatMsg.substr(0, pos));
 
             if (sender_name != being->getName()
                 && being->getType() == Being::PLAYER)

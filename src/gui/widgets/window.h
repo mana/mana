@@ -21,7 +21,6 @@
 
 #pragma once
 
-#include "graphics.h"
 #include "guichanfwd.h"
 
 #include "resources/theme.h"

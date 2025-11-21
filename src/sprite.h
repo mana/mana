@@ -139,6 +139,6 @@ class Sprite
 
         ResourceRef<SpriteDef> mSprite;     /**< The sprite definition. */
         Action *mAction = nullptr;          /**< The currently active action. */
-        Animation *mAnimation = nullptr;    /**< The currently active animation. */
-        Frame *mFrame = nullptr;            /**< The currently active frame. */
+        const Animation *mAnimation = nullptr;    /**< The currently active animation. */
+        const Frame *mFrame = nullptr;            /**< The currently active frame. */
 };

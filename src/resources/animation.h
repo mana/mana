@@ -62,7 +62,7 @@ class Animation final
         /**
          * Returns the frame at the specified index.
          */
-        Frame *getFrame(int index) { return &(mFrames[index]); }
+        const Frame *getFrame(int index) const { return &(mFrames[index]); }
 
         /**
          * Returns the length of this animation in frames.

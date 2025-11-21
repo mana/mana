@@ -33,6 +33,7 @@
 #include <SDL_image.h>
 
 #include <algorithm>
+#include <cstddef>
 
 #ifdef USE_OPENGL
 bool Image::mUseOpenGL = false;
@@ -137,8 +138,8 @@ Resource *Image::load(SDL_RWops *rw, const Dye &dye)
     }
 
     auto *pixels = static_cast<SDL_Color *>(surf->pixels);
-    for (SDL_Color *p_end = pixels + surf->w * surf->h; pixels != p_end; ++pixels)
-    {
+    for (SDL_Color *p_end = pixels + static_cast<ptrdiff_t>(surf->w * surf->h);
+         pixels != p_end; ++pixels) {
         if (!pixels->a)
             continue;
 

@@ -105,7 +105,7 @@ public:
      * the specified flags.
      */
     unsigned int checkPermissionSilently(const std::string &player_name,
-                                         unsigned int flags);
+                                         unsigned int flags) const;
 
     /**
      * Tests whether the player in question is being ignored for any of the
