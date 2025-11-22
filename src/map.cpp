@@ -751,10 +751,13 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                    unsigned char walkmask, int maxCost)
 {
     // The basic walking cost of a tile.
-    const int basicCost = 100;
+    constexpr int basicCost = 100;
 
     // Path to be built up (empty by default)
     Path path;
+
+    if (startX == destX && startY == destY)
+        return path;
 
     // Declare open list, a list with open tiles sorted on F cost
     std::priority_queue<Location> openList;
