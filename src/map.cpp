@@ -41,8 +41,9 @@
 #include "utils/stringutils.h"
 
 #include <cassert>
-#include <queue>
 #include <climits>
+#include <cstdlib>
+#include <queue>
 
 /**
  * A location on a tile map. Used for pathfinding, open list.
@@ -752,6 +753,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
 {
     // The basic walking cost of a tile.
     constexpr int basicCost = 100;
+    constexpr int diagonalCost = basicCost * 362 / 256; // 141
 
     // Path to be built up (empty by default)
     Path path;
@@ -828,7 +830,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
 
                 // Calculate G cost for this route, ~sqrt(2) for moving diagonal
                 int Gcost = curr.tile->Gcost +
-                    (dx == 0 || dy == 0 ? basicCost : basicCost * 362 / 256);
+                    (dx == 0 || dy == 0 ? basicCost : diagonalCost);
 
                 /* Demote an arbitrary direction to speed pathfinding by
                    adding a defect (TODO: change depending on the desired
@@ -850,7 +852,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                 if (Net::getNetworkType() == ServerType::TmwAthena &&
                     occupied(x, y))
                 {
-                    Gcost += 3 * basicCost;
+                    Gcost += 2 * (diagonalCost - basicCost) + 1;
                 }
 
                 // Skip if Gcost becomes too much
@@ -871,7 +873,7 @@ Path Map::findPath(int startX, int startY, int destX, int destY,
                     int dx = std::abs(x - destX);
                     int dy = std::abs(y - destY);
                     newTile->Hcost = std::abs(dx - dy) * basicCost +
-                        std::min(dx, dy) * (basicCost * 362 / 256);
+                        std::min(dx, dy) * diagonalCost;
 
                     // Set the current tile as the parent of the new tile
                     newTile->parentX = curr.x;

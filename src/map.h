@@ -303,14 +303,14 @@ class Map : public Properties
          */
         Path findTilePath(int startPixelX, int startPixelY, int endPixelX,
                           int endPixelY, unsigned char walkMask,
-                          int maxCost = 20);
+                          int maxCost = 48);
 
         /**
          * Find a pixel path from one location to the next using free offsets.
          */
         Path findPixelPath(int startPixelX, int startPixelY,
                           int destPixelX, int destPixelY,
-                          int radius, unsigned char walkmask, int maxCost = 20);
+                          int radius, unsigned char walkmask, int maxCost = 48);
 
         /**
          * Adds a particle effect
