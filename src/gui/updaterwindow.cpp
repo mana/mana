@@ -44,10 +44,8 @@
 #include "utils/xml.h"
 
 #include <iostream>
-#include <fstream>
 
 constexpr char xmlUpdateFile[] = "resources.xml";
-constexpr char txtUpdateFile[] = "resources2.txt";
 
 /**
  * Load the given file into a vector of updateFiles.
@@ -79,40 +77,6 @@ std::vector<UpdateFile> loadXMLFile(const std::string &fileName)
 
         files.push_back(file);
     }
-
-    return files;
-}
-
-std::vector<UpdateFile> loadTxtFile(const std::string &fileName)
-{
-    std::vector<UpdateFile> files;
-    std::ifstream fileHandler;
-    fileHandler.open(fileName, std::ios::in);
-
-    if (fileHandler.is_open())
-    {
-        while (fileHandler.good())
-        {
-            char name[256];
-            char hash[50];
-            fileHandler.getline(name, 256, ' ');
-            fileHandler.getline(hash, 50);
-
-            UpdateFile thisFile;
-            thisFile.name = name;
-            thisFile.hash = hash;
-            thisFile.type = "data";
-            thisFile.required = true;
-
-            if (!thisFile.name.empty())
-                files.push_back(thisFile);
-        }
-    }
-    else
-    {
-        Log::info("Error loading update file: %s", fileName.c_str());
-    }
-    fileHandler.close();
 
     return files;
 }
@@ -259,10 +223,7 @@ void UpdaterWindow::loadUpdates()
         mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
         if (mUpdateFiles.empty())
         {
-            Log::warn("This server does not have a"
-                      " %s file falling back to %s", xmlUpdateFile,
-                      txtUpdateFile);
-            mUpdateFiles = loadTxtFile(mUpdatesDir + "/" + txtUpdateFile);
+            Log::warn("This server does not have a %s file", xmlUpdateFile);
         }
     }
 
@@ -366,19 +327,8 @@ void UpdaterWindow::downloadCompleted()
             mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
             if (mUpdateFiles.empty())
             {
-                Log::warn("This server does not have a %s"
-                          " file falling back to %s",
-                          xmlUpdateFile, txtUpdateFile);
-
-                // If the resources.xml file fails, fall back onto a older version
-                mDialogState = DialogState::DownloadList;
-                startDownload(txtUpdateFile, false);
-                break;
+                Log::warn("This server does not have a %s file", xmlUpdateFile);
             }
-        }
-        else if (mCurrentFile == txtUpdateFile)
-        {
-            mUpdateFiles = loadTxtFile(mUpdatesDir + "/" + txtUpdateFile);
         }
 
         mDialogState = DialogState::DownloadResources;
