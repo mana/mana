@@ -209,9 +209,9 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
 
     // Format the time string properly
     std::stringstream timeStr;
-    timeStr << std::setw(2) << std::setfill('0')
-            << "[" << (t / 3600) % 24
-            << ":" << (t / 60) % 60
+    timeStr << std::setfill('0')
+            << "[" << std::setw(2) << (t / 3600) % 24
+            << ":" << std::setw(2) << (t / 60) % 60
             << "] ";
 
     line = lineColor + timeStr.str() + tmp.nick + tmp.text;
