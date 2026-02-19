@@ -29,6 +29,7 @@
 #include "playerinfo.h"
 
 #include "gui/inventorywindow.h"
+#include "gui/gui.h"
 #include "gui/itempopup.h"
 #include "gui/viewport.h"
 
@@ -47,11 +48,17 @@ ItemShortcutContainer::~ItemShortcutContainer() = default;
 
 void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 {
+    cleanupFallbackItems();
+
     auto *g = static_cast<Graphics*>(graphics);
     auto theme = gui->getTheme();
     auto &skin = theme->getSkin(SkinType::ShortcutBox);
+    const auto *drag = gui->getActiveDrag();
 
     graphics->setFont(getFont());
+
+    const auto &textColor = Theme::getThemeColor(Theme::TEXT);
+    const auto &equippedColor = Theme::getThemeColor(Theme::ITEM_EQUIPPED);
 
     for (int i = 0; i < mMaxItems; i++)
     {
@@ -63,7 +70,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
         // Draw item keyboard shortcut.
         const char *key = SDL_GetKeyName(
                     keyboard.getKeyValue(KeyboardConfig::KEY_SHORTCUT_1 + i));
-        graphics->setColor(Theme::getThemeColor(Theme::TEXT));
+        graphics->setColor(textColor);
         g->drawText(key,
                     state.x + skin.padding + 2,
                     state.y + skin.padding + 2,
@@ -73,42 +80,83 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
         if (itemId < 0)
             continue;
 
-        if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
-        {
-            // Draw item icon.
-            if (Image *image = item->getImage())
-            {
-                std::string caption;
-                if (item->getQuantity() > 1)
-                    caption = toString(item->getQuantity());
-                else if (item->isEquipped())
-                    caption = "Eq.";
+        Item *item = getDisplayItem(itemId);
+        const bool isGhost = item->getQuantity() == 0;
+        const bool isDragged =
+                drag &&
+                drag->source == this &&
+                drag->sourceIndex == i;
+        const float alpha = isGhost ? 0.25f : (isDragged ? 0.5f : 1.0f);
 
-                image->setAlpha(1.0f);
-                g->drawImage(image, state.x + skin.padding, state.y + skin.padding);
-                if (item->isEquipped())
-                    g->setColor(Theme::getThemeColor(Theme::ITEM_EQUIPPED));
-                g->drawText(caption,
-                            state.x + mBoxWidth / 2,
-                            state.y + mBoxHeight - 14,
-                            gcn::Graphics::CENTER);
-            }
+        if (Image *image = item->getImage())
+        {
+            image->setAlpha(alpha);
+            g->drawImage(image,
+                        state.x + skin.padding,
+                        state.y + skin.padding);
         }
+
+        std::string caption;
+        if (item->getQuantity() > 1)
+            caption = toString(item->getQuantity());
+        else if (item->isEquipped())
+            caption = "Eq.";
+        else
+            continue;
+
+        auto color = item->isEquipped() ? equippedColor : textColor;
+        color.a = alpha * 255.f;
+
+        g->setColor(color);
+        g->drawText(caption,
+                    state.x + mBoxWidth / 2,
+                    state.y + mBoxHeight - 14,
+                    gcn::Graphics::CENTER);
+    }
+}
+
+Item *ItemShortcutContainer::getDisplayItem(int itemId)
+{
+    if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
+        return item;
+
+    auto i = mFallbackItems.find(itemId);
+    if (i == mFallbackItems.end())
+    {
+        i = mFallbackItems.emplace(
+                itemId, std::make_unique<Item>(itemId)).first;
     }
 
-    if (mItemMoved)
-    {
-        // Draw the item image being dragged by the cursor.
-        if (Image *image = mItemMoved->getImage())
-        {
-            const int tPosX = mCursorPosX - (image->getWidth() / 2);
-            const int tPosY = mCursorPosY - (image->getHeight() / 2);
+    return i->second.get();
+}
 
-            g->drawImage(image, tPosX, tPosY);
-            g->drawText(toString(mItemMoved->getQuantity()),
-                        tPosX + mBoxWidth / 2, tPosY + mBoxHeight - 14,
-                        gcn::Graphics::CENTER);
+void ItemShortcutContainer::cleanupFallbackItems()
+{
+    auto *inventory = PlayerInfo::getInventory();
+    for (auto i = mFallbackItems.begin(); i != mFallbackItems.end();)
+    {
+        const int itemId = i->first;
+
+        if (inventory->findItem(itemId))
+        {
+            i = mFallbackItems.erase(i);
+            continue;
         }
+
+        bool stillReferenced = false;
+        for (int slot = 0; slot < mMaxItems; ++slot)
+        {
+            if (itemShortcut->getItem(slot) == itemId)
+            {
+                stillReferenced = true;
+                break;
+            }
+        }
+
+        if (!stillReferenced)
+            i = mFallbackItems.erase(i);
+        else
+            ++i;
     }
 }
 
@@ -116,36 +164,23 @@ void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)
 {
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        if (!mItemMoved && mItemClicked)
+        if (!gui->getActiveDrag() && mClickedIndex != -1)
         {
-            const int index = getIndexFromGrid(event.getX(), event.getY());
-            if (index == -1)
-                return;
-
-            const int itemId = itemShortcut->getItem(index);
+            const int itemId = itemShortcut->getItem(mClickedIndex);
             if (itemId < 0)
                 return;
 
-            if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
-            {
-                mItemMoved = item;
-                itemShortcut->removeItem(index);
-            }
-        }
-
-        if (mItemMoved)
-        {
-            mCursorPosX = event.getX();
-            mCursorPosY = event.getY();
+            Item *item = getDisplayItem(itemId);
+            mItemPopup->setVisible(false);
+            gui->startDrag(Drag::fromItemShortcut(item, this, mClickedIndex));
         }
     }
 }
 
 void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
 {
-    const int index = getIndexFromGrid(event.getX(), event.getY());
-
-    if (index == -1)
+    mClickedIndex = getIndexFromGrid(event.getX(), event.getY());
+    if (mClickedIndex == -1)
         return;
 
     if (event.getButton() == gcn::MouseEvent::LEFT)
@@ -153,22 +188,18 @@ void ItemShortcutContainer::mousePressed(gcn::MouseEvent &event)
         // Stores the selected item if theirs one.
         if (itemShortcut->isItemSelected() && inventoryWindow->isVisible())
         {
-            itemShortcut->setItem(index);
+            itemShortcut->setItem(mClickedIndex);
             itemShortcut->setItemSelected(-1);
+            mClickedIndex = -1;
         }
-        else if (itemShortcut->getItem(index))
-            mItemClicked = true;
     }
     else if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
         Item *item = PlayerInfo::getInventory()->
-                     findItem(itemShortcut->getItem(index));
-
+                     findItem(itemShortcut->getItem(mClickedIndex));
         if (!item)
             return;
 
-        // Convert relative to the window coordinates to absolute screen
-        // coordinates.
         viewport->showPopup(nullptr, viewport->getMouseX(), viewport->getMouseY(), item);
     }
 }
@@ -181,24 +212,57 @@ void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
             itemShortcut->setItemSelected(-1);
 
         const int index = getIndexFromGrid(event.getX(), event.getY());
-        if (index == -1)
-        {
-            mItemMoved = nullptr;
-            return;
-        }
-        if (mItemMoved)
-        {
-            itemShortcut->setItems(index, mItemMoved->getId());
-            mItemMoved = nullptr;
-        }
-        else if (itemShortcut->getItem(index) && mItemClicked)
-        {
+        if (index != -1 && mClickedIndex == index)
             itemShortcut->useItem(index);
-        }
 
-        if (mItemClicked)
-            mItemClicked = false;
+        mClickedIndex = -1;
     }
+}
+
+void ItemShortcutContainer::dragFinished(const Drag &drag, DragResult result)
+{
+    if (result == DragResult::Ignored &&
+        drag.source == this &&
+        drag.sourceIndex >= 0 &&
+        drag.sourceIndex < mMaxItems)
+    {
+        itemShortcut->removeItem(drag.sourceIndex);
+    }
+
+    mClickedIndex = -1;
+}
+
+/**
+ * Handles dropping an item onto this shortcut container.
+ *
+ * If the drag originated from another shortcut slot, swaps or clears the
+ * original slot accordingly.
+ */
+bool ItemShortcutContainer::handleDrop(const Drag &drag, int absX, int absY)
+{
+    if (!drag.item)
+        return false;
+
+    int widgetX = 0;
+    int widgetY = 0;
+    getAbsolutePosition(widgetX, widgetY);
+
+    const int index = getIndexFromGrid(absX - widgetX, absY - widgetY);
+    if (index == -1)
+        return false;
+
+    const int itemId = drag.item->getId();
+    const int replacedItem = itemShortcut->getItem(index);
+    itemShortcut->setItem(index, itemId);
+
+    if (drag.source == this)
+    {
+        const int sourceIndex = drag.sourceIndex;
+        if (sourceIndex >= 0 && sourceIndex != index)
+            itemShortcut->setItem(sourceIndex, replacedItem);
+    }
+
+    return true;
 }
 
 // Show ItemTooltip

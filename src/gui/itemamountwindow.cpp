@@ -52,8 +52,7 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
             break;
         case StoreAdd:
         {
-            Event event(Event::DoMove);
-            event.setItem("item", item);
+            Event event = item->createEvent(Event::DoMove);
             event.setInt("amount", amount);
             event.setInt("source", Inventory::INVENTORY);
             event.setInt("destination", Inventory::STORAGE);
@@ -62,8 +61,7 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
             break;
         case StoreRemove:
         {
-            Event event(Event::DoMove);
-            event.setItem("item", item);
+            Event event = item->createEvent(Event::DoMove);
             event.setInt("amount", amount);
             event.setInt("source", Inventory::STORAGE);
             event.setInt("destination", Inventory::INVENTORY);

@@ -72,7 +72,7 @@ class ItemShortcut
          * @param index Index of the item.
          * @param itemId ID of the item.
          */
-        void setItems(int index, int itemId)
+        void setItem(int index, int itemId)
         { mItems[index] = itemId; }
 
         /**

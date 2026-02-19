@@ -36,11 +36,9 @@
 #include "log.h"
 
 #include "resources/resourcemanager.h"
-#include "resources/theme.h"
 #include "utils/filesystem.h"
 
 #include <guichan/exception.hpp>
-#include <guichan/image.hpp>
 
 #include <algorithm>
 
@@ -140,6 +138,7 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
     loadSystemCursors();
 
     gcn::Widget::setGlobalFont(mGuiFont);
+    addGlobalKeyListener(this);
 
     // Initialize mouse cursor and listen for changes to the option
     setUseCustomCursor(config.customCursor);
@@ -149,6 +148,8 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
 
 Gui::~Gui()
 {
+    removeGlobalKeyListener(this);
+
     for (auto cursor : mSystemMouseCursors)
         SDL_FreeCursor(cursor);
 
@@ -179,6 +180,24 @@ void Gui::logic()
         TextInput textInput = guiInput->dequeueTextInput();
         handleTextInput(textInput);
     }
+}
+
+void Gui::draw()
+{
+    gcn::Gui::draw();
+
+    if (!mActiveDrag)
+        return;
+
+    auto *graphics = static_cast<Graphics*>(mGraphics);
+    if (!graphics)
+        return;
+
+    graphics->pushClipArea(gcn::Rectangle(0, 0,
+                                          graphics->getWidth(),
+                                          graphics->getHeight()));
+    mActiveDrag->draw(graphics, mMouseX, mMouseY);
+    graphics->popClipArea();
 }
 
 void Gui::event(Event::Channel channel, const Event &event)
@@ -250,13 +269,110 @@ void Gui::updateCursor()
         SDL_SetCursor(mSystemMouseCursors[static_cast<int>(mCursorType)]);
 }
 
+void Gui::keyPressed(gcn::KeyEvent &event)
+{
+    if (mActiveDrag && event.getKey().getValue() == Key::ESCAPE)
+    {
+        cancelActiveDrag();
+        event.consume();
+    }
+}
+
+void Gui::keyReleased(gcn::KeyEvent &/*event*/)
+{
+}
+
+void Gui::handleMousePressed(const gcn::MouseInput &mouseInput)
+{
+    mMouseX = mouseInput.getX();
+    mMouseY = mouseInput.getY();
+
+    if (mActiveDrag && mouseInput.getButton() == gcn::MouseInput::RIGHT)
+    {
+        cancelActiveDrag();
+        return;
+    }
+
+    gcn::Gui::handleMousePressed(mouseInput);
+}
+
 void Gui::handleMouseMoved(const gcn::MouseInput &mouseInput)
 {
+    mMouseX = mouseInput.getX();
+    mMouseY = mouseInput.getY();
+
     gcn::Gui::handleMouseMoved(mouseInput);
+    if (mActiveDrag)
+        updateDragTargetFromPosition(mouseInput.getX(), mouseInput.getY());
     mMouseActivityTimer.set(15000);
 
     // Make sure the cursor is visible
     SDL_ShowCursor(SDL_ENABLE);
+}
+
+void Gui::handleMouseReleased(const gcn::MouseInput &mouseInput)
+{
+    if (mActiveDrag)
+    {
+        updateDragTargetFromPosition(mouseInput.getX(), mouseInput.getY());
+
+        DragResult result = DragResult::Ignored;
+        if (mDragTargetUnderMouse)
+        {
+            if (mDragTargetUnderMouse->handleDrop(*mActiveDrag,
+                                                  mouseInput.getX(),
+                                                  mouseInput.getY()))
+            {
+                result = DragResult::Accepted;
+            }
+        }
+
+        if (auto *source = mActiveDrag->source)
+            source->dragFinished(*mActiveDrag, result);
+
+        mActiveDrag.reset();
+        mDragTargetUnderMouse = nullptr;
+    }
+
+    gcn::Gui::handleMouseReleased(mouseInput);
+}
+
+void Gui::startDrag(Drag drag)
+{
+    if (mActiveDrag)
+        return;
+
+    mActiveDrag = std::move(drag);
+}
+
+bool Gui::cancelActiveDrag()
+{
+    if (!mActiveDrag)
+        return false;
+
+    if (auto *source = mActiveDrag->source)
+        source->dragFinished(*mActiveDrag, DragResult::Canceled);
+
+    mActiveDrag.reset();
+    mDragTargetUnderMouse = nullptr;
+    return true;
+}
+
+void Gui::updateDragTargetFromPosition(int x, int y)
+{
+    mDragTargetUnderMouse = nullptr;
+
+    gcn::Widget *widget = getWidgetAt(x, y);
+    while (widget)
+    {
+        if (auto *dropHandler = dynamic_cast<DragTarget*>(widget))
+        {
+            mDragTargetUnderMouse = dropHandler;
+            return;
+        }
+
+        widget = dynamic_cast<gcn::Widget*>(widget->getParent());
+    }
 }
 
 void Gui::handleTextInput(const TextInput &textInput)

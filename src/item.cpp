@@ -53,17 +53,23 @@ void Item::setId(int id)
 
 void Item::doEvent(Event::Type eventName)
 {
-    Event event(eventName);
-    event.setItem("item", this);
+    Event event = createEvent(eventName);
     event.trigger(Event::ItemChannel);
 }
 
 void Item::doEvent(Event::Type eventName, int amount)
 {
-    Event event(eventName);
-    event.setItem("item", this);
+    Event event = createEvent(eventName);
     event.setInt("amount", amount);
     event.trigger(Event::ItemChannel);
+}
+
+Event Item::createEvent(Event::Type eventType) const
+{
+    Event event(eventType);
+    event.setInt("itemId", getId());
+    event.setInt("itemInvIndex", getInvIndex());
+    return event;
 }
 
 bool Item::isEquippable() const

@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "gui/dragndrop.h"
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
@@ -30,10 +31,12 @@ constexpr int OUTFIT_ITEM_COUNT = 9;
 
 class Button;
 class CheckBox;
-class Item;
 class Label;
 
-class OutfitWindow : public Window, gcn::ActionListener
+class OutfitWindow : public Window,
+                     public DragTarget,
+                     public DragSource,
+                     public gcn::ActionListener
 {
     public:
         OutfitWindow();
@@ -41,10 +44,13 @@ class OutfitWindow : public Window, gcn::ActionListener
 
         void action(const gcn::ActionEvent &event) override;
 
+        bool handleDrop(const Drag &drag, int absX, int absY) override;
+
         void draw(gcn::Graphics *graphics) override;
         void mouseDragged(gcn::MouseEvent &event) override;
         void mousePressed(gcn::MouseEvent &event) override;
         void mouseReleased(gcn::MouseEvent &event) override;
+        void dragFinished(const Drag &drag, DragResult result) override;
 
         void load();
 
@@ -56,6 +62,7 @@ class OutfitWindow : public Window, gcn::ActionListener
 
         void wearOutfit(int outfit);
         void copyOutfit(int outfit);
+        bool addItemToCurrentOutfit(int itemId, int targetIndex);
 
         void unequipNotInOutfit(int outfit);
 
@@ -69,11 +76,9 @@ class OutfitWindow : public Window, gcn::ActionListener
 
         int mBoxWidth = 33;
         int mBoxHeight = 33;
-        int mCursorPosX, mCursorPosY;
         int mGridWidth = 3;
         int mGridHeight = 3;
-        bool mItemClicked = false;
-        Item *mItemMoved = nullptr;
+        int mClickedIndex = -1;
 
         void save();
 

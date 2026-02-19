@@ -23,6 +23,7 @@
 
 #include "equipment.h"
 
+#include "gui/dragndrop.h"
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
@@ -36,7 +37,10 @@ class ItemPopup;
  *
  * \ingroup Interface
  */
-class EquipmentWindow : public Window, public gcn::ActionListener
+class EquipmentWindow : public Window,
+                        public DragTarget,
+                        public DragSource,
+                        public gcn::ActionListener
 {
     public:
         EquipmentWindow(Equipment *equipment);
@@ -48,11 +52,15 @@ class EquipmentWindow : public Window, public gcn::ActionListener
          */
         void draw(gcn::Graphics *graphics) override;
 
+        bool handleDrop(const Drag &drag, int absX, int absY) override;
+
         void action(const gcn::ActionEvent &event) override;
 
         void mousePressed(gcn::MouseEvent& mouseEvent) override;
+        void mouseDragged(gcn::MouseEvent &event) override;
         void mouseMoved(gcn::MouseEvent &event) override;
         void mouseExited(gcn::MouseEvent &event) override;
+        void dragFinished(const Drag &drag, DragResult result) override;
 
         /**
          * Returns the current selected slot or -1 if none.
@@ -73,6 +81,7 @@ class EquipmentWindow : public Window, public gcn::ActionListener
 
         ItemPopup *mItemPopup;
         gcn::Button *mUnequip;
+        int mClickedIndex = -1;
 };
 
 extern EquipmentWindow *equipmentWindow;

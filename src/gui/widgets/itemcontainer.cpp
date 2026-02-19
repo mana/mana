@@ -27,8 +27,11 @@
 #include "itemshortcut.h"
 
 #include "gui/chatwindow.h"
+#include "gui/gui.h"
+#include "gui/itemamountwindow.h"
 #include "gui/itempopup.h"
 #include "gui/outfitwindow.h"
+#include "gui/tradewindow.h"
 #include "gui/viewport.h"
 
 #include "resources/image.h"
@@ -39,9 +42,6 @@
 
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
-
-// TODO: Add support for adding items to the item shortcut window (global
-// itemShortcut).
 
 ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory)
@@ -74,6 +74,7 @@ void ItemContainer::logic()
 void ItemContainer::draw(gcn::Graphics *graphics)
 {
     auto *g = static_cast<Graphics*>(graphics);
+    const auto *drag = gui->getActiveDrag();
 
     g->setFont(getFont());
 
@@ -122,13 +123,6 @@ void ItemContainer::draw(gcn::Graphics *graphics)
             if (itemIndex == mSelectedIndex)
             {
                 slotState.flags |= STATE_SELECTED;
-
-                if (mSelectionStatus == SEL_DRAGGING)
-                {
-                    // Reposition the coords to that of the cursor.
-                    itemX = mDragPosX - (slotSkin.width / 2);
-                    itemY = mDragPosY - (slotSkin.height / 2);
-                }
             }
 
             slotSkin.draw(g, slotState);
@@ -140,7 +134,13 @@ void ItemContainer::draw(gcn::Graphics *graphics)
 
             if (Image *image = item->getImage())
             {
-                image->setAlpha(1.0f);
+                const bool isDragSourceItem =
+                        drag &&
+                        drag->source == this &&
+                        drag->item &&
+                        drag->item->getInvIndex() == item->getInvIndex();
+
+                image->setAlpha(isDragSourceItem ? 0.5f : 1.0f);
                 g->drawImage(image, itemX + slotSkin.padding, itemY + slotSkin.padding);
             }
 
@@ -175,6 +175,7 @@ void ItemContainer::selectNone()
 {
     setSelectedIndex(-1);
     mSelectionStatus = SEL_NONE;
+    itemShortcut->setItemSelected(-1);
     outfitWindow->setItemSelected(-1);
 }
 
@@ -195,7 +196,7 @@ Item *ItemContainer::getSelectedItem() const
 Item *ItemContainer::getItemAt(int index) const
 {
     auto i = mFilteredMap.find(index);
-    return i == mFilteredMap.end() ? 0 : i->second;
+    return i == mFilteredMap.end() ? nullptr : i->second;
 }
 
 void ItemContainer::setFilter(const std::string &filter)
@@ -263,16 +264,11 @@ void ItemContainer::keyReleased(gcn::KeyEvent &event)
 void ItemContainer::mousePressed(gcn::MouseEvent &event)
 {
     const int button = event.getButton();
+
     if (button == gcn::MouseEvent::LEFT || button == gcn::MouseEvent::RIGHT)
     {
-        const int index = getSlotIndex(event.getX(), event.getY());
-        if (index == Inventory::NO_SLOT_INDEX)
-        {
-            mSelectionStatus = SEL_DESELECTING;
-            return;
-        }
-
-        Item *item = getItemAt(index);
+        mClickedIndex = getSlotIndex(event.getX(), event.getY());
+        Item *item = getItemAt(mClickedIndex);
 
         if (!item)
         {
@@ -280,39 +276,61 @@ void ItemContainer::mousePressed(gcn::MouseEvent &event)
             return;
         }
 
-
         // put item name into chat window
         if (mDescItems)
-        {
             chatWindow->addItemText(item->getInfo().name);
-        }
 
-        if (mSelectedIndex == index)
+        if (mSelectedIndex != mClickedIndex)
         {
-        }
-        else if (item && item->getId())
-        {
-            setSelectedIndex(index);
-            mSelectionStatus = SEL_SELECTING;
-            itemShortcut->setItemSelected(item->getId());
+            if (item->getId())
+            {
+                setSelectedIndex(mClickedIndex);
+                mSelectionStatus = SEL_SELECTING;
+                itemShortcut->setItemSelected(item->getId());
 
-            if (item->isEquippable())
-                outfitWindow->setItemSelected(item->getId());
-        }
-        else
-        {
-            selectNone();
+                if (item->isEquippable())
+                    outfitWindow->setItemSelected(item->getId());
+            }
+            else
+            {
+                selectNone();
+            }
         }
     }
 }
 
 void ItemContainer::mouseDragged(gcn::MouseEvent &event)
 {
-    if (mSelectionStatus != SEL_NONE)
+    if (!mDragEnabled || event.getButton() != gcn::MouseEvent::LEFT)
+        return;
+
+    if (mSelectionStatus != SEL_NONE &&
+        mClickedIndex != NO_SLOT_INDEX)
     {
+        Item *item = mInventory->getItem(mClickedIndex);
+        if (!item)
+            return;
+
+        if (!gui->getActiveDrag())
+        {
+            Drag::SourceType sourceType;
+            switch (mInventory->getType())
+            {
+                case Inventory::INVENTORY:
+                    sourceType = Drag::SourceType::Inventory;
+                    break;
+                case Inventory::STORAGE:
+                    sourceType = Drag::SourceType::Storage;
+                    break;
+                default:
+                    return;
+            }
+
+            hidePopup();
+            gui->startDrag(Drag(sourceType, item, this));
+        }
+
         mSelectionStatus = SEL_DRAGGING;
-        mDragPosX = event.getX();
-        mDragPosY = event.getY();
     }
 }
 
@@ -322,33 +340,80 @@ void ItemContainer::mouseReleased(gcn::MouseEvent &event)
     {
         case SEL_SELECTING:
             mSelectionStatus = SEL_SELECTED;
-            return;
+            break;
         case SEL_DESELECTING:
             selectNone();
-            return;
-        case SEL_DRAGGING:
-            mSelectionStatus = SEL_SELECTED;
             break;
+        case SEL_DRAGGING:
         default:
-            return;
+            break;
     };
-
-    int index = getSlotIndex(event.getX(), event.getY());
-    if (index == Inventory::NO_SLOT_INDEX)
-        return;
-    if (index == mSelectedIndex || mSelectedIndex == -1)
-        return;
-
-    Item *item = getSelectedItem();
-    {
-        Event event(Event::DoMove);
-        event.setItem("item", item);
-        event.setInt("newIndex", index);
-        event.trigger(Event::ItemChannel);
-    }
-    selectNone();
 }
 
+/**
+ * Handles dragging of items between containers. This includes:
+ * - Dragging items between inventory and storage
+ * - Dragging items to the trade window
+ */
+bool ItemContainer::handleDrop(const Drag &drag, int /*absX*/, int /*absY*/)
+{
+    if (drag.sourceType != Drag::SourceType::Inventory &&
+        drag.sourceType != Drag::SourceType::Storage)
+        return false;
+
+    Item *item = drag.item.get();
+    if (!item || drag.source == this)
+        return false;
+
+    const auto sourceType =
+            (drag.sourceType == Drag::SourceType::Inventory)
+            ? Inventory::INVENTORY
+            : Inventory::STORAGE;
+    const auto targetType = mInventory->getType();
+
+    if (sourceType == Inventory::INVENTORY &&
+        targetType == Inventory::STORAGE)
+    {
+        Event moveEvent = item->createEvent(Event::DoMove);
+        moveEvent.setInt("amount", item->getQuantity());
+        moveEvent.setInt("source", Inventory::INVENTORY);
+        moveEvent.setInt("destination", Inventory::STORAGE);
+        moveEvent.trigger(Event::ItemChannel);
+        return true;
+    }
+
+    if (sourceType == Inventory::STORAGE &&
+        targetType == Inventory::INVENTORY)
+    {
+        Event moveEvent = item->createEvent(Event::DoMove);
+        moveEvent.setInt("amount", item->getQuantity());
+        moveEvent.setInt("source", Inventory::STORAGE);
+        moveEvent.setInt("destination", Inventory::INVENTORY);
+        moveEvent.trigger(Event::ItemChannel);
+        return true;
+    }
+
+    if (sourceType == Inventory::INVENTORY &&
+        targetType == Inventory::TRADE &&
+        acceptsTradeDrops() &&
+        tradeWindow &&
+        tradeWindow->isVisible())
+    {
+        ItemAmountWindow::showWindow(ItemAmountWindow::TradeAdd,
+                                     tradeWindow, item);
+        return true;
+    }
+
+    return false;
+}
+
+void ItemContainer::dragFinished(const Drag &/*drag*/, DragResult result)
+{
+    mClickedIndex = NO_SLOT_INDEX;      // Avoid drag resuming on mouseDragged
+    mSelectionStatus = SEL_SELECTED;
+    if (result == DragResult::Accepted)
+        selectNone();
+}
 
 // Show ItemTooltip
 void ItemContainer::mouseMoved(gcn::MouseEvent &event)
@@ -360,14 +425,14 @@ void ItemContainer::mouseMoved(gcn::MouseEvent &event)
     }
     else
     {
-        mItemPopup->setVisible(false);
+        hidePopup();
     }
 }
 
 // Hide ItemTooltip
 void ItemContainer::mouseExited(gcn::MouseEvent &event)
 {
-    mItemPopup->setVisible(false);
+    hidePopup();
 }
 
 void ItemContainer::widgetResized(const gcn::Event &event)
@@ -399,14 +464,14 @@ void ItemContainer::adjustHeight()
 int ItemContainer::getSlotIndex(int x, int y) const
 {
     if (x >= getWidth() || y >= getHeight())
-        return Inventory::NO_SLOT_INDEX;
+        return NO_SLOT_INDEX;
 
     auto &slotSkin = gui->getTheme()->getSkin(SkinType::ItemSlot);
     const auto row = y / slotSkin.height;
     const auto column = x / slotSkin.width;
 
     if (row < 0 || row >= mGridRows || column < 0 || column >= mGridColumns)
-        return Inventory::NO_SLOT_INDEX;
+        return NO_SLOT_INDEX;
 
     return (row * mGridColumns) + column;
 }
@@ -428,8 +493,7 @@ void ItemContainer::keyAction()
         mHighlightedIndex != -1)
     {
         Item *item = getSelectedItem();
-        Event event(Event::DoMove);
-        event.setItem("item", item);
+        Event event = item->createEvent(Event::DoMove);
         event.setInt("newIndex", mHighlightedIndex);
         event.trigger(Event::ItemChannel);
         setSelectedIndex(mHighlightedIndex);
@@ -444,8 +508,7 @@ void ItemContainer::keyAction()
     else if (mSelectedIndex != -1)
     {
         Item *item = getSelectedItem();
-        Event event(Event::DoMove);
-        event.setItem("item", item);
+        Event event = item->createEvent(Event::DoMove);
         event.setInt("newIndex", mHighlightedIndex);
         event.trigger(Event::ItemChannel);
         selectNone();

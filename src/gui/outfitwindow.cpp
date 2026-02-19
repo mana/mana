@@ -28,6 +28,7 @@
 #include "item.h"
 #include "playerinfo.h"
 
+#include "gui/gui.h"
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
@@ -135,13 +136,10 @@ void OutfitWindow::action(const gcn::ActionEvent &event)
     else if (event.getId() == "previous")
     {
         if (mCurrentOutfit > 0)
-        {
             mCurrentOutfit--;
-        }
         else
-        {
             mCurrentOutfit = OUTFITS_COUNT - 1;
-        }
+
         mCurrentLabel->setCaption(strprintf(_("Outfit: %d"), mCurrentOutfit + 1));
         mUnequipCheck->setSelected(mOutfits[mCurrentOutfit].unequip);
     }
@@ -173,10 +171,73 @@ void OutfitWindow::copyOutfit(int outfit)
         mOutfits[mCurrentOutfit].items[i] = mOutfits[outfit].items[i];
 }
 
+bool OutfitWindow::addItemToCurrentOutfit(int itemId, int targetIndex)
+{
+    if (itemId <= 0)
+        return false;
+
+    int existingIndex = -1;
+    int firstFreeIndex = -1;
+    auto &items = mOutfits[mCurrentOutfit].items;
+
+    for (int i = 0; i < OUTFIT_ITEM_COUNT; ++i)
+    {
+        if (items[i] == itemId)
+            existingIndex = i;
+        else if (firstFreeIndex == -1 && items[i] < 0)
+            firstFreeIndex = i;
+    }
+
+    if (targetIndex == -1)
+    {
+        if (existingIndex != -1)
+            return true;
+        if (firstFreeIndex == -1)
+            return false;
+
+        targetIndex = firstFreeIndex;
+    }
+
+    if (existingIndex != -1)
+        std::swap(items[existingIndex], items[targetIndex]);
+    else
+        items[targetIndex] = itemId;
+
+    return true;
+}
+
+/**
+ * Handles dropping an item onto the outfit window.
+ */
+bool OutfitWindow::handleDrop(const Drag &drag, int absX, int absY)
+{
+    const Item *item = drag.item.get();
+    if (!item)
+        return false;
+
+    int widgetX = 0;
+    int widgetY = 0;
+    getAbsolutePosition(widgetX, widgetY);
+
+    const int targetIndex = getIndexFromGrid(absX - widgetX, absY - widgetY);
+
+    // If item is dragged out of a slot, let dragFinished remove it
+    if (drag.source == this && targetIndex == -1)
+        return false;
+
+    if (!item->isEquippable())
+        return false;
+
+    return addItemToCurrentOutfit(item->getId(), targetIndex);
+}
+
 void OutfitWindow::draw(gcn::Graphics *graphics)
 {
     Window::draw(graphics);
     auto *g = static_cast<Graphics*>(graphics);
+    const auto *drag = gui->getActiveDrag();
+    const auto *inventory = PlayerInfo::getInventory();
+    const auto &currentOutfit = mOutfits[mCurrentOutfit];
 
     for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
     {
@@ -192,64 +253,42 @@ void OutfitWindow::draw(gcn::Graphics *graphics)
                                                ITEM_ICON_SIZE,
                                                ITEM_ICON_SIZE));
 
-        if (mOutfits[mCurrentOutfit].items[i] < 0)
-        {
+        if (currentOutfit.items[i] < 0)
             continue;
-        }
 
-        Item *item =
-               PlayerInfo::getInventory()->findItem(mOutfits[mCurrentOutfit].items[i]);
-        if (item)
+        if (Item *item = inventory->findItem(currentOutfit.items[i]))
         {
             // Draw item icon.
             if (Image *image = item->getImage())
             {
+                const bool isDragged =
+                        drag &&
+                        drag->source == this &&
+                        drag->sourceIndex == i;
+                image->setAlpha(isDragged ? 0.5f : 1.0f);
                 g->drawImage(image, itemX, itemY);
             }
         }
     }
-
-    if (mItemMoved)
-    {
-        // Draw the item image being dragged by the cursor.
-        if (Image *image = mItemMoved->getImage())
-        {
-            const int tPosX = mCursorPosX - (image->getWidth() / 2);
-            const int tPosY = mCursorPosY - (image->getHeight() / 2);
-
-            g->drawImage(image, tPosX, tPosY);
-        }
-    }
 }
-
 
 void OutfitWindow::mouseDragged(gcn::MouseEvent &event)
 {
     Window::mouseDragged(event);
 
+    if (mMoved)
+        return;
+
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        if (!mItemMoved && mItemClicked)
+        if (!gui->getActiveDrag() && mClickedIndex != -1)
         {
-            const int index = getIndexFromGrid(event.getX(), event.getY());
-            if (index == -1)
-                return;
-
-            const int itemId = mOutfits[mCurrentOutfit].items[index];
-            if (itemId < 0)
+            const int itemId = mOutfits[mCurrentOutfit].items[mClickedIndex];
+            if (itemId <= 0)
                 return;
 
             if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
-            {
-                mItemMoved = item;
-                mOutfits[mCurrentOutfit].items[index] = -1;
-            }
-        }
-
-        if (mItemMoved)
-        {
-            mCursorPosX = event.getX();
-            mCursorPosY = event.getY();
+                gui->startDrag(Drag::fromOutfit(item, this, mClickedIndex));
         }
     }
 }
@@ -257,45 +296,44 @@ void OutfitWindow::mouseDragged(gcn::MouseEvent &event)
 void OutfitWindow::mousePressed(gcn::MouseEvent &event)
 {
     Window::mousePressed(event);
-    const int index = getIndexFromGrid(event.getX(), event.getY());
-    if (index == -1)
+
+    mClickedIndex = getIndexFromGrid(event.getX(), event.getY());
+    if (mClickedIndex == -1)
         return;
+
+    if (event.getButton() == gcn::MouseEvent::LEFT)
+        mMoved = false;         // prevent window drag
 
     // Stores the selected item if there is one.
     if (isItemSelected())
     {
-        mOutfits[mCurrentOutfit].items[index] = mItemSelected;
+        mOutfits[mCurrentOutfit].items[mClickedIndex] = mItemSelected;
         mItemSelected = -1;
-    }
-    else if (mOutfits[mCurrentOutfit].items[index])
-    {
-        mItemClicked = true;
     }
 }
 
 void OutfitWindow::mouseReleased(gcn::MouseEvent &event)
 {
     Window::mouseReleased(event);
+
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        if (isItemSelected())
-        {
-            mItemSelected = -1;
-        }
-        const int index = getIndexFromGrid(event.getX(), event.getY());
-        if (index == -1)
-        {
-            mItemMoved = nullptr;
-            return;
-        }
-        if (mItemMoved)
-        {
-            mOutfits[mCurrentOutfit].items[index] = mItemMoved->getId();
-            mItemMoved = nullptr;
-        }
-        if (mItemClicked)
-            mItemClicked = false;
+        mItemSelected = -1;
+        mClickedIndex = -1;
     }
+}
+
+void OutfitWindow::dragFinished(const Drag &drag, DragResult result)
+{
+    if (result == DragResult::Ignored &&
+        drag.source == this &&
+        drag.sourceIndex >= 0 &&
+        drag.sourceIndex < OUTFIT_ITEM_COUNT)
+    {
+        mOutfits[mCurrentOutfit].items[drag.sourceIndex] = -1;
+    }
+
+    mClickedIndex = -1;
 }
 
 int OutfitWindow::getIndexFromGrid(int pointX, int pointY) const

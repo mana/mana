@@ -64,6 +64,9 @@ void WindowContainer::debugDraw(gcn::Graphics *graphics)
     auto focused = focusHandler->getFocused();
     auto modalFocused = focusHandler->getModalFocused();
     auto modalMouseFocused = focusHandler->getModalMouseInputFocused();
+    gcn::Widget *dragTargetWidget = nullptr;
+    if (gui)
+        dragTargetWidget = dynamic_cast<gcn::Widget*>(gui->getDragTargetUnderMouse());
 
     for (auto widget : gcn::Widget::mWidgets)
     {
@@ -98,7 +101,19 @@ void WindowContainer::debugDraw(gcn::Graphics *graphics)
                                                    widget->getHeight()));
         }
 
-        graphics->setColor(gcn::Color(255, 0, 0));
+        if (widget == dragTargetWidget)
+        {
+            graphics->setColor(gcn::Color(0, 0, 255, 64));
+            graphics->fillRectangle(gcn::Rectangle(x, y,
+                                                   widget->getWidth(),
+                                                   widget->getHeight()));
+            graphics->setColor(gcn::Color(0, 0, 255));
+        }
+        else
+        {
+            graphics->setColor(gcn::Color(255, 0, 0));
+        }
+
         graphics->drawRectangle(gcn::Rectangle(x, y,
                                                widget->getWidth(),
                                                widget->getHeight()));

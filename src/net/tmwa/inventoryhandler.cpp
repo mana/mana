@@ -437,12 +437,12 @@ void InventoryHandler::event(Event::Channel channel,
         }
         else
         {
-            Item *item = event.getItem("item");
-
-            if (!item)
+            const int itemInvIndex = event.getInt("itemInvIndex", -1);
+            const int itemId = event.getInt("itemId", -1);
+            if (itemInvIndex < 0 || itemId < 0)
                 return;
 
-            int index = item->getInvIndex() + INVENTORY_OFFSET;
+            int index = itemInvIndex + INVENTORY_OFFSET;
 
             if (event.getType() == Event::DoEquip)
             {
@@ -459,7 +459,7 @@ void InventoryHandler::event(Event::Channel channel,
             {
                 MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
                 outMsg.writeInt16(index);
-                outMsg.writeInt32(item->getId()); // unused
+                outMsg.writeInt32(itemId); // unused
             }
             else if (event.getType() == Event::DoDrop)
             {

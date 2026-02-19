@@ -560,6 +560,12 @@ bool Game::keyDownEvent(SDL_KeyboardEvent &event)
 
     case KeyboardConfig::KEY_QUIT:
     {
+        if (gui->getActiveDrag())
+        {
+            gui->cancelActiveDrag();
+            return true;
+        }
+
         // Close possible stuck NPC dialogs.
         NpcDialog *npcDialog = NpcDialog::getActive();
         if (npcDialog && npcDialog->isWaitingForTheServer())

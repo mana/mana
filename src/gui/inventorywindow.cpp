@@ -270,8 +270,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
         {
             if (mInventory->isMainInventory())
             {
-                Event event(Event::DoMove);
-                event.setItem("item", item);
+                Event event = item->createEvent(Event::DoMove);
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::INVENTORY);
                 event.setInt("destination", Inventory::STORAGE);
@@ -279,8 +278,7 @@ void InventoryWindow::mouseClicked(gcn::MouseEvent &event)
             }
             else
             {
-                Event event(Event::DoMove);
-                event.setItem("item", item);
+                Event event = item->createEvent(Event::DoMove);
                 event.setInt("amount", item->getQuantity());
                 event.setInt("source", Inventory::STORAGE);
                 event.setInt("destination", Inventory::INVENTORY);

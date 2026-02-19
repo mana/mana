@@ -24,15 +24,19 @@
 #include "eventlistener.h"
 #include "guichanfwd.h"
 
+#include "gui/dragndrop.h"
+
 #include "resources/theme.h"
 
 #include "utils/time.h"
 
 #include <guichan/gui.hpp>
+#include <guichan/keylistener.hpp>
 
 #include <SDL.h>
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 class TextInput;
@@ -76,7 +80,9 @@ enum class Cursor
  *
  * \ingroup GUI
  */
-class Gui final : public gcn::Gui, public EventListener
+class Gui final : public gcn::Gui,
+                  public EventListener,
+                  public gcn::KeyListener
 {
     public:
         Gui(Graphics *screen, const std::string &themePath);
@@ -88,6 +94,7 @@ class Gui final : public gcn::Gui, public EventListener
          * activity.
          */
         void logic() override;
+        void draw() override;
 
         void event(Event::Channel channel, const Event &event) override;
 
@@ -138,20 +145,36 @@ class Gui final : public gcn::Gui, public EventListener
         Theme *getTheme() const
         { return mTheme.get(); }
 
+        const Drag *getActiveDrag() const
+        { return mActiveDrag ? &(*mActiveDrag) : nullptr; }
+
+        void startDrag(Drag drag);
+        bool cancelActiveDrag();
+
+        DragTarget *getDragTargetUnderMouse() const
+        { return mDragTargetUnderMouse; }
+
         static bool debugDraw;
 
     protected:
+        void keyPressed(gcn::KeyEvent &event) override;
+        void keyReleased(gcn::KeyEvent &event) override;
+        void handleMousePressed(const gcn::MouseInput &mouseInput) override;
         void handleMouseMoved(const gcn::MouseInput &mouseInput) override;
+        void handleMouseReleased(const gcn::MouseInput &mouseInput) override;
         void handleTextInput(const TextInput &textInput);
 
     private:
         void updateCursor();
+        void updateDragTargetFromPosition(int x, int y);
 
         void loadCustomCursors();
         void loadSystemCursors();
 
         std::vector<ThemeInfo> mAvailableThemes;
         std::unique_ptr<Theme> mTheme;        /**< The global GUI theme */
+        std::optional<Drag> mActiveDrag;      /**< Shared active drag state */
+        DragTarget *mDragTargetUnderMouse = nullptr;
         gcn::Font *mGuiFont;                  /**< The global GUI font */
         gcn::Font *mInfoParticleFont;         /**< Font for Info Particles*/
         bool mCustomCursor = false;           /**< Show custom cursor */
@@ -159,6 +182,8 @@ class Gui final : public gcn::Gui, public EventListener
         std::vector<SDL_Cursor *> mSystemMouseCursors;
         std::vector<SDL_Cursor *> mCustomMouseCursors;
         Timer mMouseActivityTimer;
+        int mMouseX = 0;
+        int mMouseY = 0;
         Cursor mCursorType = Cursor::Pointer;
 };
 

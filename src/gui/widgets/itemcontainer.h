@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include "gui/dragndrop.h"
+
 #include <guichan/deathlistener.hpp>
 #include <guichan/keylistener.hpp>
 #include <guichan/mouselistener.hpp>
@@ -46,6 +48,8 @@ namespace gcn {
  * \ingroup GUI
  */
 class ItemContainer : public gcn::Widget,
+                      public DragTarget,
+                      public DragSource,
                       public gcn::KeyListener,
                       public gcn::MouseListener,
                       public gcn::WidgetListener,
@@ -97,6 +101,9 @@ class ItemContainer : public gcn::Widget,
          */
         Item *getSelectedItem() const;
 
+        Inventory *getInventory() const
+        { return mInventory; }
+
         /**
          * Sets selected item to NULL.
          */
@@ -110,6 +117,18 @@ class ItemContainer : public gcn::Widget,
 
         void addSelectionListener(gcn::SelectionListener *listener);
         void removeSelectionListener(gcn::SelectionListener *listener);
+
+        void setAcceptTradeDrops(bool accept)
+        { mAcceptTradeDrops = accept; }
+
+        bool acceptsTradeDrops() const
+        { return mAcceptTradeDrops; }
+
+        void setDragEnabled(bool enabled)
+        { mDragEnabled = enabled; }
+
+        bool handleDrop(const Drag &drag, int absX, int absY) override;
+        void dragFinished(const Drag &drag, DragResult result) override;
 
     private:
         enum Direction
@@ -167,17 +186,20 @@ class ItemContainer : public gcn::Widget,
 
         Item *getItemAt(int) const;
 
+        static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
+
         Inventory *mInventory;
         int mGridColumns = 1;
         int mGridRows = 1;
-        int mSelectedIndex = -1;
-        int mHighlightedIndex = -1;
-        int mLastUsedSlot = -1;
+        int mSelectedIndex = NO_SLOT_INDEX;
+        int mClickedIndex = NO_SLOT_INDEX;
+        int mHighlightedIndex = NO_SLOT_INDEX;
+        int mLastUsedSlot = NO_SLOT_INDEX;
         SelectionState mSelectionStatus = SEL_NONE;
         bool mSwapItems = false;
         bool mDescItems = false;
-        int mDragPosX = 0;
-        int mDragPosY = 0;
+        bool mAcceptTradeDrops = false;
+        bool mDragEnabled = true;
 
         std::map<int, Item*> mFilteredMap;
 

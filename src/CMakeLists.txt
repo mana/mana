@@ -200,6 +200,8 @@ set(SRCS
     gui/emotepopup.h
     gui/equipmentwindow.cpp
     gui/equipmentwindow.h
+    gui/dragndrop.cpp
+    gui/dragndrop.h
     gui/focushandler.cpp
     gui/focushandler.h
     gui/gui.cpp

@@ -28,12 +28,12 @@
 #include "localplayer.h"
 
 #include "gui/equipmentwindow.h"
+#include "gui/gui.h"
 #include "gui/itempopup.h"
 #include "gui/setup.h"
 #include "gui/viewport.h"
 
 #include "gui/widgets/playerbox.h"
-
 #include "net/inventoryhandler.h"
 #include "net/net.h"
 
@@ -108,7 +108,12 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
         {
             if (Image *image = item->getImage())
             {
-                image->setAlpha(1.0f);
+                const Drag *drag = gui->getActiveDrag();
+                const bool isDragged =
+                        drag &&
+                        drag->source == this &&
+                        drag->sourceIndex == i;
+                image->setAlpha(isDragged ? 0.5f : 1.0f);
                 g->drawImage(image,
                              boxPos.x + boxSkin.padding,
                              boxPos.y + boxSkin.padding);
@@ -140,6 +145,37 @@ void EquipmentWindow::action(const gcn::ActionEvent &event)
         mEquipment->triggerUnequip(mSelected);
         setSelected(-1);
     }
+}
+
+/**
+ * Allows equipping items by dragging them from the inventory, shortcuts, or outfits.
+ */
+bool EquipmentWindow::handleDrop(const Drag &drag, int absX, int absY)
+{
+    if (drag.source == this)
+    {
+        int widgetX = 0;
+        int widgetY = 0;
+        getAbsolutePosition(widgetX, widgetY);
+
+        const int dropIndex = getBoxIndex(absX - widgetX, absY - widgetY);
+        return dropIndex == drag.sourceIndex;
+    }
+
+    if (drag.sourceType != Drag::SourceType::Inventory &&
+        drag.sourceType != Drag::SourceType::ItemShortcut &&
+        drag.sourceType != Drag::SourceType::Outfit)
+        return false;
+
+    Item *item = drag.item.get();
+    if (!item)
+        return false;
+
+    if (!item->isEquippable() || item->isEquipped())
+        return true;
+
+    item->doEvent(Event::DoEquip);
+    return true;
 }
 
 /**
@@ -182,6 +218,8 @@ std::string EquipmentWindow::getSlotName(int x, int y) const
 void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
 {
     Window::mousePressed(mouseEvent);
+    if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
+        mClickedIndex = -1;
 
     const int x = mouseEvent.getX();
     const int y = mouseEvent.getY();
@@ -192,7 +230,14 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
     {
         item = mEquipment->getEquipment(index);
         if (item)
+        {
             setSelected(index);
+            if (mouseEvent.getButton() == gcn::MouseEvent::LEFT)
+            {
+                mClickedIndex = index;
+                mMoved = false;
+            }
+        }
     }
 
     if (mouseEvent.getButton() == gcn::MouseEvent::RIGHT)
@@ -205,6 +250,25 @@ void EquipmentWindow::mousePressed(gcn::MouseEvent& mouseEvent)
             const int mx = x + getX();
             const int my = y + getY();
             viewport->showPopup(this, mx, my, item, true, false);
+        }
+    }
+}
+
+void EquipmentWindow::mouseDragged(gcn::MouseEvent &event)
+{
+    Window::mouseDragged(event);
+
+    if (event.getButton() != gcn::MouseEvent::LEFT)
+        return;
+
+    if (mMoved)
+        return;
+
+    if (!gui->getActiveDrag() && mClickedIndex != -1)
+    {
+        if (Item *item = mEquipment->getEquipment(mClickedIndex))
+        {
+            gui->startDrag(Drag::fromEquipment(item, this, mClickedIndex));
         }
     }
 }
@@ -240,6 +304,18 @@ void EquipmentWindow::mouseExited(gcn::MouseEvent &event)
     Window::mouseExited(event);
 
     mItemPopup->setVisible(false);
+}
+
+void EquipmentWindow::dragFinished(const Drag &drag, DragResult result)
+{
+    if (result == DragResult::Ignored &&
+        drag.source == this &&
+        drag.sourceIndex >= 0)
+    {
+        mEquipment->triggerUnequip(drag.sourceIndex);
+    }
+
+    mClickedIndex = -1;
 }
 
 void EquipmentWindow::setSelected(int index)

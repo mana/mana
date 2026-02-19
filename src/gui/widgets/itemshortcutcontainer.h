@@ -21,10 +21,12 @@
 
 #pragma once
 
+#include "gui/dragndrop.h"
 #include "gui/widgets/shortcutcontainer.h"
 
 #include <guichan/mouselistener.hpp>
 
+#include <map>
 #include <memory>
 
 class Image;
@@ -37,6 +39,8 @@ class ItemPopup;
  * \ingroup GUI
  */
 class ItemShortcutContainer : public ShortcutContainer
+                            , public DragTarget
+                            , public DragSource
 {
     public:
         ItemShortcutContainer();
@@ -63,14 +67,19 @@ class ItemShortcutContainer : public ShortcutContainer
          */
         void mouseReleased(gcn::MouseEvent &event) override;
 
+        bool handleDrop(const Drag &drag, int absX, int absY) override;
+        void dragFinished(const Drag &drag, DragResult result) override;
+
     private:
+        void cleanupFallbackItems();
         void mouseExited(gcn::MouseEvent &event) override;
         void mouseMoved(gcn::MouseEvent &event) override;
 
+        Item *getDisplayItem(int itemId);
         Item *getItemAt(int x, int y) const;
 
-        bool mItemClicked = false;
-        Item *mItemMoved = nullptr;
+        int mClickedIndex = -1;
 
+        std::map<int, std::unique_ptr<Item>> mFallbackItems;
         std::unique_ptr<ItemPopup> mItemPopup;
 };

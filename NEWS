@@ -1,5 +1,6 @@
 Unreleased
 - Added health bars to damaged and targeted monsters
+- Added drag-n-drop for items (to inventory, storage, trade, shortcuts, equipment, outfits, and chat)
 - Added support for NPCs asking for items
 - Added support for monster links
 - Added --log-file parameter to set log file path or '-' for stdout

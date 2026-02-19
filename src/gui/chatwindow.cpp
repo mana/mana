@@ -24,6 +24,7 @@
 #include "actorspritemanager.h"
 #include "channelmanager.h"
 #include "configuration.h"
+#include "item.h"
 #include "localplayer.h"
 #include "playerrelations.h"
 
@@ -41,6 +42,8 @@
 
 #include "net/chathandler.h"
 #include "net/net.h"
+
+#include "resources/iteminfo.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -422,6 +425,15 @@ void ChatWindow::addItemText(const std::string &item)
     std::ostringstream text;
     text << "[" << item << "]";
     addInputText(text.str());
+}
+
+bool ChatWindow::handleDrop(const Drag &drag, int /*absX*/, int /*absY*/)
+{
+    if (!drag.item)
+        return false;
+
+    addItemText(drag.item->getInfo().name);
+    return true;
 }
 
 void ChatWindow::setVisible(bool isVisible)

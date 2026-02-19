@@ -81,12 +81,15 @@ TradeWindow::TradeWindow():
 
     mMyItemContainer = new ItemContainer(mMyInventory.get());
     mMyItemContainer->addSelectionListener(this);
+    mMyItemContainer->setAcceptTradeDrops(true);
+    mMyItemContainer->setDragEnabled(false);
 
     auto *myScroll = new ScrollArea(mMyItemContainer);
     myScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mPartnerItemContainer = new ItemContainer(mPartnerInventory.get());
     mPartnerItemContainer->addSelectionListener(this);
+    mPartnerItemContainer->setDragEnabled(false);
 
     auto *partnerScroll = new ScrollArea(mPartnerItemContainer);
     partnerScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);

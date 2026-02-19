@@ -72,9 +72,7 @@ void EquipBackend::triggerUnequip(int slotIndex) const
     if (!item)
         return;
 
-    Event event(Event::DoUnequip);
-    event.setItem("item", item);
-    event.trigger(Event::ItemChannel);
+    item->doEvent(Event::DoUnequip);
 }
 
 void EquipBackend::clear()
@@ -309,11 +307,9 @@ void InventoryHandler::event(Event::Channel channel,
 {
     if (channel == Event::ItemChannel)
     {
-        Item *item = event.getItem("item");
-        if (!item)
+        int index = event.getInt("itemInvIndex", -1);
+        if (index < 0)
             return;
-
-        int index = item->getInvIndex();
 
         if (event.getType() == Event::DoEquip)
         {

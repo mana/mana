@@ -23,6 +23,7 @@
 
 #include "eventlistener.h"
 
+#include "gui/dragndrop.h"
 #include "gui/widgets/window.h"
 #include "gui/widgets/textfield.h"
 
@@ -68,6 +69,7 @@ struct CHATLOG
  * \ingroup Interface
  */
 class ChatWindow : public Window,
+                   public DragTarget,
                    public gcn::ActionListener,
                    public EventListener
 {
@@ -135,6 +137,12 @@ class ChatWindow : public Window,
 
         /** Called to add item to chat */
         void addItemText(const std::string &item);
+
+        /**
+         * Handles dropping an item on the chat window and inserts an item
+         * link into the input if accepted.
+         */
+        bool handleDrop(const Drag &drag, int absX, int absY) override;
 
         /** Override to reset mTmpVisible */
         void setVisible(bool visible) override;

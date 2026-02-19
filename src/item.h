@@ -98,14 +98,19 @@ class Item
         void doEvent(Event::Type eventType, int amount);
 
         /**
+         * Creates an event prefilled with this item's ID and index.
+         */
+        Event createEvent(Event::Type eventType) const;
+
+        /**
          * Returns information about this item type.
          */
         const ItemInfo &getInfo() const { return itemDb->get(mId); }
 
     protected:
-        int mId;                        /**< Item type id. */
+        int mId = -1;                   /**< Item type id. */
         ResourceRef<Image> mImage;      /**< Item image. */
         int mQuantity;                  /**< Number of items. */
         bool mEquipped;                 /**< Item is equipped. */
-        int mInvIndex;                  /**< Inventory index. */
+        int mInvIndex = -1;             /**< Inventory index. */
 };

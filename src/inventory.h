@@ -42,8 +42,6 @@ protected:
 class Inventory
 {
     public:
-        static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
-
         enum Type {
             INVENTORY,
             STORAGE,
