@@ -24,6 +24,7 @@
 #include "inventory.h"
 #include "item.h"
 #include "keyboardconfig.h"
+#include "resources/itemdb.h"
 
 #include "gui/tradewindow.h"
 #include "gui/itempopup.h"
@@ -37,22 +38,38 @@
 
 #include "net/net.h"
 #include "net/tradehandler.h"
+#include "playerinfo.h"
 
 #include "utils/gettext.h"
 
-void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
+void ItemAmountWindow::finish(int itemId, int itemIndex, int amount, Usage usage)
 {
     switch (usage)
     {
         case TradeAdd:
-            Net::getTradeHandler()->addItem(item, amount);
+        {
+            Item *liveItem = nullptr;
+            if (Inventory *inventory = PlayerInfo::getInventory())
+                liveItem = inventory->getItem(itemIndex);
+
+            if (liveItem)
+                Net::getTradeHandler()->addItem(liveItem, amount);
+        }
             break;
         case ItemDrop:
-            item->doEvent(Event::DoDrop, amount);
+        {
+            Event event(Event::DoDrop);
+            event.setInt("itemId", itemId);
+            event.setInt("itemInvIndex", itemIndex);
+            event.setInt("amount", amount);
+            event.trigger(Event::ItemChannel);
+        }
             break;
         case StoreAdd:
         {
-            Event event = item->createEvent(Event::DoMove);
+            Event event(Event::DoMove);
+            event.setInt("itemId", itemId);
+            event.setInt("itemInvIndex", itemIndex);
             event.setInt("amount", amount);
             event.setInt("source", Inventory::INVENTORY);
             event.setInt("destination", Inventory::STORAGE);
@@ -61,7 +78,9 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
             break;
         case StoreRemove:
         {
-            Event event = item->createEvent(Event::DoMove);
+            Event event(Event::DoMove);
+            event.setInt("itemId", itemId);
+            event.setInt("itemInvIndex", itemIndex);
             event.setInt("amount", amount);
             event.setInt("source", Inventory::STORAGE);
             event.setInt("destination", Inventory::INVENTORY);
@@ -73,16 +92,14 @@ void ItemAmountWindow::finish(Item *item, int amount, Usage usage)
     }
 }
 
-ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent, Item *item,
-                                   int maxRange):
+ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent,
+                                   const Item *item, int maxRange):
     Window(std::string(), true, parent),
-    mItem(item),
+    mItemId(item->getId()),
+    mItemIndex(item->getInvIndex()),
     mMax(maxRange),
     mUsage(usage)
 {
-    if (!mMax)
-        mMax = mItem->getQuantity();
-
     // Save keyboard state
     mEnabledKeyboard = keyboard.isEnabled();
     keyboard.setEnabled(false);
@@ -163,7 +180,7 @@ void ItemAmountWindow::mouseMoved(gcn::MouseEvent &event)
 {
     if (event.getSource() == mItemIcon)
     {
-        mItemPopup->setItem(mItem->getInfo());
+        mItemPopup->setItem(itemDb->get(mItemId));
         mItemPopup->position(viewport->getMouseX(), viewport->getMouseY());
     }
 }
@@ -205,7 +222,7 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     }
     else if (event.getId() == "ok")
     {
-        finish(mItem, amount, mUsage);
+        finish(mItemId, mItemIndex, amount, mUsage);
         close();
         return;
     }
@@ -224,18 +241,14 @@ void ItemAmountWindow::keyReleased(gcn::KeyEvent &keyEvent)
     mItemAmountSlide->setValue(mItemAmountTextField->getValue());
 }
 
-void ItemAmountWindow::showWindow(Usage usage, Window *parent, Item *item,
-                                  int maxRange)
+void ItemAmountWindow::showWindow(Usage usage, Window *parent,
+                                  const Item *item, int maxRange)
 {
     if (!maxRange)
         maxRange = item->getQuantity();
 
     if (maxRange <= 1)
-    {
-        finish(item, maxRange, usage);
-    }
+        finish(item->getId(), item->getInvIndex(), maxRange, usage);
     else
-    {
         new ItemAmountWindow(usage, parent, item, maxRange);
-    }
 }

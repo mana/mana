@@ -38,6 +38,7 @@
 #include "resources/iteminfo.h"
 #include "resources/theme.h"
 
+#include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 #include <guichan/mouseinput.hpp>
@@ -399,6 +400,16 @@ bool ItemContainer::handleDrop(const Drag &drag, int /*absX*/, int /*absY*/)
         tradeWindow &&
         tradeWindow->isVisible())
     {
+        if (mInventory->getFreeSlot() == -1)
+            return false;
+
+        if (mInventory->contains(item))
+        {
+            serverNotice(_("Failed adding item. You cannot "
+                           "overlap one kind of item on the window."));
+            return false;
+        }
+
         ItemAmountWindow::showWindow(ItemAmountWindow::TradeAdd,
                                      tradeWindow, item);
         return true;

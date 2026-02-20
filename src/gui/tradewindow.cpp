@@ -202,7 +202,9 @@ void TradeWindow::setStatus(Status s)
 {
     if (s == mStatus)
         return;
+
     mStatus = s;
+    mMyItemContainer->setAcceptTradeDrops(s == PREPARING);
 
     switch (s)
     {
