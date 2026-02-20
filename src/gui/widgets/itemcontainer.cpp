@@ -323,12 +323,15 @@ void ItemContainer::mouseDragged(gcn::MouseEvent &event)
                 case Inventory::STORAGE:
                     sourceType = Drag::SourceType::Storage;
                     break;
+                case Inventory::NPC:
+                    sourceType = Drag::SourceType::Npc;
+                    break;
                 default:
                     return;
             }
 
             hidePopup();
-            gui->startDrag(Drag(sourceType, item, this));
+            gui->startDrag(Drag(sourceType, item, this, mClickedIndex));
         }
 
         mSelectionStatus = SEL_DRAGGING;
@@ -418,8 +421,19 @@ bool ItemContainer::handleDrop(const Drag &drag, int /*absX*/, int /*absY*/)
     return false;
 }
 
-void ItemContainer::dragFinished(const Drag &/*drag*/, DragResult result)
+void ItemContainer::dragFinished(const Drag &drag, DragResult result)
 {
+    if (result == DragResult::Ignored &&
+        mInventory->getType() == Inventory::NPC &&
+        drag.source == this &&
+        drag.sourceIndex >= 0 &&
+        drag.sourceIndex < mInventory->getSize())
+    {
+        mInventory->removeItemAt(drag.sourceIndex);
+        if (mSelectedIndex == drag.sourceIndex)
+            setSelectedIndex(NO_SLOT_INDEX);
+    }
+
     mClickedIndex = NO_SLOT_INDEX;      // Avoid drag resuming on mouseDragged
     mSelectionStatus = SEL_SELECTED;
     if (result == DragResult::Accepted)

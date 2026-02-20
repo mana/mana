@@ -125,6 +125,7 @@ NpcDialog::NpcDialog(int npcId)
 
     // Setup item input
     mInputItems = std::make_unique<Inventory>(Inventory::NPC, 1);
+    mInputItems->addInventoryListener(this);
     mInputItemsContainer = new ItemContainer(mInputItems.get());
     mInputItemsScrollArea = new ScrollArea(mInputItemsContainer);
     mInputItemsScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
@@ -160,6 +161,8 @@ NpcDialog::NpcDialog(int npcId)
 
 NpcDialog::~NpcDialog()
 {
+    mInputItems->removeInventoryListener(this);
+
     // These might not actually be in the layout, so lets be safe
     delete mScrollArea;
     delete mListScrollArea;
@@ -304,24 +307,49 @@ void NpcDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "add" && mInputState == NPC_INPUT_ITEM)
     {
         if (Item *item = inventoryWindow->getSelectedItem())
-        {
-            // When we only need one item, just replace whatever is there
-            if (mInputItems->getSize() == 1)
-                mInputItems->clear();
-
-            int freeSlot = mInputItems->getFreeSlot();
-            if (freeSlot == -1)
-                return;
-
-            mInputItems->setItem(freeSlot, item->getId(), 1);
-            mAddItemButton->setEnabled(mInputItems->getSize() == 1 ||
-                                       mInputItems->getFreeSlot() != -1);
-        }
+            addInputItem(item->getId());
     }
     else if (event.getId() == "clear")
     {
         setText(mNewText);
     }
+}
+
+bool NpcDialog::handleDrop(const Drag &drag, int /*absX*/, int /*absY*/)
+{
+    if (mInputState != NPC_INPUT_ITEM || !drag.item)
+        return false;
+
+    return addInputItem(drag.item->getId());
+}
+
+bool NpcDialog::addInputItem(int itemId)
+{
+    if (itemId <= 0)
+        return false;
+
+    // When we only need one item, just replace whatever is there.
+    if (mInputItems->getSize() == 1)
+        mInputItems->clear();
+
+    int freeSlot = mInputItems->getFreeSlot();
+    if (freeSlot == -1)
+        return false;
+
+    mInputItems->setItem(freeSlot, itemId, 1);
+    return true;
+}
+
+void NpcDialog::slotsChanged(Inventory *inventory)
+{
+    if (inventory == mInputItems.get())
+        updateAddItemButtonState();
+}
+
+void NpcDialog::updateAddItemButtonState()
+{
+    mAddItemButton->setEnabled(mInputItems->getSize() == 1 ||
+                               mInputItems->getFreeSlot() != -1);
 }
 
 void NpcDialog::nextDialog() const
@@ -406,7 +434,7 @@ void NpcDialog::itemRequest(int amount)
     mInputState = NPC_INPUT_ITEM;
     mInputItems->clear();
     mInputItems->setSize(amount);
-    mAddItemButton->setEnabled(true);
+    updateAddItemButtonState();
     buildLayout();
 }
 

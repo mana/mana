@@ -314,17 +314,22 @@ void Gui::handleMouseReleased(const gcn::MouseInput &mouseInput)
 {
     if (mActiveDrag)
     {
-        updateDragTargetFromPosition(mouseInput.getX(), mouseInput.getY());
-
         DragResult result = DragResult::Ignored;
-        if (mDragTargetUnderMouse)
+        gcn::Widget *widget = getWidgetAt(mouseInput.getX(), mouseInput.getY());
+        while (widget)
         {
-            if (mDragTargetUnderMouse->handleDrop(*mActiveDrag,
-                                                  mouseInput.getX(),
-                                                  mouseInput.getY()))
+            if (auto *dragTarget = dynamic_cast<DragTarget*>(widget))
             {
-                result = DragResult::Accepted;
+                if (dragTarget->handleDrop(*mActiveDrag,
+                                            mouseInput.getX(),
+                                            mouseInput.getY()))
+                {
+                    result = DragResult::Accepted;
+                    break;
+                }
             }
+
+            widget = dynamic_cast<gcn::Widget*>(widget->getParent());
         }
 
         if (auto *source = mActiveDrag->source)

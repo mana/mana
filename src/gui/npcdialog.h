@@ -21,6 +21,9 @@
 
 #pragma once
 
+#include "inventory.h"
+
+#include "gui/dragndrop.h"
 #include "gui/widgets/window.h"
 
 #include <guichan/actionlistener.hpp>
@@ -34,7 +37,6 @@
 class BrowserBox;
 class Button;
 class IntTextField;
-class Inventory;
 class ItemContainer;
 class ItemLinkHandler;
 class ListBox;
@@ -46,6 +48,8 @@ class TextField;
  * \ingroup Interface
  */
 class NpcDialog final : public Window,
+                        public DragTarget,
+                        public InventoryListener,
                         public gcn::ActionListener,
                         public gcn::ListModel
 {
@@ -58,6 +62,12 @@ class NpcDialog final : public Window,
          * Called when receiving actions from the widgets.
          */
         void action(const gcn::ActionEvent &event) override;
+
+        // DragTarget
+        bool handleDrop(const Drag &drag, int absX, int absY) override;
+
+        // InventoryListener
+        void slotsChanged(Inventory *inventory) override;
 
         /**
         * Sets the text shows in the dialog.
@@ -167,6 +177,9 @@ class NpcDialog final : public Window,
     private:
         using DialogList = std::list<NpcDialog *>;
         static DialogList instances;
+
+        bool addInputItem(int itemId);
+        void updateAddItemButtonState();
 
         void buildLayout();
 

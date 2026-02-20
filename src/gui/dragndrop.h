@@ -56,6 +56,7 @@ struct Drag
     {
         Inventory,
         Storage,
+        Npc,
         Equipment,
         Outfit,
         ItemShortcut
