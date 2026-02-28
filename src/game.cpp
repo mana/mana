@@ -442,9 +442,15 @@ bool Game::keyDownEvent(SDL_KeyboardEvent &event)
         if (dialog)
         {
             if (keyboard.isKeyActive(KeyboardConfig::KEY_MOVE_UP))
-                dialog->move(1);
+            {
+                if (dialog->move(1))
+                    return true;
+            }
             else if (keyboard.isKeyActive(KeyboardConfig::KEY_MOVE_DOWN))
-                dialog->move(-1);
+            {
+                if (dialog->move(-1))
+                    return true;
+            }
         }
     }
 

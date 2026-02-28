@@ -152,7 +152,7 @@ class NpcDialog final : public Window,
          */
         void itemRequest(int amount);
 
-        void move(int amount);
+        bool move(int amount);
 
         void setVisible(bool visible) override;
 

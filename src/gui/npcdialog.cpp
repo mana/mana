@@ -438,24 +438,28 @@ void NpcDialog::itemRequest(int amount)
     buildLayout();
 }
 
-void NpcDialog::move(int amount)
+bool NpcDialog::move(int amount)
 {
     if (mActionState != NPC_ACTION_INPUT)
-        return;
+        return false;
 
     switch (mInputState)
     {
         case NPC_INPUT_INTEGER:
             mIntField->setValue(mIntField->getValue() + amount);
-            break;
-        case NPC_INPUT_LIST:
-            mItemList->setSelected(mItemList->getSelected() - amount);
-            break;
+            return true;
+        case NPC_INPUT_LIST: {
+            const int selected = mItemList->getSelected();
+            mItemList->setSelected(std::max(0, selected - amount));
+            return true;
+        }
         case NPC_INPUT_NONE:
         case NPC_INPUT_STRING:
         case NPC_INPUT_ITEM:
-            break;
+            return false;
     }
+
+    return false;
 }
 
 void NpcDialog::setVisible(bool visible)
