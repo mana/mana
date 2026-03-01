@@ -94,7 +94,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
                               character->dummy->getName().c_str(), character->slot);
                 }
 
-                Client::setState(STATE_CHAR_SELECT);
+                Client::setState(State::CharSelect);
             }
             break;
 
@@ -112,7 +112,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
                     errorMessage = _("Unknown char-server failure.");
                     break;
             }
-            Client::setState(STATE_ERROR);
+            Client::setState(State::Error);
             break;
 
         case SMSG_CHAR_CREATE_SUCCEEDED:
@@ -179,7 +179,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             updateCharSelectDialog();
 
             mNetwork->disconnect();
-            Client::setState(STATE_CONNECT_GAME);
+            Client::setState(State::ConnectGame);
         }
         break;
 
@@ -193,7 +193,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             mapServer.port = msg.readInt16();
 
             mNetwork->disconnect();
-            Client::setState(STATE_CHANGE_MAP);
+            Client::setState(State::ChangeMap);
             Map *map = local_player->getMap();
             const int tileWidth = map->getTileWidth();
             const int tileHeight = map->getTileHeight();

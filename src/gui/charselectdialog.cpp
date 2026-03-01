@@ -215,19 +215,19 @@ void CharSelectDialog::action(const gcn::ActionEvent &event)
     }
     else if (eventId == "switch")
     {
-        Client::setState(STATE_SWITCH_LOGIN);
+        Client::setState(State::SwitchLogin);
     }
     else if (eventId == "change_password")
     {
-        Client::setState(STATE_CHANGEPASSWORD);
+        Client::setState(State::ChangePassword);
     }
     else if (eventId == "change_email")
     {
-        Client::setState(STATE_CHANGEEMAIL);
+        Client::setState(State::ChangeEmail);
     }
     else if (eventId == "unregister")
     {
-        Client::setState(STATE_UNREGISTER);
+        Client::setState(State::Unregister);
     }
 }
 

@@ -69,7 +69,7 @@ void GameHandler::handleMessage(MessageIn &msg)
 
                 if (!netToken.empty())
                 {
-                    Client::setState(STATE_SWITCH_CHARACTER);
+                    Client::setState(State::SwitchCharacter);
                 }
                 else
                 {
@@ -88,7 +88,7 @@ void GameHandler::handleMessage(MessageIn &msg)
                         errorMessage = "Gameserver: Unknown error";
                         break;
                 }
-                Client::setState(STATE_ERROR);
+                Client::setState(State::Error);
             }
         }
             break;
@@ -115,7 +115,7 @@ void GameHandler::disconnect()
     gameServerConnection->disconnect();
 
     // No need if we're just changing gameservers
-    if (Client::getState() != STATE_CHANGE_MAP)
+    if (Client::getState() != State::ChangeMap)
         chatHandler->disconnect();
 }
 

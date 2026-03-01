@@ -154,11 +154,11 @@ void GeneralHandler::flushNetwork()
 {
     flush();
 
-    if (Client::getState() == STATE_SWITCH_CHARACTER &&
+    if (Client::getState() == State::SwitchCharacter &&
         Net::getLoginHandler()->isConnected())
     {
         loginHandler->reconnect();
-        Client::setState(STATE_GET_CHARACTERS);
+        Client::setState(State::GetCharacters);
     }
 }
 
@@ -169,9 +169,9 @@ void GeneralHandler::event(Event::Channel channel,
     {
         if (event.getType() == Event::StateChange)
         {
-            int newState = event.getInt("newState");
+            State newState = static_cast<State>(event.getInt("newState"));
 
-            if (newState == STATE_GAME)
+            if (newState == State::Game)
             {
                 auto *game = static_cast<GameHandler*>(Net::getGameHandler());
                 game->gameLoading();

@@ -81,7 +81,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             // Successful login
             if (errMsg == ERRMSG_OK)
             {
-                Client::setState(STATE_CHAR_SELECT);
+                Client::setState(State::CharSelect);
             }
             // Login failed
             else
@@ -101,7 +101,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         errorMessage = _("Unknown error.");
                         break;
                 }
-                Client::setState(STATE_ERROR);
+                Client::setState(State::Error);
             }
         }
             break;
@@ -112,7 +112,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             // Successful pass change
             if (errMsg == ERRMSG_OK)
             {
-                Client::setState(STATE_CHANGEPASSWORD_SUCCESS);
+                Client::setState(State::ChangePasswordSuccess);
             }
             // pass change failed
             else
@@ -132,7 +132,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         errorMessage = _("Unknown error.");
                         break;
                 }
-                Client::setState(STATE_ACCOUNTCHANGE_ERROR);
+                Client::setState(State::AccountChangeError);
             }
         }
             break;
@@ -143,7 +143,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             // Successful pass change
             if (errMsg == ERRMSG_OK)
             {
-                Client::setState(STATE_CHANGEEMAIL_SUCCESS);
+                Client::setState(State::ChangeEmailSuccess);
             }
             // pass change failed
             else
@@ -166,7 +166,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         errorMessage = _("Unknown error.");
                         break;
                 }
-                Client::setState(STATE_ACCOUNTCHANGE_ERROR);
+                Client::setState(State::AccountChangeError);
             }
         }
             break;
@@ -191,7 +191,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         errorMessage = "Accountserver: Unknown error";
                         break;
                 }
-                Client::setState(STATE_ERROR);
+                Client::setState(State::Error);
             }
         }
             break;
@@ -201,7 +201,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             // Successful unregistration
             if (errMsg == ERRMSG_OK)
             {
-                Client::setState(STATE_UNREGISTER_SUCCESS);
+                Client::setState(State::UnregisterSuccess);
             }
             // Unregistration failed
             else
@@ -216,7 +216,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         errorMessage = "Accountserver: Unknown error";
                         break;
                 }
-                Client::setState(STATE_ACCOUNTCHANGE_ERROR);
+                Client::setState(State::AccountChangeError);
             }
         }
             break;
@@ -234,7 +234,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
 
                 printf("%s: %s\n", captchaURL.c_str(), captchaInstructions.c_str());
 
-                Client::setState(STATE_REGISTER);
+                Client::setState(State::Register);
             }
             else
             {
@@ -243,7 +243,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                 if (errorMessage.empty())
                     errorMessage = _("Client registration is not allowed. "
                                      "Please contact server administration.");
-                Client::setState(STATE_LOGIN_ERROR);
+                Client::setState(State::LoginError);
             }
         }
             break;
@@ -264,7 +264,7 @@ void LoginHandler::handleLoginResponse(MessageIn &msg)
     {
         readServerInfo(msg);
         // No worlds atm, but future use :-D
-        Client::setState(STATE_WORLD_SELECT);
+        Client::setState(State::WorldSelect);
     }
     else
     {
@@ -290,7 +290,7 @@ void LoginHandler::handleLoginResponse(MessageIn &msg)
                 errorMessage = _("Unknown error.");
                 break;
         }
-        Client::setState(STATE_LOGIN_ERROR);
+        Client::setState(State::LoginError);
     }
 }
 
@@ -301,7 +301,7 @@ void LoginHandler::handleRegisterResponse(MessageIn &msg)
     if (errMsg == ERRMSG_OK)
     {
         readServerInfo(msg);
-        Client::setState(STATE_WORLD_SELECT);
+        Client::setState(State::WorldSelect);
     }
     else
     {
@@ -327,7 +327,7 @@ void LoginHandler::handleRegisterResponse(MessageIn &msg)
                 errorMessage = _("Unknown error.");
                 break;
         }
-        Client::setState(STATE_LOGIN_ERROR);
+        Client::setState(State::LoginError);
     }
 }
 
@@ -366,9 +366,9 @@ void LoginHandler::disconnect()
 {
     accountServerConnection->disconnect();
 
-    if (Client::getState() == STATE_CONNECT_GAME)
+    if (Client::getState() == State::ConnectGame)
     {
-        Client::setState(STATE_GAME);
+        Client::setState(State::Game);
     }
 }
 

@@ -59,8 +59,7 @@ class QuitDialog : public Window, public gcn::ActionListener,
         void placeOption(ContainerPlacer &place, gcn::RadioButton *option);
         std::vector<gcn::RadioButton*> mOptions;
 
-        gcn::RadioButton *mLogoutQuit;
-        gcn::RadioButton *mForceQuit;
+        gcn::RadioButton *mQuit;
         gcn::RadioButton *mSwitchAccountServer;
         gcn::RadioButton *mSwitchCharacter;
         Button *mOkButton;

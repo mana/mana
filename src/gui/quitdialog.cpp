@@ -39,8 +39,7 @@
 QuitDialog::QuitDialog(QuitDialog** pointerToMe):
     Window(_("Quit"), true, nullptr), mMyPointer(pointerToMe)
 {
-    mForceQuit = new RadioButton(_("Quit"), "quitdialog");
-    mLogoutQuit = new RadioButton(_("Quit"), "quitdialog");
+    mQuit = new RadioButton(_("Quit"), "quitdialog");
     mSwitchAccountServer = new RadioButton(_("Switch server"), "quitdialog");
     mSwitchCharacter = new RadioButton(_("Switch character"), "quitdialog");
     mOkButton = new Button(_("OK"), "ok", this);
@@ -54,24 +53,20 @@ QuitDialog::QuitDialog(QuitDialog** pointerToMe):
 
     const State state = Client::getState();
 
-    // All states, when we're not logged in to someone.
-    if (state == STATE_CHOOSE_SERVER ||
-        state == STATE_CONNECT_SERVER ||
-        state == STATE_LOGIN ||
-        state == STATE_LOGIN_ATTEMPT ||
-        state == STATE_UPDATE ||
-        state == STATE_LOAD_DATA)
+    placeOption(place, mQuit);
+
+    // Additional options only when connected to account/game server.
+    if (!(state == State::ChooseServer ||
+          state == State::ConnectServer ||
+          state == State::Login ||
+          state == State::LoginAttempt ||
+          state == State::Update ||
+          state == State::LoadData))
     {
-        placeOption(place, mForceQuit);
-    }
-    else
-    {
-        // Only added if we are connected to an accountserver or gameserver
-        placeOption(place, mLogoutQuit);
         placeOption(place, mSwitchAccountServer);
 
         // Only added if we are connected to a gameserver
-        if (state == STATE_GAME)
+        if (state == State::Game)
             placeOption(place, mSwitchCharacter);
     }
 
@@ -95,8 +90,6 @@ QuitDialog::~QuitDialog()
         *mMyPointer = nullptr;
 
     // Optional widgets, so delete them by hand.
-    delete mForceQuit;
-    delete mLogoutQuit;
     delete mSwitchAccountServer;
     delete mSwitchCharacter;
 }
@@ -111,21 +104,17 @@ void QuitDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "ok")
     {
-        if (mForceQuit->isSelected())
+        if (mQuit->isSelected())
         {
-            Client::setState(STATE_FORCE_QUIT);
-        }
-        else if (mLogoutQuit->isSelected())
-        {
-            Client::setState(STATE_EXIT);
+            Client::setState(State::Exit);
         }
         else if (mSwitchAccountServer->isSelected())
         {
-            Client::setState(STATE_SWITCH_SERVER);
+            Client::setState(State::SwitchServer);
         }
         else if (mSwitchCharacter->isSelected())
         {
-            assert(Client::getState() == STATE_GAME);
+            assert(Client::getState() == State::Game);
 
             Net::getCharHandler()->switchCharacter();
         }

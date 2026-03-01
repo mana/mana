@@ -100,11 +100,11 @@ void LoginDialog::action(const gcn::ActionEvent &event)
         mServerButton->setEnabled(false);
         mLoginButton->setEnabled(false);
 
-        Client::setState(STATE_LOGIN_ATTEMPT);
+        Client::setState(State::LoginAttempt);
     }
     else if (event.getId() == "server")
     {
-        Client::setState(STATE_SWITCH_SERVER);
+        Client::setState(State::SwitchServer);
     }
     else if (event.getId() == "register")
     {
@@ -112,7 +112,7 @@ void LoginDialog::action(const gcn::ActionEvent &event)
         {
             mLoginData->username = mUserField->getText();
             mLoginData->password = mPassField->getText();
-            Client::setState(STATE_REGISTER_PREP);
+            Client::setState(State::RegisterPrep);
         }
         else
         {
@@ -144,5 +144,5 @@ bool LoginDialog::canSubmit() const
 {
     return !mUserField->getText().empty() &&
            !mPassField->getText().empty() &&
-           Client::getState() == STATE_LOGIN;
+           Client::getState() == State::Login;
 }

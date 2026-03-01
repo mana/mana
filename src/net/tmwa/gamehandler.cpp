@@ -71,7 +71,7 @@ void GameHandler::handleMessage(MessageIn &msg)
             Log::info("Protocol: Player start position: (%d, %d), Direction: %d",
                       x, y, direction);
             // Switch now or we'll have problems
-            Client::setState(STATE_GAME);
+            Client::setState(State::Game);
             // Stores the position until the map is loaded.
             mTileX = x; mTileY = y;
          }  break;
@@ -79,7 +79,7 @@ void GameHandler::handleMessage(MessageIn &msg)
         case SMSG_CHAR_SWITCH_RESPONSE:
             if (msg.readInt8())
             {
-                Client::setState(STATE_SWITCH_CHARACTER);
+                Client::setState(State::SwitchCharacter);
             }
             break;
 
@@ -127,7 +127,7 @@ void GameHandler::connect()
             static_cast<LoginHandler*>(Net::getLoginHandler())->getToken();
 
 
-    if (Client::getState() == STATE_CONNECT_GAME)
+    if (Client::getState() == State::ConnectGame)
     {
         mCharID = local_player->getId();
         // Change the player's ID to the account ID to match what eAthena uses

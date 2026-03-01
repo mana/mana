@@ -142,7 +142,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
 {
     if (event.getId() == "cancel")
     {
-        Client::setState(STATE_LOGIN);
+        Client::setState(State::Login);
     }
     else if (event.getId() == "register" && canSubmit())
     {
@@ -230,7 +230,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
                 mLoginData->email = mEmailField->getText();
             mLoginData->registerLogin = true;
 
-            Client::setState(STATE_REGISTER_ATTEMPT);
+            Client::setState(State::RegisterAttempt);
         }
     }
 }
@@ -245,5 +245,5 @@ bool RegisterDialog::canSubmit() const
     return !mUserField->getText().empty() &&
            !mPasswordField->getText().empty() &&
            !mConfirmField->getText().empty() &&
-           Client::getState() == STATE_REGISTER;
+           Client::getState() == State::Register;
 }

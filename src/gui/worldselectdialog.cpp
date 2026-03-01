@@ -109,12 +109,12 @@ void WorldSelectDialog::action(const gcn::ActionEvent &event)
         Net::getLoginHandler()->chooseServer(mWorldList->getSelected());
 
         // Check in case netcode moves us forward
-        if (Client::getState() == STATE_WORLD_SELECT)
-            Client::setState(STATE_WORLD_SELECT_ATTEMPT);
+        if (Client::getState() == State::WorldSelect)
+            Client::setState(State::WorldSelectAttempt);
     }
     else if (event.getId() == "login")
     {
-        Client::setState(STATE_LOGIN);
+        Client::setState(State::Login);
     }
 }
 

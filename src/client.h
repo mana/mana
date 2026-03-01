@@ -56,43 +56,41 @@ bool isDoubleClick(int selected);
 /**
  * All client states.
  */
-enum State {
-    STATE_ERROR = -1,
-    STATE_START = 0,
-    STATE_CHOOSE_SERVER,
-    STATE_CONNECT_SERVER,
-    STATE_LOGIN,
-    STATE_LOGIN_ATTEMPT,
-    STATE_WORLD_SELECT,           // 5
-    STATE_WORLD_SELECT_ATTEMPT,
-    STATE_UPDATE,
-    STATE_LOAD_DATA,
-    STATE_GET_CHARACTERS,
-    STATE_CHAR_SELECT,            // 10
-    STATE_CONNECT_GAME,
-    STATE_GAME,
-    STATE_CHANGE_MAP,             // Switch map-server/gameserver
-    STATE_LOGIN_ERROR,
-    STATE_ACCOUNTCHANGE_ERROR,    // 15
-    STATE_REGISTER_PREP,
-    STATE_REGISTER,
-    STATE_REGISTER_ATTEMPT,
-    STATE_CHANGEPASSWORD,
-    STATE_CHANGEPASSWORD_ATTEMPT, // 20
-    STATE_CHANGEPASSWORD_SUCCESS,
-    STATE_CHANGEEMAIL,
-    STATE_CHANGEEMAIL_ATTEMPT,
-    STATE_CHANGEEMAIL_SUCCESS,
-    STATE_UNREGISTER,             // 25
-    STATE_UNREGISTER_ATTEMPT,
-    STATE_UNREGISTER_SUCCESS,
-    STATE_SWITCH_SERVER,
-    STATE_SWITCH_LOGIN,
-    STATE_SWITCH_CHARACTER,       // 30
-    STATE_LOGOUT_ATTEMPT,
-    STATE_WAIT,
-    STATE_EXIT,
-    STATE_FORCE_QUIT
+enum class State : int8_t {
+    Error = -1,
+    Start = 0,
+    ChooseServer,
+    ConnectServer,
+    Login,
+    LoginAttempt,
+    WorldSelect,            // 5
+    WorldSelectAttempt,
+    Update,
+    LoadData,
+    GetCharacters,
+    CharSelect,             // 10
+    ConnectGame,
+    Game,
+    ChangeMap,              // Switch map-server/gameserver
+    LoginError,
+    AccountChangeError,     // 15
+    RegisterPrep,
+    Register,
+    RegisterAttempt,
+    ChangePassword,
+    ChangePasswordAttempt,  // 20
+    ChangePasswordSuccess,
+    ChangeEmail,
+    ChangeEmailAttempt,
+    ChangeEmailSuccess,
+    Unregister,             // 25
+    UnregisterAttempt,
+    UnregisterSuccess,
+    SwitchServer,
+    SwitchLogin,
+    SwitchCharacter,        // 30
+    LogoutAttempt,
+    Exit
 };
 
 class FpsManager
@@ -231,8 +229,8 @@ private:
     Desktop *mDesktop = nullptr;
     Button *mSetupButton = nullptr;
 
-    State mState = STATE_CHOOSE_SERVER;
-    State mOldState = STATE_START;
+    State mState = State::ChooseServer;
+    State mOldState = State::Start;
     State mStateAfterOkDialog;
 
     SDL_Surface *mIcon = nullptr;

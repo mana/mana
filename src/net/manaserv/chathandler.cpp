@@ -136,7 +136,7 @@ void ChatHandler::handleMessage(MessageIn &msg)
                         errorMessage = "Chatserver: Unknown error";
                         break;
                 }
-                Client::setState(STATE_ERROR);
+                Client::setState(State::Error);
             }
         }
             break;

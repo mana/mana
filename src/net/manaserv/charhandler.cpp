@@ -264,7 +264,7 @@ void CharHandler::handleCharacterSelectResponse(MessageIn &msg)
         PlayerInfo::setBackend(mSelectedCharacter->data);
         mSelectedCharacter->dummy = nullptr;
 
-        Client::setState(STATE_CONNECT_GAME);
+        Client::setState(State::ConnectGame);
     }
     else
     {
@@ -282,7 +282,7 @@ void CharHandler::handleCharacterSelectResponse(MessageIn &msg)
         }
         delete_all(mCharacters);
         mCharacters.clear();
-        Client::setState(STATE_ERROR);
+        Client::setState(State::Error);
     }
 }
 
@@ -314,7 +314,7 @@ void CharHandler::requestCharacters()
     else
     {
         // The characters are already there, continue to character selection
-        Client::setState(STATE_CHAR_SELECT);
+        Client::setState(State::CharSelect);
     }
 }
 

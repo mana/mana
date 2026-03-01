@@ -344,9 +344,9 @@ public:
         {
             if (event.getType() == Event::StateChange)
             {
-                int newState = event.getInt("newState");
+                State newState = static_cast<State>(event.getInt("newState"));
 
-                if (newState == STATE_GAME)
+                if (newState == State::Game)
                 {
                     if (mInventory == nullptr)
                     {

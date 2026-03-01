@@ -78,7 +78,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
             // Successful pass change
             if (errMsg == 1)
             {
-                Client::setState(STATE_CHANGEPASSWORD_SUCCESS);
+                Client::setState(State::ChangePasswordSuccess);
             }
             // pass change failed
             else
@@ -98,7 +98,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                         errorMessage = _("Unknown error.");
                         break;
                 }
-                Client::setState(STATE_ACCOUNTCHANGE_ERROR);
+                Client::setState(State::AccountChangeError);
             }
         }
             break;
@@ -145,7 +145,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
 
                 mWorlds.push_back(world);
             }
-            Client::setState(STATE_WORLD_SELECT);
+            Client::setState(State::WorldSelect);
             break;
 
         case SMSG_LOGIN_ERROR:
@@ -193,7 +193,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                     errorMessage = _("Unknown error.");
                     break;
             }
-            Client::setState(STATE_ERROR);
+            Client::setState(State::Error);
             break;
 
         case SMSG_SERVER_VERSION_RESPONSE:
@@ -250,7 +250,7 @@ bool LoginHandler::isRegistrationEnabled()
 void LoginHandler::getRegistrationDetails()
 {
     // Not supported, so move on
-    Client::setState(STATE_REGISTER);
+    Client::setState(State::Register);
 }
 
 void LoginHandler::loginAccount(LoginData *loginData)
@@ -298,7 +298,7 @@ void LoginHandler::chooseServer(unsigned int server)
 
     charServer.port = mWorlds[server]->port;
 
-    Client::setState(STATE_UPDATE);
+    Client::setState(State::Update);
 }
 
 void LoginHandler::registerAccount(LoginData *loginData)

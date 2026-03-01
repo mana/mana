@@ -248,7 +248,7 @@ Game::~Game()
     destroyGuiWindows();
 
     del_0(actorSpriteManager)
-    if (Client::getState() != STATE_CHANGE_MAP)
+    if (Client::getState() != State::ChangeMap)
         del_0(local_player)
     del_0(effectManager)
     del_0(channelManager)
@@ -364,16 +364,16 @@ void Game::logic()
     // Handle network stuff
     if (!Net::getGameHandler()->isConnected() && !mDisconnected)
     {
-        if (Client::getState() == STATE_CHANGE_MAP)
+        if (Client::getState() == State::ChangeMap)
             return; // Not a problem here
 
-        if (Client::getState() == STATE_ERROR)
-            return; // Disconnect gets handled by STATE_ERROR
+        if (Client::getState() == State::Error)
+            return; // Disconnect gets handled by State::Error
 
         errorMessage = _("The connection to the server was lost.");
         Client::instance()->showOkDialog(_("Network Error"),
                                          errorMessage,
-                                         STATE_CHOOSE_SERVER);
+                                         State::ChooseServer);
         mDisconnected = true;
     }
 }

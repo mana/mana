@@ -198,7 +198,7 @@ void UpdaterWindow::keyPressed(gcn::KeyEvent &keyEvent)
         if (!cancel())
         {
             mLoadUpdates = false;
-            Client::setState(STATE_WORLD_SELECT);
+            Client::setState(State::WorldSelect);
         }
     }
     else if (key.getValue() == Key::ENTER)
@@ -221,7 +221,7 @@ bool UpdaterWindow::cancel()
 void UpdaterWindow::play()
 {
     if (mPlayButton->isEnabled())
-        Client::setState(STATE_LOAD_DATA);
+        Client::setState(State::LoadData);
 }
 
 void UpdaterWindow::loadNews()

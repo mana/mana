@@ -266,13 +266,13 @@ void ServerDialog::action(const gcn::ActionEvent &event)
 
             chatLogger->setServerName(mServerInfo->hostname);
 
-            Client::setState(STATE_CONNECT_SERVER);
+            Client::setState(State::ConnectServer);
         }
     }
     else if (event.getId() == "quit")
     {
         mDownload->cancel();
-        Client::setState(STATE_FORCE_QUIT);
+        Client::setState(State::Exit);
     }
     else if (event.getId() == "addEntry")
     {
@@ -310,7 +310,7 @@ void ServerDialog::keyPressed(gcn::KeyEvent &keyEvent)
 
     if (key.getValue() == Key::ESCAPE)
     {
-        Client::setState(STATE_EXIT);
+        Client::setState(State::Exit);
     }
     else if (key.getValue() == Key::ENTER)
     {

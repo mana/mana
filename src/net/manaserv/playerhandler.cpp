@@ -103,7 +103,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             gameServer.port = port;
 
             gameServerConnection->disconnect();
-            Client::setState(STATE_CHANGE_MAP);
+            Client::setState(State::ChangeMap);
             local_player->setMap(nullptr);
         } break;
 
