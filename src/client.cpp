@@ -73,6 +73,7 @@
 #include "utils/filesystem.h"
 #include "utils/gettext.h"
 #include "utils/mkdir.h"
+#include "utils/path.h"
 #if defined(_WIN32) || defined(__APPLE__)
 #include "utils/specialfolder.h"
 #endif
@@ -89,6 +90,7 @@
 #include <sys/stat.h>
 
 #include <cassert>
+#include <cstdio>
 #include <cstdlib>
 #include <filesystem>
 
@@ -114,6 +116,21 @@ Sound sound;
 
 volatile int fps = 0;         /**< Frames counted in the last second */
 volatile int frame_count = 0; /**< Counts the frames during one second */
+
+#ifdef _WIN32
+static bool isDirWritable(const std::string &dir)
+{
+    const auto path = utils::joinPaths(dir, ".__mana_write_test.tmp");
+
+    FILE *file = std::fopen(path.c_str(), "wb");
+    if (!file)
+        return false;
+
+    std::fclose(file);
+    std::remove(path.c_str());
+    return true;
+}
+#endif
 
 /**
  * Updates fps.
@@ -1081,6 +1098,13 @@ void Client::initRootDir()
 
     if (!stat(portableName.c_str(), &statbuf) && S_ISREG(statbuf.st_mode))
     {
+        if (!isDirWritable(mRootDir))
+        {
+            Log::warn("Ignoring portable mode because install directory is not writable: %s",
+                      mRootDir.c_str());
+            return;
+        }
+
         Log::info("Portable file: %s", portableName.c_str());
 
         XML::Document doc(portableName, false);

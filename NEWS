@@ -38,6 +38,7 @@ Unreleased
 - Fixed decorative NPCs and monsters being selectable despite targetSelection="false"
 - Fixed empty being popup showing for beings without a name
 - Fixed the "Own Name" color not being applied to the local player
+- Fixed portable mode being used when the installation directory is not writable on Windows
 - Reduced input lag when using the SDL renderer with an OpenGL backend
 
 0.7.0 (21 August 2025)
