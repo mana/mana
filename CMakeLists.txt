@@ -109,6 +109,18 @@ if(WIN32)
   set(CPACK_NSIS_MUI_FINISHPAGE_RUN "mana.exe")
   set(CPACK_NSIS_EXECUTABLES_DIRECTORY ${CMAKE_INSTALL_BINDIR})
   set(CPACK_NSIS_MANIFEST_DPI_AWARE ON)
+  set(_portable_marker_path "portable.xml")
+  if(NOT CMAKE_INSTALL_BINDIR STREQUAL "." AND NOT CMAKE_INSTALL_BINDIR STREQUAL "")
+    set(_portable_marker_path "${CMAKE_INSTALL_BINDIR}/portable.xml")
+  endif()
+  string(REPLACE "/" "\\\\" PORTABLE_MARKER_PATH_NSIS "${_portable_marker_path}")
+  configure_file(
+    "${CMAKE_SOURCE_DIR}/packaging/windows/nsis-portable-guard.nsi.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/nsis-portable-guard.nsi"
+    @ONLY
+  )
+  file(READ "${CMAKE_CURRENT_BINARY_DIR}/nsis-portable-guard.nsi" _nsis_portable_check)
+  set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "${_nsis_portable_check}")
 
   # Name the installer after the target architecture (defaults to "win64")
   if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(ARM64|aarch64)$"

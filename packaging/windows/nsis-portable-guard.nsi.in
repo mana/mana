@@ -1,0 +1,27 @@
+IfFileExists "$INSTDIR\@PORTABLE_MARKER_PATH_NSIS@" 0 manaPortableCheckDone
+StrCpy $0 0
+
+StrLen $1 "$PROGRAMFILES"
+StrCpy $2 "$INSTDIR" $1
+StrCmp $2 "$PROGRAMFILES" 0 +2
+StrCpy $0 1
+
+ReadEnvStr $3 "ProgramW6432"
+StrCmp $3 "" +4
+StrLen $1 "$3"
+StrCpy $2 "$INSTDIR" $1
+StrCmp $2 "$3" 0 +2
+StrCpy $0 1
+
+ReadEnvStr $4 "ProgramFiles(x86)"
+StrCmp $4 "" +4
+StrLen $1 "$4"
+StrCpy $2 "$INSTDIR" $1
+StrCmp $2 "$4" 0 +2
+StrCpy $0 1
+
+StrCmp $0 1 0 manaPortableCheckDone
+Delete "$INSTDIR\@PORTABLE_MARKER_PATH_NSIS@"
+MessageBox MB_OK|MB_ICONEXCLAMATION "Portable mode was disabled because '$INSTDIR' is under Program Files and is not writable for standard users.$\r$\n$\r$\nInstall to a user-writable folder (for example, USB drive) to use portable mode."
+
+manaPortableCheckDone:
