@@ -147,7 +147,7 @@ if(WIN32)
           $ENV{MINGW_PREFIX}/bin/libaom.dll
           $ENV{MINGW_PREFIX}/bin/libdav1d-7.dll
           $ENV{MINGW_PREFIX}/bin/libsharpyuv-0.dll
-          $ENV{MINGW_PREFIX}/bin/libSvtAv1Enc-3.dll
+          $ENV{MINGW_PREFIX}/bin/libSvtAv1Enc-4.dll
           $ENV{MINGW_PREFIX}/bin/libFLAC.dll
           $ENV{MINGW_PREFIX}/bin/libyuv.dll
           $ENV{MINGW_PREFIX}/bin/libbrotlienc.dll
