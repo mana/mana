@@ -577,8 +577,10 @@ void Client::update()
         mDesktop = new Desktop;
         top->add(mDesktop);
         mSetupButton = new Button("", "Setup", this);
+        mSetupButton->setToggle(true);
         mSetupButton->setButtonPopupText(_("Setup"));
         mSetupButton->setButtonIcon("button-icon-setup.png");
+        setupWindow->addWidgetListener(this);
         mSetupButton->setPosition(top->getWidth() - mSetupButton->getWidth()
                                  - 3, 3);
         top->add(mSetupButton);
@@ -821,6 +823,7 @@ void Client::update()
                 // Allow any alpha opacity
                 gui->getTheme()->setMinimumOpacity(0.0f);
 
+                setupWindow->removeWidgetListener(this);
                 delete mSetupButton;
                 delete mDesktop;
                 mSetupButton = nullptr;
@@ -1000,6 +1003,18 @@ void Client::action(const gcn::ActionEvent &event)
     // If this came from the OkDialog used by showOkDialog
     if (event.getId() == "ok")
         mState = mStateAfterOkDialog;
+}
+
+void Client::widgetHidden(const gcn::Event &event)
+{
+    if (mSetupButton && event.getSource() == setupWindow)
+        mSetupButton->setSelected(false);
+}
+
+void Client::widgetShown(const gcn::Event &event)
+{
+    if (mSetupButton && event.getSource() == setupWindow)
+        mSetupButton->setSelected(true);
 }
 
 void Client::initRootDir()

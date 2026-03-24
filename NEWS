@@ -5,6 +5,7 @@ Unreleased
 - Added support for monster links
 - Added --log-file parameter to set log file path or '-' for stdout
 - Improved drag-n-drop for emote shortcuts
+- Made window menu buttons indicate which windows are open
 - Use online player list for name autocomplete
 - Removed background color from shop list entries
 - Fixed performance issue when instantiating many non-moving beings

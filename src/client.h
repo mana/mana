@@ -26,6 +26,7 @@
 #include "net/serverinfo.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/widgetlistener.hpp>
 
 #include <SDL.h>
 
@@ -107,7 +108,8 @@ public:
  * The core part of the client. This class initializes all subsystems, runs
  * the event loop, and shuts everything down again.
  */
-class Client final : public gcn::ActionListener
+class Client final : public gcn::ActionListener,
+                     public gcn::WidgetListener
 {
 public:
     /**
@@ -187,6 +189,9 @@ public:
     { return instance()->mVideo; }
 
     void action(const gcn::ActionEvent &event) override;
+
+    void widgetHidden(const gcn::Event &event) override;
+    void widgetShown(const gcn::Event &event) override;
 
     /**
      * Should be called after the window has been resized. Makes sure the GUI

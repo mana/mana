@@ -37,7 +37,7 @@ TextPopup *Button::mTextPopup = nullptr;
 enum {
     BUTTON_STANDARD,    // 0
     BUTTON_HIGHLIGHTED, // 1
-    BUTTON_PRESSED,     // 2
+    BUTTON_SELECTED,    // 2
     BUTTON_DISABLED,    // 3
     BUTTON_COUNT        // 4 - Must be last.
 };
@@ -123,7 +123,7 @@ void Button::draw(gcn::Graphics *graphics)
     WidgetState widgetState(this);
     if (mHasMouse)
         widgetState.flags |= STATE_HOVERED;
-    if (isPressed())
+    if (isPressed() || mSelected)
         widgetState.flags |= STATE_SELECTED;
 
     auto g = static_cast<Graphics *>(graphics);
@@ -138,8 +138,8 @@ void Button::draw(gcn::Graphics *graphics)
     if (widgetState.flags & STATE_DISABLED)
         mode = BUTTON_DISABLED;
     else if (widgetState.flags & STATE_SELECTED)
-        mode = BUTTON_PRESSED;
-    else if (widgetState.flags & (STATE_HOVERED | STATE_FOCUSED))
+        mode = BUTTON_SELECTED;
+    else if (widgetState.flags & STATE_HOVERED)
         mode = BUTTON_HIGHLIGHTED;
     else
         mode = BUTTON_STANDARD;
@@ -184,7 +184,7 @@ void Button::draw(gcn::Graphics *graphics)
             throw GCN_EXCEPTION("Button::draw(). Unknown alignment.");
     }
 
-    if (isPressed())
+    if (widgetState.flags & STATE_SELECTED)
     {
         textX++; textY++;
         btnIconX++; btnIconY++;
@@ -250,6 +250,37 @@ void Button::mouseMoved(gcn::MouseEvent &event)
     {
         mTextPopup->setVisible(false);
     }
+}
+
+void Button::mousePressed(gcn::MouseEvent &event)
+{
+    // In toggle mode, the selected state is toggled immediately on press and
+    // the transient pressed state is skipped, so that a selected button
+    // immediately renders as unselected again.
+    if (mIsToggle)
+    {
+        if (event.getButton() == gcn::MouseEvent::LEFT)
+        {
+            mSelected = !mSelected;
+            distributeActionEvent();
+            event.consume();
+        }
+        return;
+    }
+
+    gcn::Button::mousePressed(event);
+}
+
+void Button::mouseReleased(gcn::MouseEvent &event)
+{
+    // In toggle mode the action was already distributed on press.
+    if (mIsToggle)
+    {
+        event.consume();
+        return;
+    }
+
+    gcn::Button::mouseReleased(event);
 }
 
 void Button::mouseExited(gcn::MouseEvent &event)

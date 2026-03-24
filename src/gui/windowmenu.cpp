@@ -53,29 +53,40 @@ WindowMenu::WindowMenu()
     int x = 0, h = 0;
 
     addButton(":-)", x, h, "button-icon-smilies.png");
-    addButton(N_("Status"), x, h, "button-icon-status.png",
-              KeyboardConfig::KEY_WINDOW_STATUS);
-    addButton(N_("Inventory"), x, h, "button-icon-inventory.png",
-              KeyboardConfig::KEY_WINDOW_INVENTORY);
-    addButton(N_("Equipment"), x, h, "button-icon-equipment.png",
-              KeyboardConfig::KEY_WINDOW_EQUIPMENT);
+    mEmoteButton = dynamic_cast<Button *>(mWidgets.back());
+    mEmoteButton->setToggle(true);
+    addWindowButton(N_("Status"), statusWindow, x, h,
+                    "button-icon-status.png",
+                    KeyboardConfig::KEY_WINDOW_STATUS);
+    addWindowButton(N_("Inventory"), inventoryWindow, x, h,
+                    "button-icon-inventory.png",
+                    KeyboardConfig::KEY_WINDOW_INVENTORY);
+    addWindowButton(N_("Equipment"), equipmentWindow, x, h,
+                    "button-icon-equipment.png",
+                    KeyboardConfig::KEY_WINDOW_EQUIPMENT);
 
     if (skillDialog->hasSkills())
-        addButton(N_("Skills"), x, h, "button-icon-skills.png",
-                  KeyboardConfig::KEY_WINDOW_SKILL);
+        addWindowButton(N_("Skills"), skillDialog, x, h,
+                        "button-icon-skills.png",
+                        KeyboardConfig::KEY_WINDOW_SKILL);
 
     if (abilitiesWindow->hasAbilities())
-        addButton(N_("Abilities"), x, h, "button-icon-abilities.png");
+        addWindowButton(N_("Abilities"), abilitiesWindow, x, h,
+                        "button-icon-abilities.png");
 
     if (QuestDB::hasQuests())
-        addButton(N_("Quests"), x, h, "button-icon-quests.png");
+        addWindowButton(N_("Quests"), questsWindow, x, h,
+                        "button-icon-quests.png");
 
-    addButton(N_("Social"), x, h, "button-icon-social.png",
-        KeyboardConfig::KEY_WINDOW_SOCIAL);
-    addButton(N_("Shortcuts"), x, h, "button-icon-shortcut.png",
-        KeyboardConfig::KEY_WINDOW_SHORTCUT);
-    addButton(N_("Setup"), x, h, "button-icon-setup.png",
-        KeyboardConfig::KEY_WINDOW_SETUP);
+    addWindowButton(N_("Social"), socialWindow, x, h,
+                    "button-icon-social.png",
+                    KeyboardConfig::KEY_WINDOW_SOCIAL);
+    addWindowButton(N_("Shortcuts"), itemShortcutWindow, x, h,
+                    "button-icon-shortcut.png",
+                    KeyboardConfig::KEY_WINDOW_SHORTCUT);
+    addWindowButton(N_("Setup"), setupWindow, x, h,
+                    "button-icon-setup.png",
+                    KeyboardConfig::KEY_WINDOW_SETUP);
 
     setDimension(gcn::Rectangle(graphics->getWidth() - x, 3,
                                 x - 3, h));
@@ -84,6 +95,9 @@ WindowMenu::WindowMenu()
 
 WindowMenu::~WindowMenu()
 {
+    for (auto &[window, btn] : mWindowButtons)
+        window->removeWidgetListener(this);
+
     delete mEmotePopup;
 }
 
@@ -112,41 +126,13 @@ void WindowMenu::action(const gcn::ActionEvent &event)
             mEmotePopup = nullptr;
         }
     }
-    else if (event.getId() == "Status")
+    for (auto &[win, btn] : mWindowButtons)
     {
-        window = statusWindow;
-    }
-    else if (event.getId() == "Equipment")
-    {
-        window = equipmentWindow;
-    }
-    else if (event.getId() == "Inventory")
-    {
-        window = inventoryWindow;
-    }
-    else if (event.getId() == "Skills")
-    {
-        window = skillDialog;
-    }
-    else if (event.getId() == "Quests")
-    {
-        window = questsWindow;
-    }
-    else if (event.getId() == "Abilities")
-    {
-        window = abilitiesWindow;
-    }
-    else if (event.getId() == "Social")
-    {
-        window = socialWindow;
-    }
-    else if (event.getId() == "Shortcuts")
-    {
-        window = itemShortcutWindow;
-    }
-    else if (event.getId() == "Setup")
-    {
-        window = setupWindow;
+        if (event.getId() == btn->getActionEventId())
+        {
+            window = win;
+            break;
+        }
     }
 
     if (window)
@@ -169,6 +155,7 @@ void WindowMenu::valueChanged(const gcn::SelectionEvent &event)
 
         windowContainer->scheduleDelete(mEmotePopup);
         mEmotePopup = nullptr;
+        mEmoteButton->setSelected(false);
     }
 }
 
@@ -210,6 +197,32 @@ void WindowMenu::addButton(const std::string &text, int &x, int &h,
     add(btn);
     x += btn->getWidth() + 3;
     h = std::max(h, btn->getHeight());
+}
+
+void WindowMenu::addWindowButton(const std::string &text, Window *window,
+                                  int &x, int &h,
+                                  const std::string &iconPath,
+                                  KeyboardConfig::KeyAction key)
+{
+    addButton(text, x, h, iconPath, key);
+    auto *btn = dynamic_cast<Button *>(mWidgets.back());
+    btn->setToggle(true);
+    mWindowButtons[window] = btn;
+    window->addWidgetListener(this);
+}
+
+void WindowMenu::widgetHidden(const gcn::Event &event)
+{
+    auto it = mWindowButtons.find(static_cast<Window *>(event.getSource()));
+    if (it != mWindowButtons.end())
+        it->second->setSelected(false);
+}
+
+void WindowMenu::widgetShown(const gcn::Event &event)
+{
+    auto it = mWindowButtons.find(static_cast<Window *>(event.getSource()));
+    if (it != mWindowButtons.end())
+        it->second->setSelected(true);
 }
 
 void WindowMenu::updatePopUpCaptions()

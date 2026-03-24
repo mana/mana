@@ -27,8 +27,13 @@
 
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
+#include <guichan/widgetlistener.hpp>
 
+#include <map>
+
+class Button;
 class EmotePopup;
+class Window;
 
 /**
  * The window menu. Allows showing and hiding many of the different windows
@@ -38,7 +43,8 @@ class EmotePopup;
  */
 class WindowMenu : public Container,
                    public gcn::ActionListener,
-                   public gcn::SelectionListener
+                   public gcn::SelectionListener,
+                   public gcn::WidgetListener
 {
     public:
         WindowMenu();
@@ -53,11 +59,22 @@ class WindowMenu : public Container,
          */
         void updatePopUpCaptions();
 
+        void widgetHidden(const gcn::Event &event) override;
+        void widgetShown(const gcn::Event &event) override;
+
     private:
         void addButton(const std::string& text, int &x, int &h,
                        const std::string& iconPath = std::string(),
                        KeyboardConfig::KeyAction key =
                             KeyboardConfig::KEY_NO_VALUE);
 
+        void addWindowButton(const std::string &text, Window *window,
+                             int &x, int &h,
+                             const std::string &iconPath = std::string(),
+                             KeyboardConfig::KeyAction key =
+                                  KeyboardConfig::KEY_NO_VALUE);
+
+        std::map<Window *, Button *> mWindowButtons;
+        Button *mEmoteButton = nullptr;
         EmotePopup *mEmotePopup = nullptr;
 };

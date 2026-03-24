@@ -65,7 +65,7 @@ class Button : public gcn::Button
          *
          * @note: The image given must be formatted to give horizontally
          * frames of the given width and height for the following states:
-         * Standard, Highlighted, Pressed, and Disabled.
+         * Standard, Highlighted, Selected, and Disabled.
          * If the image is too short, the missing states won't be loaded.
          */
         bool setButtonIcon(const std::string &iconFile);
@@ -78,8 +78,16 @@ class Button : public gcn::Button
         void setButtonPopupText(const std::string &text)
         { mPopupText = text; }
 
+        void setToggle(bool toggle) { mIsToggle = toggle; }
+        bool isToggle() const { return mIsToggle; }
+
+        void setSelected(bool selected) { mSelected = selected; }
+        bool isSelected() const { return mSelected; }
+
         void mouseMoved(gcn::MouseEvent &event) override;
         void mouseExited(gcn::MouseEvent &event) override;
+        void mousePressed(gcn::MouseEvent &event) override;
+        void mouseReleased(gcn::MouseEvent &event) override;
 
     private:
         void init();
@@ -87,6 +95,8 @@ class Button : public gcn::Button
         void removeButtonIcon();
 
         std::vector<std::unique_ptr<Image>> mButtonIcon;  /**< Button Icons graphics */
+        bool mIsToggle = false;
+        bool mSelected = false;
 
         /**
          * The buttons popup
