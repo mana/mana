@@ -299,6 +299,12 @@ void Sound::close()
         return;
 
     haltMusic();
+
+    // Release the sound effect references now, while the ResourceManager is
+    // still alive (~Sound runs after it, during static destruction).
+    for (auto &soundEffect : mSounds)
+        soundEffect = nullptr;
+
     Log::info("Sound::close() Shutting down sound...");
     Mix_CloseAudio();
 

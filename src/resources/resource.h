@@ -24,32 +24,18 @@
 #include <ctime>
 #include <string>
 
+template<typename T> class ResourceRef;
+
 /**
  * A generic reference counted resource object.
  */
 class Resource
 {
     friend class ResourceManager;
+    template<typename T> friend class ResourceRef;
 
     public:
-        enum OrphanPolicy {
-            DeleteLater,
-            DeleteImmediately
-        };
-
         Resource() = default;
-
-        /**
-         * Increments the internal reference count.
-         */
-        void incRef() { ++mRefCount; }
-
-        /**
-         * Decrements the reference count. When no references are left, either
-         * schedules the object for deletion or deletes it immediately,
-         * depending on the \a orphanPolicy.
-         */
-        void decRef(OrphanPolicy orphanPolicy = DeleteLater);
 
         /**
          * Return the path identifying this resource.
@@ -61,6 +47,17 @@ class Resource
         virtual ~Resource() = default;
 
     private:
+        enum OrphanPolicy {
+            DeleteLater,
+            DeleteImmediately
+        };
+
+        void incRef() { ++mRefCount; }
+
+        /** Decrements the reference count, releasing the resource at zero. */
+        static void decRef(Resource *resource,
+                           OrphanPolicy orphanPolicy = DeleteLater);
+
         std::string mIdPath;    /**< Path identifying this resource. */
         time_t mTimeStamp;      /**< Time at which the resource was orphaned. */
         unsigned mRefCount = 0; /**< Reference count. */
@@ -100,7 +97,7 @@ public:
     ~ResourceRef()
     {
         if (mResource)
-            mResource->decRef();
+            Resource::decRef(mResource);
     }
 
     // Assignment operator
@@ -109,7 +106,7 @@ public:
         if (this != &other)
         {
             if (mResource)
-                mResource->decRef();
+                Resource::decRef(mResource);
 
             mResource = other.mResource;
 
@@ -125,7 +122,7 @@ public:
         if (this != &other)
         {
             if (mResource)
-                mResource->decRef();
+                Resource::decRef(mResource);
 
             mResource = other.mResource;
             other.mResource = nullptr;

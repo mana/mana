@@ -27,29 +27,35 @@
 
 #include <cassert>
 
-void Resource::decRef(OrphanPolicy orphanPolicy)
+void Resource::decRef(Resource *resource, OrphanPolicy orphanPolicy)
 {
+    // The ResourceManager may already be gone during static destruction, in
+    // which case 'resource' could be a dangling pointer. Bail out first.
+    if (!ResourceManager::instance)
+    {
+        Log::warn("Resource::decRef() called after ResourceManager destruction");
+        return;
+    }
+
     // Reference may not already have reached zero
-    if (mRefCount == 0) {
-        Log::warn("mRefCount already zero for %s", mIdPath.c_str());
+    if (resource->mRefCount == 0) {
+        Log::warn("mRefCount already zero for %s", resource->mIdPath.c_str());
         assert(false);
     }
 
-    --mRefCount;
+    --resource->mRefCount;
 
-    if (mRefCount == 0)
+    if (resource->mRefCount == 0)
     {
-        ResourceManager *resman = ResourceManager::getInstance();
-
         switch (orphanPolicy)
         {
             case DeleteLater:
             default:
-                resman->release(this);
+                ResourceManager::instance->release(resource);
                 break;
             case DeleteImmediately:
-                resman->remove(this);
-                delete this;
+                ResourceManager::instance->remove(resource);
+                delete resource;
                 break;
         }
     }
