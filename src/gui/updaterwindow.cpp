@@ -294,6 +294,21 @@ void UpdaterWindow::logic()
         break;
 
     case DownloadStatus::Error: {
+        // news.txt is informational; a fetch error shouldn't abort
+        // the update flow. Continue on to the resource list.
+        if (mDialogState == DialogState::DownloadNews)
+        {
+            Log::warn("Could not download news: %s", mDownload->getError());
+
+            mBrowserBox->addRows(strprintf(
+                    _("News could not be downloaded: %s"),
+                    mDownload->getError()));
+
+            mDialogState = DialogState::DownloadList;
+            startDownload(xmlUpdateFile, false);
+            break;
+        }
+
         mDialogState = DialogState::Done;
 
         std::string error = "##1";
