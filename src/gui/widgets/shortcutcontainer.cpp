@@ -62,3 +62,33 @@ int ShortcutContainer::getIndexFromGrid(int pointX, int pointY) const
 
     return index;
 }
+
+int ShortcutContainer::getIndexFromAbsolute(int absX, int absY) const
+{
+    int widgetX = 0;
+    int widgetY = 0;
+    getAbsolutePosition(widgetX, widgetY);
+
+    return getIndexFromGrid(absX - widgetX, absY - widgetY);
+}
+
+bool ShortcutContainer::isSlotDragged(int index) const
+{
+    const auto *drag = gui->getActiveDrag();
+    return drag &&
+           drag->source == this &&
+           drag->sourceIndex == index;
+}
+
+void ShortcutContainer::dragFinished(const Drag &drag, DragResult result)
+{
+    if (result == DragResult::Ignored &&
+        drag.source == this &&
+        drag.sourceIndex >= 0 &&
+        drag.sourceIndex < mMaxItems)
+    {
+        removeSlot(drag.sourceIndex);
+    }
+
+    mClickedIndex = -1;
+}

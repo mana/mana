@@ -22,6 +22,7 @@
 
 #include "graphics.h"
 
+#include "resources/emotedb.h"
 #include "resources/image.h"
 #include "resources/theme.h"
 #include "utils/stringutils.h"
@@ -30,11 +31,10 @@
 
 void Drag::draw(Graphics *graphics, int mouseX, int mouseY) const
 {
-    Item *dragItem = item.get();
-    if (!dragItem)
-        return;
-
-    Image *image = dragItem->getImage();
+    const Item *dragItem = item.get();
+    Image *image = dragItem ? dragItem->getImage() : nullptr;
+    if (!image && emoteId >= 0)
+        image = EmoteDB::get(emoteId).image;
     if (!image)
         return;
 
@@ -49,7 +49,7 @@ void Drag::draw(Graphics *graphics, int mouseX, int mouseY) const
     image->setAlpha(1.0f);
     graphics->drawImage(image, x, y);
 
-    if (dragItem->getQuantity() > 1)
+    if (dragItem && dragItem->getQuantity() > 1)
     {
         graphics->setColor(Theme::getThemeColor(Theme::TEXT));
         graphics->drawText(toString(dragItem->getQuantity()),

@@ -53,7 +53,6 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
     auto *g = static_cast<Graphics*>(graphics);
     auto theme = gui->getTheme();
     auto &skin = theme->getSkin(SkinType::ShortcutBox);
-    const auto *drag = gui->getActiveDrag();
 
     graphics->setFont(getFont());
 
@@ -82,11 +81,7 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
 
         Item *item = getDisplayItem(itemId);
         const bool isGhost = item->getQuantity() == 0;
-        const bool isDragged =
-                drag &&
-                drag->source == this &&
-                drag->sourceIndex == i;
-        const float alpha = isGhost ? 0.25f : (isDragged ? 0.5f : 1.0f);
+        const float alpha = isGhost ? 0.25f : (isSlotDragged(i) ? 0.5f : 1.0f);
 
         if (Image *image = item->getImage())
         {
@@ -219,17 +214,9 @@ void ItemShortcutContainer::mouseReleased(gcn::MouseEvent &event)
     }
 }
 
-void ItemShortcutContainer::dragFinished(const Drag &drag, DragResult result)
+void ItemShortcutContainer::removeSlot(int index)
 {
-    if (result == DragResult::Ignored &&
-        drag.source == this &&
-        drag.sourceIndex >= 0 &&
-        drag.sourceIndex < mMaxItems)
-    {
-        itemShortcut->removeItem(drag.sourceIndex);
-    }
-
-    mClickedIndex = -1;
+    itemShortcut->removeItem(index);
 }
 
 /**
@@ -243,11 +230,7 @@ bool ItemShortcutContainer::handleDrop(const Drag &drag, int absX, int absY)
     if (!drag.item)
         return false;
 
-    int widgetX = 0;
-    int widgetY = 0;
-    getAbsolutePosition(widgetX, widgetY);
-
-    const int index = getIndexFromGrid(absX - widgetX, absY - widgetY);
+    const int index = getIndexFromAbsolute(absX, absY);
     if (index == -1)
         return false;
 

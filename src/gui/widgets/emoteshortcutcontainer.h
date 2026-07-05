@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "gui/dragndrop.h"
 #include "gui/widgets/shortcutcontainer.h"
 
 /**
@@ -29,6 +30,7 @@
  * \ingroup GUI
  */
 class EmoteShortcutContainer : public ShortcutContainer
+                             , public DragTarget
 {
     public:
         EmoteShortcutContainer();
@@ -53,7 +55,8 @@ class EmoteShortcutContainer : public ShortcutContainer
          */
         void mouseReleased(gcn::MouseEvent &event) override;
 
+        bool handleDrop(const Drag &drag, int absX, int absY) override;
+
     private:
-        bool mEmoteClicked = false;
-        int mEmoteMoved = -1;
+        void removeSlot(int index) override;
 };

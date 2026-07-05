@@ -59,7 +59,8 @@ struct Drag
         Npc,
         Equipment,
         Outfit,
-        ItemShortcut
+        ItemShortcut,
+        EmoteShortcut
     };
 
     Drag() = default;
@@ -88,10 +89,22 @@ struct Drag
         return { SourceType::Outfit, item, source, sourceIndex };
     }
 
+    static Drag fromEmoteShortcut(int emoteId, DragSource *source,
+                                  int sourceIndex)
+    {
+        Drag drag;
+        drag.sourceType = SourceType::EmoteShortcut;
+        drag.emoteId = emoteId;
+        drag.source = source;
+        drag.sourceIndex = sourceIndex;
+        return drag;
+    }
+
     void draw(Graphics *graphics, int mouseX, int mouseY) const;
 
     SourceType sourceType = SourceType::Inventory;
     std::unique_ptr<Item> item;
+    int emoteId = -1;
     DragSource *source = nullptr;
     int sourceIndex = -1;
 };

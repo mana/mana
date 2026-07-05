@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include "gui/dragndrop.h"
+
 #include <guichan/mouselistener.hpp>
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
@@ -32,7 +34,8 @@
  */
 class ShortcutContainer : public gcn::Widget,
                           public gcn::WidgetListener,
-                          public gcn::MouseListener
+                          public gcn::MouseListener,
+                          public DragSource
 {
     public:
         ShortcutContainer();
@@ -55,7 +58,14 @@ class ShortcutContainer : public gcn::Widget,
         int getBoxWidth() const { return mBoxWidth; }
         int getBoxHeight() const { return mBoxHeight; }
 
+        void dragFinished(const Drag &drag, DragResult result) override;
+
     protected:
+        /**
+         * Removes the shortcut at the given slot index.
+         */
+        virtual void removeSlot(int index) = 0;
+
         /**
          * Gets the index from the grid provided the point is in an item box.
          *
@@ -65,11 +75,22 @@ class ShortcutContainer : public gcn::Widget,
          */
         int getIndexFromGrid(int pointX, int pointY) const;
 
+        /**
+         * Gets the index from the grid for a point in absolute coordinates.
+         *
+         * @return index on success, -1 on failure.
+         */
+        int getIndexFromAbsolute(int absX, int absY) const;
+
+        /**
+         * Returns whether the given slot is the source of the active drag.
+         */
+        bool isSlotDragged(int index) const;
+
+        int mClickedIndex = -1;
         int mMaxItems = 0;
         int mBoxWidth = 0;
         int mBoxHeight = 0;
-        int mCursorPosX = 0;
-        int mCursorPosY = 0;
         int mGridWidth = 1;
         int mGridHeight = 1;
 };

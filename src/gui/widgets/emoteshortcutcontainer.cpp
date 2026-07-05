@@ -63,23 +63,9 @@ void EmoteShortcutContainer::draw(gcn::Graphics *graphics)
         {
             if (auto image = EmoteDB::get(emoteId).image)
             {
-                image->setAlpha(1.0f);
+                image->setAlpha(isSlotDragged(i) ? 0.5f : 1.0f);
                 g->drawImage(image, state.x + 2, state.y + 10);
             }
-        }
-    }
-
-    if (mEmoteMoved != -1)
-    {
-        // Draw the emote image being dragged by the cursor.
-        if (auto image = EmoteDB::get(mEmoteMoved).image)
-        {
-            image->setAlpha(1.0f);
-
-            const int tPosX = mCursorPosX - (image->getWidth() / 2);
-            const int tPosY = mCursorPosY - (image->getHeight() / 2);
-
-            g->drawImage(image, tPosX, tPosY);
         }
     }
 }
@@ -88,43 +74,28 @@ void EmoteShortcutContainer::mouseDragged(gcn::MouseEvent &event)
 {
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {
-        if (mEmoteMoved == -1 && mEmoteClicked)
+        if (!gui->getActiveDrag() && mClickedIndex != -1)
         {
-            const int index = getIndexFromGrid(event.getX(), event.getY());
-            if (index == -1)
+            const int emoteId = emoteShortcut->getEmote(mClickedIndex);
+            if (emoteId < 0)
                 return;
-
-            const int emoteId = emoteShortcut->getEmote(index);
-            if (emoteId != -1)
-            {
-                mEmoteMoved = emoteId;
-                emoteShortcut->removeEmote(index);
-            }
-        }
-
-        if (mEmoteMoved != -1)
-        {
-            mCursorPosX = event.getX();
-            mCursorPosY = event.getY();
+            gui->startDrag(Drag::fromEmoteShortcut(emoteId, this, mClickedIndex));
         }
     }
 }
 
 void EmoteShortcutContainer::mousePressed(gcn::MouseEvent &event)
 {
-    const int index = getIndexFromGrid(event.getX(), event.getY());
-    if (index == -1)
+    mClickedIndex = getIndexFromGrid(event.getX(), event.getY());
+    if (mClickedIndex == -1)
         return;
 
     // Stores the selected emote if there is one.
     if (emoteShortcut->isEmoteSelected())
     {
-        emoteShortcut->setEmote(index);
+        emoteShortcut->setEmote(mClickedIndex);
         emoteShortcut->setEmoteSelected(-1);
-    }
-    else if (emoteShortcut->getEmote(index) != -1)
-    {
-        mEmoteClicked = true;
+        mClickedIndex = -1;
     }
 }
 
@@ -137,22 +108,36 @@ void EmoteShortcutContainer::mouseReleased(gcn::MouseEvent &event)
         if (emoteShortcut->isEmoteSelected())
             emoteShortcut->setEmoteSelected(-1);
 
-        if (index == -1)
-        {
-            mEmoteMoved = -1;
-            return;
-        }
-
-        if (mEmoteMoved != -1)
-        {
-            emoteShortcut->setEmotes(index, mEmoteMoved);
-            mEmoteMoved = -1;
-        }
-        else if (mEmoteClicked)
-        {
+        if (index != -1 && mClickedIndex == index)
             emoteShortcut->useEmote(index);
-        }
 
-        mEmoteClicked = false;
+        mClickedIndex = -1;
     }
+}
+
+void EmoteShortcutContainer::removeSlot(int index)
+{
+    emoteShortcut->removeEmote(index);
+}
+
+bool EmoteShortcutContainer::handleDrop(const Drag &drag, int absX, int absY)
+{
+    if (drag.sourceType != Drag::SourceType::EmoteShortcut || drag.emoteId < 0)
+        return false;
+
+    const int index = getIndexFromAbsolute(absX, absY);
+    if (index == -1)
+        return false;
+
+    const int replaced = emoteShortcut->getEmote(index);
+    emoteShortcut->setEmotes(index, drag.emoteId);
+
+    if (drag.source == this &&
+        drag.sourceIndex >= 0 &&
+        drag.sourceIndex != index)
+    {
+        emoteShortcut->setEmotes(drag.sourceIndex, replaced);
+    }
+
+    return true;
 }
