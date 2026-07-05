@@ -189,6 +189,7 @@ struct Config
     bool logToStandardOut = false;
     bool opengl = false;
     bool vsync = true;
+    bool reduceInputLag = true;
     WindowMode windowMode = WindowMode::Windowed;
     int screenWidth = defaultScreenWidth;
     int screenHeight = defaultScreenHeight;

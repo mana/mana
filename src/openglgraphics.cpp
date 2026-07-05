@@ -23,6 +23,7 @@
 
 #include "openglgraphics.h"
 
+#include "configuration.h"
 #include "log.h"
 #include "video.h"
 
@@ -122,11 +123,6 @@ OpenGLGraphics::~OpenGLGraphics()
 void OpenGLGraphics::setVSync(bool sync)
 {
     SDL_GL_SetSwapInterval(sync ? 1 : 0);
-}
-
-void OpenGLGraphics::setReduceInputLag(bool reduceInputLag)
-{
-    mReduceInputLag = reduceInputLag;
 }
 
 void OpenGLGraphics::updateSize(int windowWidth, int windowHeight, float scale)
@@ -535,7 +531,7 @@ void OpenGLGraphics::updateScreen()
      * The setting is optional since calling glFinish can reduce performance
      * and increase CPU usage.
      */
-    if (mReduceInputLag)
+    if (config.reduceInputLag)
         glFinish();
 }
 

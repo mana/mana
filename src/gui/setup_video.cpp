@@ -218,6 +218,7 @@ Setup_Video::Setup_Video():
     mParticleEffectsEnabled(config.particleEffects),
     mFps(config.fpsLimit),
     mSDLTransparencyDisabled(config.disableTransparency),
+    mReduceInputLagEnabled(config.reduceInputLag),
     mWindowModeListModel(new StringListModel({ _("Windowed"), _("Windowed Fullscreen"), _("Fullscreen") })),
     mResolutionListModel(new ResolutionListModel),
     mScaleListModel(new ScaleListModel(mVideoSettings)),
@@ -225,6 +226,7 @@ Setup_Video::Setup_Video():
     mResolutionDropDown(new DropDown(mResolutionListModel.get())),
     mScaleDropDown(new DropDown(mScaleListModel.get())),
     mVSyncCheckBox(new CheckBox(_("VSync"), mVideoSettings.vsync)),
+    mReduceInputLagCheckBox(new CheckBox(_("Reduce input lag (call glFinish)"), mReduceInputLagEnabled)),
     mOpenGLCheckBox(new CheckBox(_("OpenGL (Legacy)"), mVideoSettings.openGL)),
     mCustomCursorCheckBox(new CheckBox(_("Custom cursor"), mCustomCursorEnabled)),
     mParticleEffectsCheckBox(new CheckBox(_("Particle effects"), mParticleEffectsEnabled)),
@@ -315,7 +317,8 @@ Setup_Video::Setup_Video():
     place(0, 2, new Label(_("Scale:")));
     place(1, 2, mScaleDropDown, 2).setPadding(2);
     place(0, 3, mVSyncCheckBox, 4);
-    place(0, 4, mOpenGLCheckBox, 4);
+    place(0, 4, mReduceInputLagCheckBox, 4);
+    place(0, 5, mOpenGLCheckBox, 4);
 
     place = getPlacer(0, 1);
     place.getCell().setHAlign(LayoutCell::FILL);
@@ -419,6 +422,9 @@ void Setup_Video::apply()
     // FPS change
     config.fpsLimit = mFps;
 
+    // Reduce input lag change
+    config.reduceInputLag = mReduceInputLagCheckBox->isSelected();
+
     // We sync old and new values at apply time
     mVideoSettings.windowMode = config.windowMode;
     mVideoSettings.vsync = config.vsync;
@@ -427,6 +433,7 @@ void Setup_Video::apply()
     mParticleEffectsEnabled = config.particleEffects;
     mOverlayDetail = config.overlayDetail;
     mSDLTransparencyDisabled = config.disableTransparency;
+    mReduceInputLagEnabled = config.reduceInputLag;
 }
 
 void Setup_Video::cancel()
@@ -438,6 +445,7 @@ void Setup_Video::cancel()
                                                                       mVideoSettings.height));
     mScaleDropDown->setSelected(mVideoSettings.userScale);
     mVSyncCheckBox->setSelected(mVideoSettings.vsync);
+    mReduceInputLagCheckBox->setSelected(mReduceInputLagEnabled);
     mOpenGLCheckBox->setSelected(mVideoSettings.openGL);
     mCustomCursorCheckBox->setSelected(mCustomCursorEnabled);
     mParticleEffectsCheckBox->setSelected(mParticleEffectsEnabled);
@@ -457,6 +465,7 @@ void Setup_Video::cancel()
     config.particleEffects = mParticleEffectsEnabled;
     config.opengl = mVideoSettings.openGL;
     config.disableTransparency = mSDLTransparencyDisabled;
+    config.reduceInputLag = mReduceInputLagEnabled;
 }
 
 void Setup_Video::action(const gcn::ActionEvent &event)

@@ -71,12 +71,12 @@ Setup::Setup():
     place(0, 5, new Label(FULL_VERSION));
 
     // Determine minimum width by layout
-    int width = 0, height = 350;
+    int width = 0, height = 370;
     getLayout().reflow(width, height);
 
     setMinWidth(width + 2 * getPadding());
     setMinHeight(height + getPadding() + getTitleBarHeight());
-    setDefaultSize(395, 360 + getPadding() + getTitleBarHeight(), WindowAlignment::Center);
+    setDefaultSize(395, 380 + getPadding() + getTitleBarHeight(), WindowAlignment::Center);
     loadWindowState();
 }
 

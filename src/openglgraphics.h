@@ -44,16 +44,6 @@ class OpenGLGraphics final : public Graphics
 
         void setVSync(bool sync) override;
 
-        /**
-         * Sets whether input lag should be reduced.
-         *
-         * This means waiting until the graphics card has finished drawing and
-         * displaying the current frame until continuing towards the next,
-         * possibly at the cost of performance and CPU usage.
-         */
-        void setReduceInputLag(bool reduceInputLag);
-        bool getReduceInputLag() const { return mReduceInputLag; }
-
         void updateSize(int windowWidth, int windowHeight, float scale) override;
 
         /**
@@ -135,6 +125,5 @@ class OpenGLGraphics final : public Graphics
         bool mAlpha = false;
         bool mTexture = false;
         bool mColorAlpha = false;
-        bool mReduceInputLag = true;
 };
 #endif //USE_OPENGL

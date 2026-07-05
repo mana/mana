@@ -53,6 +53,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         bool mParticleEffectsEnabled;
         int mFps;
         bool mSDLTransparencyDisabled;
+        bool mReduceInputLagEnabled;
 
         std::unique_ptr<gcn::ListModel> mWindowModeListModel;
         std::unique_ptr<ResolutionListModel> mResolutionListModel;
@@ -62,6 +63,7 @@ class Setup_Video : public SetupTab, public gcn::ActionListener,
         gcn::DropDown *mResolutionDropDown;
         DropDown *mScaleDropDown;
         gcn::CheckBox *mVSyncCheckBox;
+        gcn::CheckBox *mReduceInputLagCheckBox;
         gcn::CheckBox *mOpenGLCheckBox;
         gcn::CheckBox *mCustomCursorCheckBox;
         gcn::CheckBox *mParticleEffectsCheckBox;

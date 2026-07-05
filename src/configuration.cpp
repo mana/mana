@@ -359,6 +359,7 @@ void serdeOptions(T option)
     option("logToStandardOut",              &Config::logToStandardOut);
     option("opengl",                        &Config::opengl);
     option("vsync",                         &Config::vsync);
+    option("reduceInputLag",                &Config::reduceInputLag);
     option("windowmode",                    &Config::windowMode);
     option("screenwidth",                   &Config::screenWidth);
     option("screenheight",                  &Config::screenHeight);

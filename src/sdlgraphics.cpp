@@ -21,6 +21,7 @@
 
 #include "sdlgraphics.h"
 
+#include "configuration.h"
 #include "log.h"
 #include "resources/image.h"
 #include "utils/stringutils.h"
@@ -213,6 +214,24 @@ void SDLGraphics::drawRescaledImagePattern(const Image *image,
 void SDLGraphics::updateScreen()
 {
     SDL_RenderPresent(mRenderer);
+
+    // When the SDL renderer uses an OpenGL backend, call glFinish() to
+    // prevent the GPU pipeline from getting ahead, reducing resize lag
+    // on Wayland by avoiding triple buffering. The function is resolved
+    // dynamically to avoid a link-time dependency on OpenGL.
+    if (config.reduceInputLag && SDL_GL_GetCurrentContext())
+    {
+#ifdef _WIN32
+        using GLFinishFn = void (__stdcall *)();
+#else
+        using GLFinishFn = void (*)();
+#endif
+        static const auto glFinish = reinterpret_cast<GLFinishFn>(
+            SDL_GL_GetProcAddress("glFinish"));
+
+        if (glFinish)
+            glFinish();
+    }
 }
 
 void SDLGraphics::windowToLogical(int windowX, int windowY,
