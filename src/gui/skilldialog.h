@@ -73,13 +73,13 @@ class SkillDialog : public Window, public gcn::ActionListener, public EventListe
 
         void setModifiable(int id, bool modifiable);
 
-        bool hasSkills() { return !mSkills.empty(); }
+        bool hasSkills() const { return !mSkills.empty(); }
 
     private:
         std::vector<std::unique_ptr<SkillModel>> mSkillModels;
         std::vector<std::unique_ptr<Tab>> mTabs;
         std::vector<std::unique_ptr<gcn::Widget>> mTabWidgets;
-        std::map<int, SkillInfo*> mSkills;
+        std::map<int, SkillInfo> mSkills;
         TabbedArea *mTabbedArea;
         Label *mPointsLabel;
         Button *mIncreaseButton;

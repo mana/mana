@@ -57,21 +57,31 @@ class SkillEntry;
 
 struct SkillInfo
 {
-    unsigned short id;
-    std::string name;
-    ResourceRef<Image> icon;
-    bool modifiable;
-    bool visible;
+    /**
+     * The data of a skill at a certain level. Skills can have a different
+     * name, icon and description for each level.
+     */
+    struct Level
+    {
+        std::string name;
+        std::string icon;
+        std::string description;
+    };
+
+    unsigned short id = 0;
+    bool modifiable = false;
     SkillModel *model = nullptr;
+    std::map<int, Level> levels;
 
+    // Display state below is maintained by update()
+    const Level *currentLevel = nullptr;
+    ResourceRef<Image> icon;
+    bool visible = false;
     std::string skillLevel;
-    int skillLevelWidth;
-
+    int skillLevelWidth = -1;
     std::string skillExp;
-    float progress;
+    float progress = 0.0f;
     gcn::Color color;
-
-    ~SkillInfo() = default;
 
     void setIcon(const std::string &iconPath)
     {
@@ -98,15 +108,17 @@ public:
     { return mVisibleSkills.at(i); }
 
     std::string getElementAt(int i) override
-    { return getSkillAt(i)->name; }
+    { return getSkillAt(i)->currentLevel->name; }
 
     void updateVisibilities();
 
-    void addSkill(std::unique_ptr<SkillInfo> info)
-    { mSkills.push_back(std::move(info)); }
+    void addSkill(SkillInfo *info)
+    { mSkills.push_back(info); }
 
 private:
-    std::vector<std::unique_ptr<SkillInfo>> mSkills;
+    // Non-owning pointers into SkillDialog::mSkills, which being a std::map
+    // guarantees stable addresses
+    std::vector<SkillInfo *> mSkills;
     std::vector<SkillInfo *> mVisibleSkills;
 };
 
@@ -237,12 +249,12 @@ std::string SkillDialog::update(int id)
     auto i = mSkills.find(id);
     if (i != mSkills.end())
     {
-        SkillInfo &info = *i->second;
+        SkillInfo &info = i->second;
         info.update();
-        return info.name;
+        return info.currentLevel->name;
     }
 
-    return std::string();
+    return {};
 }
 
 void SkillDialog::update()
@@ -251,8 +263,8 @@ void SkillDialog::update()
                                        PlayerInfo::getAttribute(SKILL_POINTS)));
     mPointsLabel->adjustSize();
 
-    for (auto &skill : mSkills)
-        skill.second->update();
+    for (auto &[_, skill] : mSkills)
+        skill.update();
 }
 
 void SkillDialog::event(Event::Channel channel, const Event &event)
@@ -268,7 +280,7 @@ void SkillDialog::event(Event::Channel channel, const Event &event)
     {
         auto it = mSkills.find(event.getInt("id"));
         if (it != mSkills.end())
-            it->second->update();
+            it->second.update();
     }
 }
 
@@ -299,18 +311,16 @@ void SkillDialog::loadSkills()
         if (Net::getNetworkType() == ServerType::TmwAthena)
         {
             auto model = std::make_unique<SkillModel>();
-            auto skill = std::make_unique<SkillInfo>();
-            skill->id = 1;
-            skill->name = "basic";
-            skill->setIcon(std::string());
-            skill->modifiable = true;
-            skill->visible = true;
-            skill->model = model.get();
-            skill->update();
 
-            mSkills[1] = skill.get();
+            SkillInfo &skill = mSkills[1];
+            skill.id = 1;
+            skill.modifiable = true;
+            skill.visible = true;
+            skill.model = model.get();
+            skill.levels[0].name = "basic";
+            skill.update();
 
-            model->addSkill(std::move(skill));
+            model->addSkill(&skill);
             model->updateVisibilities();
 
             auto listbox = new SkillListBox(model.get());
@@ -346,21 +356,27 @@ void SkillDialog::loadSkills()
                 if (node.name() == "skill")
                 {
                     int id = atoi(node.getProperty("id", "-1").c_str());
-                    std::string name = node.getProperty("name", strprintf(_("Skill %d"), id));
-                    std::string icon = node.getProperty("icon", "");
+                    int level = node.getProperty("level", 0);
 
-                    auto skill = std::make_unique<SkillInfo>();
-                    skill->id = id;
-                    skill->name = name;
-                    skill->setIcon(icon);
-                    skill->modifiable = false;
-                    skill->visible = false;
-                    skill->model = model.get();
-                    skill->update();
+                    // The same skill can appear multiple times, once for
+                    // each level, but we only display a single row
+                    auto [it, inserted] = mSkills.try_emplace(id);
+                    SkillInfo &skill = it->second;
+                    if (inserted)
+                    {
+                        skill.id = id;
+                        skill.model = model.get();
+                        model->addSkill(&skill);
+                    }
 
-                    mSkills[id] = skill.get();
+                    SkillInfo::Level &levelInfo = skill.levels[level];
+                    levelInfo.name = node.getProperty(
+                                "name", strprintf(_("Skill %d"), id));
+                    levelInfo.icon = node.getProperty("icon", "");
+                    levelInfo.description = node.getProperty(
+                                "description", std::string());
 
-                    model->addSkill(std::move(skill));
+                    skill.update();
                 }
             }
 
@@ -391,7 +407,7 @@ void SkillDialog::setModifiable(int id, bool modifiable)
 
     if (it != mSkills.end())
     {
-        SkillInfo &info = *it->second;
+        SkillInfo &info = it->second;
         info.modifiable = modifiable;
         info.update();
     }
@@ -401,9 +417,9 @@ void SkillModel::updateVisibilities()
 {
     mVisibleSkills.clear();
 
-    for (auto &skill : mSkills)
+    for (auto *skill : mSkills)
         if (skill->visible)
-            mVisibleSkills.push_back(skill.get());
+            mVisibleSkills.push_back(skill);
 }
 
 void SkillInfo::update()
@@ -412,6 +428,18 @@ void SkillInfo::update()
     int effLevel = PlayerInfo::getStatEffective(id);
 
     std::pair<int, int> exp = PlayerInfo::getStatExperience(id);
+
+    // Display the entry of the highest reached level, falling back to the
+    // first entry when the skill hasn't been learned yet
+    auto i = levels.upper_bound(baseLevel);
+    if (i != levels.begin())
+        --i;
+
+    if (currentLevel != &i->second)
+    {
+        currentLevel = &i->second;
+        setIcon(currentLevel->icon);
+    }
 
     if (!modifiable && baseLevel == 0 && effLevel == 0 && exp.second == 0)
     {
@@ -467,7 +495,7 @@ void SkillInfo::update()
 void SkillInfo::draw(Graphics *graphics, int y, int width)
 {
     graphics->drawImage(icon, 1, y);
-    graphics->drawText(name, 34, y);
+    graphics->drawText(currentLevel->name, 34, y);
 
     if (skillLevelWidth < 0)
     {
@@ -481,5 +509,9 @@ void SkillInfo::draw(Graphics *graphics, int y, int width)
     {
         const gcn::Rectangle rect(33, y + 15, width - 33, 17);
         gui->getTheme()->drawProgressBar(graphics, rect, color, progress, skillExp);
+    }
+    else if (!currentLevel->description.empty())
+    {
+        graphics->drawText(currentLevel->description, 34, y + 16);
     }
 }
