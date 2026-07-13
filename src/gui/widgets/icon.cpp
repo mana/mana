@@ -52,6 +52,8 @@ void Icon::draw(gcn::Graphics *g)
         auto *graphics = static_cast<Graphics*>(g);
         const int x = (getWidth() - mImage->getWidth()) / 2;
         const int y = (getHeight() - mImage->getHeight()) / 2;
+        // The image may be shared with widgets that adjust its alpha
+        mImage->setAlpha(1.0f);
         graphics->drawImage(mImage, x, y);
     }
 }
