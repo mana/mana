@@ -794,6 +794,7 @@ static int readColorId(const std::string &id)
 {
     static constexpr const char *colors[Theme::THEME_COLORS_END] = {
         "TEXT",
+        "TEXT_DIMMED",
         "BLACK",
         "RED",
         "GREEN",

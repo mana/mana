@@ -512,6 +512,7 @@ void SkillInfo::draw(Graphics *graphics, int y, int width)
     }
     else if (!currentLevel->description.empty())
     {
+        graphics->setColor(Theme::getThemeColor(Theme::TEXT_DIMMED));
         graphics->drawText(currentLevel->description, 34, y + 16);
     }
 }

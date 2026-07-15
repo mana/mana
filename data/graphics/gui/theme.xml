@@ -1,6 +1,7 @@
 <theme name="Mana">
   <palette id="0">
     <color id="TEXT" color="#000000" />
+    <color id="TEXT_DIMMED" color="#919191" />
     <color id="RED" color="#ff0000" />
     <color id="GREEN" color="#009000" />
     <color id="BLUE" color="#0000ff" />

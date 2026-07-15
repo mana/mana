@@ -3,6 +3,7 @@
     <!-- <color id="BROWSERBOX" color="#8f8f8f" /> -->
     <!-- <color id="SELFNICK" color="#808600" /> -->
     <color id="TEXT" color="#e8d8aa" />
+    <color id="TEXT_DIMMED" color="#a89d78" />
     <!-- <color id="TEXT_DISABLED" color="#e8d8aa" /> -->
     <color id="CARET" color="#F8E8DC" />
     <color id="SHADOW" color="#000000" />

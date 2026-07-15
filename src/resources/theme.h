@@ -215,6 +215,7 @@ class Theme : public EventListener
 
         enum ThemePalette {
             TEXT,
+            TEXT_DIMMED,
             BLACK,          // Color 0
             RED,            // Color 1
             GREEN,          // Color 2
