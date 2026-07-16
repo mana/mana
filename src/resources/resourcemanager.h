@@ -24,9 +24,8 @@
 #include "resources/resource.h"
 
 #include <ctime>
-#include <functional>
-#include <map>
 #include <string>
+#include <unordered_map>
 
 class Image;
 class ImageSet;
@@ -124,8 +123,26 @@ class ResourceManager
          * @return A valid resource or <code>nullptr</code> if the resource could
          *         not be generated.
          */
-        Resource *get(const std::string &idPath,
-                      const std::function<Resource *()> &generator);
+        template<typename Generator>
+        Resource *get(const std::string &idPath, Generator &&generator)
+        {
+            if (Resource *resource = find(idPath))
+                return resource;
+            return insert(idPath, generator());
+        }
+
+        /**
+         * Looks up a resource by its identifier path, reviving it from the
+         * orphaned resources if necessary. Returns <code>nullptr</code> if the
+         * resource is not loaded.
+         */
+        Resource *find(const std::string &idPath);
+
+        /**
+         * Inserts a freshly generated resource under the given identifier
+         * path. A null resource is passed through unchanged.
+         */
+        Resource *insert(const std::string &idPath, Resource *resource);
 
         /**
          * Releases a resource, placing it in the set of orphaned resources.
@@ -147,7 +164,7 @@ class ResourceManager
         void cleanOrphans();
 
         static ResourceManager *instance;
-        std::map<std::string, Resource *> mResources;
-        std::map<std::string, Resource *> mOrphanedResources;
+        std::unordered_map<std::string, Resource *> mResources;
+        std::unordered_map<std::string, Resource *> mOrphanedResources;
         time_t mOldestOrphan = 0;
 };

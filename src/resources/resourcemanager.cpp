@@ -36,7 +36,6 @@
 #include <SDL_image.h>
 
 #include <cassert>
-#include <sstream>
 #include <memory>
 
 #include <sys/time.h>
@@ -179,8 +178,7 @@ std::string ResourceManager::getPath(const std::string &file)
     return path;
 }
 
-Resource *ResourceManager::get(const std::string &idPath,
-                               const std::function<Resource *()> &generator)
+Resource *ResourceManager::find(const std::string &idPath)
 {
     // Check if the id exists, and return the value if it does.
     auto resIter = mResources.find(idPath);
@@ -193,12 +191,15 @@ Resource *ResourceManager::get(const std::string &idPath,
     if (resIter != mOrphanedResources.end())
     {
         Resource *res = resIter->second;
-        mResources.insert(*resIter);
-        mOrphanedResources.erase(resIter);
+        mResources.insert(mOrphanedResources.extract(resIter));
         return res;
     }
 
-    Resource *resource = generator();
+    return nullptr;
+}
+
+Resource *ResourceManager::insert(const std::string &idPath, Resource *resource)
+{
     if (resource)
     {
         resource->mIdPath = idPath;
@@ -253,10 +254,10 @@ ResourceRef<Image> ResourceManager::getImage(const std::string &idPath)
 ResourceRef<ImageSet> ResourceManager::getImageSet(const std::string &imagePath,
                                                    int w, int h)
 {
-    std::stringstream ss;
-    ss << imagePath << "[" << w << "x" << h << "]";
+    const std::string idPath = imagePath + "[" + std::to_string(w) + "x" +
+                               std::to_string(h) + "]";
 
-    return static_cast<ImageSet*>(get(ss.str(), [&] () -> Resource * {
+    return static_cast<ImageSet*>(get(idPath, [&] () -> Resource * {
         auto img = getImage(imagePath);
         if (!img)
             return nullptr;
@@ -267,10 +268,9 @@ ResourceRef<ImageSet> ResourceManager::getImageSet(const std::string &imagePath,
 
 ResourceRef<SpriteDef> ResourceManager::getSprite(const std::string &path, int variant)
 {
-    std::stringstream ss;
-    ss << path << "[" << variant << "]";
+    const std::string idPath = path + "[" + std::to_string(variant) + "]";
 
-    return static_cast<SpriteDef*>(get(ss.str(), [&] () -> Resource * {
+    return static_cast<SpriteDef*>(get(idPath, [&] () -> Resource * {
         return SpriteDef::load(path, variant);
     }));
 }
@@ -288,8 +288,7 @@ void ResourceManager::release(Resource *res)
     if (mOrphanedResources.empty())
         mOldestOrphan = timestamp;
 
-    mOrphanedResources.insert(*resIter);
-    mResources.erase(resIter);
+    mOrphanedResources.insert(mResources.extract(resIter));
 }
 
 void ResourceManager::remove(Resource *res)
