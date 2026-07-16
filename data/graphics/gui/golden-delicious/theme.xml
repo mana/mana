@@ -1,30 +1,30 @@
 <theme name="Golden Delicious">
   <palette id="0">
-    <color id="BROWSERBOX" color="#8f8f8f" />
-    <color id="SELFNICK" color="#808600" />
+    <!-- <color id="BROWSERBOX" color="#8f8f8f" /> -->
+    <!-- <color id="SELFNICK" color="#808600" /> -->
     <color id="TEXT" color="#e8d8aa" />
-    <color id="TEXT_DISABLED" color="#e8d8aa" />
+    <!-- <color id="TEXT_DISABLED" color="#e8d8aa" /> -->
     <color id="CARET" color="#F8E8DC" />
     <color id="SHADOW" color="#000000" />
     <color id="OUTLINE" color="#000000" />
-    <color id="BORDER" color="#000000" />
-    <color id="DROPDOWN" color="#e8d8aa" />
-    <color id="LISTBOX" color="#e8d8aa" />
+    <!-- <color id="BORDER" color="#000000" /> -->
+    <!-- <color id="DROPDOWN" color="#e8d8aa" /> -->
+    <!-- <color id="LISTBOX" color="#e8d8aa" /> -->
     <!-- WIP: next colors may still need tweak -->
-    <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#473005" />
+    <!-- <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#473005" /> -->
     <color id="BACKGROUND" color="#5f5f5f" />
-    <color id="BACKGROUND_GRAY" color="#161514" />
-    <color id="DROPDOWN_SHADOW" color="#c0c0c0" />
+    <!-- <color id="BACKGROUND_GRAY" color="#161514" /> -->
+    <!-- <color id="DROPDOWN_SHADOW" color="#c0c0c0" /> -->
     <color id="HIGHLIGHT" color="#ebc873" />
     <color id="HIGHLIGHT_TEXT" color="#000000" />
     <color id="TAB_FLASH" color="#a7ff2a" outlineColor="#142200" effect="pulse" />
-    <color id="TAB_PLAYER_FLASH" color="#00ff00" effect="pulse" />
+    <!-- <color id="TAB_PLAYER_FLASH" color="#00ff00" effect="pulse" /> -->
     <color id="PARTY_TAB" color="#efd7a7" outlineColor="#473005" />
-    <color id="GUILD_TAB" color="#efd7a7" outlineColor="#473005" />
+    <!-- <color id="GUILD_TAB" color="#efd7a7" outlineColor="#473005" /> -->
     <color id="WHISPER_TAB" color="#efd7a7" outlineColor="#473005" />
-    <color id="WHISPER_TAB_OFFLINE" color="#444444" outlineColor="#000000" />
-    <color id="WHISPER_TAB_OFFLINE_HIGHLIGHTED" color="#fffbed" outlineColor="#000000" />
-    <color id="WHISPER_TAB_OFFLINE_SELECTED" color="#444444" outlineColor="#000000" />
+    <!-- <color id="WHISPER_TAB_OFFLINE" color="#444444" outlineColor="#000000" /> -->
+    <!-- <color id="WHISPER_TAB_OFFLINE_HIGHLIGHTED" color="#fffbed" outlineColor="#000000" /> -->
+    <!-- <color id="WHISPER_TAB_OFFLINE_SELECTED" color="#444444" outlineColor="#000000" /> -->
     <color id="SHOP_WARNING" color="#701111" />
     <color id="ITEM_EQUIPPED" color="#f8e8cf" /> <!-- Fixed -->
     <color id="CHAT" color="#f1d9a9" />
@@ -36,9 +36,9 @@
     <color id="LOGGER" color="#919191" />
     <color id="HYPERLINK" color="#bcdff4" outlineColor="#052f47" />
     <color id="UNKNOWN_ITEM" color="#ffffff" />
-    <color id="CHARM" color="#ffffff" />
+    <!-- <color id="CHARM" color="#ffffff" /> -->
     <color id="GENERIC" color="#dbdbdb" outlineColor="#333333" />
-    <color id="CARD" color="#dbdbdb" outlineColor="#333333" />
+    <!-- <color id="CARD" color="#dbdbdb" outlineColor="#333333" /> -->
     <color id="HEAD" color="#f8eb7c" outlineColor="#382a01" />
     <color id="USABLE" color="#b4d7ec" outlineColor="#052f47" />
     <color id="TORSO" color="#f8eb7c" outlineColor="#382a01" />
@@ -52,15 +52,15 @@
     <color id="ARMS" color="#f8eb7c" outlineColor="#382a01" />
     <color id="AMMO" color="#f8eb7c" outlineColor="#382a01" />
     <color id="SERVER_VERSION_NOT_SUPPORTED" color="#DC0000" />
-    <color id="WARNING" color="#ff0000" />
+    <!-- <color id="WARNING" color="#ff0000" /> -->
     <color id="CHAT" color="#ffffff" outlineColor="#3f3f3f" />
     <color id="GM" color="#ff45fd" outlineColor="#44033a" />
     <color id="GLOBAL" color="#ff45fd" outlineColor="#44033a" />
     <color id="PLAYER" color="#bcdff4" outlineColor="#052f47" />
-    <color id="PLAYER_ADVANCED" color="#f9eabc" outlineColor="#3b2b04" />
+    <!-- <color id="PLAYER_ADVANCED" color="#f9eabc" outlineColor="#3b2b04" /> -->
     <color id="IS" color="#77deff" outlineColor="#02232e" />
     <color id="SERVER" color="#a7ff2a" outlineColor="#142200" />
-    <color id="BROWSERBOX" color="#999999" outlineColor="#000000" />
+    <!-- <color id="BROWSERBOX" color="#999999" outlineColor="#000000" /> -->
     <color id="BUBBLE_TEXT" color="#ffffff" />
     <color id="BLACK" color="#999999" outlineColor="#000000" />
     <color id="RED" color="#ff6565" outlineColor="#470303" />
@@ -74,38 +74,38 @@
     <color id="BROWN" color="#cb884c" outlineColor="#271802" />
     <color id="OLDCHAT" color="#cb884c" outlineColor="#271802" />
     <color id="AWAYCHAT" color="#cb884c" outlineColor="#271802" />
-    <color id="STATUSBAR_ON" color="#646464" />
-    <color id="STATUSBAR_OFF" color="#ffff00" />
-    <color id="TABLE_BACKGROUND" color="#bfbfbf" />
-    <color id="SKILL_COOLDOWN" color="#5090ff" />
+    <!-- <color id="STATUSBAR_ON" color="#646464" /> -->
+    <!-- <color id="STATUSBAR_OFF" color="#ffff00" /> -->
+    <!-- <color id="TABLE_BACKGROUND" color="#bfbfbf" /> -->
+    <!-- <color id="SKILL_COOLDOWN" color="#5090ff" /> -->
   </palette>
 
   <palette id="1">
-    <color id="BROWSERBOX" color="#8f8f8f" />
-    <color id="SELFNICK" color="#808600" />
+    <!-- <color id="BROWSERBOX" color="#8f8f8f" /> -->
+    <!-- <color id="SELFNICK" color="#808600" /> -->
     <color id="TEXT" color="#fbf4c4" outlineColor="#42403a" />
-    <color id="TEXT_DISABLED" color="#e8d8aa" />
+    <!-- <color id="TEXT_DISABLED" color="#e8d8aa" /> -->
     <color id="CARET" color="#F8E8DC" />
     <color id="SHADOW" color="#000000" />
     <color id="OUTLINE" color="#000000" />
-    <color id="BORDER" color="#000000" />
-    <color id="DROPDOWN" color="#e8d8aa" />
-    <color id="LISTBOX" color="#e8d8aa" />
+    <!-- <color id="BORDER" color="#000000" /> -->
+    <!-- <color id="DROPDOWN" color="#e8d8aa" /> -->
+    <!-- <color id="LISTBOX" color="#e8d8aa" /> -->
     <!-- WIP: next colors may still need tweak -->
-    <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#473005" />
+    <!-- <color id="CHANNEL_CHAT_TAB" color="#efd7a7" outlineColor="#473005" /> -->
     <color id="BACKGROUND" color="#ffffff" />
-    <color id="BACKGROUND_GRAY" color="#404040" />
-    <color id="DROPDOWN_SHADOW" color="#c0c0c0" />
+    <!-- <color id="BACKGROUND_GRAY" color="#404040" /> -->
+    <!-- <color id="DROPDOWN_SHADOW" color="#c0c0c0" /> -->
     <color id="HIGHLIGHT" color="#ebc873" />
     <color id="HIGHLIGHT_TEXT" color="#000000" />
     <color id="TAB_FLASH" color="#fec4ff" effect="pulse" />
-    <color id="TAB_PLAYER_FLASH" color="#00ff00" effect="pulse" />
+    <!-- <color id="TAB_PLAYER_FLASH" color="#00ff00" effect="pulse" /> -->
     <color id="PARTY_TAB" color="#efd7a7" outlineColor="#473005" />
-    <color id="GUILD_TAB" color="#efd7a7" outlineColor="#473005" />
+    <!-- <color id="GUILD_TAB" color="#efd7a7" outlineColor="#473005" /> -->
     <color id="WHISPER_TAB" color="#efd7a7" outlineColor="#473005" />
-    <color id="WHISPER_TAB_OFFLINE" color="#444444" outlineColor="#000000" />
-    <color id="WHISPER_TAB_OFFLINE_HIGHLIGHTED" color="#fffbed" outlineColor="#000000" />
-    <color id="WHISPER_TAB_OFFLINE_SELECTED" color="#444444" outlineColor="#000000" />
+    <!-- <color id="WHISPER_TAB_OFFLINE" color="#444444" outlineColor="#000000" /> -->
+    <!-- <color id="WHISPER_TAB_OFFLINE_HIGHLIGHTED" color="#fffbed" outlineColor="#000000" /> -->
+    <!-- <color id="WHISPER_TAB_OFFLINE_SELECTED" color="#444444" outlineColor="#000000" /> -->
     <color id="SHOP_WARNING" color="#e07a7a" />
     <color id="ITEM_EQUIPPED" color="#f8e8cf" /> <!-- Fixed -->
     <color id="CHAT" color="#f1d9a9" />
@@ -117,9 +117,9 @@
     <color id="LOGGER" color="#919191" />
     <color id="HYPERLINK" color="#bcdff4" outlineColor="#052f47" />
     <color id="UNKNOWN_ITEM" color="#ffffff" />
-    <color id="CHARM" color="#ffffff" />
+    <!-- <color id="CHARM" color="#ffffff" /> -->
     <color id="GENERIC" color="#dbdbdb" outlineColor="#333333" />
-    <color id="CARD" color="#dbdbdb" outlineColor="#333333" />
+    <!-- <color id="CARD" color="#dbdbdb" outlineColor="#333333" /> -->
     <color id="HEAD" color="#f8eb7c" outlineColor="#382a01" />
     <color id="USABLE" color="#b4d7ec" outlineColor="#052f47" />
     <color id="TORSO" color="#f8eb7c" outlineColor="#382a01" />
@@ -133,15 +133,15 @@
     <color id="ARMS" color="#f8eb7c" outlineColor="#382a01" />
     <color id="AMMO" color="#f8eb7c" outlineColor="#382a01" />
     <color id="SERVER_VERSION_NOT_SUPPORTED" color="#DC0000" />
-    <color id="WARNING" color="#ff0000" />
+    <!-- <color id="WARNING" color="#ff0000" /> -->
     <color id="CHAT" color="#ffffff" outlineColor="#3f3f3f" />
     <color id="GM" color="#ff45fd" outlineColor="#44033a" />
     <color id="GLOBAL" color="#ff45fd" outlineColor="#44033a" />
     <color id="PLAYER" color="#bcdff4" outlineColor="#052f47" />
-    <color id="PLAYER_ADVANCED" color="#f9eabc" outlineColor="#3b2b04" />
+    <!-- <color id="PLAYER_ADVANCED" color="#f9eabc" outlineColor="#3b2b04" /> -->
     <color id="IS" color="#77deff" outlineColor="#02232e" />
     <color id="SERVER" color="#a7ff2a" outlineColor="#142200" />
-    <color id="BROWSERBOX" color="#999999" outlineColor="#000000" />
+    <!-- <color id="BROWSERBOX" color="#999999" outlineColor="#000000" /> -->
     <color id="BUBBLE_TEXT" color="#ffffff" />
     <color id="BLACK" color="#999999" outlineColor="#000000" />
     <color id="RED" color="#ff6565" outlineColor="#470303" />
@@ -155,10 +155,10 @@
     <color id="BROWN" color="#cb884c" outlineColor="#271802" />
     <color id="OLDCHAT" color="#cb884c" outlineColor="#271802" />
     <color id="AWAYCHAT" color="#cb884c" outlineColor="#271802" />
-    <color id="STATUSBAR_ON" color="#646464" />
-    <color id="STATUSBAR_OFF" color="#ffff00" />
-    <color id="TABLE_BACKGROUND" color="#bfbfbf" />
-    <color id="SKILL_COOLDOWN" color="#5090ff" />
+    <!-- <color id="STATUSBAR_ON" color="#646464" /> -->
+    <!-- <color id="STATUSBAR_OFF" color="#ffff00" /> -->
+    <!-- <color id="TABLE_BACKGROUND" color="#bfbfbf" /> -->
+    <!-- <color id="SKILL_COOLDOWN" color="#5090ff" /> -->
   </palette>
 
   <progressbar id="DEFAULT" color="#969696" />
