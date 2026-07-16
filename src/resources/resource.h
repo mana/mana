@@ -59,7 +59,7 @@ class Resource
                            OrphanPolicy orphanPolicy = DeleteLater);
 
         std::string mIdPath;    /**< Path identifying this resource. */
-        time_t mTimeStamp;      /**< Time at which the resource was orphaned. */
+        time_t mTimeStamp = 0;  /**< Time at which the resource was orphaned. */
         unsigned mRefCount = 0; /**< Reference count. */
 };
 

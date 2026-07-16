@@ -49,36 +49,48 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
-    auto cleanupResources = [&](auto match)
+    // Deleting a resource orphans the resources it references, so keep
+    // deleting unreferenced resources until none are left (SpriteDef
+    // references ImageSet, which references Image).
+    auto deleteUnreferenced = [this]
     {
-        // Include any orphaned resources into the main list for cleanup
-        mResources.insert(mOrphanedResources.begin(), mOrphanedResources.end());
-        mOrphanedResources.clear();
-
-        for (auto iter = mResources.begin(); iter != mResources.end(); )
+        bool deletedAny;
+        do
         {
-            if (match(iter->second))
+            mResources.merge(mOrphanedResources);
+
+            deletedAny = false;
+            for (auto iter = mResources.begin(); iter != mResources.end(); )
             {
-                cleanUp(iter->second);
-                iter = mResources.erase(iter);
+                Resource *res = iter->second;
+                if (res->mRefCount == 0)
+                {
+                    iter = mResources.erase(iter);
+                    delete res;
+                    deletedAny = true;
+                }
+                else
+                {
+                    ++iter;
+                }
             }
-            else
-            {
-                ++iter;
-            }
-        }
+        } while (deletedAny);
     };
 
-    // SpriteDef references ImageSet
-    cleanupResources([](Resource *res) { return dynamic_cast<SpriteDef *>(res); });
+    deleteUnreferenced();
 
-    // ImageSet references Image
-    cleanupResources([](Resource *res) { return dynamic_cast<ImageSet *>(res); });
+    // Any remaining resources are still referenced, so they would leak.
+    // Delete them anyway, warning about the remaining references.
+    while (!mResources.empty())
+    {
+        auto iter = mResources.begin();
+        Resource *res = iter->second;
+        mResources.erase(iter);
+        cleanUp(res);
 
-    // Release remaining resources
-    cleanupResources([](Resource *res) { return true; });
-
-    assert(mOrphanedResources.empty());
+        // Deleting the resource may have orphaned its dependencies
+        deleteUnreferenced();
+    }
 }
 
 void ResourceManager::cleanUp(Resource *res)
@@ -117,7 +129,7 @@ void ResourceManager::cleanOrphans()
         }
         else
         {
-            Log::info("ResourceManager::release(%s)", res->mIdPath.c_str());
+            Log::info("Deleting orphaned resource: %s", res->mIdPath.c_str());
             iter = mOrphanedResources.erase(iter);
             delete res; // delete only after removal from list, to avoid issues in recursion
         }
