@@ -16,6 +16,7 @@ Unreleased
 - Fixed double handling of up/down keys when NPC choices are focused
 - Fixed issues with particle effects in some locales
 - Fixed update flow aborting when news.txt fails to download
+- Fixed customdata archives not being loaded (regression in 0.7)
 - Reduced input lag when using the SDL renderer with an OpenGL backend
 
 0.7.0 (21 August 2025)

@@ -148,7 +148,7 @@ void ResourceManager::searchAndAddArchives(const std::string &path,
     {
         const size_t len = strlen(fileName);
 
-        if (len > ext.length() && ext != (fileName + (len - ext.length())))
+        if (len > ext.length() && ext == (fileName + (len - ext.length())))
         {
             std::string file = path + fileName;
             if (auto realDir = FS::getRealDir(file))
