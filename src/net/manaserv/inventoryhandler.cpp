@@ -291,6 +291,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
                 mEquipBackend.equip(inventorySlot, equipmentSlot);
                 inventoryWindow->updateButtons();
             }
+            break;
 
         case GPMSG_UNEQUIP:
             {
