@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22...3.27)
+cmake_minimum_required(VERSION 3.22...4.2)
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
 
@@ -58,7 +58,11 @@ include(GNUInstallDirs)
 add_subdirectory(data)
 
 if(ENABLE_MANASERV AND NOT USE_SYSTEM_ENET)
+  # The ENet CMakeLists.txt declares compatibility with CMake versions older
+  # than 3.5, which CMake 4 refuses to configure without this variable
+  set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
   add_subdirectory(libs/enet EXCLUDE_FROM_ALL)
+  unset(CMAKE_POLICY_VERSION_MINIMUM)
 endif()
 
 if(NOT USE_SYSTEM_GUICHAN)
