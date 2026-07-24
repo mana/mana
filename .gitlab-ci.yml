@@ -12,6 +12,9 @@ ubuntu-build:
   cache:
     paths:
       - ccache
+      # Downloaded by the AppImage packaging script, which skips the
+      # download when the file is already present
+      - linuxdeploy-x86_64.AppImage
   variables:
     GIT_SUBMODULE_STRATEGY: normal
   before_script:
