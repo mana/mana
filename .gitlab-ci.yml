@@ -67,8 +67,11 @@ macos-build:
     - cmake --build build
     - cd build
     - cpack -G DragNDrop
-    - mv Mana-*.dmg ..
+    # No version in the file name, since CPack always stamps the static
+    # project version, and a stable name gives the latest artifact a stable
+    # download URL usable on the website
+    - mv Mana-*.dmg ../Mana.dmg
   artifacts:
     name: "macos-dmg-$CI_COMMIT_REF_SLUG"
     paths:
-      - Mana-*.dmg
+      - Mana.dmg
