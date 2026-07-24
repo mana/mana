@@ -87,6 +87,7 @@
 
 #include <sys/stat.h>
 #include <cassert>
+#include <cstdlib>
 
 #include <guichan/exception.hpp>
 
@@ -232,6 +233,13 @@ Client::Client(const Options &options):
 
 #if defined __APPLE__
     mPackageDir = getResourcesLocation() + "/data";
+#elif defined __linux__
+    // When running from an AppImage the compiled-in absolute path needs to
+    // be resolved against the mount point, which the runtime sets as APPDIR.
+    if (const char *appDir = getenv("APPDIR"))
+        mPackageDir = std::string(appDir) + PKG_DATADIR "data";
+    else
+        mPackageDir = PKG_DATADIR "data";
 #else
     mPackageDir = PKG_DATADIR "data";
 #endif

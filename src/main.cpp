@@ -28,6 +28,7 @@
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 
+#include <cstdlib>
 #include <getopt.h>
 #include <iostream>
 
@@ -227,6 +228,13 @@ static void initInternationalization()
 #ifdef __APPLE__
     const auto translationsDir = getResourcesLocation() + "/Translations";
     bindtextdomain("mana", translationsDir.c_str());
+#elif defined __linux__
+    // When running from an AppImage the compiled-in absolute path needs to
+    // be resolved against the mount point, which the runtime sets as APPDIR.
+    std::string localeDir = LOCALEDIR;
+    if (const char *appDir = getenv("APPDIR"))
+        localeDir = appDir + localeDir;
+    bindtextdomain("mana", localeDir.c_str());
 #else
     bindtextdomain("mana", LOCALEDIR);
 #endif

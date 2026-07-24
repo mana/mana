@@ -25,6 +25,7 @@ ubuntu-build:
         build-essential
         ccache
         cmake
+        file
         gettext
         libcurl4-openssl-dev
         libenet-dev
@@ -38,10 +39,18 @@ ubuntu-build:
         libsdl2-ttf-dev
         libxml2-dev
         ninja-build
+        wget
     - ccache --zero-stats || true
-    - cmake -G Ninja -B build . -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+    - cmake -G Ninja -B build . -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr
     - cmake --build build
     - ccache --show-stats
+    # Package the oldest still-supported build as an AppImage, since
+    # AppImages should be built against the oldest supported glibc
+    - if [ "$UBUNTU_VERSION" = "22.04" ]; then ./packaging/appimage/build-appimage.sh; fi
+  artifacts:
+    name: "appimage-$CI_COMMIT_REF_SLUG"
+    paths:
+      - Mana-*.AppImage
 
 macos-build:
   stage: build
