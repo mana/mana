@@ -196,19 +196,9 @@ void TrueTypeFont::updateFontScale(float scale)
 
     for (auto font : mFonts)
     {
-#if SDL_TTF_VERSION_ATLEAST(2, 0, 18)
         TTF_SetFontSize(font->mFont, font->mPointSize * mScale);
         TTF_SetFontSize(font->mFontOutline, font->mPointSize * mScale);
         TTF_SetFontOutline(font->mFontOutline, mScale);
-#else
-        TTF_CloseFont(font->mFont);
-        TTF_CloseFont(font->mFontOutline);
-        font->mFont = TTF_OpenFont(font->mFilename.c_str(), font->mPointSize * mScale);
-        font->mFontOutline = TTF_OpenFont(font->mFilename.c_str(), font->mPointSize * mScale);
-        TTF_SetFontStyle(font->mFont, font->mStyle);
-        TTF_SetFontStyle(font->mFontOutline, font->mStyle);
-        TTF_SetFontOutline(font->mFontOutline, mScale);
-#endif
 
         font->mCache.clear();
     }

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12...3.27)
+cmake_minimum_required(VERSION 3.22...3.27)
 
 set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
 

@@ -46,13 +46,11 @@ public:
                            int width, int height,
                            int desiredWidth, int desiredHeight) override;
 
-#if SDL_VERSION_ATLEAST(2, 0, 10)
     bool drawRescaledImageF(const Image *image,
                             int srcX, int srcY,
                             float dstX, float dstY,
                             int width, int height,
                             float desiredWidth, float desiredHeight) override;
-#endif
 
     void drawRescaledImagePattern(const Image *image,
                                   int srcX, int srcY,

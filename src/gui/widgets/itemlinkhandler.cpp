@@ -24,9 +24,7 @@
 
 #include <SDL.h>
 
-#if SDL_VERSION_ATLEAST(2, 0, 14)
 #include "gui/confirmdialog.h"
-#endif
 #include "gui/itempopup.h"
 #include "gui/okdialog.h"
 #include "gui/viewport.h"
@@ -76,7 +74,6 @@ static bool isUrl(const std::string &link)
 
 void ItemLinkHandler::handleLink(const std::string &link)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 14)
     // Handle screenshots by constructing full file path
     if (startsWith(link, "screenshot:"))
     {
@@ -92,19 +89,13 @@ void ItemLinkHandler::handleLink(const std::string &link)
 
         return;
     }
-#endif
 
     if (isUrl(link))
     {
         mLink = link;
 
-#if SDL_VERSION_ATLEAST(2, 0, 14)
         auto confirmDialog = new ConfirmDialog(_("Open URL?"), link, mParent);
         confirmDialog->addActionListener(this);
-#else
-        new OkDialog(_("Open URL Failed"),
-                     _("Opening of URLs requires SDL 2.0.14."), true, mParent);
-#endif
         return;
     }
 
@@ -153,12 +144,10 @@ void ItemLinkHandler::action(const gcn::ActionEvent &actionEvent)
 {
     if (actionEvent.getId() == "yes")
     {
-#if SDL_VERSION_ATLEAST(2, 0, 14)
         if (SDL_OpenURL(mLink.c_str()) == -1)
         {
             new OkDialog(_("Open URL Failed"), SDL_GetError(), true, mParent);
         }
-#endif
     }
 }
 

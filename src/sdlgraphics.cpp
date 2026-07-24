@@ -87,9 +87,7 @@ SDLGraphics::~SDLGraphics()
 
 void SDLGraphics::setVSync(bool sync)
 {
-#if SDL_VERSION_ATLEAST(2, 0, 18)
     SDL_RenderSetVSync(mRenderer, sync ? SDL_TRUE : SDL_FALSE);
-#endif
 }
 
 void SDLGraphics::updateSize(int windowWidth, int windowHeight, float scale)
@@ -138,7 +136,6 @@ bool SDLGraphics::drawRescaledImage(const Image *image,
     return SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect) != 0;
 }
 
-#if SDL_VERSION_ATLEAST(2, 0, 10)
 bool SDLGraphics::drawRescaledImageF(const Image *image,
                                      int srcX, int srcY,
                                      float dstX, float dstY,
@@ -167,7 +164,6 @@ bool SDLGraphics::drawRescaledImageF(const Image *image,
     setColorAlphaMod(image);
     return SDL_RenderCopyF(mRenderer, image->mTexture, &srcRect, &dstRect) == 0;
 }
-#endif
 
 void SDLGraphics::drawRescaledImagePattern(const Image *image,
                                            int srcX, int srcY,
@@ -236,15 +232,7 @@ void SDLGraphics::updateScreen()
 void SDLGraphics::windowToLogical(int windowX, int windowY,
                                   float &logicalX, float &logicalY) const
 {
-#if SDL_VERSION_ATLEAST(2, 0, 18)
     SDL_RenderWindowToLogical(mRenderer, windowX, windowY, &logicalX, &logicalY);
-#else
-    float scaleX;
-    float scaleY;
-    SDL_RenderGetScale(mRenderer, &scaleX, &scaleY);
-    logicalX = windowX / scaleX;
-    logicalY = windowY / scaleY;
-#endif
 }
 
 SDL_Surface *SDLGraphics::getScreenshot()
