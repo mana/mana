@@ -262,6 +262,9 @@ Client::Client(const Options &options):
 
     initScreenshotDir();
 
+    SDL_SetHint(SDL_HINT_APP_NAME,
+                branding.name().c_str());
+
 #if SDL_VERSION_ATLEAST(2, 24, 0)
     SDL_SetHint(SDL_HINT_WINDOWS_DPI_AWARENESS, "permonitorv2");
 #endif
