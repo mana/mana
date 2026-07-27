@@ -11,6 +11,7 @@ Unreleased
 - Fixed mouse cursor rendering issue on Linux/X11
 - Added support for the S and A dye channels, which replace exact colors in images
 - Fixed default height of the Social window
+- Improved font rendering quality
 
 0.8.0 (27 August 2026)
 - Added health bars to damaged and targeted monsters

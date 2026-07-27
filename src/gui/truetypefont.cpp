@@ -102,8 +102,11 @@ TrueTypeFont::TrueTypeFont(const std::string &filename, int size, int style)
             std::string(TTF_GetError()));
     }
 
-    mFont = TTF_OpenFontRW(FS::openRWops(filename), 1, size * mScale);
-    mFontOutline = TTF_OpenFontRW(FS::openRWops(filename), 1, size * mScale);
+    // Scale the font by adjusting the DPI, since the point size is an
+    // integer and would lose precision at fractional scale factors.
+    const unsigned dpi = std::lround(72 * mScale);
+    mFont = TTF_OpenFontDPIRW(FS::openRWops(filename), 1, size, dpi, dpi);
+    mFontOutline = TTF_OpenFontDPIRW(FS::openRWops(filename), 1, size, dpi, dpi);
 
     if (!mFont || !mFontOutline)
     {
@@ -113,6 +116,9 @@ TrueTypeFont::TrueTypeFont(const std::string &filename, int size, int style)
 
     TTF_SetFontStyle(mFont, style);
     TTF_SetFontStyle(mFontOutline, style);
+
+    TTF_SetFontHinting(mFont, TTF_HINTING_LIGHT);
+    TTF_SetFontHinting(mFontOutline, TTF_HINTING_LIGHT);
 
     TTF_SetFontOutline(mFontOutline, static_cast<int>(mScale));
 
@@ -184,10 +190,12 @@ void TrueTypeFont::updateFontScale(float scale)
 
     mScale = scale;
 
+    const unsigned dpi = std::lround(72 * mScale);
+
     for (auto font : mFonts)
     {
-        TTF_SetFontSize(font->mFont, font->mPointSize * mScale);
-        TTF_SetFontSize(font->mFontOutline, font->mPointSize * mScale);
+        TTF_SetFontSizeDPI(font->mFont, font->mPointSize, dpi, dpi);
+        TTF_SetFontSizeDPI(font->mFontOutline, font->mPointSize, dpi, dpi);
         TTF_SetFontOutline(font->mFontOutline, mScale);
 
         font->mCache.clear();
