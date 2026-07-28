@@ -4,6 +4,7 @@ Unreleased
 - Added support for NPCs asking for items
 - Added support for monster links
 - Added --log-file parameter to set log file path or '-' for stdout
+- New window button icons by meway, used in Jewelry and Golden Delicious themes
 - Improved drag-n-drop for emote shortcuts
 - Made window menu buttons indicate which windows are open
 - Use online player list for name autocomplete
