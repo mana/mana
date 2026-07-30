@@ -9,6 +9,7 @@ stages:
   stage: build
   image: ubuntu:$UBUNTU_VERSION
   cache:
+    key: ccache-$UBUNTU_VERSION
     paths:
       - ccache
       # Downloaded by the AppImage packaging script, which skips the
