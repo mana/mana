@@ -357,9 +357,19 @@ void NpcDialog::nextDialog() const
     Net::getNpcHandler()->nextDialog(mNpcId);
 }
 
+bool NpcDialog::canCancel() const
+{
+    // Cancelling a choice menu is understood by the server, but there is
+    // currently no way to abort any of the other requests.
+    return mActionState == NPC_ACTION_INPUT && mInputState == NPC_INPUT_LIST;
+}
+
 void NpcDialog::close()
 {
-    Net::getNpcHandler()->closeDialog(mNpcId);
+    if (canCancel())
+        Net::getNpcHandler()->cancelDialog(mNpcId);
+    else
+        Net::getNpcHandler()->closeDialog(mNpcId);
     Window::close();
 }
 
@@ -583,7 +593,7 @@ void NpcDialog::buildLayout()
 
     bool waitState = isWaitingForTheServer();
     mNextButton->setEnabled(!waitState);
-    setCloseButton(waitState);
+    setCloseButton(waitState || canCancel());
 
     redraw();
 

@@ -107,6 +107,12 @@ class NpcDialog final : public Window,
         void close() override;
 
         /**
+         * Returns whether the player is allowed to abort the conversation in
+         * the current state, simply by closing the dialog.
+         */
+        bool canCancel() const;
+
+        /**
          * Returns the number of items in the choices list.
          */
         int getNumberOfElements() override;

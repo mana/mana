@@ -44,6 +44,13 @@ class NpcHandler
 
         virtual void closeDialog(int npcId) = 0;
 
+        /**
+         * Aborts the conversation, rather than answering the pending request.
+         * Only valid while the server is known to accept a cancellation (see
+         * NpcDialog::canCancel).
+         */
+        virtual void cancelDialog(int npcId) = 0;
+
         virtual void menuSelect(int npcId, int choice) = 0;
 
         virtual void integerInput(int npcId, int value) = 0;

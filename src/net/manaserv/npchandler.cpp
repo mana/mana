@@ -178,6 +178,11 @@ void NpcHandler::closeDialog(int npcId)
     gameServerConnection->send(msg);
 }
 
+void NpcHandler::cancelDialog(int npcId)
+{
+    closeDialog(npcId);
+}
+
 void NpcHandler::menuSelect(int npcId, int choice)
 {
     MessageOut msg(PGMSG_NPC_SELECT);

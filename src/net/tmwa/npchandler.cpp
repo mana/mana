@@ -215,6 +215,13 @@ void NpcHandler::closeDialog(int npcId)
     outMsg.writeInt32(npcId);
 }
 
+void NpcHandler::cancelDialog(int npcId)
+{
+    // eAthena has no dedicated "abort" message, but a choice of 0xff makes
+    // the "menu" script command terminate the script.
+    menuSelect(npcId, 0xff);
+}
+
 void NpcHandler::menuSelect(int npcId, int choice)
 {
     MessageOut outMsg(CMSG_NPC_LIST_CHOICE);

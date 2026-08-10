@@ -48,6 +48,8 @@ class NpcHandler final : public MessageHandler, public Net::NpcHandler
 
         void closeDialog(int npcId) override;
 
+        void cancelDialog(int npcId) override;
+
         void menuSelect(int npcId, int choice) override;
 
         void integerInput(int npcId, int value) override;

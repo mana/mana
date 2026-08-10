@@ -12,6 +12,7 @@ Unreleased
 - Improved drag-n-drop for emote shortcuts
 - Made window menu buttons indicate which windows are open
 - Disabled the skill "Up" button when it can't be used
+- Allowed closing the NPC dialog during a choice menu
 - Use online player list for name autocomplete
 - Show two-handed weapons faded in the second hand slot of the Equipment window
 - Removed background color from shop list entries
