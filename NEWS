@@ -10,6 +10,7 @@ Unreleased
 - Improved drag-n-drop for emote shortcuts
 - Made window menu buttons indicate which windows are open
 - Use online player list for name autocomplete
+- Show two-handed weapons faded in the second hand slot of the Equipment window
 - Removed background color from shop list entries
 - Fixed performance issue when instantiating many non-moving beings
 - Fixed keyboard movement not stopping on NPC dialog opening

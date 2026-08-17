@@ -75,6 +75,7 @@ class EquipmentWindow : public Window,
     private:
         int getBoxIndex(int x, int y) const;
         Item *getItem(int x, int y) const;
+        Item *getTwoHandedWeaponBlocking(int slotIndex) const;
         std::string getSlotName(int x, int y) const;
 
         void setSelected(int index);

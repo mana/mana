@@ -104,16 +104,26 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
 
         boxSkin.draw(g, boxState);
 
-        if (Item *item = mEquipment->getEquipment(i))
+        Item *item = mEquipment->getEquipment(i);
+        float alpha = 1.0f;
+
+        if (item)
+        {
+            const Drag *drag = gui->getActiveDrag();
+            if (drag && drag->source == this && drag->sourceIndex == i)
+                alpha = 0.5f;
+        }
+        else if ((item = getTwoHandedWeaponBlocking(i)))
+        {
+            // Show the weapon faded, since it merely blocks this slot
+            alpha = 0.5f;
+        }
+
+        if (item)
         {
             if (Image *image = item->getImage())
             {
-                const Drag *drag = gui->getActiveDrag();
-                const bool isDragged =
-                        drag &&
-                        drag->source == this &&
-                        drag->sourceIndex == i;
-                image->setAlpha(isDragged ? 0.5f : 1.0f);
+                image->setAlpha(alpha);
                 g->drawImage(image,
                              boxPos.x + boxSkin.padding,
                              boxPos.y + boxSkin.padding);
@@ -136,6 +146,22 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
                     g->drawImage(image, boxPos.x + boxSkin.padding, boxPos.y + boxSkin.padding);
         }
     }
+}
+
+/**
+ * Returns the two-handed weapon blocking the given slot, if any. A two-handed
+ * weapon is equipped in the first hand slot, but also blocks the second one.
+ */
+Item *EquipmentWindow::getTwoHandedWeaponBlocking(int slotIndex) const
+{
+    if (slotIndex != TmwAthena::EQUIP_FIGHT2_SLOT)
+        return nullptr;
+
+    Item *item = mEquipment->getEquipment(TmwAthena::EQUIP_FIGHT1_SLOT);
+    if (item && item->getInfo().type == ITEM_EQUIPMENT_TWO_HANDS_WEAPON)
+        return item;
+
+    return nullptr;
 }
 
 void EquipmentWindow::action(const gcn::ActionEvent &event)
@@ -203,10 +229,19 @@ int EquipmentWindow::getBoxIndex(int x, int y) const
     return -1;
 }
 
+/**
+ * Returns the item shown in the equipment box at the given position, if any.
+ */
 Item *EquipmentWindow::getItem(int x, int y) const
 {
     const int index = getBoxIndex(x, y);
-    return index != -1 ? mEquipment->getEquipment(index) : nullptr;
+    if (index == -1)
+        return nullptr;
+
+    if (Item *item = mEquipment->getEquipment(index))
+        return item;
+
+    return getTwoHandedWeaponBlocking(index);
 }
 
 std::string EquipmentWindow::getSlotName(int x, int y) const
