@@ -37,6 +37,7 @@
 
 #include <cassert>
 #include <memory>
+#include <vector>
 
 #include <sys/time.h>
 
@@ -59,21 +60,28 @@ ResourceManager::~ResourceManager()
         {
             mResources.merge(mOrphanedResources);
 
-            deletedAny = false;
+            // Collect the unreferenced resources first, since deleting a
+            // resource may release or remove other resources from the map,
+            // which would invalidate the iterator.
+            std::vector<Resource *> unreferenced;
             for (auto iter = mResources.begin(); iter != mResources.end(); )
             {
                 Resource *res = iter->second;
                 if (res->mRefCount == 0)
                 {
+                    unreferenced.push_back(res);
                     iter = mResources.erase(iter);
-                    delete res;
-                    deletedAny = true;
                 }
                 else
                 {
                     ++iter;
                 }
             }
+
+            for (Resource *res : unreferenced)
+                delete res;
+
+            deletedAny = !unreferenced.empty();
         } while (deletedAny);
     };
 
@@ -116,8 +124,10 @@ void ResourceManager::cleanOrphans()
     if (mOrphanedResources.empty() || mOldestOrphan >= threshold)
         return;
 
-    auto iter = mOrphanedResources.begin();
-    while (iter != mOrphanedResources.end())
+    // Collect the expired orphans first, since deleting a resource may orphan
+    // the resources it references, which would invalidate the iterator.
+    std::vector<Resource *> expired;
+    for (auto iter = mOrphanedResources.begin(); iter != mOrphanedResources.end(); )
     {
         Resource *res = iter->second;
         const time_t t = res->mTimeStamp;
@@ -129,10 +139,15 @@ void ResourceManager::cleanOrphans()
         }
         else
         {
-            Log::info("Deleting orphaned resource: %s", res->mIdPath.c_str());
+            expired.push_back(res);
             iter = mOrphanedResources.erase(iter);
-            delete res; // delete only after removal from list, to avoid issues in recursion
         }
+    }
+
+    for (Resource *res : expired)
+    {
+        Log::info("Deleting orphaned resource: %s", res->mIdPath.c_str());
+        delete res;
     }
 
     mOldestOrphan = oldest;
