@@ -179,10 +179,11 @@ public:
 class SkillTab : public Tab
 {
 public:
-    SkillTab(const std::string &name, SkillListBox *listBox)
+    SkillTab(const std::string &name, SkillListBox *listBox, SkillDialog *dialog)
         : mListBox(listBox)
     {
         setCaption(name);
+        mListBox->addSelectionListener(dialog);
     }
 
     ~SkillTab() override
@@ -214,12 +215,15 @@ SkillDialog::SkillDialog():
     setupWindow->registerWindowForReset(this);
 
     mTabbedArea = new TabbedArea;
+    mTabbedArea->addSelectionListener(this);
     mPointsLabel = new Label("0");
     mIncreaseButton = new Button(_("Up"), "inc", this);
 
     place(0, 0, mTabbedArea, 5, 5);
     place(0, 5, mPointsLabel, 4);
     place(4, 5, mIncreaseButton);
+
+    updateIncreaseButton();
 
     center();
     loadWindowState();
@@ -244,6 +248,11 @@ void SkillDialog::action(const gcn::ActionEvent &event)
     }
 }
 
+void SkillDialog::valueChanged(const gcn::SelectionEvent &event)
+{
+    updateIncreaseButton();
+}
+
 std::string SkillDialog::update(int id)
 {
     auto i = mSkills.find(id);
@@ -265,6 +274,8 @@ void SkillDialog::update()
 
     for (auto &[_, skill] : mSkills)
         skill.update();
+
+    updateIncreaseButton();
 }
 
 void SkillDialog::event(Event::Channel channel, const Event &event)
@@ -329,7 +340,7 @@ void SkillDialog::loadSkills()
             scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
             scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
 
-            auto tab = std::make_unique<SkillTab>("Skills", listbox);
+            auto tab = std::make_unique<SkillTab>("Skills", listbox, this);
             mTabbedArea->addTab(tab.get(), scroll.get());
 
             mTabs.push_back(std::move(tab));
@@ -388,7 +399,7 @@ void SkillDialog::loadSkills()
             scroll->setHorizontalScrollPolicy(ScrollArea::SHOW_NEVER);
             scroll->setVerticalScrollPolicy(ScrollArea::SHOW_ALWAYS);
 
-            auto tab = std::make_unique<SkillTab>(setName, listbox);
+            auto tab = std::make_unique<SkillTab>(setName, listbox, this);
 
             mTabbedArea->addTab(tab.get(), scroll.get());
 
@@ -410,7 +421,18 @@ void SkillDialog::setModifiable(int id, bool modifiable)
         SkillInfo &info = it->second;
         info.modifiable = modifiable;
         info.update();
+        updateIncreaseButton();
     }
+}
+
+void SkillDialog::updateIncreaseButton()
+{
+    SkillInfo *info = nullptr;
+    if (auto *tab = static_cast<SkillTab*>(mTabbedArea->getSelectedTab()))
+        info = tab->getSelectedInfo();
+
+    mIncreaseButton->setEnabled(info && info->modifiable &&
+                                PlayerInfo::getAttribute(SKILL_POINTS) > 0);
 }
 
 void SkillModel::updateVisibilities()

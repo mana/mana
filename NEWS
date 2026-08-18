@@ -11,6 +11,7 @@ Unreleased
 - New window button icons by meway, used in Jewelry and Golden Delicious themes
 - Improved drag-n-drop for emote shortcuts
 - Made window menu buttons indicate which windows are open
+- Disabled the skill "Up" button when it can't be used
 - Use online player list for name autocomplete
 - Show two-handed weapons faded in the second hand slot of the Equipment window
 - Removed background color from shop list entries

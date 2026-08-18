@@ -25,6 +25,7 @@
 #include "eventlistener.h"
 
 #include <guichan/actionlistener.hpp>
+#include <guichan/selectionlistener.hpp>
 
 #include <map>
 #include <memory>
@@ -44,7 +45,10 @@ struct SkillInfo;
  *
  * \ingroup Interface
  */
-class SkillDialog : public Window, public gcn::ActionListener, public EventListener
+class SkillDialog : public Window,
+                    public gcn::ActionListener,
+                    public gcn::SelectionListener,
+                    public EventListener
 {
     public:
         SkillDialog();
@@ -56,6 +60,11 @@ class SkillDialog : public Window, public gcn::ActionListener, public EventListe
          * Called when receiving actions from widget.
          */
         void action(const gcn::ActionEvent &event) override;
+
+        /**
+         * Called when the selected skill or tab changes.
+         */
+        void valueChanged(const gcn::SelectionEvent &event) override;
 
         /**
          * Update the given skill's display
@@ -72,6 +81,12 @@ class SkillDialog : public Window, public gcn::ActionListener, public EventListe
         void clearSkills();
 
         void setModifiable(int id, bool modifiable);
+
+        /**
+         * Updates the enabled state and tooltip of the "Up" button based on
+         * the currently selected skill and the available skill points.
+         */
+        void updateIncreaseButton();
 
         bool hasSkills() const { return !mSkills.empty(); }
 

@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <guichan/selectionlistener.hpp>
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 #include <guichan/widgets/container.hpp>
@@ -28,6 +29,7 @@
 
 #include "gui/widgets/button.h"
 
+#include <list>
 #include <memory>
 #include <string>
 
@@ -103,6 +105,15 @@ class TabbedArea final : public gcn::TabbedArea, public gcn::WidgetListener
 
         void setSelectedTab(gcn::Tab *tab) override;
 
+        /**
+         * Adds a listener notified when the selected tab changes.
+         */
+        void addSelectionListener(gcn::SelectionListener *listener)
+        { mSelectionListeners.push_back(listener); }
+
+        void removeSelectionListener(gcn::SelectionListener *listener)
+        { mSelectionListeners.remove(listener); }
+
         void widgetResized(const gcn::Event &event) override;
 
         void adjustTabPositions();
@@ -114,6 +125,10 @@ class TabbedArea final : public gcn::TabbedArea, public gcn::WidgetListener
         void mousePressed(gcn::MouseEvent &mouseEvent) override;
 
     private:
+        void distributeValueChangedEvent();
+
+        std::list<gcn::SelectionListener *> mSelectionListeners;
+
         /** The tab arrows */
         std::unique_ptr<Button> mArrowButton[2];
 

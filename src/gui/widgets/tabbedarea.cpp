@@ -172,12 +172,25 @@ void TabbedArea::mousePressed(gcn::MouseEvent &mouseEvent)
 
 void TabbedArea::setSelectedTab(gcn::Tab *tab)
 {
+    const bool changed = tab != mSelectedTab;
+
     gcn::TabbedArea::setSelectedTab(tab);
 
     if (Tab *newTab = dynamic_cast<Tab*>(tab))
         newTab->setCurrent();
 
+    if (changed)
+        distributeValueChangedEvent();
+
     widgetResized(nullptr);
+}
+
+void TabbedArea::distributeValueChangedEvent()
+{
+    const gcn::SelectionEvent event(this);
+
+    for (auto listener : mSelectionListeners)
+        listener->valueChanged(event);
 }
 
 void TabbedArea::widgetResized(const gcn::Event &event)
