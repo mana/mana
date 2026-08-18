@@ -308,7 +308,9 @@ void ItemContainer::mouseDragged(gcn::MouseEvent &event)
     if (mSelectionStatus != SEL_NONE &&
         mClickedIndex != NO_SLOT_INDEX)
     {
-        Item *item = mInventory->getItem(mClickedIndex);
+        // Look up the item through the (possibly filtered) view, since
+        // mClickedIndex is a display index rather than an inventory index.
+        Item *item = getItemAt(mClickedIndex);
         if (!item)
             return;
 
@@ -331,7 +333,7 @@ void ItemContainer::mouseDragged(gcn::MouseEvent &event)
             }
 
             hidePopup();
-            gui->startDrag(Drag(sourceType, item, this, mClickedIndex));
+            gui->startDrag(Drag(sourceType, item, this, item->getInvIndex()));
         }
 
         mSelectionStatus = SEL_DRAGGING;
@@ -429,8 +431,14 @@ void ItemContainer::dragFinished(const Drag &drag, DragResult result)
         drag.sourceIndex >= 0 &&
         drag.sourceIndex < mInventory->getSize())
     {
+        // drag.sourceIndex is an inventory index, while mSelectedIndex is a
+        // display index, so compare through the selected item.
+        const Item *selectedItem = getSelectedItem();
+        const bool selectedIsSource =
+                selectedItem && selectedItem->getInvIndex() == drag.sourceIndex;
+
         mInventory->removeItemAt(drag.sourceIndex);
-        if (mSelectedIndex == drag.sourceIndex)
+        if (selectedIsSource)
             setSelectedIndex(NO_SLOT_INDEX);
     }
 
