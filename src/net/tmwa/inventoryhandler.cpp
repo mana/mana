@@ -381,16 +381,12 @@ void InventoryHandler::handleMessage(MessageIn &msg)
             equipType = msg.readInt16();
             flag = msg.readInt8();
 
+            // The attack range is not reset here, since the server sends
+            // SMSG_PLAYER_ATTACK_RANGE whenever it actually changes.
             if (!flag)
-            {
                 serverNotice(_("Unable to unequip."));
-            }
             else
-            {
                 mEquips.setEquipment(getSlot(equipType), -1);
-                // Reset the attack range to unarmed.
-                local_player->setAttackRange(-1);
-            }
             break;
 
         case SMSG_PLAYER_ATTACK_RANGE:

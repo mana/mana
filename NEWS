@@ -20,6 +20,7 @@ Unreleased
 - Fixed update flow aborting when news.txt fails to download
 - Fixed customdata archives not being loaded (regression in 0.7)
 - Fixed drag-n-drop moving the wrong item while a search filter is active
+- Fixed target reachability indicator after switching arrows
 - Reduced input lag when using the SDL renderer with an OpenGL backend
 
 0.7.0 (21 August 2025)

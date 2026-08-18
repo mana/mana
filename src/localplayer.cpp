@@ -911,9 +911,14 @@ void LocalPlayer::setAttackRange(int range)
         Item *weapon = PlayerInfo::getEquipment(TmwAthena::EQUIP_FIGHT1_SLOT);
         if (weapon)
         {
+            // The item database specifies the range in tiles, whereas
+            // mAttackRange is in pixels.
             const ItemInfo &info = weapon->getInfo();
             if (info.attackRange > -1)
-                mAttackRange = info.attackRange;
+            {
+                const int tileWidth = mMap ? mMap->getTileWidth() : 32;
+                mAttackRange = info.attackRange * tileWidth;
+            }
         }
     }
 }
