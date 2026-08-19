@@ -67,7 +67,7 @@ static void printHelp()
         << _("  -D --default        : Choose default character server and "
                                      "character") << endl
         << _("  -u --skip-update    : Skip the update downloads") << endl
-        << _("  -d --data           : Directory to load game data from") << endl
+        << _("  -d --data           : Directory to load game data from (disables updates)") << endl
         << _("     --localdata-dir  : Directory to use as local data directory") << endl
         << _("     --chat-log-dir   : Chat log dir to use") << endl
         << _("     --screenshot-dir : Directory to store screenshots") << endl

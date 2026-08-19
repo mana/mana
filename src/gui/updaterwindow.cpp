@@ -119,11 +119,12 @@ std::vector<UpdateFile> loadTxtFile(const std::string &fileName)
 
 UpdaterWindow::UpdaterWindow(const std::string &updateHost,
                              const std::string &updatesDir,
-                             bool applyUpdates):
+                             bool downloadUpdates):
     Window(_("Updating...")),
     mUpdateHost(updateHost),
     mUpdatesDir(updatesDir),
-    mLoadUpdates(applyUpdates),
+    mDownloadUpdates(downloadUpdates),
+    mLoadUpdates(downloadUpdates),
     mLinkHandler(std::make_unique<ItemLinkHandler>(this))
 {
     setWindowName("UpdaterWindow");
@@ -304,8 +305,7 @@ void UpdaterWindow::logic()
                     _("News could not be downloaded: %s"),
                     mDownload->getError()));
 
-            mDialogState = DialogState::DownloadList;
-            startDownload(xmlUpdateFile, false);
+            newsFinished();
             break;
         }
 
@@ -334,15 +334,30 @@ void UpdaterWindow::logic()
     mProgressBar->setProgress(progress);
 }
 
+void UpdaterWindow::newsFinished()
+{
+    if (mDownloadUpdates)
+    {
+        mDialogState = DialogState::DownloadList;
+        startDownload(xmlUpdateFile, false);
+    }
+    else
+    {
+        // A custom data directory is in use, so the updates are neither
+        // downloaded nor loaded. Only the news was of interest.
+        mDialogState = DialogState::Done;
+        enablePlay();
+        setLabel(_("Updates disabled"));
+    }
+}
+
 void UpdaterWindow::downloadCompleted()
 {
     switch (mDialogState)
     {
     case DialogState::DownloadNews:
         loadNews();
-
-        mDialogState = DialogState::DownloadList;
-        startDownload(xmlUpdateFile, false);
+        newsFinished();
         break;
 
     case DialogState::DownloadList:

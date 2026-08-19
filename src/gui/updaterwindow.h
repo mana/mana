@@ -62,12 +62,13 @@ class UpdaterWindow : public Window, public gcn::ActionListener,
      * @param updateHost Host where to get the updated files.
      * @param updatesDir Directory where to store updates (should be absolute
      *                   and already created).
-     * @param applyUpdates If true, the update window will pass the updates to the
-     *                     resource manager
+     * @param downloadUpdates If true, the update files are downloaded,
+     *                        verified and passed to the resource manager.
+     *                        Otherwise only the news is downloaded.
      */
     UpdaterWindow(const std::string &updateHost,
                   const std::string &updatesDir,
-                  bool applyUpdates);
+                  bool downloadUpdates);
 
     ~UpdaterWindow() override;
 
@@ -88,6 +89,13 @@ private:
                        bool storeInMemory,
                        std::optional<unsigned long> adler32 = {});
     void downloadCompleted();
+
+    /**
+     * Called once the news download has finished (successfully or not).
+     * Continues with the update files, or finishes right away when updates
+     * are disabled.
+     */
+    void newsFinished();
 
     /**
      * Loads and display news. Assumes the news file contents have been loaded
@@ -128,6 +136,9 @@ private:
 
     /** Index of the file to be downloaded. */
     unsigned int mUpdateIndex = 0;
+
+    /** Whether to download and verify the update files. */
+    bool mDownloadUpdates;
 
     /** Tells ~UpdaterWindow() if it should load updates */
     bool mLoadUpdates;
