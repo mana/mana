@@ -6,6 +6,7 @@ Unreleased
 - Added support for level-specific skill names, icons and descriptions
 - Added support for custom text on "use" button
 - Added --log-file parameter to set log file path or '-' for stdout
+- Added "Equip" button to the Outfit window
 - New window button icons by meway, used in Jewelry and Golden Delicious themes
 - Improved drag-n-drop for emote shortcuts
 - Made window menu buttons indicate which windows are open

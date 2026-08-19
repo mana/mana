@@ -71,6 +71,7 @@ class OutfitWindow : public Window,
         Button *mNextButton;
         Label *mCurrentLabel;
         CheckBox *mUnequipCheck;
+        Button *mEquipButton;
 
         int getIndexFromGrid(int pointX, int pointY) const;
 

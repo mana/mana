@@ -45,13 +45,14 @@ OutfitWindow::OutfitWindow():
     setWindowName("Outfits");
     setResizable(true);
     setCloseButton(true);
-    setDefaultSize(250, 250, 118, 180);
+    setDefaultSize(250, 250, 118, 205);
 
     mPreviousButton = new Button(_("<"), "previous", this);
     mNextButton = new Button(_(">"), "next", this);
     mCurrentLabel = new Label(strprintf(_("Outfit: %d"), 1));
     mCurrentLabel->setAlignment(gcn::Graphics::CENTER);
     mUnequipCheck = new CheckBox(_("Unequip first"));
+    mEquipButton = new Button(_("Equip"), "equip", this);
 
     mUnequipCheck->setActionEventId("unequip");
     mUnequipCheck->addActionListener(this);
@@ -60,6 +61,7 @@ OutfitWindow::OutfitWindow():
     place(1, 3, mCurrentLabel, 2);
     place(3, 3, mNextButton, 1);
     place(0, 4, mUnequipCheck, 4);
+    place(0, 5, mEquipButton, 4);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
@@ -146,6 +148,10 @@ void OutfitWindow::action(const gcn::ActionEvent &event)
     else if (event.getId() == "unequip")
     {
         mOutfits[mCurrentOutfit].unequip = mUnequipCheck->isSelected();
+    }
+    else if (event.getId() == "equip")
+    {
+        wearOutfit(mCurrentOutfit);
     }
 }
 
