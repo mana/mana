@@ -207,6 +207,7 @@ void WindowMenu::addWindowButton(const std::string &text, Window *window,
     addButton(text, x, h, iconPath, key);
     auto *btn = dynamic_cast<Button *>(mWidgets.back());
     btn->setToggle(true);
+    btn->setSelected(window->isVisible());
     mWindowButtons[window] = btn;
     window->addWidgetListener(this);
 }
