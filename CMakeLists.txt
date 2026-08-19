@@ -110,66 +110,11 @@ if(WIN32)
   set(CPACK_NSIS_EXECUTABLES_DIRECTORY ${CMAKE_INSTALL_BINDIR})
   set(CPACK_NSIS_MANIFEST_DPI_AWARE ON)
 
-  install(
-    FILES $ENV{MINGW_PREFIX}/bin/libgcc_s_seh-1.dll
-          $ENV{MINGW_PREFIX}/bin/libwinpthread-1.dll
-          $ENV{MINGW_PREFIX}/bin/libstdc++-6.dll
-          $ENV{MINGW_PREFIX}/bin/libcurl-4.dll
-          $ENV{MINGW_PREFIX}/bin/libintl-8.dll
-          $ENV{MINGW_PREFIX}/bin/libphysfs.dll
-          $ENV{MINGW_PREFIX}/bin/libpng16-16.dll
-          $ENV{MINGW_PREFIX}/bin/SDL2.dll
-          $ENV{MINGW_PREFIX}/bin/SDL2_image.dll
-          $ENV{MINGW_PREFIX}/bin/SDL2_mixer.dll
-          $ENV{MINGW_PREFIX}/bin/SDL2_net.dll
-          $ENV{MINGW_PREFIX}/bin/libenet-7.dll
-          $ENV{MINGW_PREFIX}/bin/SDL2_ttf.dll
-          $ENV{MINGW_PREFIX}/bin/libxml2-16.dll
-          $ENV{MINGW_PREFIX}/bin/zlib1.dll
-          $ENV{MINGW_PREFIX}/bin/libiconv-2.dll
-          $ENV{MINGW_PREFIX}/bin/libbrotlidec.dll
-          $ENV{MINGW_PREFIX}/bin/libidn2-0.dll
-          $ENV{MINGW_PREFIX}/bin/libpsl-5.dll
-          $ENV{MINGW_PREFIX}/bin/libssh2-1.dll
-          $ENV{MINGW_PREFIX}/bin/libzstd.dll
-          $ENV{MINGW_PREFIX}/bin/libavif-16.dll
-          $ENV{MINGW_PREFIX}/bin/libjxl.dll
-          $ENV{MINGW_PREFIX}/bin/libjpeg-8.dll
-          $ENV{MINGW_PREFIX}/bin/libtiff-6.dll
-          $ENV{MINGW_PREFIX}/bin/libwebp-7.dll
-          $ENV{MINGW_PREFIX}/bin/libwebpdemux-2.dll
-          $ENV{MINGW_PREFIX}/bin/libmpg123-0.dll
-          $ENV{MINGW_PREFIX}/bin/libopusfile-0.dll
-          $ENV{MINGW_PREFIX}/bin/libfreetype-6.dll
-          $ENV{MINGW_PREFIX}/bin/libharfbuzz-0.dll
-          $ENV{MINGW_PREFIX}/bin/liblzma-5.dll
-          $ENV{MINGW_PREFIX}/bin/libbrotlicommon.dll
-          $ENV{MINGW_PREFIX}/bin/libunistring-5.dll
-          $ENV{MINGW_PREFIX}/bin/libaom.dll
-          $ENV{MINGW_PREFIX}/bin/libdav1d-7.dll
-          $ENV{MINGW_PREFIX}/bin/libsharpyuv-0.dll
-          $ENV{MINGW_PREFIX}/bin/libSvtAv1Enc-4.dll
-          $ENV{MINGW_PREFIX}/bin/libFLAC.dll
-          $ENV{MINGW_PREFIX}/bin/libyuv.dll
-          $ENV{MINGW_PREFIX}/bin/libbrotlienc.dll
-          $ENV{MINGW_PREFIX}/bin/libhwy.dll
-          $ENV{MINGW_PREFIX}/bin/libjxl_cms.dll
-          $ENV{MINGW_PREFIX}/bin/libdeflate.dll
-          $ENV{MINGW_PREFIX}/bin/libjbig-0.dll
-          $ENV{MINGW_PREFIX}/bin/libLerc.dll
-          $ENV{MINGW_PREFIX}/bin/libopus-0.dll
-          $ENV{MINGW_PREFIX}/bin/librav1e.dll
-          $ENV{MINGW_PREFIX}/bin/libbz2-1.dll
-          $ENV{MINGW_PREFIX}/bin/libglib-2.0-0.dll
-          $ENV{MINGW_PREFIX}/bin/libogg-0.dll
-          $ENV{MINGW_PREFIX}/bin/libvorbisfile-3.dll
-          $ENV{MINGW_PREFIX}/bin/libvorbis-0.dll
-          $ENV{MINGW_PREFIX}/bin/libwavpack-1.dll
-          $ENV{MINGW_PREFIX}/bin/libgraphite2.dll
-          $ENV{MINGW_PREFIX}/bin/liblcms2-2.dll
-          $ENV{MINGW_PREFIX}/bin/libpcre2-8-0.dll
-          $ENV{MINGW_PREFIX}/bin/libxmp.dll
-    DESTINATION ${CMAKE_INSTALL_BINDIR})
+  # Name the installer after the target architecture (defaults to "win64")
+  if(CMAKE_SYSTEM_PROCESSOR MATCHES "^(ARM64|aarch64)$"
+     OR "$ENV{MSYSTEM_CARCH}" STREQUAL "aarch64")
+    set(CPACK_SYSTEM_NAME "win-arm64")
+  endif()
 
   # Install portable.xml as part of an optional Portable component
   set(CPACK_COMPONENT_PORTABLE_DISPLAY_NAME "Portable")

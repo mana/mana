@@ -2,8 +2,22 @@ name: Packages
 on: [push, pull_request]
 
 jobs:
-  msys2-ucrt64:
-    runs-on: windows-latest
+  windows:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x64
+            runner: windows-latest
+            msystem: UCRT64
+            # NSIS is not packaged for CLANGARM64, so only install it here.
+            # The ARM runner image ships NSIS in Program Files.
+            extra-packages: nsis:p
+          - arch: arm64
+            runner: windows-11-arm
+            msystem: CLANGARM64
+            extra-packages: ""
+    runs-on: ${{ matrix.runner }}
     defaults:
       run:
         shell: msys2 {0}
@@ -14,39 +28,41 @@ jobs:
 
       - uses: msys2/setup-msys2@v2
         with:
-          msystem: UCRT64
+          msystem: ${{ matrix.msystem }}
           update: true
-          install: >
-            git
-            mingw-w64-ucrt-x86_64-gcc
-            mingw-w64-ucrt-x86_64-cmake
-            mingw-w64-ucrt-x86_64-enet
-            mingw-w64-ucrt-x86_64-physfs
-            mingw-w64-ucrt-x86_64-curl-winssl
-            mingw-w64-ucrt-x86_64-SDL2_image
-            mingw-w64-ucrt-x86_64-SDL2_mixer
-            mingw-w64-ucrt-x86_64-SDL2_net
-            mingw-w64-ucrt-x86_64-SDL2_ttf
-            mingw-w64-ucrt-x86_64-libxml2
-            mingw-w64-ucrt-x86_64-nsis
+          install: git
+          pacboy: >
+            cc:p
+            cmake:p
+            enet:p
+            physfs:p
+            curl-winssl:p
+            SDL2_image:p
+            SDL2_mixer:p
+            SDL2_net:p
+            SDL2_ttf:p
+            libxml2:p
+            gettext:p
+            ${{ matrix.extra-packages }}
 
-      - name: Configure
+      - name: Configure (${{ matrix.arch }})
         run: |
           cmake -B build . -DUSE_SYSTEM_GUICHAN=OFF -DCMAKE_BUILD_TYPE=Release
 
-      - name: Build
+      - name: Build (${{ matrix.arch }})
         run: |
           cmake --build build
 
-      - name: Package
+      - name: Package (${{ matrix.arch }})
         run: |
+          export PATH="$PATH:/c/Program Files (x86)/NSIS"
           pushd build
           cpack
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Mana installer for Windows (64-bit)
-          path: build/Mana-*-win64.exe
+          name: Mana installer for Windows (${{ matrix.arch }})
+          path: build/Mana-*-win*.exe
 
   snap:
     runs-on: ubuntu-latest

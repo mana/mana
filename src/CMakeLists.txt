@@ -642,10 +642,30 @@ set_target_properties(
              MACOSX_BUNDLE_SHORT_VERSION_STRING
              ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
 
-install(
-  TARGETS mana
-  BUNDLE DESTINATION .
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+if(WIN32)
+  # Install the executable along with the DLLs it depends on. This works for
+  # both the GCC (UCRT64) and Clang (CLANGARM64) based MSYS2 environments,
+  # which ship different C/C++ runtime libraries.
+  if(CMAKE_VERSION VERSION_LESS 3.21)
+    message(FATAL_ERROR "CMake 3.21 or later is required on Windows")
+  endif()
+  if(POLICY CMP0207)
+    # Normalize paths before matching the exclude regexes below
+    cmake_policy(SET CMP0207 NEW)
+  endif()
+  install(
+    TARGETS mana
+    RUNTIME_DEPENDENCIES
+      PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
+      POST_EXCLUDE_REGEXES "[Ss]ystem32" "[Ss]ys[Ww][Oo][Ww]64"
+      DIRECTORIES "$ENV{MINGW_PREFIX}/bin"
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+else()
+  install(
+    TARGETS mana
+    BUNDLE DESTINATION .
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+endif()
 
 if(APPLE)
   target_link_libraries(mana PRIVATE "-framework Foundation")
