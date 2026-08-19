@@ -136,18 +136,11 @@ Installing the dependencies on Fedora:
                      enet-devel SDL2_image-devel SDL2_mixer-devel \
                      SDL2_net-devel SDL2_ttf-devel
 
-Installing the dependencies on Windows (using MSYS2 UCRT64):
+Installing the dependencies on Windows (using MSYS2, in a UCRT64 shell for
+x64 or a CLANGARM64 shell for ARM64):
 
-    pacman -S mingw-w64-ucrt-x86_64-gcc \
-              mingw-w64-ucrt-x86_64-cmake \
-              mingw-w64-ucrt-x86_64-enet \
-              mingw-w64-ucrt-x86_64-physfs \
-              mingw-w64-ucrt-x86_64-curl-winssl \
-              mingw-w64-ucrt-x86_64-SDL2_image \
-              mingw-w64-ucrt-x86_64-SDL2_mixer \
-              mingw-w64-ucrt-x86_64-SDL2_net \
-              mingw-w64-ucrt-x86_64-SDL2_ttf \
-              mingw-w64-ucrt-x86_64-libxml2
+    pacboy -S cc:p cmake:p enet:p physfs:p curl-winssl:p \
+              SDL2_image:p SDL2_mixer:p SDL2_net:p SDL2_ttf:p libxml2:p
 
 Once the dependencies are installed, use CMake:
 

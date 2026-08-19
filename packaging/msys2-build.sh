@@ -1,17 +1,28 @@
 #!/bin/bash
+#
+# Builds the Windows installer from an MSYS2 shell. Works in both the
+# UCRT64 (x64) and CLANGARM64 (ARM64) environments.
 
-pacman --noconfirm -S \
-        mingw-w64-ucrt-x86_64-gcc \
-        mingw-w64-ucrt-x86_64-cmake \
-        mingw-w64-ucrt-x86_64-enet \
-        mingw-w64-ucrt-x86_64-physfs \
-        mingw-w64-ucrt-x86_64-curl-winssl \
-        mingw-w64-ucrt-x86_64-SDL2_image \
-        mingw-w64-ucrt-x86_64-SDL2_mixer \
-        mingw-w64-ucrt-x86_64-SDL2_net \
-        mingw-w64-ucrt-x86_64-SDL2_ttf \
-        mingw-w64-ucrt-x86_64-libxml2 \
-        mingw-w64-ucrt-x86_64-nsis
+packages=(
+        cc
+        cmake
+        enet
+        physfs
+        curl-winssl
+        SDL2_image
+        SDL2_mixer
+        SDL2_net
+        SDL2_ttf
+        libxml2
+        gettext
+)
+
+# NSIS is not packaged for CLANGARM64, install it from https://nsis.sourceforge.io/ instead
+if [ "$MSYSTEM" != "CLANGARM64" ]; then
+        packages+=(nsis)
+fi
+
+pacman --noconfirm -S "${packages[@]/#/${MINGW_PACKAGE_PREFIX}-}"
 
 cmake -B build . -DUSE_SYSTEM_GUICHAN=OFF -DCMAKE_BUILD_TYPE=Release
 cmake --build build
