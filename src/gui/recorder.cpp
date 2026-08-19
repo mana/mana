@@ -24,19 +24,15 @@
 #include "client.h"
 #include "event.h"
 
-#include "gui/chatwindow.h"
-
 #include "gui/widgets/button.h"
 #include "gui/widgets/layout.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-Recorder::Recorder(ChatWindow *chat,
-                   const std::string &title,
+Recorder::Recorder(const std::string &title,
                    const std::string &buttonTxt)
     : Window(title)
-    , mChat(chat)
 {
     setWindowName("Recorder");
     const int offsetX = 2 * getPadding() + 10;

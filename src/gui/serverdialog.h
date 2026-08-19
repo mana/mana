@@ -39,7 +39,6 @@
 class Button;
 class Label;
 class ListBox;
-class ServerDialog;
 class TextField;
 class DropDown;
 
@@ -51,7 +50,7 @@ class ServersListModel : public gcn::ListModel
     public:
         using VersionString = std::pair<int, std::string>;
 
-        ServersListModel(ServerInfos *servers, ServerDialog *parent);
+        ServersListModel(ServerInfos *servers);
 
         /**
          * Used to get number of line in the list
@@ -74,7 +73,6 @@ class ServersListModel : public gcn::ListModel
     private:
         ServerInfos *mServers;
         std::vector<VersionString> mVersionStrings;
-        ServerDialog *mParent;
 };
 
 /**

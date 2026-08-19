@@ -30,7 +30,7 @@
 #define ITEMS_DB_FILE "items.xml"
 
 class ItemInfo;
-class SpriteDisplay;
+struct SpriteDisplay;
 
 namespace TmwAthena {
 class TaItemDB;

@@ -103,6 +103,10 @@ jobs:
         with:
           submodules: true
 
+      - name: Untap aws/tap
+        # The runner image ships an untrusted tap, which Homebrew warns about
+        run: brew untap aws/tap || true
+
       - name: Setup ccache
         uses: hendrikmuhs/ccache-action@v1.2.23
         with:
@@ -110,8 +114,6 @@ jobs:
 
       - name: Install dependencies (${{ matrix.arch }})
         run: |
-          # The runner image ships an untrusted tap, which Homebrew warns about
-          brew untap aws/tap || true
           brew update
           brew upgrade
           brew install \

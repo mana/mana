@@ -31,8 +31,8 @@
 
 struct UnitLevel {
     std::string symbol;
-    int count;
-    int round;
+    int count = 0;
+    int round = 0;
 };
 
 struct UnitDescription {

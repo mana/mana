@@ -59,10 +59,6 @@ class GuildHandler final : public Net::GuildHandler, public MessageHandler
                                      bool response) override;
 
         void endAlliance(int guildId, int otherGuildId) override;
-
-    private:
-        // TmwAthena (and eAthena) only supports one guild per player
-        Guild *mGuild;
 };
 
 }

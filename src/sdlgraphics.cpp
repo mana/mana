@@ -45,12 +45,11 @@ std::unique_ptr<Graphics> SDLGraphics::create(SDL_Window *window, const VideoSet
         return {};
     }
 
-    return std::make_unique<SDLGraphics>(window, renderer);
+    return std::make_unique<SDLGraphics>(renderer);
 }
 
-SDLGraphics::SDLGraphics(SDL_Window *window, SDL_Renderer *renderer)
-    : mWindow(window)
-    , mRenderer(renderer)
+SDLGraphics::SDLGraphics(SDL_Renderer *renderer)
+    : mRenderer(renderer)
 {
     Image::setRenderer(mRenderer);
 

@@ -30,12 +30,10 @@
 #include <fstream>
 #include <string>
 
-class ChatWindow;
-
 class Recorder : public Window, public gcn::ActionListener
 {
     public:
-        Recorder(ChatWindow *chat, const std::string &title = _("Recording..."),
+        Recorder(const std::string &title = _("Recording..."),
                  const std::string &buttonTxt = _("Stop recording"));
 
         ~Recorder() override;
@@ -67,7 +65,5 @@ class Recorder : public Window, public gcn::ActionListener
         void action(const gcn::ActionEvent &event) override;
 
     private:
-        ChatWindow *mChat;
-
         std::ofstream mStream;
 };
