@@ -30,7 +30,7 @@
 
 #include <memory>
 
-class VideoSettings;
+struct VideoSettings;
 
 class OpenGLGraphics final : public Graphics
 {

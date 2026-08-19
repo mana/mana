@@ -47,10 +47,9 @@
 #include <cstdlib>
 #include <string>
 
-ServersListModel::ServersListModel(ServerInfos *servers, ServerDialog *parent):
+ServersListModel::ServersListModel(ServerInfos *servers):
         mServers(servers),
-        mVersionStrings(servers->size(), VersionString(0, std::string())),
-        mParent(parent)
+        mVersionStrings(servers->size(), VersionString(0, std::string()))
 {
 }
 
@@ -159,7 +158,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
 
     loadCustomServers();
 
-    mServersListModel = std::make_unique<ServersListModel>(&mServers, this);
+    mServersListModel = std::make_unique<ServersListModel>(&mServers);
     mServersList = new ServersListBox(mServersListModel.get());
 
     auto *usedScroll = new ScrollArea(mServersList);

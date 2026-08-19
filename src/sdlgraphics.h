@@ -25,7 +25,7 @@
 
 #include <memory>
 
-class VideoSettings;
+struct VideoSettings;
 
 class SDLGraphics final : public Graphics
 {
@@ -33,7 +33,7 @@ public:
     static std::unique_ptr<Graphics> create(SDL_Window *window,
                                             const VideoSettings &settings);
 
-    SDLGraphics(SDL_Window *window, SDL_Renderer *renderer);
+    SDLGraphics(SDL_Renderer *renderer);
     ~SDLGraphics() override;
 
     void setVSync(bool sync) override;
@@ -83,6 +83,5 @@ protected:
 private:
     void setColorAlphaMod(const Image *image) const;
 
-    SDL_Window *mWindow = nullptr;
     SDL_Renderer *mRenderer = nullptr;
 };

@@ -70,17 +70,14 @@ class Setup_Colors : public SetupTab,
         gcn::Label *mRedLabel;
         gcn::Slider *mRedSlider;
         TextField *mRedText;
-        int mRedValue;
 
         gcn::Label *mGreenLabel;
         gcn::Slider *mGreenSlider;
         TextField *mGreenText;
-        int mGreenValue;
 
         gcn::Label *mBlueLabel;
         gcn::Slider *mBlueSlider;
         TextField *mBlueText;
-        int mBlueValue;
 
         void setEntry(gcn::Slider *s, TextField *t, int value);
         void updateColor();

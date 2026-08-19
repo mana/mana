@@ -125,7 +125,7 @@ ChatWindow::ChatWindow():
     mChatInput->setHistory(&mHistory);
     mChatInput->setAutoComplete(mAutoComplete);
 
-    mRecorder = new Recorder(this);
+    mRecorder = new Recorder;
 }
 
 ChatWindow::~ChatWindow()
