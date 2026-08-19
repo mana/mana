@@ -65,26 +65,28 @@ jobs:
           path: build/Mana-*-win*.exe
 
   snap:
-    runs-on: ubuntu-latest
+    # Pinned so that the host matches the snap's core24 base, since the snap
+    # is built directly on the runner instead of in LXD.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # required to generate the version from git tags
           submodules: true
 
-      - uses: snapcore/action-build@v1
-        id: snapcraft
+      - name: Install snapcraft
+        run: sudo snap install --classic snapcraft
 
-      - uses: actions/upload-artifact@v7
-        if: ${{ failure() }}
-        with:
-          name: snapcraft.log
-          path: "/home/runner/.local/state/snapcraft/log/*.log"
+      - name: Build snap
+        env:
+          SNAPCRAFT_BUILD_INFO: "1"
+          SNAPCRAFT_IMAGE_INFO: '{"build_url":"https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}'
+        run: sudo snapcraft --destructive-mode
 
       - uses: actions/upload-artifact@v7
         with:
           name: mana_amd64.snap
-          path: ${{ steps.snapcraft.outputs.snap }}
+          path: mana_*_amd64.snap
 
   macos-build:
     strategy:
