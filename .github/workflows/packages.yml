@@ -22,7 +22,7 @@ jobs:
       run:
         shell: msys2 {0}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: true
 
@@ -59,7 +59,7 @@ jobs:
           pushd build
           cpack
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: Mana installer for Windows (${{ matrix.arch }})
           path: build/Mana-*-win*.exe
@@ -67,7 +67,7 @@ jobs:
   snap:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0 # required to generate the version from git tags
           submodules: true
@@ -75,13 +75,13 @@ jobs:
       - uses: snapcore/action-build@v1
         id: snapcraft
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
           name: snapcraft.log
           path: "/home/runner/.local/state/snapcraft/log/*.log"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: mana_amd64.snap
           path: ${{ steps.snapcraft.outputs.snap }}
@@ -99,17 +99,19 @@ jobs:
       CMAKE_C_COMPILER_LAUNCHER: ccache
       CMAKE_CXX_COMPILER_LAUNCHER: ccache
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           submodules: true
 
       - name: Setup ccache
-        uses: hendrikmuhs/ccache-action@v1
+        uses: hendrikmuhs/ccache-action@v1.2.23
         with:
           max-size: 250M
 
       - name: Install dependencies (${{ matrix.arch }})
         run: |
+          # The runner image ships an untrusted tap, which Homebrew warns about
+          brew untap aws/tap || true
           brew update
           brew upgrade
           brew install \
@@ -134,7 +136,7 @@ jobs:
       - name: Archive bundle (${{ matrix.arch }})
         run: tar -czf Mana-${{ matrix.arch }}.tar.gz -C install Mana.app
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: Mana-app-${{ matrix.arch }}
           path: Mana-${{ matrix.arch }}.tar.gz
@@ -151,10 +153,10 @@ jobs:
       MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
       KEYCHAIN_PWD: ${{ secrets.KEYCHAIN_PWD }}
     steps:
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v8
         with:
           name: Mana-app-arm64
-      - uses: actions/download-artifact@v5
+      - uses: actions/download-artifact@v8
         with:
           name: Mana-app-x86_64
 
@@ -185,7 +187,7 @@ jobs:
       - name: Create Certificate File
         if: ${{ env.MACOS_CERTIFICATE != '' }}
         id: certificateFile
-        uses: timheuer/base64-to-file@v1
+        uses: timheuer/base64-to-file@v2
         with:
           fileName: 'certificate.p12'
           encodedString: ${{ env.MACOS_CERTIFICATE }}
@@ -228,6 +230,7 @@ jobs:
       - name: Create universal DMG
         run: |
           set -e
+          brew untap aws/tap || true
           brew install create-dmg
           create-dmg \
             --volname "Mana Client" \
@@ -239,7 +242,7 @@ jobs:
             "Mana-universal.dmg" \
             "universal/"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: Mana DMG for macOS (universal)
           path: Mana-universal.dmg
