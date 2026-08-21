@@ -23,9 +23,12 @@ ubuntu-build:
     - export CCACHE_COMPILERCHECK=content
   script:
     - export DEBIAN_FRONTEND=noninteractive
+    # dpkg fsyncs after every package, which is pointless in a container
+    - echo force-unsafe-io > /etc/dpkg/dpkg.cfg.d/02speedup
     - apt-get update
-    - apt-get install -y
+    - apt-get install -y --no-install-recommends
         build-essential
+        ca-certificates
         ccache
         cmake
         file
