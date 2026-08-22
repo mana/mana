@@ -128,19 +128,20 @@ Installing the dependencies on Ubuntu:
 Installing the dependencies on macOS (with Homebrew):
 
     brew install sdl2 sdl2_image sdl2_mixer sdl2_net sdl2_ttf \
-                 enet physfs curl guichan
+                 enet physfs curl guichan gettext
 
 Installing the dependencies on Fedora:
 
     sudo dnf install gcc-c++ cmake physfs-devel libcurl-devel guichan-devel \
                      enet-devel SDL2_image-devel SDL2_mixer-devel \
-                     SDL2_net-devel SDL2_ttf-devel
+                     SDL2_net-devel SDL2_ttf-devel gettext
 
 Installing the dependencies on Windows (using MSYS2, in a UCRT64 shell for
 x64 or a CLANGARM64 shell for ARM64):
 
     pacboy -S cc:p cmake:p enet:p physfs:p curl-winssl:p \
-              SDL2_image:p SDL2_mixer:p SDL2_net:p SDL2_ttf:p libxml2:p
+              SDL2_image:p SDL2_mixer:p SDL2_net:p SDL2_ttf:p libxml2:p \
+              gettext:p
 
 Once the dependencies are installed, use CMake:
 

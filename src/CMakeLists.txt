@@ -8,7 +8,6 @@ pkg_check_modules(SDL2 REQUIRED
 find_package(PhysFS REQUIRED)
 find_package(CURL REQUIRED)
 find_package(LibXml2 REQUIRED)
-find_package(Gettext REQUIRED)
 find_package(Intl REQUIRED)
 find_package(ZLIB REQUIRED)
 
