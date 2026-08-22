@@ -101,6 +101,11 @@ class Sprite
         int getOffsetY() const;
 
         /**
+         * Gets the smallest vertical offset used by any frame of this sprite.
+         */
+        int getMinOffsetY() const;
+
+        /**
          * Returns a reference to the current image being drawn.
          */
         const Image *getImage() const;

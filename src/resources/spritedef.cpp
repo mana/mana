@@ -33,6 +33,7 @@
 
 #include "utils/xml.h"
 
+#include <algorithm>
 #include <set>
 
 static std::set<std::string> processedFiles;
@@ -120,6 +121,7 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
     auto *def = new SpriteDef;
     def->loadSprite(rootNode, variant, palettes);
     def->substituteActions();
+    def->updateMinOffsetY();
     return def;
 }
 
@@ -131,6 +133,32 @@ void SpriteDef::substituteAction(const std::string &complete, const std::string 
         if (i != mActions.end())
         {
             mActions[complete] = i->second;
+        }
+    }
+}
+
+void SpriteDef::updateMinOffsetY()
+{
+    mMinOffsetY = 0;
+
+    // Only consider the stand action, since other actions (like attack) may
+    // temporarily move the sprite far away from its resting position.
+    const Action *action = getAction(SpriteAction::STAND);
+    if (!action)
+        return;
+
+    bool first = true;
+    for (const auto &[_, animation] : action->getAnimations())
+    {
+        for (int i = 0; i < animation.getLength(); ++i)
+        {
+            const Frame *frame = animation.getFrame(i);
+            if (Animation::isTerminator(*frame))
+                continue;
+
+            mMinOffsetY = first ? frame->offsetY
+                                : std::min(mMinOffsetY, frame->offsetY);
+            first = false;
         }
     }
 }

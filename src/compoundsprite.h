@@ -48,6 +48,12 @@ public:
      */
     int getHeight() const { doRedraw(); return mHeight; }
 
+    /**
+     * Gets the smallest vertical offset used by any frame of the first
+     * sprite, which is a stable measure of how far it extends upwards.
+     */
+    int getMinOffsetY() const;
+
     float getAlpha() const { return mAlpha; }
     void setAlpha(float alpha) { mAlpha = alpha; }
 

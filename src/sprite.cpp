@@ -199,6 +199,11 @@ int Sprite::getOffsetY() const
     return mFrame ? mFrame->offsetY : 0;
 }
 
+int Sprite::getMinOffsetY() const
+{
+    return mSprite ? mSprite->getMinOffsetY() : 0;
+}
+
 const Image *Sprite::getImage() const
 {
     return mFrame ? mFrame->image : nullptr;

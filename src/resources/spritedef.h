@@ -92,6 +92,9 @@ class Action
         void setAnimation(int direction, Animation animation);
         const Animation *getAnimation(int direction) const;
 
+        const std::map<int, Animation> &getAnimations() const
+        { return mAnimations; }
+
     protected:
         std::map<int, Animation> mAnimations;
 };
@@ -112,7 +115,19 @@ class SpriteDef : public Resource
          */
         Action *getAction(const std::string &action) const;
 
+        /**
+         * Returns the smallest vertical offset used by any frame of the
+         * stand action. Since offsets are usually negative, this is the
+         * offset of the topmost resting frame.
+         */
+        int getMinOffsetY() const { return mMinOffsetY; }
+
     private:
+        /**
+         * Computes the minimum vertical offset over all frames.
+         */
+        void updateMinOffsetY();
+
         SpriteDef() {}
 
         ~SpriteDef() override;
@@ -158,4 +173,5 @@ class SpriteDef : public Resource
 
         std::map<std::string, ResourceRef<ImageSet>> mImageSets;
         std::map<std::string, Action *> mActions;
+        int mMinOffsetY = 0;
 };

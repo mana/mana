@@ -113,6 +113,14 @@ public:
     int getWidth() const { return mSprites.getWidth(); }
     int getHeight() const { return mSprites.getHeight(); }
 
+    /**
+     * Returns the Y coordinate of the top of the sprite, taking the sprite
+     * offset into account. Uses the smallest offset over all frames so that
+     * the result is stable across animations.
+     */
+    int getSpriteTopY() const
+    { return getPixelY() - getHeight() + mSprites.getMinOffsetY(); }
+
     static void load();
     static void unload();
 

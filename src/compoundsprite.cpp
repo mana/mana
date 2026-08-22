@@ -106,6 +106,13 @@ bool CompoundSprite::draw(Graphics *graphics, int posX, int posY) const
     return false;
 }
 
+int CompoundSprite::getMinOffsetY() const
+{
+    if (mSprites.empty() || !mSprites.at(0))
+        return 0;
+    return mSprites.at(0)->getMinOffsetY();
+}
+
 bool CompoundSprite::setDirection(SpriteDirection direction)
 {
     bool ret = false;

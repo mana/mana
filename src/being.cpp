@@ -181,7 +181,7 @@ void Being::setMoveSpeed(const Vector &speed)
 
 int Being::getSpeechTextYPosition() const
 {
-    return getPixelY() - std::min(getHeight(), 64) - 6;
+    return std::max(getSpriteTopY(), getPixelY() - 64) - 6;
 }
 
 void Being::setPosition(const Vector &pos)
@@ -369,7 +369,7 @@ void Being::takeDamage(Being *attacker, int amount,
 
     // Show damage number
     particleEngine->addTextSplashEffect(damage,
-                                        getPixelX(), getPixelY() - getHeight(),
+                                        getPixelX(), getSpriteTopY(),
                                         color, font, true);
 
     if (amount > 0)
@@ -993,7 +993,7 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
         if (!mText)
         {
             mText = new Text(mSpeech,
-                             getPixelX(), getPixelY() - getHeight(),
+                             getPixelX(), getSpriteTopY(),
                              gcn::Graphics::CENTER,
                              &Theme::getThemeColor(Theme::BUBBLE_TEXT),
                              true);
@@ -1015,7 +1015,7 @@ void Being::drawSpeech(Graphics *graphics, int offsetX, int offsetY)
         auto &healthSkin = theme->getSkin(SkinType::HealthBar);
 
         const auto fontHeight = gui->getFont()->getHeight();
-        const auto nameY = mDispName ? mDispName->getY() : (getPixelY() - getHeight() - 15);
+        const auto nameY = mDispName ? mDispName->getY() : (getSpriteTopY() - 15);
 
         const int spriteWidth = getWidth();
         const int barWidth = (spriteWidth < 30)
@@ -1050,7 +1050,7 @@ void Being::updateNamePosition()
 
     // Monster names show above the sprite instead of below it
     if (getType() == MONSTER)
-        mDispName->adviseXY(getPixelX(), getPixelY() - getHeight() - 15);
+        mDispName->adviseXY(getPixelX(), getSpriteTopY() - 15);
     else
         mDispName->adviseXY(getPixelX(), getPixelY() + mDispName->getHeight());
 }
