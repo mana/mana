@@ -675,7 +675,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
                 msg.readInt8(); // five
             }
 
-            msg.readInt8();   // Lv
+            dstBeing->setLevel(msg.readInt8());
             msg.readInt8();   // unused
 
             applyStatusEffects(dstBeing, opt0, opt1, opt2, opt3);

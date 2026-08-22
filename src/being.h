@@ -211,6 +211,13 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
         const std::string &getPartyName() const { return mPartyName; }
 
         /**
+         * Sets the level of the being. Shown in BeingPopup.
+         */
+        void setLevel(int level) { mLevel = level; }
+
+        int getLevel() const { return mLevel; }
+
+        /**
          * Sets the name of the primary guild the being is in. Shown in
          * BeingPopup (eventually).
          */
@@ -513,6 +520,7 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
         uint8_t mSpriteDirection = DIRECTION_DOWN;  /**< Facing direction */
         std::string mName;              /**< Name of character */
         std::string mPartyName;
+        int mLevel = 0;
 
         /**
          * Holds a text object when the being displays its name, 0 otherwise

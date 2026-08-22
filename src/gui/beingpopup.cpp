@@ -21,6 +21,8 @@
 #include "gui/beingpopup.h"
 
 #include "being.h"
+#include "localplayer.h"
+#include "playerinfo.h"
 
 #include "gui/gui.h"
 
@@ -38,8 +40,6 @@ BeingPopup::BeingPopup():
     setMinWidth(0);
     setMinHeight(0);
 
-    const int fontHeight = getFont()->getHeight();
-
     // Being Name
     mBeingName = new Label("A");
     mBeingName->setFont(boldFont);
@@ -47,10 +47,13 @@ BeingPopup::BeingPopup():
 
     // Being's party
     mBeingParty = new Label("A");
-    mBeingParty->setPosition(0, fontHeight);
+
+    // Being's level
+    mBeingLevel = new Label("A");
 
     add(mBeingName);
     add(mBeingParty);
+    add(mBeingLevel);
 
     addMouseListener(this);
 }
@@ -70,22 +73,38 @@ void BeingPopup::show(int x, int y, Being *b)
 
     int minWidth = mBeingName->getWidth();
     const int fontHeight = getFont()->getHeight();
+    int height = fontHeight;
 
     if (!(b->getPartyName().empty()))
     {
         mBeingParty->setCaption(strprintf(_("Party: %s"),
                                           b->getPartyName().c_str()));
         mBeingParty->adjustSize();
-
+        mBeingParty->setPosition(0, height);
         minWidth = std::max(minWidth, mBeingParty->getWidth());
-
-        setContentSize(minWidth, (fontHeight * 2));
+        height += fontHeight;
     }
     else
     {
         mBeingParty->setCaption(std::string());
-        setContentSize(minWidth, fontHeight);
     }
+
+    const int level = b == local_player ? PlayerInfo::getAttribute(LEVEL)
+                                        : b->getLevel();
+    if (level > 1)
+    {
+        mBeingLevel->setCaption(strprintf(_("Level: %d"), level));
+        mBeingLevel->adjustSize();
+        mBeingLevel->setPosition(0, height);
+        minWidth = std::max(minWidth, mBeingLevel->getWidth());
+        height += fontHeight;
+    }
+    else
+    {
+        mBeingLevel->setCaption(std::string());
+    }
+
+    setContentSize(minWidth, height);
 
     position(x, y);
 }

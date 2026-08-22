@@ -45,4 +45,5 @@ class BeingPopup : public Popup
     private:
         Label *mBeingName;
         Label *mBeingParty;
+        Label *mBeingLevel;
 };
