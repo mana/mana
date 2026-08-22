@@ -92,54 +92,6 @@ $ cmake -DCMAKE_TOOLCHAIN_FILE=/build/toolchain.cmake .
 4. Creating an installer binary for Windows
 -------------------------------------------
 
-(NOTE: These instructions are outdated, an NSIS installer can now be produced
-in MSYS2 using cpack, which automates most of the below steps.)
-
-Call cmake with the following flags:
-
- - CMAKE_TOOLCHAIN_FILE=/build/toolchain.cmake
-   The path to your toolchain file from chapter 3
- - VERSION=$VERSION
-   The version number for the build, used to set client identification and
-   EXE meta information. Needs to be in the form Major.Minor.Release.Build
- - CMAKE_BUILD_TYPE=RelWithDebInfo|Release
-   RelWithDebInfo is the prefered build type, as it provides some backtrace
-   information without blowing the binary up too much. Don't use Debug.
-
-Install nsis (on Debian, apt-get install nsis), and get the UnTGZ plugin:
-    http://nsis.sourceforge.net/UnTGZ_plug-in
-Place untgz.dll in nsis plugins directory (on Debian, /usr/share/nsis/Plugins/)
-
-Now chdir to packaging/windows. Make sure you have the msgfmt program (from
-gettext), and execute make-translations.sh to generate translations from the
-po-files in ../../translations/
-
-Check that you've got the translations, and call `makensis setup.nsi' with the
-following parameters:
-
- -DDLLDIR=/build/mana-libs/lib/
-  The directory you've put the libraries. It's the one from the toolchain file
-  with /lib/ added at the end. If you'd like to include the Dr. MingW crash
-  handler place exchndl.dll in this directory.
- -DPRODUCT_VERSION=$VERSION
-  Same as above
- -DUPX=true
-  Set to upx if you'd like to compress the binaries using upx (and install upx,
-  of course). Will remove debug symbols.
- -DEXESUFFIX=/src
-  Suffix to the source directory, pointing to the directory where the binaries
-  are. For cmake-builds that's /src.
-
-To build the installer for the 0.1.0.0 release you'd do the following:
-$ cmake -DVERSION=0.1.0.0 -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-      -DCMAKE_TOOLCHAIN_FILE=/build/toolchain.cmake .
-[...]
-$ make
-[...]
-$ cd packaging/windows
-$ ./make-translations.sh
-[...]
-$ makensis -DDLLDIR=/build/mana-libs/lib/ -DPRODUCT_VERSION=0.1.0.0 \
-           -DUPX=true -DEXESUFFIX=/src setup.nsi
-
-and end up with the installer in mana-0.1.0.0-win32.exe
+The NSIS installer is produced with cpack from an MSYS2 shell, see
+packaging/msys2-build.sh. The GitHub Actions workflow in
+.github/workflows/packages.yml uses the same approach.
