@@ -58,6 +58,53 @@ ubuntu-build:
     paths:
       - Mana-*.AppImage
 
+windows-cross-build:
+  stage: build
+  # Fedora packages a complete mingw-w64 toolchain, so the Windows installer
+  # can be cross-compiled in an ordinary container. The installer shipped to
+  # users is still the MSYS2 one built by AppVeyor.
+  image: fedora:44
+  cache:
+    paths:
+      - ccache
+  variables:
+    GIT_SUBMODULE_STRATEGY: normal
+  before_script:
+    - export CCACHE_BASEDIR="$PWD"
+    - export CCACHE_DIR="$PWD/ccache"
+    - export CCACHE_COMPILERCHECK=content
+  script:
+    # mingw32-nsis provides the 32-bit stubs makensis needs, also for a 64-bit
+    # installer, while mingw64-nsis provides the 64-bit plugins
+    - dnf install -y --setopt=install_weak_deps=False
+        ccache cmake gettext git ninja-build
+        mingw64-gcc-c++ mingw64-filesystem mingw64-winpthreads-static
+        mingw64-sdl2-compat mingw64-SDL2_image mingw64-SDL2_mixer
+        mingw64-SDL2_ttf mingw64-physfs mingw64-curl mingw64-libxml2
+        mingw64-zlib mingw64-gettext mingw32-nsis mingw64-nsis
+    # SDL2_net has no mingw package, so build it from source. It only installs
+    # its pkg-config file for a Release build. Note that mingw64-cmake takes the
+    # source directory from the working directory, so -S can not be used here.
+    - git clone --depth 1 -b release-2.2.0 https://github.com/libsdl-org/SDL_net
+    - cd SDL_net
+    - mingw64-cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
+        -DSDL2NET_SAMPLES=OFF
+    - cmake --build build
+    - cmake --install build
+    - cd ..
+    - ccache --zero-stats || true
+    # ENet has no mingw package either, so use the submodule for it as well
+    - mingw64-cmake -G Ninja -B build -DCMAKE_BUILD_TYPE=Release
+        -DUSE_SYSTEM_GUICHAN=OFF -DUSE_SYSTEM_ENET=OFF
+        -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+    - cmake --build build
+    - ccache --show-stats
+    - cpack --config build/CPackConfig.cmake
+  artifacts:
+    name: "windows-installer-$CI_COMMIT_REF_SLUG"
+    paths:
+      - Mana-*-win64.exe
+
 macos-build:
   stage: build
   allow_failure: true
