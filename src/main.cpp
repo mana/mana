@@ -25,6 +25,7 @@
 
 #include "utils/filesystem.h"
 #include "utils/gettext.h"
+#include "utils/language.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 
@@ -34,13 +35,6 @@
 
 #ifdef __MINGW32__
 #include <windows.h>
-#endif
-#if ENABLE_NLS && defined(_WIN32)
-#include <winnls.h>
-#endif
-
-#ifdef __APPLE__
-#include "utils/specialfolder.h"
 #endif
 
 static void printHelp()
@@ -191,59 +185,6 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
         options.brandingPath = argv[optind];
     }
 }
-
-static void initInternationalization()
-{
-#if ENABLE_NLS
-#ifdef _WIN32
-    // On Windows we need to set the LANG environment variable to get the
-    // correct translation, because this isn't set by default.
-    ULONG numLanguages = 0;
-    ULONG bufferSize = 0;
-    if (!GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &numLanguages, nullptr, &bufferSize))
-        return;
-    if (numLanguages == 0 || bufferSize < 2)
-        return;
-
-    std::wstring localeNamesW(bufferSize, L'\0');
-    if (!GetUserPreferredUILanguages(MUI_LANGUAGE_NAME, &numLanguages, localeNamesW.data(), &bufferSize))
-        return;
-
-    // Replace the null characters used as separators with a colon, except for
-    // the last two. Also replace - with _, since gettext expects de_DE rather
-    // than de-DE.
-    for (size_t i = 0; i < localeNamesW.size() - 2; ++i) {
-        auto &c = localeNamesW[i];
-        if (c == L'\0')
-            c = L':';
-        else if (c == L'-')
-            c = L'_';
-    }
-
-    _wputenv_s(L"LANG", localeNamesW.c_str());
-#endif // _WIN32
-
-    setlocale(LC_MESSAGES, "");
-
-#ifdef __APPLE__
-    const auto translationsDir = getResourcesLocation() + "/Translations";
-    bindtextdomain("mana", translationsDir.c_str());
-#elif defined __linux__
-    // When running from an AppImage the compiled-in absolute path needs to
-    // be resolved against the mount point, which the runtime sets as APPDIR.
-    std::string localeDir = LOCALEDIR;
-    if (const char *appDir = getenv("APPDIR"))
-        localeDir = appDir + localeDir;
-    bindtextdomain("mana", localeDir.c_str());
-#else
-    bindtextdomain("mana", LOCALEDIR);
-#endif
-
-    bind_textdomain_codeset("mana", "UTF-8");
-    textdomain("mana");
-#endif // ENABLE_NLS
-}
-
 
 int main(int argc, char *argv[])
 {

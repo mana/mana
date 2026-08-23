@@ -51,6 +51,7 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
         double mOpacity;
         Being::Speech mSpeechMode;
 
+        std::unique_ptr<gcn::ListModel> mLanguageListModel;
         std::unique_ptr<gcn::ListModel> mThemesListModel;
         std::unique_ptr<gcn::ListModel> mFontSizeListModel;
 
@@ -67,6 +68,7 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
         gcn::Label *mSpeechLabel;
         gcn::Slider *mAlphaSlider;
 
+        gcn::DropDown *mLanguageDropDown = nullptr;
         gcn::DropDown *mThemeDropDown;
         gcn::DropDown *mFontSizeDropDown;
 

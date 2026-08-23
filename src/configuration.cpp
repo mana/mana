@@ -405,6 +405,7 @@ void serdeOptions(T option)
     option("ScrollCenterOffsetY",           &Config::scrollCenterOffsetY);
     option("onlineServerList",              &Config::onlineServerList);
     option("theme",                         &Config::theme);
+    option("language",                      &Config::language);
     option("disableTransparency",           &Config::disableTransparency);
 
     option("persistent-player-list",        &Config::persistentPlayerList);

@@ -21,17 +21,20 @@ macro(MANA_GETTEXT_CREATE_TRANSLATIONS _potFile _firstPoFileArg)
     get_filename_component(_absFile ${_currentPoFile} ABSOLUTE)
     get_filename_component(_abs_PATH ${_absFile} PATH)
     get_filename_component(_lang ${_absFile} NAME_WE)
-    set(_gmoFile ${CMAKE_CURRENT_BINARY_DIR}/${_lang}.gmo)
+    # The catalogs are compiled into the layout gettext expects, so that they
+    # can also be used when running the client from the build directory.
+    set(_moDir ${CMAKE_CURRENT_BINARY_DIR}/locale/${_lang}/LC_MESSAGES)
+    set(_gmoFile ${_moDir}/${_potBasename}.mo)
 
     add_custom_command(
       OUTPUT ${_gmoFile}
+      COMMAND ${CMAKE_COMMAND} -E make_directory ${_moDir}
       COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} -o ${_gmoFile} ${_absFile}
       DEPENDS ${_absPotFile} ${_absFile})
 
     install(
       FILES ${_gmoFile}
       DESTINATION ${CMAKE_INSTALL_LOCALEDIR}/${_lang}/LC_MESSAGES
-      RENAME ${_potBasename}.mo
       COMPONENT Translations)
     set(_gmoFiles ${_gmoFiles} ${_gmoFile})
 

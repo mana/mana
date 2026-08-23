@@ -13,7 +13,7 @@ compile_commands.json
 
 # files created during build
 *.o
-*.gmo
+po/locale/
 po/translatable-files
 src/mana
 build/*

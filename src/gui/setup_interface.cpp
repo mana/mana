@@ -34,6 +34,8 @@
 #include "resources/theme.h"
 
 #include "utils/gettext.h"
+#include "utils/language.h"
+#include "utils/stringutils.h"
 
 #include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
@@ -65,6 +67,53 @@ public:
                                         return theme.getPath() == path;
                                     });
         return themeIt != themes.end() ? std::distance(themes.begin(), themeIt) : 0;
+    }
+};
+
+
+/**
+ * Lists the available languages, with the system language as first entry.
+ */
+class LanguageListModel : public gcn::ListModel
+{
+public:
+    int getNumberOfElements() override
+    {
+        return getAvailableLanguages().size() + 1;
+    }
+
+    std::string getElementAt(int i) override
+    {
+        if (i == 0)
+        {
+            // TRANSLATORS: Placeholder is the name of a language
+            return strprintf(_("Default (%s)"),
+                             getSystemLanguage().name.c_str());
+        }
+
+        return getAvailableLanguages().at(i - 1).name;
+    }
+
+    static int getLanguageIndex(const std::string &code)
+    {
+        if (code.empty())
+            return 0;
+
+        auto &languages = getAvailableLanguages();
+        auto it = std::find_if(languages.begin(),
+                               languages.end(),
+                               [&](const LanguageInfo &language) {
+                                   return language.code == code;
+                               });
+        return it != languages.end() ? std::distance(languages.begin(), it) + 1 : 0;
+    }
+
+    static std::string getLanguageCode(int index)
+    {
+        if (index <= 0 || index > (int) getAvailableLanguages().size())
+            return std::string();
+
+        return getAvailableLanguages().at(index - 1).code;
     }
 };
 
@@ -142,6 +191,13 @@ Setup_Interface::Setup_Interface():
     gcn::Label *themeLabel = new Label(_("Theme:"));
     gcn::Label *fontSizeLabel = new Label(_("Font size:"));
 
+    // Without any translations there is no language to choose
+    if (getAvailableLanguages().size() > 1)
+    {
+        mLanguageListModel = std::make_unique<LanguageListModel>();
+        mLanguageDropDown = new DropDown(mLanguageListModel.get());
+    }
+
     mThemesListModel = std::make_unique<ThemesListModel>();
     mThemeDropDown = new DropDown(mThemesListModel.get());
 
@@ -177,6 +233,13 @@ Setup_Interface::Setup_Interface():
     mSpeechLabel->setCaption(speechModeToString(mSpeechMode));
     mSpeechSlider->setValue(mSpeechMode);
 
+    if (mLanguageDropDown)
+    {
+        mLanguageDropDown->setSelected(
+                    LanguageListModel::getLanguageIndex(config.language));
+        mLanguageDropDown->adjustHeight();
+    }
+
     mThemeDropDown->setSelected(ThemesListModel::getThemeIndex(config.theme));
 
     mFontSizeDropDown->setSelected(config.fontSize - 10);
@@ -198,20 +261,33 @@ Setup_Interface::Setup_Interface():
 
     place(0, 5, space, 1, 1);
 
-    place(0, 6, themeLabel, 2);
-    place(2, 6, mThemeDropDown, 2).setPadding(2);
+    int row = 6;
 
-    place(0, 7, fontSizeLabel, 2);
-    place(2, 7, mFontSizeDropDown, 2).setPadding(2);
+    if (mLanguageDropDown)
+    {
+        place(0, row, new Label(_("Language:")), 2);
+        place(2, row, mLanguageDropDown, 2).setPadding(2);
+        ++row;
+    }
 
-    place(0, 8, space, 1, 1);
+    place(0, row, themeLabel, 2);
+    place(2, row, mThemeDropDown, 2).setPadding(2);
+    ++row;
 
-    place(0, 9, mAlphaSlider, 2);
-    place(2, 9, alphaLabel, 2);
+    place(0, row, fontSizeLabel, 2);
+    place(2, row, mFontSizeDropDown, 2).setPadding(2);
+    ++row;
 
-    place(0, 10, mSpeechSlider, 2);
-    place(2, 10, speechLabel, 2);
-    place(4, 10, mSpeechLabel, 2).setPadding(2);
+    place(0, row, space, 1, 1);
+    ++row;
+
+    place(0, row, mAlphaSlider, 2);
+    place(2, row, alphaLabel, 2);
+    ++row;
+
+    place(0, row, mSpeechSlider, 2);
+    place(2, row, speechLabel, 2);
+    place(4, row, mSpeechLabel, 2).setPadding(2);
 }
 
 Setup_Interface::~Setup_Interface() = default;
@@ -220,13 +296,23 @@ void Setup_Interface::apply()
 {
     auto &theme = gui->getAvailableThemes().at(mThemeDropDown->getSelected());
     auto fontSize = mFontSizeDropDown->getSelected() + 10;
-    if (config.theme != theme.getPath() || config.fontSize != fontSize)
+    // Only apply a language change when the user made one, so that a language
+    // whose catalog is currently not installed is not silently dropped.
+    const bool languageChanged = mLanguageDropDown
+            && mLanguageDropDown->getSelected() !=
+               LanguageListModel::getLanguageIndex(config.language);
+    if (config.theme != theme.getPath() || config.fontSize != fontSize ||
+            languageChanged)
     {
-        new OkDialog(_("Changing Theme or Font Size"),
-                     _("Theme and font size changes will apply after restart."));
+        new OkDialog(_("Changing Language, Theme or Font Size"),
+                     _("Language, theme and font size changes will apply "
+                       "after restart."));
     }
     config.theme = theme.getPath();
     config.fontSize = fontSize;
+    if (languageChanged)
+        config.language = LanguageListModel::getLanguageCode(
+                    mLanguageDropDown->getSelected());
 
     mShowMonsterDamageEnabled = config.showMonstersTakedDamage;
     mVisibleNamesEnabled = config.visibleNames;
@@ -245,6 +331,9 @@ void Setup_Interface::cancel()
     mSpeechSlider->setValue(mSpeechMode);
     mNameCheckBox->setSelected(mNameEnabled);
     mNPCLogCheckBox->setSelected(mNPCLogEnabled);
+    if (mLanguageDropDown)
+        mLanguageDropDown->setSelected(
+                    LanguageListModel::getLanguageIndex(config.language));
     mThemeDropDown->setSelected(ThemesListModel::getThemeIndex(config.theme));
     mFontSizeDropDown->setSelected(config.fontSize - 10);
     mAlphaSlider->setValue(mOpacity);

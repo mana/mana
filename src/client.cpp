@@ -71,6 +71,7 @@
 
 #include "utils/filesystem.h"
 #include "utils/gettext.h"
+#include "utils/language.h"
 #include "utils/mkdir.h"
 #if defined(_WIN32) || defined(__APPLE__)
 #include "utils/specialfolder.h"
@@ -191,6 +192,10 @@ Client::Client(const Options &options):
     initHomeDir();
     initConfiguration();
 
+    // Apply the configured language override, if any. This needs to happen
+    // before any translated strings are used.
+    setLanguageOverride(config.language);
+
     // Configure logger
     Log::init();
     Log::setLogToStandardOut(config.logToStandardOut);
@@ -201,6 +206,8 @@ Client::Client(const Options &options):
     else
         Log::setLogFile(mLocalDataDir + "/mana.log");
     Log::info("%s", FULL_VERSION);
+
+    logLanguageSetup();
 
     chatLogger = new ChatLogger;
     if (options.chatLogDir.empty())
