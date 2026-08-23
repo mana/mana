@@ -6,6 +6,7 @@ Unreleased
 - Added support for level-specific skill names, icons and descriptions
 - Added support for custom text on "use" button
 - Added --log-file parameter to set log file path or '-' for stdout
+- Added --load-map parameter to load a map offline using a dummy backend
 - Added support for a minimum player level requirement on quest effects
 - Made --data option skip downloading and verifying updates (the news is still shown)
 - Added "Equip" button to the Outfit window

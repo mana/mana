@@ -300,6 +300,8 @@ set(SRCS
     net/npchandler.h
     net/net.cpp
     net/net.h
+    net/offlinehandler.cpp
+    net/offlinehandler.h
     net/partyhandler.h
     net/playerhandler.h
     net/serverinfo.h

@@ -101,6 +101,23 @@ Type /help party <option> for further help.
 For more information, type `/help <command>`.
 
 
+Offline Mode
+------------
+
+You can explore maps or test the client without connecting to a server using
+the `--load-map` option:
+
+    mana -d ../clientdata --load-map 001-1
+
+This launches directly into the specified map. Type `@help` in the chat window
+to list available commands.
+
+Player state is saved automatically on exit. To resume where you left off,
+use `--server-type offline`:
+
+    mana -d ../clientdata --server-type offline
+
+
 Support
 -------
 

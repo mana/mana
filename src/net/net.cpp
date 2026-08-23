@@ -38,8 +38,8 @@
 #include "net/tradehandler.h"
 
 #include "net/tmwa/generalhandler.h"
-
 #include "net/manaserv/generalhandler.h"
+#include "net/offlinehandler.h"
 
 #include "utils/gettext.h"
 
@@ -158,6 +158,9 @@ void connectToServer(ServerInfo &server)
 #endif
             case ServerType::TmwAthena:
                 generalHandler = new TmwAthena::GeneralHandler;
+                break;
+            case ServerType::Offline:
+                generalHandler = new OfflineHandler;
                 break;
             default:
                 Log::critical(_("Server protocol unsupported"));

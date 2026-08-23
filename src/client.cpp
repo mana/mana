@@ -58,6 +58,7 @@
 #include "net/logindata.h"
 #include "net/loginhandler.h"
 #include "net/net.h"
+#include "net/offlinehandler.h"
 #include "net/worldinfo.h"
 
 #include "resources/chardb.h"
@@ -397,6 +398,29 @@ Client::Client(const Options &options):
         // server selection dialog.
         mState = mCurrentServer.isValid() ? State::ConnectServer
                                           : State::ChooseServer;
+
+        if (mCurrentServer.type == ServerType::Offline)
+        {
+            Net::connectToServer(mCurrentServer);
+
+            auto *offlineHandler = static_cast<OfflineHandler*>(Net::getGameHandler());
+
+            // Always load the saved state, so that the inventory is kept even
+            // when starting on a different map.
+            const bool loadedState = offlineHandler->loadSavedState();
+
+            if (!mOptions.loadMap.empty())
+                offlineHandler->setMap(mOptions.loadMap);
+            else if (!loadedState)
+            {
+                errorMessage = _("No saved offline state found. "
+                                 "Use --load-map to specify a map.");
+                mState = State::Error;
+            }
+
+            if (mState != State::Error)
+                mState = State::LoadData;
+        }
     }
 
     // Initialize seconds counter
@@ -737,6 +761,7 @@ void Client::update()
                 switch (Net::getNetworkType())
                 {
                   case ServerType::TmwAthena:
+                  case ServerType::Offline:
                     itemDb = new TmwAthena::TaItemDB;
                   break;
                   case ServerType::ManaServ:
@@ -812,9 +837,12 @@ void Client::update()
                 break;
 
             case State::Game:
-                Log::info("Memorizing selected character %s",
-                        local_player->getName().c_str());
-                config.lastCharacter = local_player->getName();
+                if (Net::getNetworkType() != ServerType::Offline)
+                {
+                    Log::info("Memorizing selected character %s",
+                            local_player->getName().c_str());
+                    config.lastCharacter = local_player->getName();
+                }
 
                 // Fade out logon-music here too to give the desired effect
                 // of "flowing" into the game.

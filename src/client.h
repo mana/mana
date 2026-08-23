@@ -139,6 +139,7 @@ public:
 
         std::string serverName;
         uint16_t serverPort = 0;
+        std::string loadMap;
     };
 
     Client(const Options &options);

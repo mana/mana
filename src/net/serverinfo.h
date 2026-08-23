@@ -25,11 +25,12 @@
 #include <deque>
 #include <string>
 
-enum class ServerType
+enum class ServerType : uint8_t
 {
     Unknown,
     ManaServ,
-    TmwAthena
+    TmwAthena,
+    Offline
 };
 
 class ServerInfo
@@ -79,6 +80,8 @@ public:
             return ServerType::TmwAthena;
         if (type == "manaserv")
             return ServerType::ManaServ;
+        if (type == "offline")
+            return ServerType::Offline;
         return ServerType::Unknown;
     }
 

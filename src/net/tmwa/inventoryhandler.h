@@ -89,15 +89,16 @@ class EquipBackend final : public Equipment::Backend
 
         void clear() override
         {
-            for (int i = 0; i < EQUIP_VECTOR_END; i++)
+            for (int &inventoryIndex : mEquipment)
             {
-                if (mEquipment[i] != -1)
+                if (inventoryIndex != -1)
                 {
-                    if (Item *item = PlayerInfo::getInventory()->getItem(i))
+                    Item *item = PlayerInfo::getInventory()->getItem(inventoryIndex);
+                    if (item)
                         item->setEquipped(false);
                 }
 
-                mEquipment[i] = -1;
+                inventoryIndex = -1;
             }
         }
 
@@ -133,6 +134,9 @@ class EquipBackend final : public Equipment::Backend
 
         int getSlotNumber() const override
         { return EQUIP_VECTOR_END; }
+
+        int getEquipmentIndex(int slotIndex) const
+        { return mEquipment[slotIndex]; }
 
     private:
         int mEquipment[EQUIP_VECTOR_END];

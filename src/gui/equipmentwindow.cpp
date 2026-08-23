@@ -154,8 +154,8 @@ void EquipmentWindow::draw(gcn::Graphics *graphics)
  */
 Item *EquipmentWindow::getTwoHandedWeaponBlocking(int slotIndex) const
 {
-    // The slot constants below only apply to tmwAthena
-    if (Net::getNetworkType() != ServerType::TmwAthena)
+    // The slot constants below don't apply to manaserv
+    if (Net::getNetworkType() == ServerType::ManaServ)
         return nullptr;
 
     if (slotIndex != TmwAthena::EQUIP_FIGHT2_SLOT)

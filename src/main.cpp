@@ -75,6 +75,7 @@ static void printHelp()
 #ifdef USE_OPENGL
         << _("     --no-opengl      : Disable OpenGL for this session") << endl
 #endif
+        << _("  -M --load-map       : Load map offline (e.g. 001-1)") << endl
         ;
 }
 
@@ -85,7 +86,7 @@ static void printVersion()
 
 static void parseOptions(int argc, char *argv[], Client::Options &options)
 {
-    const char *optstring = "hvud:U:P:Dc:s:p:C:y:l:";
+    const char *optstring = "hvud:U:P:Dc:s:p:C:y:l:M:";
 
     const struct option long_options[] = {
         { "config-dir",     required_argument, nullptr, 'C' },
@@ -106,6 +107,7 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
         { "screenshot-dir", required_argument, nullptr, 'i' },
         { "server-type",    required_argument, nullptr, 'y' },
         { "log-file",       required_argument, nullptr, 'l' },
+        { "load-map",       required_argument, nullptr, 'M' },
         { nullptr }
     };
 
@@ -177,9 +179,13 @@ static void parseOptions(int argc, char *argv[], Client::Options &options)
                 options.serverType = ServerInfo::parseType(optarg);
                 if (options.serverType == ServerType::Unknown)
                 {
-                    std::cerr << _("Invalid server type, expected one of: tmwathena, manaserv") << std::endl;
+                    std::cerr << _("Invalid server type, expected one of: tmwathena, manaserv, offline") << std::endl;
                     options.exitWithError = true;
                 }
+                break;
+            case 'M':
+                options.loadMap = optarg;
+                options.serverType = ServerType::Offline;
                 break;
         }
     }
