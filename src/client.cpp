@@ -87,8 +87,10 @@
 #endif
 
 #include <sys/stat.h>
+
 #include <cassert>
 #include <cstdlib>
+#include <filesystem>
 
 #include <guichan/exception.hpp>
 
@@ -452,7 +454,7 @@ Client::~Client()
     Log::info("Quitting");
     delete userPalette;
 
-    XML::Writer writer(mConfigDir + "/config.xml");
+    XML::Writer writer(mConfigDir + "/client.xml");
     if (writer.isValid())
         serialize(writer, config);
 
@@ -1093,8 +1095,56 @@ void Client::initRootDir()
 }
 
 /**
- * Initializes the home directory. On UNIX and FreeBSD, ~/.mana is used. On
- * Windows and other systems we use the current working directory.
+ * Returns the configuration directory used by Mana 0.6 and earlier for the
+ * given application name.
+ */
+static std::string getLegacyConfigDir(const std::string &app)
+{
+#if defined _WIN32
+    std::string appData = getSpecialFolderLocation(FOLDERID_RoamingAppData);
+    if (appData.empty())
+        appData = FS::getUserDir();
+    return appData + "/Mana/" + app;
+#elif defined __APPLE__
+    return std::string(FS::getUserDir()) + "Library/Application Support/mana/" + app;
+#elif defined __HAIKU__
+    // PhysFS puts preferences in "config/settings", and "Mana" was passed as
+    // the application name
+    return std::string(FS::getUserDir()) + "config/settings/Mana/" + app;
+#else
+    return std::string(FS::getUserDir()) + ".config/mana/" + app;
+#endif
+}
+
+/**
+ * Copies over the configuration file from the location used by Mana 0.6 and
+ * earlier, unless there already is one at the current location.
+ */
+static void migrateLegacyConfig(const std::string &configPath)
+{
+    std::error_code error;
+
+    if (std::filesystem::exists(configPath, error))
+        return;
+
+    // The application name defaulted to "manasource" here
+    const std::string app = branding.appShort.empty() ? "manasource"
+                                                      : branding.appShort;
+    const std::string legacyPath = getLegacyConfigDir(app) + "/config.xml";
+
+    if (!std::filesystem::exists(legacyPath, error))
+        return;
+
+    if (std::filesystem::copy_file(legacyPath, configPath, error))
+        Log::info("Migrated configuration from %s", legacyPath.c_str());
+    else
+        Log::warn("Failed to migrate configuration from %s: %s",
+                  legacyPath.c_str(), error.message().c_str());
+}
+
+/**
+ * Initializes the directory in which the client stores its configuration,
+ * downloaded updates and log file.
  */
 void Client::initHomeDir()
 {
@@ -1102,17 +1152,12 @@ void Client::initHomeDir()
 
     if (mLocalDataDir.empty())
     {
-#if defined __HAIKU__
-        mLocalDataDir = FS::getUserDir();
-        mLocalDataDir += "/config/data/Mana";
-#elif defined _WIN32
-        mLocalDataDir = getSpecialFolderLocation(FOLDERID_LocalAppData);
-        if (mLocalDataDir.empty())
-            mLocalDataDir = FS::getUserDir();
-        mLocalDataDir += "/Mana";
-#else
-        mLocalDataDir = FS::getPrefDir("manasource.org", "mana");
-#endif
+        if (const char *prefDir = FS::getPrefDir("manasource",
+                                                 branding.shortName().c_str()))
+            mLocalDataDir = prefDir;
+        else
+            Log::critical(_("Failed to determine the directory for storing "
+                            "settings and downloads! Exiting."));
     }
 
     if (mkdir_r(mLocalDataDir.c_str()))
@@ -1124,18 +1169,7 @@ void Client::initHomeDir()
     mConfigDir = mOptions.configDir;
 
     if (mConfigDir.empty())
-    {
-        const std::string &app = branding.appShort;
-#ifdef __APPLE__
-        mConfigDir = mLocalDataDir + "/" + app;
-#elif defined __HAIKU__
-        mConfigDir = FS::getPrefDir("manasource.org", app.c_str());
-#elif defined _WIN32
-        mConfigDir = FS::getPrefDir("Mana", app.c_str());
-#else
-        mConfigDir = std::string(FS::getUserDir()) + ".config/mana/" + app;
-#endif
-    }
+        mConfigDir = mLocalDataDir;
 
     if (mkdir_r(mConfigDir.c_str()))
     {
@@ -1152,7 +1186,9 @@ void Client::initConfiguration()
     // Fill configuration with defaults
     config.updatehost = branding.defaultUpdateHost;
 
-    const std::string configPath = mConfigDir + "/config.xml";
+    const std::string configPath = mConfigDir + "/client.xml";
+    migrateLegacyConfig(configPath);
+
     XML::Document doc(configPath, false);
 
     if (doc.rootNode() && doc.rootNode().name() == "configuration")

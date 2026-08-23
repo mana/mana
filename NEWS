@@ -18,6 +18,7 @@ Unreleased
 - Use online player list for name autocomplete
 - Show the player level in the being popup
 - Show two-handed weapons faded in the second hand slot of the Equipment window
+- Moved the configuration to "client.xml" in the local data directory (existing settings are migrated)
 - Removed background color from shop list entries
 - Fixed performance issue when instantiating many non-moving beings
 - Fixed keyboard movement not stopping on NPC dialog opening
