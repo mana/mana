@@ -24,6 +24,7 @@ Unreleased
 - Allowed closing the NPC dialog during a choice menu
 - Use online player list for name autocomplete
 - Show the player level in the being popup
+- Added a language option to the Interface settings
 - Show two-handed weapons faded in the second hand slot of the Equipment window
 - Show all item attributes in the item popup, including magic attack and defense
 - Moved the configuration to "client.xml" in the local data directory (existing settings are migrated)

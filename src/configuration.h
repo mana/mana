@@ -139,6 +139,7 @@ struct Config
     int scrollCenterOffsetY = 0;
     std::string onlineServerList;
     std::string theme = "jewelry";
+    std::string language;   // empty means the system language is used
     bool disableTransparency = false;
 
     bool persistentPlayerList = true;

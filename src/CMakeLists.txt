@@ -14,6 +14,7 @@ find_package(ZLIB REQUIRED)
 add_compile_options(-Wall)
 
 add_compile_definitions(PACKAGE_VERSION="${PROJECT_VERSION}"
+                        BUILD_DIR="${CMAKE_BINARY_DIR}/"
                         $<$<CONFIG:Debug>:DEBUG>)
 
 if(WIN32)
@@ -373,6 +374,8 @@ set(SRCS
     utils/dtor.h
     utils/filesystem.h
     utils/gettext.h
+    utils/language.cpp
+    utils/language.h
     utils/mathutils.h
     utils/mkdir.cpp
     utils/mkdir.h
