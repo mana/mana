@@ -21,6 +21,8 @@
 
 #include "configuration.h"
 
+#include "log.h"
+
 #include "utils/stringutils.h"
 
 template<typename T>
@@ -134,6 +136,35 @@ static void serialize(XML::Writer &writer, const ServerInfo &server)
 
     writer.endElement(); // server
 }
+
+/**
+ * Reads options into a statically typed settings struct, erasing each option
+ * that it recognizes. Whatever remains was not recognized.
+ */
+template<typename T>
+class OptionDeserializer
+{
+public:
+    OptionDeserializer(std::map<std::string, std::string> &options, T &target)
+        : mOptions(options)
+        , mTarget(target)
+    {}
+
+    template<typename M>
+    void operator()(const char *name, M T::*member) const
+    {
+        auto it = mOptions.find(name);
+        if (it == mOptions.end())
+            return;
+
+        fromString(it->second.data(), mTarget.*member);
+        mOptions.erase(it);
+    }
+
+private:
+    std::map<std::string, std::string> &mOptions;
+    T &mTarget;
+};
 
 template<typename T>
 void serdeOptions(T option)
@@ -396,16 +427,7 @@ void deserialize(XML::Node node, Config &config)
         }
     }
 
-    auto deserializeOption = [&](const char *name, auto member) {
-        auto it = options.find(name);
-        if (it == options.end())
-            return;
-
-        fromString(it->second.data(), config.*member);
-        options.erase(it);
-    };
-
-    serdeOptions(deserializeOption);
+    serdeOptions(OptionDeserializer(options, config));
 
     config.unknownOptions = std::move(options);
 }
@@ -429,17 +451,16 @@ std::map<std::string, std::string> readOptions(XML::Node node)
     return options;
 }
 
-void deserialize(XML::Node node, Branding &branding)
+void warnUnknownOptions(const std::string &fileName,
+                        const std::map<std::string, std::string> &options)
 {
-    auto options = readOptions(node);
+    for (const auto &[name, value] : options)
+        Log::warn("Unknown option \"%s\" in %s", name.c_str(), fileName.c_str());
+}
 
-    auto deserializeOption = [&](const char *name, auto member) {
-        auto it = options.find(name);
-        if (it == options.end())
-            return;
-
-        fromString(it->second.data(), branding.*member);
-    };
+void deserialize(std::map<std::string, std::string> &options, Branding &branding)
+{
+    OptionDeserializer deserializeOption(options, branding);
 
     deserializeOption("wallpapersPath", &Branding::wallpapersPath);
     deserializeOption("wallpaperFile", &Branding::wallpaperFile);
@@ -460,15 +481,9 @@ void deserialize(XML::Node node, Branding &branding)
     deserializeOption("monoFont", &Branding::monoFont);
 }
 
-void deserialize(const std::map<std::string, std::string> &options, Paths &paths)
+void deserialize(std::map<std::string, std::string> &options, Paths &paths)
 {
-    auto deserializeOption = [&](const char *name, auto member) {
-        auto it = options.find(name);
-        if (it == options.end())
-            return;
-
-        fromString(it->second.data(), paths.*member);
-    };
+    OptionDeserializer deserializeOption(options, paths);
 
     deserializeOption("itemIcons", &Paths::itemIcons);
     deserializeOption("unknownItemFile", &Paths::unknownItemFile);
@@ -499,4 +514,13 @@ void deserialize(const std::map<std::string, std::string> &options, Paths &paths
     deserializeOption("wallpaperFile", &Paths::wallpaperFile);
 
     deserializeOption("help", &Paths::help);
+}
+
+void deserialize(std::map<std::string, std::string> &options, Portable &portable)
+{
+    OptionDeserializer deserializeOption(options, portable);
+
+    deserializeOption("dataDir", &Portable::dataDir);
+    deserializeOption("configDir", &Portable::configDir);
+    deserializeOption("screenshotDir", &Portable::screenshotDir);
 }

@@ -184,11 +184,19 @@ Client::Client(const Options &options):
     if (!options.brandingPath.empty())
     {
         XML::Document doc(options.brandingPath, false);
+        XML::Node rootNode = doc.rootNode();
 
-        if (doc.rootNode() && doc.rootNode().name() == "configuration")
-            deserialize(doc.rootNode(), branding);
+        if (rootNode && rootNode.name() == "configuration")
+        {
+            auto brandingOptions = readOptions(rootNode);
+            deserialize(brandingOptions, branding);
+            warnUnknownOptions(options.brandingPath, brandingOptions);
+        }
         else
-            Log::info("Couldn't read branding file: %s", options.brandingPath.c_str());
+        {
+            Log::info("Couldn't read branding file: %s",
+                      options.brandingPath.c_str());
+        }
     }
 
     initRootDir();
@@ -1051,44 +1059,29 @@ void Client::initRootDir()
         Log::info("Portable file: %s", portableName.c_str());
 
         XML::Document doc(portableName, false);
-        const auto options = readOptions(doc.rootNode());
+        auto options = readOptions(doc.rootNode());
 
-        auto option = [&](const char *name) {
-            auto it = options.find(name);
-            return it != options.end() ? it->second : std::string();
-        };
+        Portable portable;
+        deserialize(options, portable);
+        warnUnknownOptions(portableName, options);
 
-        if (mOptions.localDataDir.empty())
+        if (mOptions.localDataDir.empty() && !portable.dataDir.empty())
         {
-            const std::string dir = option("dataDir");
-            if (!dir.empty())
-            {
-                mOptions.localDataDir = mRootDir + dir;
-                Log::info("Portable data dir: %s",
-                          mOptions.localDataDir.c_str());
-            }
+            mOptions.localDataDir = mRootDir + portable.dataDir;
+            Log::info("Portable data dir: %s", mOptions.localDataDir.c_str());
         }
 
-        if (mOptions.configDir.empty())
+        if (mOptions.configDir.empty() && !portable.configDir.empty())
         {
-            const std::string dir = option("configDir");
-            if (!dir.empty())
-            {
-                mOptions.configDir = mRootDir + dir;
-                Log::info("Portable config dir: %s",
-                          mOptions.configDir.c_str());
-            }
+            mOptions.configDir = mRootDir + portable.configDir;
+            Log::info("Portable config dir: %s", mOptions.configDir.c_str());
         }
 
-        if (mOptions.screenshotDir.empty())
+        if (mOptions.screenshotDir.empty() && !portable.screenshotDir.empty())
         {
-            const std::string dir = option("screenshotDir");
-            if (!dir.empty())
-            {
-                mOptions.screenshotDir = mRootDir + dir;
-                Log::info("Portable screenshot dir: %s",
-                          mOptions.screenshotDir.c_str());
-            }
+            mOptions.screenshotDir = mRootDir + portable.screenshotDir;
+            Log::info("Portable screenshot dir: %s",
+                      mOptions.screenshotDir.c_str());
         }
     }
 #endif

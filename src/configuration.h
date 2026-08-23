@@ -229,14 +229,33 @@ struct Paths
 };
 
 /**
+ * Portable installation settings, which point at directories relative to the
+ * one the client was installed in.
+ */
+struct Portable
+{
+    std::string dataDir;
+    std::string configDir;
+    std::string screenshotDir;
+};
+
+/**
  * Reads the "option" elements below the given node into a map.
  */
 std::map<std::string, std::string> readOptions(XML::Node node);
 
+/**
+ * Logs a warning for each of the given options, which are the ones that were
+ * not recognized while reading the given file.
+ */
+void warnUnknownOptions(const std::string &fileName,
+                        const std::map<std::string, std::string> &options);
+
 void serialize(XML::Writer &writer, const Config &config);
 void deserialize(XML::Node node, Config &config);
-void deserialize(XML::Node node, Branding &branding);
-void deserialize(const std::map<std::string, std::string> &options, Paths &paths);
+void deserialize(std::map<std::string, std::string> &options, Branding &branding);
+void deserialize(std::map<std::string, std::string> &options, Paths &paths);
+void deserialize(std::map<std::string, std::string> &options, Portable &portable);
 
 extern Config config;
 extern Branding branding;
