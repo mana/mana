@@ -218,6 +218,13 @@ int Download::downloadThread(void *ptr)
         curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
         curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 15);
 
+#if defined(_WIN32) && defined(CURLSSLOPT_NATIVE_CA)
+        // Verify against the certificate store of Windows. Without this, an
+        // OpenSSL based libcurl looks for a CA bundle at the path it was
+        // compiled with, which does not exist on the user's machine.
+        curl_easy_setopt(curl, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
+#endif
+
         const CURLcode res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
 
