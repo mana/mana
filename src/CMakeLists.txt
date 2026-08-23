@@ -652,13 +652,37 @@ if(WIN32)
     # Normalize paths before matching the exclude regexes below
     cmake_policy(SET CMP0207 NEW)
   endif()
-  install(
-    TARGETS mana
-    RUNTIME_DEPENDENCIES
-      PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
-      POST_EXCLUDE_REGEXES "[Ss]ystem32" "[Ss]ys[Ww][Oo][Ww]64"
-      DIRECTORIES "$ENV{MINGW_PREFIX}/bin"
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  if(CMAKE_CROSSCOMPILING)
+    # install(TARGETS RUNTIME_DEPENDENCIES) does not support cross-compiling,
+    # so collect the DLLs with a script of our own (see InstallRuntimeDlls.cmake)
+    set(DLL_SEARCH_DIRS "${CMAKE_FIND_ROOT_PATH}/bin")
+    if(TARGET enet)
+      list(APPEND DLL_SEARCH_DIRS "$<TARGET_FILE_DIR:enet>")
+    endif()
+
+    # sdl2-compat loads SDL3 at runtime, so it is not listed as an import
+    if(EXISTS "${CMAKE_FIND_ROOT_PATH}/bin/SDL3.dll")
+      set(EXTRA_DLLS "SDL3.dll")
+    endif()
+
+    install(TARGETS mana RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+    install(
+      CODE "
+        set(MANA_OBJDUMP \"${CMAKE_OBJDUMP}\")
+        set(MANA_EXECUTABLE \"$<TARGET_FILE:mana>\")
+        set(MANA_SEARCH_DIRS \"${DLL_SEARCH_DIRS}\")
+        set(MANA_EXTRA_DLLS \"${EXTRA_DLLS}\")
+        set(MANA_DESTINATION \"${CMAKE_INSTALL_BINDIR}\")")
+    install(SCRIPT "${CMAKE_SOURCE_DIR}/CMake/Modules/InstallRuntimeDlls.cmake")
+  else()
+    install(
+      TARGETS mana
+      RUNTIME_DEPENDENCIES
+        PRE_EXCLUDE_REGEXES "api-ms-" "ext-ms-"
+        POST_EXCLUDE_REGEXES "[Ss]ystem32" "[Ss]ys[Ww][Oo][Ww]64"
+        DIRECTORIES "$ENV{MINGW_PREFIX}/bin"
+      RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+  endif()
 else()
   install(
     TARGETS mana
