@@ -41,7 +41,6 @@
 
 #include "resources/emotedb.h"
 #include "resources/hairdb.h"
-#include "resources/itemdb.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
@@ -49,7 +48,6 @@
 #include "utils/xml.h"
 
 #include <cstdlib>
-#include <list>
 #include <sstream>
 
 using namespace TmwAthena;
@@ -92,16 +90,6 @@ OfflineHandler::OfflineHandler()
     playerHandler = this;
     abilityHandler = this;
     tradeHandler = this;
-
-    std::list<ItemStat> stats;
-    stats.emplace_back("str", _("Strength %+d"));
-    stats.emplace_back("agi", _("Agility %+d"));
-    stats.emplace_back("vit", _("Vitality %+d"));
-    stats.emplace_back("int", _("Intelligence %+d"));
-    stats.emplace_back("dex", _("Dexterity %+d"));
-    stats.emplace_back("luck", _("Luck %+d"));
-
-    setStatsList(std::move(stats));
 
     listen(Event::ClientChannel);
     listen(Event::GameChannel);

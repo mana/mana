@@ -37,6 +37,12 @@
 #include <cassert>
 #include <string_view>
 
+/**
+ * Item modifiers understood by ManaServItemDB, set up from the attributes
+ * defined by the server (see Attributes::informItemDB).
+ */
+static std::list<ItemStat> extraStats;
+
 void setStatsList(std::list<ItemStat> stats)
 {
     extraStats = std::move(stats);
@@ -392,15 +398,72 @@ void ItemDB::checkItemInfo(ItemInfo &itemInfo)
 
 namespace TmwAthena {
 
-// Description fields used by TaItemDB *itemInfo->mEffect.
-
-static char const *const fields[][2] =
+/**
+ * The item attributes displayed below the item description, in the order in
+ * which they are shown.
+ *
+ * Values are substituted as text rather than as a number, since the item
+ * database uses suffixes like "%" and "+" on some of them (for example
+ * atkspeed="25%" or req-int="5+").
+ *
+ * When `sign` is set, a "+" is prepended to values that aren't negative.
+ *
+ * A field is left out when its value is `uninformative`, which is 0 for the
+ * bonuses and requirements, and 1 for the attack range since that is the
+ * range of every melee weapon.
+ */
+static const struct ItemField
 {
-    { "attack",    N_("Attack %+d")    },
-    { "defense",   N_("Defense %+d")   },
-    { "hp",        N_("HP %+d")        },
-    { "mp",        N_("MP %+d")        }
+    const char *tag;
+    const char *format;
+    bool sign;
+    const char *uninformative = "0";
+} fields[] =
+{
+    { "attack",          N_("Attack %s"),            true  },
+    { "mattack",         N_("M.Attack %s"),          true  },
+    { "criticalattack",  N_("Critical chance %s"),   true  },
+    { "hit",             N_("Accuracy %s"),          true  },
+    { "flee",            N_("Evade %s"),             true  },
+    { "atkspeed",        N_("Attack speed %s"),      true  },
+    { "attack-range",    N_("Attack range %s"),      false, "1" },
+    { "defense",         N_("Defense %s"),           true  },
+    { "mdefense",        N_("M.Defense %s"),         true  },
+    { "criticaldefense", N_("Critical defense %s"),  true  },
+    { "hp",              N_("HP %s"),                true  },
+    { "maxhp",           N_("Max HP %s"),            true  },
+    { "mp",              N_("MP %s"),                true  },
+    { "maxmp",           N_("Max MP %s"),            true  },
+    { "str",             N_("Strength %s"),          true  },
+    { "agi",             N_("Agility %s"),           true  },
+    { "vit",             N_("Vitality %s"),          true  },
+    { "int",             N_("Intelligence %s"),      true  },
+    { "dex",             N_("Dexterity %s"),         true  },
+    { "luk",             N_("Luck %s"),              true  },
+    { "level",           N_("Req. level %s"),        false },
+    { "req-str",         N_("Req. strength %s"),     false },
+    { "req-agi",         N_("Req. agility %s"),      false },
+    { "req-vit",         N_("Req. vitality %s"),     false },
+    { "req-int",         N_("Req. intelligence %s"), false },
+    { "req-dex",         N_("Req. dexterity %s"),    false },
+    { "req-luk",         N_("Req. luck %s"),         false },
 };
+
+/**
+ * Returns the description of the given item field, or an empty string when
+ * the item does not have this field or when its value says nothing.
+ */
+static std::string describeItemField(const ItemField &field, XML::Node node)
+{
+    std::string value = node.getProperty(field.tag, std::string());
+    if (value.empty() || value == field.uninformative)
+        return std::string();
+
+    if (field.sign && value[0] != '-' && value[0] != '+')
+        value.insert(0, 1, '+');
+
+    return strprintf(gettext(field.format), value.c_str());
+}
 
 void TaItemDB::init()
 {
@@ -421,19 +484,11 @@ void TaItemDB::readItemNode(XML::Node node, const std::string &filename)
 
     // Load nano description
     std::vector<std::string> effect;
-    for (auto field : fields)
+    for (const auto &field : fields)
     {
-        int value = node.getProperty(field[0], 0);
-        if (!value)
-            continue;
-        effect.push_back(strprintf(gettext(field[1]), value));
-    }
-    for (auto &extraStat : extraStats)
-    {
-        int value = node.getProperty(extraStat.mTag.c_str(), 0);
-        if (!value)
-            continue;
-        effect.push_back(strprintf(extraStat.mFormat.c_str(), value));
+        std::string description = describeItemField(field, node);
+        if (!description.empty())
+            effect.push_back(std::move(description));
     }
     std::string temp = node.getProperty("effect", std::string());
     if (!temp.empty())

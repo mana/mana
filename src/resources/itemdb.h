@@ -63,7 +63,6 @@ class ItemStat
 };
 
 // Used to set nano-description
-static std::list<ItemStat> extraStats;
 void setStatsList(std::list<ItemStat> stats);
 
 /**
