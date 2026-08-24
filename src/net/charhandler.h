@@ -24,6 +24,7 @@
 #include "localplayer.h"
 #include "playerinfo.h"
 
+#include <memory>
 #include <vector>
 
 class CharCreateDialog;
@@ -36,17 +37,12 @@ namespace Net {
  */
 struct Character
 {
-    ~Character()
-    {
-        delete dummy;
-    }
-
     int slot = 0;                   /**< The index in the list of characters */
-    LocalPlayer *dummy = nullptr;   /**< A dummy representing this character */
+    std::unique_ptr<LocalPlayer> dummy; /**< A dummy representing this character */
     PlayerInfoBackend data;
 };
 
-using Characters = std::list<Character *>;
+using Characters = std::list<Character>;
 
 class CharHandler
 {

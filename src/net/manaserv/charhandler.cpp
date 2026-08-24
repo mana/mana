@@ -214,8 +214,10 @@ void CharHandler::handleCharacterDeleteResponse(MessageIn &msg)
                 break;
             }
         }
-        delete mSelectedCharacter;
-        mCharacters.remove(mSelectedCharacter);
+        mCharacters.remove_if([this] (const Net::Character &character) {
+            return &character == mSelectedCharacter;
+        });
+        mSelectedCharacter = nullptr;
         updateCharSelectDialog();
         new OkDialog(_("Info"), _("Player deleted."));
     }
@@ -259,10 +261,8 @@ void CharHandler::handleCharacterSelectResponse(MessageIn &msg)
         Log::info("Chat server: %s:%d", chatServer.hostname.c_str(),
                   chatServer.port);
 
-        // Prevent the selected local player from being deleted
-        local_player = mSelectedCharacter->dummy;
+        local_player = mSelectedCharacter->dummy.release();
         PlayerInfo::setBackend(mSelectedCharacter->data);
-        mSelectedCharacter->dummy = nullptr;
 
         Client::setState(State::ConnectGame);
     }
@@ -280,7 +280,6 @@ void CharHandler::handleCharacterSelectResponse(MessageIn &msg)
                 errorMessage = strprintf(_("Unhandled character select "
                                            "error message %i."), errMsg);
         }
-        delete_all(mCharacters);
         mCharacters.clear();
         Client::setState(State::Error);
     }
@@ -382,7 +381,6 @@ unsigned int CharHandler::maxSprite() const
 void CharHandler::updateCharacters()
 {
     // Delete previous characters
-    delete_all(mCharacters);
     mCharacters.clear();
 
     if (!mCharSelectDialog)
@@ -391,9 +389,10 @@ void CharHandler::updateCharacters()
     // Create new characters and initialize them from the cached infos
     for (const auto &info : mCachedCharacterInfos)
     {
-        auto *character = new Net::Character;
-        character->slot = info.slot;
-        LocalPlayer *player = character->dummy = new LocalPlayer;
+        Net::Character &character = mCharacters.emplace_back();
+        character.slot = info.slot;
+        character.dummy = std::make_unique<LocalPlayer>();
+        LocalPlayer *player = character.dummy.get();
         player->setName(info.name);
         player->setGender(info.gender);
         player->setSprite(SPRITE_LAYER_HAIR, info.hairStyle * -1,
@@ -407,24 +406,22 @@ void CharHandler::updateCharacters()
                               Net::getInventoryHandler()->isWeaponSlot(slot.id));
         }
 
-        character->data.mAttributes[CHAR_POINTS] = info.characterPoints;
-        character->data.mAttributes[CORR_POINTS] = info.correctionPoints;
+        character.data.mAttributes[CHAR_POINTS] = info.characterPoints;
+        character.data.mAttributes[CORR_POINTS] = info.correctionPoints;
 
         for (const auto &[id, attr] : info.attributes)
         {
             int playerInfoId = Attributes::getPlayerInfoIdFromAttrId(id);
             if (playerInfoId > -1)
             {
-                character->data.mAttributes[playerInfoId] = attr.mod;
+                character.data.mAttributes[playerInfoId] = attr.mod;
             }
             else
             {
-                character->data.mStats[id].base = attr.base;
-                character->data.mStats[id].mod = attr.mod;
+                character.data.mStats[id].base = attr.base;
+                character.data.mStats[id].mod = attr.mod;
             }
         }
-
-        mCharacters.push_back(character);
     }
 
     updateCharSelectDialog();

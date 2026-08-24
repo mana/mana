@@ -267,26 +267,26 @@ void CharSelectDialog::attemptCharacterSelect(int index)
     lock();
 }
 
-void CharSelectDialog::setCharacters(const Net::Characters &characters)
+void CharSelectDialog::setCharacters(Net::Characters &characters)
 {
     // Reset previous characters
     for (auto *characterEntry : mCharacterEntries)
         characterEntry->setCharacter(nullptr);
 
-    for (auto character : characters)
+    for (auto &character : characters)
     {
         // Slots Number start at 1 for Manaserv, so we offset them by one.
-        int characterSlot = character->slot;
+        int characterSlot = character.slot;
         if (Net::getNetworkType() == ServerType::ManaServ && characterSlot > 0)
             --characterSlot;
 
         if (characterSlot >= (int)mCharacterEntries.size())
         {
-            Log::warn("Slot out of range: %d", character->slot);
+            Log::warn("Slot out of range: %d", character.slot);
             continue;
         }
 
-        mCharacterEntries[characterSlot]->setCharacter(character);
+        mCharacterEntries[characterSlot]->setCharacter(&character);
     }
 }
 
@@ -375,7 +375,7 @@ void CharacterDisplay::setCharacter(Net::Character *character)
         return;
 
     mCharacter = character;
-    mPlayerBox->setPlayer(character ? character->dummy : nullptr);
+    mPlayerBox->setPlayer(character ? character->dummy.get() : nullptr);
     update();
 }
 
@@ -394,7 +394,7 @@ void CharacterDisplay::update()
 {
     if (mCharacter)
     {
-        const LocalPlayer *character = mCharacter->dummy;
+        const LocalPlayer *character = mCharacter->dummy.get();
         mButton->setCaption(_("Choose"));
         mButton->setActionEventId("use");
         mName->setCaption(strprintf("%s", character->getName().c_str()));

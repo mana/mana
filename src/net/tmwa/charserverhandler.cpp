@@ -79,7 +79,6 @@ void CharServerHandler::handleMessage(MessageIn &msg)
                 msg.skip(2);  // Length word
                 msg.skip(20); // Unused
 
-                delete_all(mCharacters);
                 mCharacters.clear();
 
                 // Derive number of characters from message length
@@ -87,11 +86,10 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
                 for (int i = 0; i < count; ++i)
                 {
-                    auto *character = new Net::Character;
-                    readPlayerData(msg, character);
-                    mCharacters.push_back(character);
+                    Net::Character &character = mCharacters.emplace_back();
+                    readPlayerData(msg, &character);
                     Log::info("CharServer: Player: %s (%d)",
-                              character->dummy->getName().c_str(), character->slot);
+                              character.dummy->getName().c_str(), character.slot);
                 }
 
                 Client::setState(State::CharSelect);
@@ -117,9 +115,8 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
         case SMSG_CHAR_CREATE_SUCCEEDED:
             {
-                auto *character = new Net::Character;
-                readPlayerData(msg, character);
-                mCharacters.push_back(character);
+                Net::Character &character = mCharacters.emplace_back();
+                readPlayerData(msg, &character);
 
                 updateCharSelectDialog();
 
@@ -140,8 +137,9 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             break;
 
         case SMSG_CHAR_DELETE_SUCCEEDED:
-            delete mSelectedCharacter;
-            mCharacters.remove(mSelectedCharacter);
+            mCharacters.remove_if([this] (const Net::Character &character) {
+                return &character == mSelectedCharacter;
+            });
             mSelectedCharacter = nullptr;
             updateCharSelectDialog();
             unlockCharSelectDialog();
@@ -168,13 +166,10 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
             mapServer.port = msg.readInt16();
 
-            local_player = mSelectedCharacter->dummy;
+            local_player = mSelectedCharacter->dummy.release();
             PlayerInfo::setBackend(mSelectedCharacter->data);
+            mSelectedCharacter = nullptr;
 
-            // Prevent the selected local player from being deleted
-            mSelectedCharacter->dummy = nullptr;
-
-            delete_all(mCharacters);
             mCharacters.clear();
             updateCharSelectDialog();
 
@@ -238,7 +233,7 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
     msg.readInt8();                        // look
     const uint16_t weapon = msg.readInt16();
 
-    auto *tempPlayer = new LocalPlayer(id, race);
+    auto tempPlayer = std::make_unique<LocalPlayer>(id, race);
 
     tempPlayer->setSprite(SPRITE_SHOE, shoe);
     tempPlayer->setSprite(SPRITE_GLOVES, gloves);
@@ -258,13 +253,13 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
     tempPlayer->setSprite(SPRITE_MISC2, msg.readInt16());
     tempPlayer->setName(msg.readString(24));
 
-    character->dummy = tempPlayer;
-
     for (int i = 0; i < 6; i++)
         character->data.mStats[i + STRENGTH].base = msg.readInt8();
 
     character->slot = msg.readInt8(); // character slot
     tempPlayer->setGender(sexToGender(static_cast<SEX>(msg.readInt8())));
+
+    character->dummy = std::move(tempPlayer);
 }
 
 void CharServerHandler::setCharSelectDialog(CharSelectDialog *window)

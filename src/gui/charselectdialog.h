@@ -77,7 +77,7 @@ class CharSelectDialog : public Window, public gcn::ActionListener,
         void attemptCharacterDelete(int index);
         void attemptCharacterSelect(int index);
 
-        void setCharacters(const Net::Characters &characters);
+        void setCharacters(Net::Characters &characters);
 
         void lock();
         void unlock();
