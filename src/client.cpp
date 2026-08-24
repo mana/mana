@@ -1180,7 +1180,10 @@ void Client::initConfiguration()
     config.updatehost = branding.defaultUpdateHost;
 
     const std::string configPath = mConfigDir + "/client.xml";
-    migrateLegacyConfig(configPath);
+
+    // Don't migrate into a directory that was given on the command line
+    if (mOptions.configDir.empty() && mOptions.localDataDir.empty())
+        migrateLegacyConfig(configPath);
 
     XML::Document doc(configPath, false);
 
