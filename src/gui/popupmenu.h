@@ -29,6 +29,12 @@ class Item;
 class Window;
 
 /**
+ * Adds the items for changing the relation with the player \a name, which
+ * depend on the current relation.
+ */
+void addPlayerRelationItems(Menu &menu, const std::string &name);
+
+/**
  * The context menu shown when right-clicking a being, a floor item or an
  * item in the inventory or storage.
  */

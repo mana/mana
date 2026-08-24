@@ -25,8 +25,11 @@
 #include "guild.h"
 #include "localplayer.h"
 #include "party.h"
+#include "playerrelations.h"
 
+#include "gui/chatwindow.h"
 #include "gui/confirmdialog.h"
+#include "gui/popupmenu.h"
 #include "gui/okdialog.h"
 #include "gui/setup.h"
 #include "gui/textdialog.h"
@@ -80,6 +83,85 @@ protected:
 
     virtual void leave() = 0;
 
+    /**
+     * Shows the context menu for \a avatar at the given screen position.
+     * Which actions apply depends on the player, not on the list they were
+     * clicked in.
+     */
+    void showPopup(Avatar *avatar, int x, int y)
+    {
+        const std::string &name = avatar->getName();
+
+        Menu *menu = socialWindow->getMenu();
+        menu->clear();
+
+        if (name != local_player->getName())
+        {
+            menu->addItem(strprintf(_("Whisper %s"), name.c_str()), [name] {
+                chatWindow->addInputText("/w \"" + name + "\" ");
+            });
+
+            menu->addSeparator();
+
+            addPlayerRelationItems(*menu, name);
+
+            if (local_player->getNumberOfGuilds())
+            {
+                menu->addItem(strprintf(_("Invite %s to join your guild"),
+                                        name.c_str()), [name] {
+                    local_player->inviteToGuild(name);
+                });
+            }
+
+            Party *party = local_player->getParty();
+            const PartyMember *member = party ? party->getMember(name) : nullptr;
+
+            if (!member && (local_player->isInParty() ||
+                            Net::getNetworkType() == ServerType::ManaServ))
+            {
+                menu->addItem(strprintf(_("Invite %s to join your party"),
+                                        name.c_str()), [name] {
+                    Net::getPartyHandler()->invite(name);
+                });
+            }
+            else if (member)
+            {
+                const PartyMember *self =
+                        party->getMember(local_player->getName());
+
+                if (self && self->getLeader())
+                {
+                    menu->addItem(strprintf(_("Kick %s from party"),
+                                            name.c_str()), [name] {
+                        Net::getPartyHandler()->kick(name);
+                    });
+                }
+            }
+        }
+
+        menu->addSeparator();
+        menu->addItem(_("Add name to chat"), [name] {
+            chatWindow->addInputText(name);
+        });
+        menu->addItem(_("Cancel"));
+        menu->showAt(x, y);
+    }
+
+    /**
+     * Creates the avatar list and the scroll area around it.
+     */
+    void setupList(AvatarListModel *model)
+    {
+        mList = std::make_unique<AvatarListBox>(model);
+        mList->setContextMenuHandler([this] (Avatar *avatar, int x, int y) {
+            showPopup(avatar, x, y);
+        });
+
+        mScroll = std::make_unique<ScrollArea>(mList.get());
+        mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
+        mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
+    }
+
     TextDialog *mInviteDialog = nullptr;
     ConfirmDialog *mConfirmDialog = nullptr;
     std::unique_ptr<ScrollArea> mScroll;
@@ -96,11 +178,7 @@ public:
 
         setTabColor(&Theme::getThemeColor(Theme::GUILD));
 
-        mList = std::make_unique<AvatarListBox>(guild);
-        mScroll = std::make_unique<ScrollArea>(mList.get());
-
-        mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-        mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
+        setupList(guild);
     }
 
     void action(const gcn::ActionEvent &event) override
@@ -171,11 +249,7 @@ public:
 
         setTabColor(&Theme::getThemeColor(Theme::PARTY_TAB));
 
-        mList = std::make_unique<AvatarListBox>(party);
-        mScroll = std::make_unique<ScrollArea>(mList.get());
-
-        mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-        mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
+        setupList(party);
     }
 
     void action(const gcn::ActionEvent &event) override
@@ -270,11 +344,7 @@ public:
     {
         mPlayerList = new PlayerList;
 
-        mList = std::make_unique<AvatarListBox>(mPlayerList);
-        mScroll = std::make_unique<ScrollArea>(mList.get());
-
-        mScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
-        mScroll->setVerticalScrollPolicy(gcn::ScrollArea::SHOW_AUTO);
+        setupList(mPlayerList);
     }
 
     ~PlayerListTab() override
@@ -329,7 +399,7 @@ SocialWindow::SocialWindow() :
     setDefaultSize(590, 200, 150, 124);
     loadWindowState();
 
-    mCreatePopup = new Menu("SocialCreatePopup");
+    mMenu = new Menu("SocialMenu");
 
     mPlayerListTab = new PlayerListTab;
     mPlayerListTab->setCaption(strprintf(_("Online (%u)"), 0u));
@@ -362,7 +432,7 @@ SocialWindow::~SocialWindow()
 
         mPartyInviter.clear();
     }
-    delete mCreatePopup;
+    delete mMenu;
     delete mPlayerListTab;
 }
 
@@ -470,14 +540,12 @@ void SocialWindow::action(const gcn::ActionEvent &event)
     {
         if (Net::getGuildHandler()->isSupported())
         {
-            mCreatePopup->clear();
-            mCreatePopup->addItem(_("Create Guild"),
-                                  [this] { showGuildCreate(); });
-            mCreatePopup->addItem(_("Create Party"),
-                                  [this] { showPartyCreate(); });
-            mCreatePopup->addSeparator();
-            mCreatePopup->addItem(_("Cancel"));
-            mCreatePopup->showBelow(mCreateButton);
+            mMenu->clear();
+            mMenu->addItem(_("Create Guild"), [this] { showGuildCreate(); });
+            mMenu->addItem(_("Create Party"), [this] { showPartyCreate(); });
+            mMenu->addSeparator();
+            mMenu->addItem(_("Cancel"));
+            mMenu->showBelow(mCreateButton);
         }
         else
         {

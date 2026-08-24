@@ -71,6 +71,42 @@ static Menu::Action onFloorItem(int itemId, std::function<void (FloorItem *)> ac
     };
 }
 
+void addPlayerRelationItems(Menu &menu, const std::string &name)
+{
+    auto setRelation = [name](PlayerRelation relation) {
+        return [name, relation] {
+            player_relations.setRelation(name, relation);
+        };
+    };
+
+    switch (player_relations.getRelation(name))
+    {
+        case PlayerRelation::Neutral:
+            menu.addItem(strprintf(_("Befriend %s"), name.c_str()),
+                         setRelation(PlayerRelation::Friend));
+            [[fallthrough]];
+
+        case PlayerRelation::Friend:
+            menu.addItem(strprintf(_("Disregard %s"), name.c_str()),
+                         setRelation(PlayerRelation::Disregarded));
+            menu.addItem(strprintf(_("Ignore %s"), name.c_str()),
+                         setRelation(PlayerRelation::Ignored));
+            break;
+
+        case PlayerRelation::Disregarded:
+            menu.addItem(strprintf(_("Unignore %s"), name.c_str()),
+                         setRelation(PlayerRelation::Neutral));
+            menu.addItem(strprintf(_("Completely ignore %s"), name.c_str()),
+                         setRelation(PlayerRelation::Ignored));
+            break;
+
+        case PlayerRelation::Ignored:
+            menu.addItem(strprintf(_("Unignore %s"), name.c_str()),
+                         setRelation(PlayerRelation::Neutral));
+            break;
+    }
+}
+
 void PopupMenu::showPopup(int x, int y, Being *being)
 {
     clear();
@@ -101,38 +137,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
             addSeparator();
 
-            auto setRelation = [beingId](PlayerRelation relation) {
-                return onBeing(beingId, [relation](Being *being) {
-                    player_relations.setRelation(being->getName(), relation);
-                });
-            };
-
-            switch (player_relations.getRelation(name))
-            {
-                case PlayerRelation::Neutral:
-                    addItem(strprintf(_("Befriend %s"), name.c_str()),
-                            setRelation(PlayerRelation::Friend));
-                    [[fallthrough]];
-
-                case PlayerRelation::Friend:
-                    addItem(strprintf(_("Disregard %s"), name.c_str()),
-                            setRelation(PlayerRelation::Disregarded));
-                    addItem(strprintf(_("Ignore %s"), name.c_str()),
-                            setRelation(PlayerRelation::Ignored));
-                    break;
-
-                case PlayerRelation::Disregarded:
-                    addItem(strprintf(_("Unignore %s"), name.c_str()),
-                            setRelation(PlayerRelation::Neutral));
-                    addItem(strprintf(_("Completely ignore %s"), name.c_str()),
-                            setRelation(PlayerRelation::Ignored));
-                    break;
-
-                case PlayerRelation::Ignored:
-                    addItem(strprintf(_("Unignore %s"), name.c_str()),
-                            setRelation(PlayerRelation::Neutral));
-                    break;
-            }
+            addPlayerRelationItems(*this, name);
 
             if (local_player->getNumberOfGuilds())
             {

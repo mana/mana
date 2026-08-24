@@ -78,6 +78,11 @@ public:
 
     void showPartyCreate();
 
+    /**
+     * Returns the menu shared by the social window and its tabs.
+     */
+    Menu *getMenu() const { return mMenu; }
+
     void setPlayersOnline(const std::vector<Avatar*> &players);
 
     void logic() override;
@@ -99,7 +104,7 @@ protected:
     std::map<Guild *, SocialTab *> mGuilds;
     std::map<Party *, SocialTab *> mParties;
 
-    Menu *mCreatePopup;
+    Menu *mMenu;
 
     PlayerListTab *mPlayerListTab;
 

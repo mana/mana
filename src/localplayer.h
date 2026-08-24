@@ -91,6 +91,11 @@ class LocalPlayer final : public Being
          */
         void inviteToGuild(Being *being);
 
+        /**
+         * Invite a player to join guild, by name.
+         */
+        void inviteToGuild(const std::string &name);
+
         void pickUp(FloorItem *item);
 
         /**

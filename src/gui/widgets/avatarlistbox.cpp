@@ -124,9 +124,24 @@ void AvatarListBox::mousePressed(gcn::MouseEvent &event)
     {
         ListBox::mousePressed(event);
     }
-    // TODO: Add support for context menu
     else if (event.getButton() == gcn::MouseEvent::RIGHT)
     {
-        // Show context menu
+        if (!mContextMenuHandler || !mListModel)
+            return;
+
+        const int index = std::max(0, event.getY()) / getRowHeight();
+        if (index >= mListModel->getNumberOfElements())
+            return;
+
+        setSelected(index);
+
+        int x;
+        int y;
+        getAbsolutePosition(x, y);
+
+        auto *model = static_cast<AvatarListModel *>(mListModel);
+        mContextMenuHandler(model->getAvatarAt(index),
+                            x + event.getX(),
+                            y + event.getY());
     }
 }

@@ -24,6 +24,7 @@
 
 #include "gui/widgets/listbox.h"
 
+#include <functional>
 #include <string>
 
 class Image;
@@ -40,7 +41,16 @@ public:
 class AvatarListBox : public ListBox
 {
 public:
+    /**
+     * Called with the avatar that was right-clicked and the position of the
+     * click on screen, to open a context menu for it.
+     */
+    using ContextMenuHandler = std::function<void (Avatar *avatar, int x, int y)>;
+
     AvatarListBox(AvatarListModel *model);
+
+    void setContextMenuHandler(ContextMenuHandler handler)
+    { mContextMenuHandler = std::move(handler); }
 
     unsigned int getRowHeight() const override;
 
@@ -50,4 +60,7 @@ public:
     void draw(gcn::Graphics *gcnGraphics) override;
 
     void mousePressed(gcn::MouseEvent &event) override;
+
+private:
+    ContextMenuHandler mContextMenuHandler;
 };

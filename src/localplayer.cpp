@@ -581,6 +581,18 @@ void LocalPlayer::inviteToGuild(Being *being)
     }
 }
 
+void LocalPlayer::inviteToGuild(const std::string &name)
+{
+    for (auto &[_, guild] : mGuilds)
+    {
+        if (checkInviteRights(guild->getName()))
+        {
+            Net::getGuildHandler()->invite(guild->getId(), name);
+            return;
+        }
+    }
+}
+
 /**
  * Returns the position to walk to in order to be able to pick up the given
  * item. This is the first position along the path from which the item is
