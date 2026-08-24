@@ -112,6 +112,8 @@ set(SRCS
     gui/widgets/linkhandler.h
     gui/widgets/listbox.cpp
     gui/widgets/listbox.h
+    gui/widgets/outfitcontainer.cpp
+    gui/widgets/outfitcontainer.h
     gui/widgets/passwordfield.cpp
     gui/widgets/passwordfield.h
     gui/widgets/playerbox.cpp

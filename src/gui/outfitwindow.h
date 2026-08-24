@@ -26,16 +26,17 @@
 
 #include <guichan/actionlistener.hpp>
 
+#include <vector>
+
 constexpr int OUTFITS_COUNT = 15;
-constexpr int OUTFIT_ITEM_COUNT = 9;
 
 class Button;
 class CheckBox;
 class Label;
+class OutfitContainer;
 
 class OutfitWindow : public Window,
                      public DragTarget,
-                     public DragSource,
                      public gcn::ActionListener
 {
     public:
@@ -44,54 +45,72 @@ class OutfitWindow : public Window,
 
         void action(const gcn::ActionEvent &event) override;
 
-        bool handleDrop(const Drag &drag, int absX, int absY) override;
+        void logic() override;
 
-        void draw(gcn::Graphics *graphics) override;
-        void mouseDragged(gcn::MouseEvent &event) override;
         void mousePressed(gcn::MouseEvent &event) override;
-        void mouseReleased(gcn::MouseEvent &event) override;
-        void dragFinished(const Drag &drag, DragResult result) override;
+
+        bool handleDrop(const Drag &drag, int absX, int absY) override;
 
         void load();
 
         void setItemSelected(int itemId)
         { mItemSelected = itemId; }
 
+        int getItemSelected() const
+        { return mItemSelected; }
+
         bool isItemSelected() const
         { return mItemSelected > -1; }
 
+        /**
+         * The number of items in the current outfit.
+         */
+        int getItemCount() const
+        { return static_cast<int>(mOutfits[mCurrentOutfit].items.size()); }
+
+        int getItem(int index) const;
+
+        /**
+         * Inserts an item at the given index, or appends it when the index is
+         * -1 or beyond the last item. Items already in the outfit are moved
+         * rather than added again.
+         */
+        bool insertItem(int itemId, int index);
+
+        void moveItem(int fromIndex, int toIndex);
+        void removeItem(int index);
+
         void wearOutfit(int outfit);
         void copyOutfit(int outfit);
-        bool addItemToCurrentOutfit(int itemId, int targetIndex);
-
-        void unequipNotInOutfit(int outfit);
 
     private:
+        void save();
+
+        /**
+         * Returns the items to equip for the given outfit. When it holds more
+         * items of a kind than can be worn at the same time, the ones after
+         * the currently equipped ones are chosen, so that wearing the outfit
+         * again cycles through them.
+         */
+        std::vector<int> itemsToEquip(int outfit) const;
+
+        void unequip(const std::vector<int> &exceptItems);
+
+        struct Outfit
+        {
+            std::vector<int> items;
+            bool unequip = true;
+        };
+
+        OutfitContainer *mOutfitContainer;
         Button *mPreviousButton;
         Button *mNextButton;
         Label *mCurrentLabel;
         CheckBox *mUnequipCheck;
         Button *mEquipButton;
 
-        int getIndexFromGrid(int pointX, int pointY) const;
-
-        int mBoxWidth = 33;
-        int mBoxHeight = 33;
-        int mGridWidth = 3;
-        int mGridHeight = 3;
-        int mClickedIndex = -1;
-
-        void save();
-
-        struct Outfit
-        {
-            int items[OUTFIT_ITEM_COUNT];
-            bool unequip = true;
-        };
-
         Outfit mOutfits[OUTFITS_COUNT];
         int mItemSelected = -1;
-
         int mCurrentOutfit = 0;
 };
 

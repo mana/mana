@@ -22,22 +22,49 @@
 #include "outfitwindow.h"
 
 #include "configuration.h"
-#include "equipment.h"
-#include "graphics.h"
 #include "inventory.h"
 #include "item.h"
 #include "playerinfo.h"
 
-#include "gui/gui.h"
 #include "gui/widgets/button.h"
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/label.h"
 #include "gui/widgets/layout.h"
+#include "gui/widgets/outfitcontainer.h"
+#include "gui/widgets/scrollarea.h"
 
-#include "resources/image.h"
+#include "resources/itemdb.h"
+#include "resources/iteminfo.h"
 
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
+
+#include <algorithm>
+#include <set>
+
+/**
+ * The number of item slots shown per row and column by default.
+ */
+constexpr int OUTFIT_COLUMNS = 3;
+constexpr int OUTFIT_ROWS = 3;
+
+/**
+ * Values used for calculating the default window size.
+ */
+constexpr int SLOTS_PADDING = 3;
+constexpr int LAYOUT_MARGIN = 6;
+
+/**
+ * Returns how many items of the given type can be worn at the same time.
+ */
+static int equipCapacity(ItemType type)
+{
+    // There are two ring slots
+    if (type == ITEM_EQUIPMENT_RING)
+        return 2;
+
+    return 1;
+}
 
 OutfitWindow::OutfitWindow():
     Window(_("Outfits"))
@@ -45,7 +72,11 @@ OutfitWindow::OutfitWindow():
     setWindowName("Outfits");
     setResizable(true);
     setCloseButton(true);
-    setDefaultSize(250, 250, 118, 205);
+
+    mOutfitContainer = new OutfitContainer(this);
+
+    auto scrollArea = new ScrollArea(mOutfitContainer);
+    scrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mPreviousButton = new Button(_("<"), "previous", this);
     mNextButton = new Button(_(">"), "next", this);
@@ -57,19 +88,45 @@ OutfitWindow::OutfitWindow():
     mUnequipCheck->setActionEventId("unequip");
     mUnequipCheck->addActionListener(this);
 
-    place(0, 3, mPreviousButton, 1);
-    place(1, 3, mCurrentLabel, 2);
-    place(3, 3, mNextButton, 1);
-    place(0, 4, mUnequipCheck, 4);
-    place(0, 5, mEquipButton, 4);
+    // The size of the item slots is determined below
+    scrollArea->setHeight(0);
+
+    place(0, 0, scrollArea, 4).setPadding(SLOTS_PADDING);
+    place(0, 1, mPreviousButton, 1);
+    place(1, 1, mCurrentLabel, 2);
+    place(3, 1, mNextButton, 1);
+    place(0, 2, mUnequipCheck, 4);
+    place(0, 3, mEquipButton, 4);
 
     Layout &layout = getLayout();
     layout.setRowHeight(0, Layout::AUTO_SET);
-    layout.setColWidth(4, Layout::CENTER);
-
-    loadWindowState();
 
     load();
+
+    // Determine the space needed by everything but the item slots
+    int contentWidth = 0;
+    int contentHeight = 0;
+    layout.reflow(contentWidth, contentHeight);
+
+    const int boxWidth = mOutfitContainer->getBoxWidth();
+    const int boxHeight = mOutfitContainer->getBoxHeight();
+    // Space around the item slots. The scroll bar is included in the width,
+    // so that the number of columns does not change when it appears.
+    const int slotsFrame = 2 * mOutfitContainer->getFrameSize();
+    const int slotsBorder = 2 * (LAYOUT_MARGIN + SLOTS_PADDING) + slotsFrame +
+                            scrollArea->getScrollbarWidth();
+    const int extraHeight = contentHeight + slotsFrame + getPadding() +
+                            getTitleBarHeight();
+
+    contentWidth = std::max(contentWidth,
+                            OUTFIT_COLUMNS * boxWidth + slotsBorder);
+
+    setMinWidth(contentWidth + 2 * getPadding());
+    setMinHeight(boxHeight + extraHeight);
+    setDefaultSize(250, 250, getMinWidth(),
+                   OUTFIT_ROWS * boxHeight + extraHeight);
+
+    loadWindowState();
 
     mUnequipCheck->setSelected(mOutfits[mCurrentOutfit].unequip);
 }
@@ -81,19 +138,28 @@ OutfitWindow::~OutfitWindow()
 
 void OutfitWindow::load()
 {
-    for (auto &mOutfit : mOutfits)
-        memset(mOutfit.items, -1, sizeof(mOutfit.items));
+    for (auto &outfit : mOutfits)
+    {
+        outfit.items.clear();
+        outfit.unequip = true;
+    }
 
     for (auto &outfit : config.outfits)
     {
         if (outfit.index < 0 || outfit.index >= OUTFITS_COUNT)
             continue;
 
+        auto &items = mOutfits[outfit.index].items;
+
         std::string buf;
         std::stringstream ss(outfit.items);
 
-        for (int i = 0; (ss >> buf) && i < OUTFIT_ITEM_COUNT; i++)
-            mOutfits[outfit.index].items[i] = atoi(buf.c_str());
+        while (ss >> buf)
+        {
+            // Empty slots were saved as -1 by previous versions
+            if (const int itemId = atoi(buf.c_str()); itemId > 0)
+                items.push_back(itemId);
+        }
 
         mOutfits[outfit.index].unequip = outfit.unequip;
     }
@@ -103,25 +169,88 @@ void OutfitWindow::save()
 {
     config.outfits.clear();
 
-    std::string outfitStr;
     for (int o = 0; o < OUTFITS_COUNT; o++)
     {
-        bool emptyOutfit = true;
+        const auto &items = mOutfits[o].items;
+        if (items.empty())
+            continue;
 
-        for (int item : mOutfits[o].items)
+        std::string outfitStr;
+        for (int item : items)
         {
             if (!outfitStr.empty())
                 outfitStr += " ";
-
-            outfitStr += item ? toString(item) : toString(-1);
-            emptyOutfit &= item <= 0;
+            outfitStr += toString(item);
         }
 
-        if (!emptyOutfit)
-            config.outfits.push_back({ o, outfitStr, mOutfits[o].unequip });
-
-        outfitStr.clear();
+        config.outfits.push_back({ o, outfitStr, mOutfits[o].unequip });
     }
+}
+
+void OutfitWindow::logic()
+{
+    Window::logic();
+
+    mOutfitContainer->setMaxItems(getItemCount());
+}
+
+int OutfitWindow::getItem(int index) const
+{
+    const auto &items = mOutfits[mCurrentOutfit].items;
+    if (index < 0 || index >= static_cast<int>(items.size()))
+        return -1;
+
+    return items[index];
+}
+
+bool OutfitWindow::insertItem(int itemId, int index)
+{
+    if (itemId <= 0)
+        return false;
+
+    auto &items = mOutfits[mCurrentOutfit].items;
+    const auto it = std::find(items.begin(), items.end(), itemId);
+
+    if (it != items.end())
+    {
+        // The item is already in the outfit, only move it when a slot was
+        // targeted
+        if (index >= 0)
+            moveItem(std::distance(items.begin(), it), index);
+        return true;
+    }
+
+    if (index < 0 || index > static_cast<int>(items.size()))
+        index = items.size();
+
+    items.insert(items.begin() + index, itemId);
+    return true;
+}
+
+void OutfitWindow::moveItem(int fromIndex, int toIndex)
+{
+    auto &items = mOutfits[mCurrentOutfit].items;
+    const int lastIndex = static_cast<int>(items.size()) - 1;
+
+    if (fromIndex < 0 || fromIndex > lastIndex)
+        return;
+
+    toIndex = std::clamp(toIndex, 0, lastIndex);
+    if (toIndex == fromIndex)
+        return;
+
+    const int itemId = items[fromIndex];
+    items.erase(items.begin() + fromIndex);
+    items.insert(items.begin() + toIndex, itemId);
+}
+
+void OutfitWindow::removeItem(int index)
+{
+    auto &items = mOutfits[mCurrentOutfit].items;
+    if (index < 0 || index >= static_cast<int>(items.size()))
+        return;
+
+    items.erase(items.begin() + index);
 }
 
 void OutfitWindow::action(const gcn::ActionEvent &event)
@@ -157,228 +286,132 @@ void OutfitWindow::action(const gcn::ActionEvent &event)
 
 void OutfitWindow::wearOutfit(int outfit)
 {
-    if (mOutfits[outfit].unequip)
-        unequipNotInOutfit(outfit);
+    Inventory *inventory = PlayerInfo::getInventory();
+    if (!inventory)
+        return;
 
-    for (int i : mOutfits[outfit].items)
+    const std::vector<int> items = itemsToEquip(outfit);
+
+    if (mOutfits[outfit].unequip)
+        unequip(items);
+
+    for (int itemId : items)
     {
-        Item *item = PlayerInfo::getInventory()->findItem(i);
-        if (item && !item->isEquipped() && item->getQuantity())
+        Item *item = inventory->findItem(itemId);
+        if (item && !item->isEquipped())
+            item->doEvent(Event::DoEquip);
+    }
+}
+
+std::vector<int> OutfitWindow::itemsToEquip(int outfit) const
+{
+    const Inventory *inventory = PlayerInfo::getInventory();
+    const auto &items = mOutfits[outfit].items;
+
+    std::vector<int> result;
+    std::set<ItemType> handledTypes;
+
+    for (size_t i = 0; i < items.size(); i++)
+    {
+        const ItemInfo &info = itemDb->get(items[i]);
+        if (!info.equippable)
+            continue;
+        if (!handledTypes.insert(info.type).second)
+            continue;
+
+        // Collect the items of this outfit which use the same equipment slot
+        std::vector<int> sameType;
+        for (size_t j = i; j < items.size(); j++)
+            if (itemDb->get(items[j]).type == info.type)
+                sameType.push_back(items[j]);
+
+        const size_t capacity = equipCapacity(info.type);
+        if (sameType.size() <= capacity)
         {
-            if (item->isEquippable())
-                item->doEvent(Event::DoEquip);
+            result.insert(result.end(), sameType.begin(), sameType.end());
+            continue;
+        }
+
+        // Continue after the last of them which is currently equipped, so
+        // that wearing the outfit again equips the next ones in line
+        size_t first = 0;
+        for (size_t k = 0; k < sameType.size(); k++)
+        {
+            const Item *item = inventory->findItem(sameType[k]);
+            if (item && item->isEquipped())
+                first = (k + 1) % sameType.size();
+        }
+
+        for (size_t k = 0, found = 0;
+             k < sameType.size() && found < capacity; k++)
+        {
+            const int itemId = sameType[(first + k) % sameType.size()];
+            const Item *item = inventory->findItem(itemId);
+            if (item && item->getQuantity() > 0)
+            {
+                result.push_back(itemId);
+                found++;
+            }
+        }
+    }
+
+    return result;
+}
+
+/**
+ * Unequips all equipment which is not in the given list of items.
+ */
+void OutfitWindow::unequip(const std::vector<int> &exceptItems)
+{
+    Inventory *inventory = PlayerInfo::getInventory();
+
+    for (int i = 0; i < inventory->getSize(); i++)
+    {
+        Item *item = inventory->getItem(i);
+        if (!item || !item->isEquipped())
+            continue;
+
+        if (std::find(exceptItems.begin(), exceptItems.end(),
+                      item->getId()) == exceptItems.end())
+        {
+            item->doEvent(Event::DoUnequip);
         }
     }
 }
 
 void OutfitWindow::copyOutfit(int outfit)
 {
-    for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
-        mOutfits[mCurrentOutfit].items[i] = mOutfits[outfit].items[i];
-}
-
-bool OutfitWindow::addItemToCurrentOutfit(int itemId, int targetIndex)
-{
-    if (itemId <= 0)
-        return false;
-
-    int existingIndex = -1;
-    int firstFreeIndex = -1;
-    auto &items = mOutfits[mCurrentOutfit].items;
-
-    for (int i = 0; i < OUTFIT_ITEM_COUNT; ++i)
-    {
-        if (items[i] == itemId)
-            existingIndex = i;
-        else if (firstFreeIndex == -1 && items[i] < 0)
-            firstFreeIndex = i;
-    }
-
-    if (targetIndex == -1)
-    {
-        if (existingIndex != -1)
-            return true;
-        if (firstFreeIndex == -1)
-            return false;
-
-        targetIndex = firstFreeIndex;
-    }
-
-    if (existingIndex != -1)
-        std::swap(items[existingIndex], items[targetIndex]);
-    else
-        items[targetIndex] = itemId;
-
-    return true;
+    mOutfits[mCurrentOutfit].items = mOutfits[outfit].items;
 }
 
 /**
- * Handles dropping an item onto the outfit window.
+ * Adds the item selected in the inventory window when clicking next to the
+ * item slots.
  */
-bool OutfitWindow::handleDrop(const Drag &drag, int absX, int absY)
-{
-    const Item *item = drag.item.get();
-    if (!item)
-        return false;
-
-    int widgetX = 0;
-    int widgetY = 0;
-    getAbsolutePosition(widgetX, widgetY);
-
-    const int targetIndex = getIndexFromGrid(absX - widgetX, absY - widgetY);
-
-    // If item is dragged out of a slot, let dragFinished remove it
-    if (drag.source == this && targetIndex == -1)
-        return false;
-
-    if (!item->isEquippable())
-        return false;
-
-    return addItemToCurrentOutfit(item->getId(), targetIndex);
-}
-
-void OutfitWindow::draw(gcn::Graphics *graphics)
-{
-    Window::draw(graphics);
-    auto *g = static_cast<Graphics*>(graphics);
-    const auto *drag = gui->getActiveDrag();
-    const auto *inventory = PlayerInfo::getInventory();
-    const auto &currentOutfit = mOutfits[mCurrentOutfit];
-
-    for (int i = 0; i < OUTFIT_ITEM_COUNT; i++)
-    {
-        const int itemX = 10 + (i % mGridWidth) * mBoxWidth;
-        const int itemY = 25 + (i / mGridWidth) * mBoxHeight;
-
-        graphics->setColor(gcn::Color(0, 0, 0, 64));
-        graphics->drawRectangle(gcn::Rectangle(itemX, itemY,
-                                               ITEM_ICON_SIZE,
-                                               ITEM_ICON_SIZE));
-        graphics->setColor(gcn::Color(255, 255, 255, 32));
-        graphics->fillRectangle(gcn::Rectangle(itemX, itemY,
-                                               ITEM_ICON_SIZE,
-                                               ITEM_ICON_SIZE));
-
-        if (currentOutfit.items[i] < 0)
-            continue;
-
-        if (Item *item = inventory->findItem(currentOutfit.items[i]))
-        {
-            // Draw item icon.
-            if (Image *image = item->getImage())
-            {
-                const bool isDragged =
-                        drag &&
-                        drag->source == this &&
-                        drag->sourceIndex == i;
-                image->setAlpha(isDragged ? 0.5f : 1.0f);
-                g->drawImage(image, itemX, itemY);
-            }
-        }
-    }
-}
-
-void OutfitWindow::mouseDragged(gcn::MouseEvent &event)
-{
-    Window::mouseDragged(event);
-
-    if (mMoved)
-        return;
-
-    if (event.getButton() == gcn::MouseEvent::LEFT)
-    {
-        if (!gui->getActiveDrag() && mClickedIndex != -1)
-        {
-            const int itemId = mOutfits[mCurrentOutfit].items[mClickedIndex];
-            if (itemId <= 0)
-                return;
-
-            if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
-                gui->startDrag(Drag::fromOutfit(item, this, mClickedIndex));
-        }
-    }
-}
-
 void OutfitWindow::mousePressed(gcn::MouseEvent &event)
 {
     Window::mousePressed(event);
 
-    mClickedIndex = getIndexFromGrid(event.getX(), event.getY());
-    if (mClickedIndex == -1)
-        return;
-
-    if (event.getButton() == gcn::MouseEvent::LEFT)
-        mMoved = false;         // prevent window drag
-
-    // Stores the selected item if there is one.
-    if (isItemSelected())
+    if (event.getButton() == gcn::MouseEvent::LEFT && isItemSelected())
     {
-        mOutfits[mCurrentOutfit].items[mClickedIndex] = mItemSelected;
+        insertItem(mItemSelected, -1);
         mItemSelected = -1;
     }
 }
 
-void OutfitWindow::mouseReleased(gcn::MouseEvent &event)
+/**
+ * Handles dropping an item on the outfit window, but outside of the item
+ * slots. The item is added at the end.
+ */
+bool OutfitWindow::handleDrop(const Drag &drag, int absX, int absY)
 {
-    Window::mouseReleased(event);
+    const Item *item = drag.item.get();
+    if (!item || !item->isEquippable())
+        return false;
 
-    if (event.getButton() == gcn::MouseEvent::LEFT)
-    {
-        mItemSelected = -1;
-        mClickedIndex = -1;
-    }
-}
+    // If an item is dragged out of a slot, let dragFinished remove it
+    if (drag.source == mOutfitContainer)
+        return false;
 
-void OutfitWindow::dragFinished(const Drag &drag, DragResult result)
-{
-    if (result == DragResult::Ignored &&
-        drag.source == this &&
-        drag.sourceIndex >= 0 &&
-        drag.sourceIndex < OUTFIT_ITEM_COUNT)
-    {
-        mOutfits[mCurrentOutfit].items[drag.sourceIndex] = -1;
-    }
-
-    mClickedIndex = -1;
-}
-
-int OutfitWindow::getIndexFromGrid(int pointX, int pointY) const
-{
-    const gcn::Rectangle tRect = gcn::Rectangle(
-        10, 25, 10 + mGridWidth * mBoxWidth, 25 + mGridHeight * mBoxHeight);
-    if (!tRect.isPointInRect(pointX, pointY))
-        return -1;
-    const int index = (((pointY - 25) / mBoxHeight) * mGridWidth) +
-        (pointX - 10) / mBoxWidth;
-    if (index >= OUTFIT_ITEM_COUNT)
-        return -1;
-    return index;
-}
-
-void OutfitWindow::unequipNotInOutfit(int outfit)
-{
-    Inventory *inventory = PlayerInfo::getInventory();
-    if (!inventory)
-        return;
-
-    for (int i = 0; i < inventory->getSize(); i++)
-    {
-        if (inventory->getItem(i) && inventory->getItem(i)->isEquipped())
-        {
-            bool found = false;
-            for (int item : mOutfits[outfit].items)
-            {
-                if (inventory->getItem(i)->getId() == item)
-                {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found)
-            {
-                if (Item *item = inventory->getItem(i))
-                    item->doEvent(Event::DoUnequip);
-            }
-        }
-    }
+    return insertItem(item->getId(), -1);
 }

@@ -13,6 +13,8 @@ Unreleased
 - Added a configurable pickup range (Setup > Interface)
 - Made --data option skip downloading and verifying updates (the news is still shown)
 - Added "Equip" button to the Outfit window
+- Made the Outfit window take any number of items, adding slots as needed
+- Made wearing an outfit cycle through its items that share an equipment slot
 - New window button icons by meway, used in Jewelry and Golden Delicious themes
 - Improved drag-n-drop for emote shortcuts
 - Made window menu buttons indicate which windows are open
