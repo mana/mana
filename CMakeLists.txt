@@ -28,13 +28,18 @@ set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME ${PROJECT_NAME})
 
-find_package(Gettext)
-
 option(WITH_OPENGL "Enable OpenGL support" ON)
 option(ENABLE_NLS "Enable building of translations" ON)
 option(ENABLE_MANASERV "Enable Manaserv support" ON)
 option(USE_SYSTEM_ENET "Use system ENet" ON)
 option(USE_SYSTEM_GUICHAN "Use system Guichan" ON)
+
+# Translations are on by default and hard-require the gettext tools, so that a
+# machine without them fails to configure instead of silently producing a build
+# with no catalogs. Turn them off explicitly with -DENABLE_NLS=OFF.
+if(ENABLE_NLS)
+  find_package(Gettext REQUIRED)
+endif()
 
 if(WIN32)
   set(CMAKE_INSTALL_DATADIR ".")
@@ -79,7 +84,7 @@ set(CPACK_VERBATIM_VARIABLES TRUE)
 
 add_subdirectory(src)
 
-if(GETTEXT_FOUND AND ENABLE_NLS)
+if(ENABLE_NLS)
   add_subdirectory(po)
 endif()
 
