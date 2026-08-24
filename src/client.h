@@ -202,6 +202,8 @@ public:
     static bool hasMouseFocus();
 
 private:
+    void toggleFullscreen();
+
     void initRootDir();
     void initHomeDir();
     void initConfiguration();

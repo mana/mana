@@ -34,6 +34,24 @@
 static constexpr int WINDOW_MIN_WIDTH = 640;
 static constexpr int WINDOW_MIN_HEIGHT = 400;
 
+/**
+ * Limits the given window size to the part of the display that is available
+ * for windows. A window that is larger than the screen can be hard to use,
+ * since its edges are then out of reach.
+ */
+static void limitToUsableBounds(int display, int &width, int &height)
+{
+    SDL_Rect usableBounds;
+    if (SDL_GetDisplayUsableBounds(display, &usableBounds) != 0)
+    {
+        Log::info("SDL_GetDisplayUsableBounds failed: %s", SDL_GetError());
+        return;
+    }
+
+    width = std::min(width, std::max(usableBounds.w, WINDOW_MIN_WIDTH));
+    height = std::min(height, std::max(usableBounds.h, WINDOW_MIN_HEIGHT));
+}
+
 int VideoSettings::scale() const
 {
     if (userScale == 0)
@@ -118,6 +136,11 @@ Graphics *Video::initialize(const VideoSettings &settings)
     if (mSettings.openGL)
         windowFlags |= SDL_WINDOW_OPENGL;
 
+    // The stored size can be too large for the current display, for example
+    // when the client last ran on a larger screen
+    if (mSettings.windowMode == WindowMode::Windowed)
+        limitToUsableBounds(mSettings.display, mSettings.width, mSettings.height);
+
     Log::info("Setting video mode %dx%d %s",
               mSettings.width,
               mSettings.height,
@@ -171,8 +194,10 @@ Graphics *Video::initialize(const VideoSettings &settings)
     return mGraphics.get();
 }
 
-bool Video::apply(const VideoSettings &settings)
+bool Video::apply(const VideoSettings &videoSettings)
 {
+    VideoSettings settings = videoSettings;
+
     if (mSettings == settings)
         return true;
 
@@ -225,9 +250,13 @@ bool Video::apply(const VideoSettings &settings)
         return false;
     }
 
+    // Only when a different size is requested, since leaving fullscreen
+    // restores the size the window had before it went fullscreen
     if (settings.windowMode == WindowMode::Windowed &&
             (settings.width != mSettings.width ||
              settings.height != mSettings.height)) {
+        limitToUsableBounds(settings.display, settings.width, settings.height);
+
 #ifdef __APPLE__
         // Workaround SDL2 issue when setting the window size on a window
         // which the user has put in fullscreen. Unfortunately, this mode can't

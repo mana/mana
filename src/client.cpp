@@ -127,6 +127,22 @@ static Uint32 nextSecond(Uint32 interval, void *param)
     return interval;
 }
 
+/**
+ * Returns whether an Alt key is held down.
+ *
+ * The modifier state of the event is not enough, since SDL can lose track of
+ * the modifiers while the window changes to or from fullscreen (seen on X11).
+ * The key state stays correct in that case.
+ */
+static bool isAltDown(uint16_t eventModifiers)
+{
+    if (eventModifiers & KMOD_ALT)
+        return true;
+
+    const uint8_t *keyState = SDL_GetKeyboardState(nullptr);
+    return keyState[SDL_SCANCODE_LALT] || keyState[SDL_SCANCODE_RALT];
+}
+
 bool isDoubleClick(int selected)
 {
     static Timer timer;
@@ -495,6 +511,15 @@ int Client::exec()
                 break;
 
             case SDL_KEYDOWN:
+                if ((event.key.keysym.sym == SDLK_RETURN ||
+                     event.key.keysym.sym == SDLK_KP_ENTER) &&
+                        isAltDown(event.key.keysym.mod) &&
+                        !event.key.repeat)
+                {
+                    toggleFullscreen();
+                    continue;
+                }
+
                 if (keyboard.isEnabled())
                 {
                     const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
@@ -1314,11 +1339,36 @@ void Client::accountLogin(LoginData *loginData)
         config.username = loginData->username;
 }
 
+/**
+ * Toggles between windowed and windowed fullscreen mode. Exclusive fullscreen
+ * turns into windowed mode, so that this shortcut is also a way out when the
+ * current display mode turns out not to work.
+ */
+void Client::toggleFullscreen()
+{
+    VideoSettings videoSettings = mVideo.settings();
+    videoSettings.windowMode = videoSettings.windowMode == WindowMode::Windowed
+            ? WindowMode::WindowedFullscreen
+            : WindowMode::Windowed;
+
+    if (!mVideo.apply(videoSettings))
+    {
+        Log::warn("Failed to toggle fullscreen");
+        return;
+    }
+
+    config.windowMode = videoSettings.windowMode;
+}
+
 void Client::handleWindowSizeChanged(int width, int height)
 {
-    // Store the new size in the configuration.
-    config.screenWidth = width;
-    config.screenHeight = height;
+    // Store the new size in the configuration. Only the windowed size is worth
+    // remembering, since a fullscreen window is as large as the display.
+    if (mVideo.settings().windowMode == WindowMode::Windowed)
+    {
+        config.screenWidth = width;
+        config.screenHeight = height;
+    }
 }
 
 void Client::checkGraphicsSize()
