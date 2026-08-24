@@ -24,6 +24,15 @@
 
 using namespace Net;
 
+Character *CharHandler::getCharacter(int slot)
+{
+    for (auto &character : mCharacters)
+        if (character.slot == slot)
+            return &character;
+
+    return nullptr;
+}
+
 void CharHandler::updateCharSelectDialog()
 {
     if (mCharSelectDialog)

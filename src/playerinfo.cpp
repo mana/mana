@@ -83,17 +83,13 @@ void triggerStat(int id, const std::string &changed, int old1, int old2 = 0)
 
 int getAttribute(int id)
 {
-    auto it = mData.mAttributes.find(id);
-    if (it != mData.mAttributes.end())
-        return it->second;
-
-    return 0;
+    return mData.getAttribute(id);
 }
 
 void setAttribute(int id, int value, bool notify)
 {
-    int old = mData.mAttributes[id];
-    mData.mAttributes[id] = value;
+    int old = mData.getAttribute(id);
+    mData.setAttribute(id, value);
     if (notify)
         triggerAttr(id, old);
 }

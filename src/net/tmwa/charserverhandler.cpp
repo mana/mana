@@ -204,8 +204,8 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
 {
     const int id = msg.readInt32();
 
-    character->data.mAttributes[EXP] = msg.readInt32();
-    character->data.mAttributes[MONEY] = msg.readInt32();
+    character->data.setAttribute(EXP, msg.readInt32());
+    character->data.setAttribute(MONEY, msg.readInt32());
     character->data.mStats[JOB].exp = msg.readInt32();
 
     const int temp = msg.readInt32();
@@ -222,10 +222,10 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
     msg.readInt32();                       // manner
     msg.readInt16();                       // character points left
 
-    character->data.mAttributes[HP] = msg.readInt16();
-    character->data.mAttributes[MAX_HP] = msg.readInt16();
-    character->data.mAttributes[MP] = msg.readInt16();
-    character->data.mAttributes[MAX_MP] = msg.readInt16();
+    character->data.setAttribute(HP, msg.readInt16());
+    character->data.setAttribute(MAX_HP, msg.readInt16());
+    character->data.setAttribute(MP, msg.readInt16());
+    character->data.setAttribute(MAX_MP, msg.readInt16());
 
     msg.readInt16();                       // speed
     const uint16_t race = msg.readInt16(); // class (used for race)
@@ -241,7 +241,7 @@ void CharServerHandler::readPlayerData(MessageIn &msg, Net::Character *character
     tempPlayer->setSprite(SPRITE_MISC1, misc1);
     tempPlayer->setSprite(SPRITE_WEAPON, weapon, "", true);
 
-    character->data.mAttributes[LEVEL] = msg.readInt16();
+    character->data.setAttribute(LEVEL, msg.readInt16());
 
     msg.readInt16();                       // skill point
     tempPlayer->setSprite(SPRITE_BOTTOMCLOTHES, msg.readInt16()); // head bottom
@@ -307,9 +307,12 @@ void CharServerHandler::requestCharacters()
     connect();
 }
 
-void CharServerHandler::chooseCharacter(Net::Character *character)
+void CharServerHandler::chooseCharacter(int slot)
 {
-    mSelectedCharacter = character;
+    mSelectedCharacter = getCharacter(slot);
+    if (!mSelectedCharacter)
+        return;
+
     mCharSelectDialog = nullptr;
 
     MessageOut outMsg(CMSG_CHAR_SELECT);
@@ -331,9 +334,11 @@ void CharServerHandler::newCharacter(const std::string &name, int slot,
     outMsg.writeInt16(hairstyle);
 }
 
-void CharServerHandler::deleteCharacter(Net::Character *character)
+void CharServerHandler::deleteCharacter(int slot)
 {
-    mSelectedCharacter = character;
+    mSelectedCharacter = getCharacter(slot);
+    if (!mSelectedCharacter)
+        return;
 
     MessageOut outMsg(CMSG_CHAR_DELETE);
     outMsg.writeInt32(mSelectedCharacter->dummy->getId());

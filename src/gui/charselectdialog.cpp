@@ -89,10 +89,14 @@ class CharacterDisplay : public Container, public gcn::MouseListener
     public:
         CharacterDisplay(CharSelectDialog *charSelectDialog);
 
-        void setCharacter(Net::Character *character);
+        void setCharacter(const Net::Character *character);
 
-        Net::Character *getCharacter() const
+        const Net::Character *getCharacter() const
         { return mCharacter; }
+
+        /** The slot shown here, or -1 when empty. */
+        int getSlot() const
+        { return mCharacter ? mCharacter->slot : -1; }
 
         void requestFocus() override;
 
@@ -104,7 +108,7 @@ class CharacterDisplay : public Container, public gcn::MouseListener
     private:
         void update();
 
-        Net::Character *mCharacter = nullptr;
+        const Net::Character *mCharacter = nullptr;
 
         PlayerBox *mPlayerBox;
         Label *mName;
@@ -250,7 +254,7 @@ void CharSelectDialog::attemptCharacterDelete(int index)
     if (mLocked)
         return;
 
-    mCharHandler->deleteCharacter(mCharacterEntries[index]->getCharacter());
+    mCharHandler->deleteCharacter(mCharacterEntries[index]->getSlot());
     lock();
 }
 
@@ -263,17 +267,17 @@ void CharSelectDialog::attemptCharacterSelect(int index)
         return;
 
     setVisible(false);
-    mCharHandler->chooseCharacter(mCharacterEntries[index]->getCharacter());
+    mCharHandler->chooseCharacter(mCharacterEntries[index]->getSlot());
     lock();
 }
 
-void CharSelectDialog::setCharacters(Net::Characters &characters)
+void CharSelectDialog::setCharacters(const Net::Characters &characters)
 {
     // Reset previous characters
     for (auto *characterEntry : mCharacterEntries)
         characterEntry->setCharacter(nullptr);
 
-    for (auto &character : characters)
+    for (const auto &character : characters)
     {
         // Slots Number start at 1 for Manaserv, so we offset them by one.
         int characterSlot = character.slot;
@@ -324,7 +328,7 @@ bool CharSelectDialog::selectByName(const std::string &name,
 
     for (int i = 0; i < (int)mCharacterEntries.size(); ++i)
     {
-        if (Net::Character *character = mCharacterEntries[i]->getCharacter())
+        if (const Net::Character *character = mCharacterEntries[i]->getCharacter())
         {
             if (character->dummy->getName() == name)
             {
@@ -369,11 +373,8 @@ CharacterDisplay::CharacterDisplay(CharSelectDialog *charSelectDialog):
         mTextPopup = new TextPopup;
 }
 
-void CharacterDisplay::setCharacter(Net::Character *character)
+void CharacterDisplay::setCharacter(const Net::Character *character)
 {
-    if (mCharacter == character)
-        return;
-
     mCharacter = character;
     mPlayerBox->setPlayer(character ? character->dummy.get() : nullptr);
     update();
@@ -422,8 +423,10 @@ void CharacterDisplay::mouseMoved(gcn::MouseEvent &event)
         int absX, absY;
         mPlayerBox->getAbsolutePosition(absX, absY);
 
-        const auto level = strprintf(_("Level %d"), mCharacter->data.mAttributes[LEVEL]);
-        const auto money = Units::formatCurrency(mCharacter->data.mAttributes[MONEY]);
+        const auto level = strprintf(_("Level %d"),
+                                     mCharacter->data.getAttribute(LEVEL));
+        const auto money = Units::formatCurrency(
+                                     mCharacter->data.getAttribute(MONEY));
 
         mTextPopup->show(x + absX, y + absY, level, money);
     }

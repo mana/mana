@@ -317,9 +317,11 @@ void CharHandler::requestCharacters()
     }
 }
 
-void CharHandler::chooseCharacter(Net::Character *character)
+void CharHandler::chooseCharacter(int slot)
 {
-    mSelectedCharacter = character;
+    mSelectedCharacter = getCharacter(slot);
+    if (!mSelectedCharacter)
+        return;
 
     MessageOut msg(PAMSG_CHAR_SELECT);
     msg.writeInt8(mSelectedCharacter->slot);
@@ -347,9 +349,11 @@ void CharHandler::newCharacter(const std::string &name,
     accountServerConnection->send(msg);
 }
 
-void CharHandler::deleteCharacter(Net::Character *character)
+void CharHandler::deleteCharacter(int slot)
 {
-    mSelectedCharacter = character;
+    mSelectedCharacter = getCharacter(slot);
+    if (!mSelectedCharacter)
+        return;
 
     MessageOut msg(PAMSG_CHAR_DELETE);
     msg.writeInt8(mSelectedCharacter->slot);
@@ -406,15 +410,15 @@ void CharHandler::updateCharacters()
                               Net::getInventoryHandler()->isWeaponSlot(slot.id));
         }
 
-        character.data.mAttributes[CHAR_POINTS] = info.characterPoints;
-        character.data.mAttributes[CORR_POINTS] = info.correctionPoints;
+        character.data.setAttribute(CHAR_POINTS, info.characterPoints);
+        character.data.setAttribute(CORR_POINTS, info.correctionPoints);
 
         for (const auto &[id, attr] : info.attributes)
         {
             int playerInfoId = Attributes::getPlayerInfoIdFromAttrId(id);
             if (playerInfoId > -1)
             {
-                character.data.mAttributes[playerInfoId] = attr.mod;
+                character.data.setAttribute(playerInfoId, attr.mod);
             }
             else
             {

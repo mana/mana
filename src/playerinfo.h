@@ -53,6 +53,20 @@ struct Stat
  */
 struct PlayerInfoBackend
 {
+    /**
+     * Returns the value of the given attribute, or 0 when it is not set.
+     */
+    int getAttribute(int id) const
+    {
+        auto it = mAttributes.find(id);
+        return it != mAttributes.end() ? it->second : 0;
+    }
+
+    void setAttribute(int id, int value)
+    {
+        mAttributes[id] = value;
+    }
+
     std::map<int, int> mAttributes;
     std::map<int, Stat> mStats;
 };

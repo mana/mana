@@ -50,13 +50,13 @@ class CharServerHandler final : public MessageHandler, public Net::CharHandler
 
         void requestCharacters() override;
 
-        void chooseCharacter(Net::Character *character) override;
+        void chooseCharacter(int slot) override;
 
         void newCharacter(const std::string &name, int slot, Gender gender,
                           int hairstyle, int hairColor,
                           const std::vector<int> &stats) override;
 
-        void deleteCharacter(Net::Character *character) override;
+        void deleteCharacter(int slot) override;
 
         void switchCharacter() override;
 

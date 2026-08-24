@@ -154,11 +154,11 @@ class OfflineHandler final : public Net::GeneralHandler,
         void setCharSelectDialog(CharSelectDialog *window) override {}
         void setCharCreateDialog(CharCreateDialog *window) override {}
         void requestCharacters() override;
-        void chooseCharacter(Net::Character *character) override {}
+        void chooseCharacter(int slot) override {}
         void newCharacter(const std::string &name, int slot,
                           Gender gender, int hairstyle, int hairColor,
                           const std::vector<int> &stats) override {}
-        void deleteCharacter(Net::Character *character) override {}
+        void deleteCharacter(int slot) override {}
         void switchCharacter() override {}
         unsigned int baseSprite() const override { return 0; }
         unsigned int hairSprite() const override { return 1; }

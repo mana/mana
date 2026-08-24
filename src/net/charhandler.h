@@ -55,13 +55,13 @@ class CharHandler
 
         virtual void requestCharacters() = 0;
 
-        virtual void chooseCharacter(Net::Character *character) = 0;
+        virtual void chooseCharacter(int slot) = 0;
 
         virtual void newCharacter(const std::string &name, int slot,
                                   Gender gender, int hairstyle, int hairColor,
                                   const std::vector<int> &stats) = 0;
 
-        virtual void deleteCharacter(Net::Character *character) = 0;
+        virtual void deleteCharacter(int slot) = 0;
 
         virtual void switchCharacter() = 0;
 
@@ -91,6 +91,12 @@ class CharHandler
 
     protected:
         CharHandler() = default;
+
+        /**
+         * Returns the character occupying the given slot, or nullptr when
+         * the slot is empty.
+         */
+        Character *getCharacter(int slot);
 
         void updateCharSelectDialog();
         void unlockCharSelectDialog();
