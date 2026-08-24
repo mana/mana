@@ -53,16 +53,29 @@ class Minimap : public Window
          */
         void toggle();
 
+        void mousePressed(gcn::MouseEvent &event) override;
+        void mouseDragged(gcn::MouseEvent &event) override;
+        void mouseReleased(gcn::MouseEvent &event) override;
+
+    protected:
         /**
          * Draws the minimap.
          */
-        void draw(gcn::Graphics *graphics) override;
+        void drawContent(gcn::Graphics *graphics) override;
 
     private:
         Map *mMap = nullptr;
         ResourceRef<Image> mMapImage;
         float mWidthProportion = 0.5;
         float mHeightProportion = 0.5;
+        int mPanOffsetX = 0;
+        int mPanOffsetY = 0;
+        int mLastPlayerX = 0;
+        int mLastPlayerY = 0;
+        int mPanMouseX = 0;
+        int mPanMouseY = 0;
+        bool mPanning = false;
+        bool mResetView = true;
 };
 
 extern Minimap *minimap;

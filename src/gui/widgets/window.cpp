@@ -119,6 +119,7 @@ void Window::draw(gcn::Graphics *graphics)
         gui->getTheme()->drawSkin(g, SkinType::ButtonSticky, state);
     }
 
+    drawContent(graphics);
     drawChildren(graphics);
 }
 
@@ -137,13 +138,34 @@ void Window::drawFrame(gcn::Graphics *graphics)
     {
         if (auto skinState = skin.getState(widgetState.flags))
         {
-            auto &textFormat = skinState->textFormat;
-            g->drawText(getCaption(),
-                        getFrameSize() + skin.titleOffsetX,
-                        getFrameSize() + skin.titleOffsetY,
-                        gcn::Graphics::LEFT,
-                        textFormat.bold ? boldFont : getFont(),
-                        textFormat);
+            const int frameSize = getFrameSize();
+            const int titleX = frameSize + skin.titleOffsetX;
+
+            // Keep the title from covering the title bar buttons or from
+            // spilling outside of the window
+            int titleRight = frameSize + getWidth() - skin.titleOffsetX;
+            if (mStickyButton)
+                titleRight = std::min(titleRight, frameSize + getStickyButtonRect().x);
+            else if (mCloseButton)
+                titleRight = std::min(titleRight, frameSize + getCloseButtonRect().x);
+
+            if (titleRight > titleX)
+            {
+                auto &textFormat = skinState->textFormat;
+
+                g->pushClipRect(gcn::Rectangle(frameSize, 0,
+                                               titleRight - frameSize,
+                                               widgetState.height));
+
+                g->drawText(getCaption(),
+                            titleX,
+                            frameSize + skin.titleOffsetY,
+                            gcn::Graphics::LEFT,
+                            textFormat.bold ? boldFont : getFont(),
+                            textFormat);
+
+                g->popClipRect();
+            }
         }
     }
 }
