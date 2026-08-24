@@ -11,12 +11,14 @@ Unreleased
 - Added support for diagonal sprite directions (falling back to up/down when absent)
 - Added Alt+Enter to toggle fullscreen
 - Added a configurable pickup range (Setup > Interface)
+- Added context menus to the player lists in the Social window
 - Made --data option skip downloading and verifying updates (the news is still shown)
 - Added "Equip" button to the Outfit window
 - Made the Outfit window take any number of items, adding slots as needed
 - Made wearing an outfit cycle through its items that share an equipment slot
 - New window button icons by meway, used in Jewelry and Golden Delicious themes
 - Improved drag-n-drop for emote shortcuts
+- Restyled the context menus, which now close on Escape or a click elsewhere
 - Made window menu buttons indicate which windows are open
 - Disabled the skill "Up" button when it can't be used
 - Allowed closing the NPC dialog during a choice menu
