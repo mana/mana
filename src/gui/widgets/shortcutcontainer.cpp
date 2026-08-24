@@ -21,6 +21,10 @@
 
 #include "gui/widgets/shortcutcontainer.h"
 
+#include "inventory.h"
+#include "item.h"
+#include "playerinfo.h"
+
 #include "gui/gui.h"
 
 #include "resources/theme.h"
@@ -35,7 +39,23 @@ ShortcutContainer::ShortcutContainer()
     mBoxHeight = skin.height;
 }
 
+ShortcutContainer::~ShortcutContainer() = default;
+
+void ShortcutContainer::setMaxItems(int maxItems)
+{
+    if (mMaxItems == maxItems)
+        return;
+
+    mMaxItems = maxItems;
+    updateGrid();
+}
+
 void ShortcutContainer::widgetResized(const gcn::Event &event)
+{
+    updateGrid();
+}
+
+void ShortcutContainer::updateGrid()
 {
     mGridWidth = getWidth() / mBoxWidth;
 
@@ -48,6 +68,51 @@ void ShortcutContainer::widgetResized(const gcn::Event &event)
         ++mGridHeight;
 
     setHeight(mGridHeight * mBoxHeight);
+}
+
+Item *ShortcutContainer::getDisplayItem(int itemId)
+{
+    if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
+        return item;
+
+    auto i = mFallbackItems.find(itemId);
+    if (i == mFallbackItems.end())
+    {
+        i = mFallbackItems.emplace(
+                itemId, std::make_unique<Item>(itemId)).first;
+    }
+
+    return i->second.get();
+}
+
+void ShortcutContainer::cleanupFallbackItems()
+{
+    auto *inventory = PlayerInfo::getInventory();
+    for (auto i = mFallbackItems.begin(); i != mFallbackItems.end();)
+    {
+        const int itemId = i->first;
+
+        if (inventory->findItem(itemId))
+        {
+            i = mFallbackItems.erase(i);
+            continue;
+        }
+
+        bool stillReferenced = false;
+        for (int slot = 0; slot < mMaxItems; ++slot)
+        {
+            if (getSlotItemId(slot) == itemId)
+            {
+                stillReferenced = true;
+                break;
+            }
+        }
+
+        if (!stillReferenced)
+            i = mFallbackItems.erase(i);
+        else
+            ++i;
+    }
 }
 
 int ShortcutContainer::getIndexFromGrid(int pointX, int pointY) const

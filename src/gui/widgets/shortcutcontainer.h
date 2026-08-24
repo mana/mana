@@ -27,6 +27,11 @@
 #include <guichan/widget.hpp>
 #include <guichan/widgetlistener.hpp>
 
+#include <map>
+#include <memory>
+
+class Item;
+
 /**
  * A generic shortcut container.
  *
@@ -39,6 +44,7 @@ class ShortcutContainer : public gcn::Widget,
 {
     public:
         ShortcutContainer();
+        ~ShortcutContainer() override;
 
         /**
          * Draws the shortcuts
@@ -55,6 +61,7 @@ class ShortcutContainer : public gcn::Widget,
         void widgetResized(const gcn::Event &event) override;
 
         int getMaxItems() const { return mMaxItems; }
+        void setMaxItems(int maxItems);
         int getBoxWidth() const { return mBoxWidth; }
         int getBoxHeight() const { return mBoxHeight; }
 
@@ -65,6 +72,25 @@ class ShortcutContainer : public gcn::Widget,
          * Removes the shortcut at the given slot index.
          */
         virtual void removeSlot(int index) = 0;
+
+        /**
+         * Returns the ID of the item in the given slot, or -1 when the slot
+         * holds no item.
+         */
+        virtual int getSlotItemId(int index) const { return -1; }
+
+        /**
+         * Returns the item to display for the given item ID. Items which are
+         * not in the inventory get a temporary instance, so that they can be
+         * displayed as well.
+         */
+        Item *getDisplayItem(int itemId);
+
+        /**
+         * Forgets the temporary items which are no longer referenced by any
+         * slot, or which are back in the inventory.
+         */
+        void cleanupFallbackItems();
 
         /**
          * Gets the index from the grid provided the point is in an item box.
@@ -93,4 +119,12 @@ class ShortcutContainer : public gcn::Widget,
         int mBoxHeight = 0;
         int mGridWidth = 1;
         int mGridHeight = 1;
+
+    private:
+        /**
+         * Determines the grid size and the height of the container.
+         */
+        void updateGrid();
+
+        std::map<int, std::unique_ptr<Item>> mFallbackItems;
 };

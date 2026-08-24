@@ -110,49 +110,9 @@ void ItemShortcutContainer::draw(gcn::Graphics *graphics)
     }
 }
 
-Item *ItemShortcutContainer::getDisplayItem(int itemId)
+int ItemShortcutContainer::getSlotItemId(int index) const
 {
-    if (Item *item = PlayerInfo::getInventory()->findItem(itemId))
-        return item;
-
-    auto i = mFallbackItems.find(itemId);
-    if (i == mFallbackItems.end())
-    {
-        i = mFallbackItems.emplace(
-                itemId, std::make_unique<Item>(itemId)).first;
-    }
-
-    return i->second.get();
-}
-
-void ItemShortcutContainer::cleanupFallbackItems()
-{
-    auto *inventory = PlayerInfo::getInventory();
-    for (auto i = mFallbackItems.begin(); i != mFallbackItems.end();)
-    {
-        const int itemId = i->first;
-
-        if (inventory->findItem(itemId))
-        {
-            i = mFallbackItems.erase(i);
-            continue;
-        }
-
-        bool stillReferenced = false;
-        for (int slot = 0; slot < mMaxItems; ++slot)
-        {
-            if (itemShortcut->getItem(slot) == itemId)
-            {
-                stillReferenced = true;
-                break;
-            }
-        }
-
-        if (!stillReferenced)
-            i = mFallbackItems.erase(i);
-        else
-            ++i;
-    }
+    return itemShortcut->getItem(index);
 }
 
 void ItemShortcutContainer::mouseDragged(gcn::MouseEvent &event)

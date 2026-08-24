@@ -26,7 +26,6 @@
 
 #include <guichan/mouselistener.hpp>
 
-#include <map>
 #include <memory>
 
 class Image;
@@ -69,15 +68,13 @@ class ItemShortcutContainer : public ShortcutContainer
         bool handleDrop(const Drag &drag, int absX, int absY) override;
 
     private:
+        int getSlotItemId(int index) const override;
         void removeSlot(int index) override;
 
-        void cleanupFallbackItems();
         void mouseExited(gcn::MouseEvent &event) override;
         void mouseMoved(gcn::MouseEvent &event) override;
 
-        Item *getDisplayItem(int itemId);
         Item *getItemAt(int x, int y) const;
 
-        std::map<int, std::unique_ptr<Item>> mFallbackItems;
         std::unique_ptr<ItemPopup> mItemPopup;
 };
