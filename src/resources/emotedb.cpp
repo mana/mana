@@ -33,6 +33,10 @@ namespace
 {
     std::vector<Emote> mEmotes;
     Emote mUnknown;
+
+    /** Owns the image of mUnknown, which does not come from an image set. */
+    ResourceRef<Image> mUnknownImage;
+
     bool mLoaded = false;
 }
 
@@ -43,7 +47,8 @@ void EmoteDB::init()
 
     mUnknown.name = "unknown";
     mUnknown.effectId = -1;
-    mUnknown.image = ResourceManager::getInstance()->getImage("graphics/sprites/error.png");
+    mUnknownImage = ResourceManager::getInstance()->getImage("graphics/sprites/error.png");
+    mUnknown.image = mUnknownImage;
 }
 
 void EmoteDB::readEmoteNode(XML::Node node, const std::string &filename)
@@ -103,12 +108,9 @@ void EmoteDB::checkStatus()
 
 void EmoteDB::unload()
 {
-    // These images are owned by the ImageSet
-    for (auto &emote : mEmotes)
-        emote.image.release();
-
     mEmotes.clear();
     mUnknown.image = nullptr;
+    mUnknownImage = nullptr;
     mLoaded = false;
 }
 

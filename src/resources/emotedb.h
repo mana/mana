@@ -34,7 +34,9 @@ struct Emote
     int effectId;
     std::string name;
     ResourceRef<ImageSet> is;
-    ResourceRef<Image> image;
+
+    /** Owned by the image set above, since sub-images are not managed. */
+    Image *image = nullptr;
 };
 
 /**
