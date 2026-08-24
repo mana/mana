@@ -62,7 +62,8 @@ BeingPopup::~BeingPopup() = default;
 
 void BeingPopup::show(int x, int y, Being *b)
 {
-    if (!b)
+    // Unnamed beings have nothing to show
+    if (!b || b->getName().empty())
     {
         setVisible(false);
         return;

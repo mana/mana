@@ -29,6 +29,7 @@ Unreleased
 - Fixed drag-n-drop moving the wrong item while a search filter is active
 - Fixed target reachability indicator after switching arrows
 - Fixed decorative NPCs and monsters being selectable despite targetSelection="false"
+- Fixed empty being popup showing for beings without a name
 - Reduced input lag when using the SDL renderer with an OpenGL backend
 
 0.7.0 (21 August 2025)
