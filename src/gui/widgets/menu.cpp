@@ -28,18 +28,31 @@
 #include "resources/theme.h"
 
 #include <guichan/font.hpp>
+#include <guichan/key.hpp>
+#include <guichan/keyevent.hpp>
 #include <guichan/mouseinput.hpp>
 
 #include <algorithm>
+
+int Menu::mOpenMenus = 0;
 
 Menu::Menu(const std::string &name)
     : Popup(name)
 {
     addMouseListener(this);
 
-    // Menus are sized to fit their items
-    setMinWidth(0);
-    setMinHeight(0);
+    // The widget covers the screen while open, the frame is drawn around the
+    // items instead.
+    setFrameSize(0);
+}
+
+Menu::~Menu()
+{
+    if (isVisible())
+        --mOpenMenus;
+
+    if (gui)
+        gui->removeGlobalKeyListener(this);
 }
 
 void Menu::addItem(std::string caption, Action action)
@@ -71,12 +84,23 @@ void Menu::showAt(int x, int y)
 
     mHoveredItem = -1;
 
-    x = std::clamp(x, 0, std::max(0, graphics->getWidth() - getWidth()));
-    y = std::clamp(y, 0, std::max(0, graphics->getHeight() - getHeight()));
+    mBox.x = std::clamp(x, 0, std::max(0, graphics->getWidth() - mBox.width));
+    mBox.y = std::clamp(y, 0, std::max(0, graphics->getHeight() - mBox.height));
 
-    setPosition(x, y);
-    setVisible(true);
+    // Cover the screen, so that clicks next to the menu can close it
+    setPosition(0, 0);
+    setSize(graphics->getWidth(), graphics->getHeight());
+
+    // Showing an already open menu should not listen for keys twice
+    if (!isVisible())
+    {
+        setVisible(true);
+        gui->addGlobalKeyListener(this);
+        ++mOpenMenus;
+    }
+
     requestMoveToTop();
+    requestModalFocus();
 
     // The menu may open on top of a being or item, whose hover cursor would
     // otherwise stay around while the mouse is over the menu.
@@ -91,9 +115,22 @@ void Menu::showBelow(gcn::Widget *widget)
     showAt(x, y + widget->getHeight());
 }
 
+void Menu::hide()
+{
+    if (!isVisible())
+        return;
+
+    setVisible(false);
+    releaseModalFocus();
+    gui->removeGlobalKeyListener(this);
+    --mOpenMenus;
+
+    mHoveredItem = -1;
+}
+
 void Menu::close()
 {
-    setVisible(false);
+    hide();
     clear();
 }
 
@@ -128,12 +165,19 @@ void Menu::updateLayout()
         }
     }
 
-    setContentSize(width, height);
+    mBox.width = width + getPadding() * 2;
+    mBox.height = height + getPadding() * 2;
 }
 
 int Menu::getItemAt(int x, int y) const
 {
-    if (x < getPadding() || x >= getWidth() - getPadding())
+    if (!mBox.isPointInRect(x, y))
+        return -1;
+
+    x -= mBox.x;
+    y -= mBox.y;
+
+    if (x < getPadding() || x >= mBox.width - getPadding())
         return -1;
 
     y -= getPadding();
@@ -154,7 +198,7 @@ void Menu::draw(gcn::Graphics *graphics)
 {
     auto g = static_cast<Graphics *>(graphics);
 
-    Popup::draw(graphics);
+    getSkin().draw(g, WidgetState(mBox));
 
     const Theme *theme = gui->getTheme();
     const Skin &itemSkin = theme->getSkin(SkinType::MenuItem);
@@ -167,13 +211,13 @@ void Menu::draw(gcn::Graphics *graphics)
     defaultFormat.outlineColor = palette.getOutlineColor(Theme::TEXT);
 
     WidgetState state;
-    state.x = getPadding();
-    state.width = getWidth() - getPadding() * 2;
+    state.x = mBox.x + getPadding();
+    state.width = mBox.width - getPadding() * 2;
 
     for (size_t i = 0; i < mItems.size(); ++i)
     {
         const Entry &item = mItems[i];
-        state.y = getPadding() + item.y;
+        state.y = mBox.y + getPadding() + item.y;
         state.height = item.height;
         state.flags = static_cast<int>(i) == mHoveredItem ? STATE_HOVERED : 0;
 
@@ -220,6 +264,13 @@ void Menu::mouseExited(gcn::MouseEvent &event)
 
 void Menu::mousePressed(gcn::MouseEvent &event)
 {
+    // Clicking anywhere but on the menu closes it
+    if (!mBox.isPointInRect(event.getX(), event.getY()))
+    {
+        close();
+        return;
+    }
+
     if (event.getButton() != gcn::MouseEvent::LEFT)
         return;
 
@@ -230,9 +281,17 @@ void Menu::mousePressed(gcn::MouseEvent &event)
     // Take a copy, since performing the action may change the menu
     Action action = mItems[index].action;
 
-    setVisible(false);
-    mHoveredItem = -1;
+    hide();
 
     if (action)
         action();
+}
+
+void Menu::keyPressed(gcn::KeyEvent &event)
+{
+    if (event.getKey().getValue() == gcn::Key::ESCAPE)
+    {
+        close();
+        event.consume();
+    }
 }

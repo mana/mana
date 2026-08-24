@@ -143,7 +143,6 @@ protected:
         menu->addItem(_("Add name to chat"), [name] {
             chatWindow->addInputText(name);
         });
-        menu->addItem(_("Cancel"));
         menu->showAt(x, y);
     }
 
@@ -543,8 +542,6 @@ void SocialWindow::action(const gcn::ActionEvent &event)
             mMenu->clear();
             mMenu->addItem(_("Create Guild"), [this] { showGuildCreate(); });
             mMenu->addItem(_("Create Party"), [this] { showPartyCreate(); });
-            mMenu->addSeparator();
-            mMenu->addItem(_("Cancel"));
             mMenu->showBelow(mCreateButton);
         }
         else

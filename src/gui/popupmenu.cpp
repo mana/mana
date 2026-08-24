@@ -194,9 +194,6 @@ void PopupMenu::showPopup(int x, int y, Being *being)
                 chatWindow->addInputText(being->getName());
             }));
 
-    addSeparator();
-    addItem(_("Cancel"));
-
     showAt(x, y);
 }
 
@@ -216,9 +213,6 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
             onFloorItem(itemId, [](FloorItem *floorItem) {
                 chatWindow->addItemText(floorItem->getInfo().name);
             }));
-
-    addSeparator();
-    addItem(_("Cancel"));
 
     showAt(x, y);
 }
@@ -293,9 +287,6 @@ void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
     addItem(_("Add to chat"), [item] {
         chatWindow->addItemText(item->getInfo().name);
     });
-
-    addSeparator();
-    addItem(_("Cancel"));
 
     showAt(x, y);
 }

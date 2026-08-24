@@ -449,13 +449,6 @@ void Viewport::mousePressed(gcn::MouseEvent &event)
         }
     }
 
-    // If a popup is active, just remove it
-    if (mPopupMenu->isVisible())
-    {
-        mPopupMenu->setVisible(false);
-        return;
-    }
-
     // Left click can cause different actions
     if (event.getButton() == gcn::MouseEvent::LEFT)
     {

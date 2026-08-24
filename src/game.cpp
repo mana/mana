@@ -65,6 +65,7 @@
 #include "gui/viewport.h"
 
 #include "gui/widgets/chattab.h"
+#include "gui/widgets/menu.h"
 #include "gui/widgets/emoteshortcutcontainer.h"
 #include "gui/widgets/itemshortcutcontainer.h"
 
@@ -405,7 +406,7 @@ bool Game::keyDownEvent(SDL_KeyboardEvent &event)
 
     // send straight to gui for certain windows
     if (quitDialog || TextDialog::isActive() ||
-        PlayerInfo::getNPCPostCount() > 0)
+        PlayerInfo::getNPCPostCount() > 0 || Menu::isAnyOpen())
     {
         return false;
     }
@@ -732,6 +733,8 @@ void Game::handleInput()
     if (PlayerInfo::isTalking())
         return;
     if (chatWindow->isInputFocused() || quitDialog || TextDialog::isActive())
+        return;
+    if (Menu::isAnyOpen())
         return;
 
     // Moving player around

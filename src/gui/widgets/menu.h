@@ -23,6 +23,9 @@
 
 #include "gui/widgets/popup.h"
 
+#include <guichan/keylistener.hpp>
+#include <guichan/rectangle.hpp>
+
 #include <functional>
 #include <string>
 #include <vector>
@@ -41,20 +44,30 @@
  * and MenuSeparator skins. A MenuItem skin state without a "text" element
  * falls back to the text color of the Popup skin palette.
  *
+ * An open menu is modal: it covers the screen and takes the modal focus, so
+ * that nothing behind it reacts to the mouse or the keyboard. Pressing Escape
+ * or clicking outside of the items closes it.
+ *
  * \ingroup GUI
  */
-class Menu : public Popup
+class Menu : public Popup, public gcn::KeyListener
 {
     public:
         using Action = std::function<void ()>;
 
         explicit Menu(const std::string &name = "Menu");
+        ~Menu() override;
 
         /**
-         * Adds an item that performs \a action when it is activated. Without
-         * an action the item does nothing but close the menu.
+         * Returns whether any menu is currently open. Used to keep the game
+         * from acting on input that belongs to the menu.
          */
-        void addItem(std::string caption, Action action = {});
+        static bool isAnyOpen() { return mOpenMenus > 0; }
+
+        /**
+         * Adds an item that performs \a action when it is activated.
+         */
+        void addItem(std::string caption, Action action);
 
         /**
          * Adds a line separating groups of items. Separators at the start or
@@ -91,6 +104,8 @@ class Menu : public Popup
         void mouseExited(gcn::MouseEvent &event) override;
         void mousePressed(gcn::MouseEvent &event) override;
 
+        void keyPressed(gcn::KeyEvent &event) override;
+
     private:
         struct Entry
         {
@@ -103,7 +118,12 @@ class Menu : public Popup
         };
 
         /**
-         * Positions the items and resizes the menu to fit them.
+         * Hides the menu and gives up the modal focus, keeping the items.
+         */
+        void hide();
+
+        /**
+         * Positions the items and sizes the menu box to fit them.
          */
         void updateLayout();
 
@@ -113,6 +133,15 @@ class Menu : public Popup
          */
         int getItemAt(int x, int y) const;
 
+        /**
+         * The area covered by the menu itself. The widget covers the whole
+         * screen while the menu is open, so that it can catch clicks meant to
+         * dismiss it.
+         */
+        gcn::Rectangle mBox;
+
         std::vector<Entry> mItems;
         int mHoveredItem = -1;
+
+        static int mOpenMenus;
 };
