@@ -581,6 +581,40 @@ void LocalPlayer::inviteToGuild(Being *being)
     }
 }
 
+/**
+ * Returns the position to walk to in order to be able to pick up the given
+ * item. This is the first position along the path from which the item is
+ * within pickup range, so that we stop next to the item rather than walking
+ * on top of it.
+ */
+Position LocalPlayer::getPickUpDestination(const FloorItem &item,
+                                           int range) const
+{
+    Position dest(item.getPixelX(), item.getPixelY());
+
+    if (!mMap)
+        return dest;
+
+    Path path;
+    if (Net::getPlayerHandler()->usePixelPrecision())
+    {
+        path = mMap->findPixelPath((int) mPos.x, (int) mPos.y,
+                                   dest.x, dest.y,
+                                   getCollisionRadius(), getWalkMask());
+    }
+    else
+    {
+        path = mMap->findTilePath((int) mPos.x, (int) mPos.y,
+                                  dest.x, dest.y, getWalkMask());
+    }
+
+    for (const Position &pos : path)
+        if (abs(pos.x - dest.x) <= range && abs(pos.y - dest.y) <= range)
+            return pos;
+
+    return dest;
+}
+
 void LocalPlayer::pickUp(FloorItem *item)
 {
     if (!item)
@@ -588,7 +622,9 @@ void LocalPlayer::pickUp(FloorItem *item)
 
     cancelGoToTarget();
 
-    if (withinRange(item, Net::getGameHandler()->getPickupRange()))
+    const int pickupRange = Net::getGameHandler()->getPickupRange();
+
+    if (withinRange(item, pickupRange))
     {
         Net::getPlayerHandler()->pickUp(item);
         // We found it, so set the player direction to it
@@ -600,7 +636,7 @@ void LocalPlayer::pickUp(FloorItem *item)
     else
     {
         pathSetByMouse();
-        setDestination(item->getPixelX(), item->getPixelY());
+        setDestination(getPickUpDestination(*item, pickupRange));
         mPickUpTarget = item;
     }
 }

@@ -159,6 +159,11 @@ class LocalPlayer final : public Being
          */
         bool withinRange(Actor *target, int range) const;
 
+        /**
+         * Returns the position from which the given item can be picked up.
+         */
+        Position getPickUpDestination(const FloorItem &item, int range) const;
+
         void toggleSit();
         void emote(int emoteId);
 
