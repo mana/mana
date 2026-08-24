@@ -1113,7 +1113,7 @@ void Being::updateColors()
         {
             mNameColor = &userPalette->getColor(UserPalette::GM);
         }
-        else if (mParty && mParty == local_player->getParty())
+        else if (mParty && local_player && mParty == local_player->getParty())
         {
             mNameColor = &userPalette->getColor(UserPalette::PARTY);
         }

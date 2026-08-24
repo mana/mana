@@ -410,6 +410,7 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
         { return mDamageTaken; }
 
         void updateName();
+        void updateColors();
 
         /**
          * Sets the gender of this being.
@@ -485,7 +486,6 @@ class Being : public ActorSprite, public EventListener, public gcn::DeathListene
         void addSpriteParticles(SpriteState &spriteState, const SpriteDisplay &display);
         void restoreAllSpriteParticles();
 
-        void updateColors();
         void updatePlayerSprites();
 
         /**

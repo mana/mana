@@ -100,6 +100,9 @@ void ActorSpriteManager::setPlayer(LocalPlayer *player)
 {
     local_player = player;
     mActors.insert(player);
+    // The player was created before it became the local player, so its name
+    // color needs to be re-evaluated to use the "Own Name" color.
+    player->updateColors();
 }
 
 Being *ActorSpriteManager::createBeing(int id, ActorSprite::Type type, int subtype)
