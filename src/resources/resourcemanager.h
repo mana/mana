@@ -156,15 +156,11 @@ class ResourceManager
          */
         void remove(Resource *);
 
-        /**
-         * Deletes the resource after logging a cleanup message.
-         */
-        static void cleanUp(Resource *resource);
-
         void cleanOrphans();
 
         static ResourceManager *instance;
         std::unordered_map<std::string, Resource *> mResources;
         std::unordered_map<std::string, Resource *> mOrphanedResources;
         time_t mOldestOrphan = 0;
+        uint64_t mNextInsertionOrder = 0;
 };

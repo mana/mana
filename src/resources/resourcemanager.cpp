@@ -35,6 +35,7 @@
 
 #include <SDL_image.h>
 
+#include <algorithm>
 #include <cassert>
 #include <memory>
 #include <vector>
@@ -50,69 +51,37 @@ ResourceManager::ResourceManager()
 
 ResourceManager::~ResourceManager()
 {
-    // Deleting a resource orphans the resources it references, so keep
-    // deleting unreferenced resources until none are left (SpriteDef
-    // references ImageSet, which references Image).
-    auto deleteUnreferenced = [this]
+    mResources.merge(mOrphanedResources);
+
+    // Delete in reverse order of insertion. Since a resource is inserted
+    // after the resources it references, this deletes each resource before
+    // the ones it references, and only actual leaks are still referenced.
+    std::vector<Resource *> resources;
+    resources.reserve(mResources.size());
+
+    for (auto &[_, resource] : mResources)
+        resources.push_back(resource);
+
+    std::sort(resources.begin(), resources.end(),
+              [] (const Resource *a, const Resource *b) {
+        return a->mInsertionOrder > b->mInsertionOrder;
+    });
+
+    for (Resource *resource : resources)
     {
-        bool deletedAny;
-        do
+        if (resource->mRefCount > 0)
         {
-            mResources.merge(mOrphanedResources);
+            Log::info("ResourceManager::~ResourceManager() cleaning up %d "
+                      "reference%s to %s",
+                      resource->mRefCount,
+                      (resource->mRefCount == 1) ? "" : "s",
+                      resource->mIdPath.c_str());
+        }
 
-            // Collect the unreferenced resources first, since deleting a
-            // resource may release or remove other resources from the map,
-            // which would invalidate the iterator.
-            std::vector<Resource *> unreferenced;
-            for (auto iter = mResources.begin(); iter != mResources.end(); )
-            {
-                Resource *res = iter->second;
-                if (res->mRefCount == 0)
-                {
-                    unreferenced.push_back(res);
-                    iter = mResources.erase(iter);
-                }
-                else
-                {
-                    ++iter;
-                }
-            }
-
-            for (Resource *res : unreferenced)
-                delete res;
-
-            deletedAny = !unreferenced.empty();
-        } while (deletedAny);
-    };
-
-    deleteUnreferenced();
-
-    // Any remaining resources are still referenced, so they would leak.
-    // Delete them anyway, warning about the remaining references.
-    while (!mResources.empty())
-    {
-        auto iter = mResources.begin();
-        Resource *res = iter->second;
-        mResources.erase(iter);
-        cleanUp(res);
-
-        // Deleting the resource may have orphaned its dependencies
-        deleteUnreferenced();
+        // Deleting the resource releases the ones it references, which are
+        // still in the maps to be found by release().
+        delete resource;
     }
-}
-
-void ResourceManager::cleanUp(Resource *res)
-{
-    if (res->mRefCount > 0)
-    {
-        Log::info("ResourceManager::~ResourceManager() cleaning up %d "
-                  "reference%s to %s",
-                  res->mRefCount,
-                  (res->mRefCount == 1) ? "" : "s",
-                  res->mIdPath.c_str());
-    }
-
-    delete res;
 }
 
 void ResourceManager::cleanOrphans()
@@ -230,6 +199,7 @@ Resource *ResourceManager::insert(const std::string &idPath, Resource *resource)
     if (resource)
     {
         resource->mIdPath = idPath;
+        resource->mInsertionOrder = mNextInsertionOrder++;
         mResources[idPath] = resource;
         cleanOrphans();
     }

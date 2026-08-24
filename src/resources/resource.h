@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include <cstdint>
 #include <ctime>
 #include <string>
 
@@ -61,6 +62,9 @@ class Resource
         std::string mIdPath;    /**< Path identifying this resource. */
         time_t mTimeStamp = 0;  /**< Time at which the resource was orphaned. */
         unsigned mRefCount = 0; /**< Reference count. */
+
+        /** When this resource was inserted, wide enough not to wrap around. */
+        uint64_t mInsertionOrder = 0;
 };
 
 /**
