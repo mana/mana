@@ -379,6 +379,12 @@ class Window : public gcn::Window, gcn::WidgetListener
         static int getGuiAlpha();
 
     protected:
+        /**
+         * Draws the window content. Called after the window frame and title
+         * bar buttons, but before any child widgets.
+         */
+        virtual void drawContent(gcn::Graphics *graphics) {}
+
         static int mouseResize;       /**< Active resize handles */
 
     private:

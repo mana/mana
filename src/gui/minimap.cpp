@@ -38,16 +38,35 @@
 #include "utils/gettext.h"
 
 #include <algorithm>
-#include <guichan/font.hpp>
+#include <guichan/mouseevent.hpp>
+
+static int updateMapOrigin(int playerPosition, int playerMovement,
+                           int viewSize, int imageSize, int &offset,
+                           bool panning)
+{
+    if (viewSize >= imageSize)
+    {
+        offset = 0;
+        return (viewSize - imageSize) / 2;
+    }
+
+    offset = panning ? offset + playerMovement
+                     : std::clamp(offset + playerMovement,
+                                  std::min(0, offset), std::max(0, offset));
+
+    const int centeredOrigin = viewSize / 2 - playerPosition;
+    const int origin = std::clamp(centeredOrigin + offset, viewSize - imageSize, 0);
+    offset = origin - centeredOrigin;
+    return origin;
+}
 
 Minimap::Minimap():
     Window(SkinType::Popup, _("Map"))
 {
     setWindowName("Minimap");
-    setDefaultSize(5, 25, 100, 100);
-    // set this to false as the minimap window size is changed
-    //depending on the map size
-    setResizable(false);
+    setResizable(true);
+    setMinimumContentSize(64, 64);
+    setDefaultSize(5, 25, 150, 150);
     setupWindow->registerWindowForReset(this);
 
     setDefaultVisible(true);
@@ -64,6 +83,12 @@ Minimap::~Minimap() = default;
 
 void Minimap::setMap(Map *map)
 {
+    mMap = map;
+    mPanOffsetX = 0;
+    mPanOffsetY = 0;
+    mPanning = false;
+    mResetView = true;
+
     // Set the title for the Minimap
     std::string caption;
 
@@ -73,14 +98,15 @@ void Minimap::setMap(Map *map)
     if (caption.empty())
         caption = _("Map");
 
-    minimap->setCaption(caption);
+    setCaption(caption);
 
     // Adapt the image
     mMapImage = nullptr;
+    mWidthProportion = 0.5f;
+    mHeightProportion = 0.5f;
 
     if (map)
     {
-        mMap = map;
         std::string tempname =
             "graphics/minimaps/" + map->getFilename() + ".png";
         ResourceManager *resman = ResourceManager::getInstance();
@@ -96,34 +122,15 @@ void Minimap::setMap(Map *map)
 
     if (mMapImage)
     {
-        const int offsetX = 2 * getPadding();
-        const int offsetY = getTitleBarHeight() + getPadding();
-        const int titleWidth = getFont()->getWidth(getCaption()) + 15;
-        const int mapWidth = mMapImage->getWidth() < 100 ?
-                             mMapImage->getWidth() + offsetX : 100;
-        const int mapHeight = mMapImage->getHeight() < 100 ?
-                              mMapImage->getHeight() + offsetY : 100;
-
-        setMinWidth(mapWidth > titleWidth ? mapWidth : titleWidth);
-        setMinHeight(mapHeight);
-
         mWidthProportion = (float) mMapImage->getWidth() / map->getWidth();
         mHeightProportion = (float) mMapImage->getHeight() / map->getHeight();
-
-        setMaxWidth(mMapImage->getWidth() > titleWidth ?
-                    mMapImage->getWidth() + offsetX : titleWidth);
-        setMaxHeight(mMapImage->getHeight() + offsetY);
-
-        setDefaultSize(getX(), getY(), getWidth(), getHeight());
-        resetToDefaultSize();
 
         if (config.showMinimap)
             setVisible(true);
     }
-    else
+    else if (!isSticky())
     {
-        if (!isSticky())
-            setVisible(false);
+        setVisible(false);
     }
 }
 
@@ -133,10 +140,48 @@ void Minimap::toggle()
     config.showMinimap = isVisible();
 }
 
-void Minimap::draw(gcn::Graphics *graphics)
+void Minimap::mousePressed(gcn::MouseEvent &event)
 {
-    Window::draw(graphics);
+    Window::mousePressed(event);
 
+    if (event.getButton() == gcn::MouseEvent::LEFT)
+    {
+        mPanning = !event.isConsumed() && !mouseResize && !mMoved && mMapImage &&
+                   getChildrenArea().isPointInRect(event.getX(), event.getY());
+        if (mPanning)
+        {
+            mPanMouseX = event.getX();
+            mPanMouseY = event.getY();
+            event.consume();
+        }
+    }
+}
+
+void Minimap::mouseDragged(gcn::MouseEvent &event)
+{
+    if (!mPanning || event.getButton() != gcn::MouseEvent::LEFT)
+    {
+        Window::mouseDragged(event);
+        return;
+    }
+
+    mPanOffsetX += event.getX() - mPanMouseX;
+    mPanOffsetY += event.getY() - mPanMouseY;
+    mPanMouseX = event.getX();
+    mPanMouseY = event.getY();
+    event.consume();
+}
+
+void Minimap::mouseReleased(gcn::MouseEvent &event)
+{
+    if (event.getButton() == gcn::MouseEvent::LEFT)
+        mPanning = false;
+
+    Window::mouseReleased(event);
+}
+
+void Minimap::drawContent(gcn::Graphics *graphics)
+{
     if (!mMap)
         return;
 
@@ -155,19 +200,26 @@ void Minimap::draw(gcn::Graphics *graphics)
     if (mMapImage)
     {
         const Vector &p = local_player->getPosition();
-        const int minOriginX = a.width - mMapImage->getWidth();
-        const int minOriginY = a.height - mMapImage->getHeight();
+        const int playerX = (int) (p.x * mWidthProportion) / tileWidth;
+        const int playerY = (int) (p.y * mHeightProportion) / tileHeight;
 
-        if (minOriginX < 0)
+        if (mResetView)
         {
-            mapOriginX = (a.width / 2) - (int) (p.x * mWidthProportion) / tileWidth;
-            mapOriginX = std::clamp(mapOriginX, minOriginX, 0);
+            mLastPlayerX = playerX;
+            mLastPlayerY = playerY;
+            mResetView = false;
         }
-        if (minOriginY < 0)
-        {
-            mapOriginY = (a.height / 2) - (int) (p.y * mHeightProportion) / tileHeight;
-            mapOriginY = std::clamp(mapOriginY, minOriginY, 0);
-        }
+
+        // Pan along with the player when the minimap does not fit the
+        // window, and center it otherwise
+        mapOriginX = updateMapOrigin(playerX, playerX - mLastPlayerX,
+                                     a.width, mMapImage->getWidth(),
+                                     mPanOffsetX, mPanning);
+        mapOriginY = updateMapOrigin(playerY, playerY - mLastPlayerY,
+                                     a.height, mMapImage->getHeight(),
+                                     mPanOffsetY, mPanning);
+        mLastPlayerX = playerX;
+        mLastPlayerY = playerY;
 
         g->drawImage(mMapImage, mapOriginX, mapOriginY);
     }

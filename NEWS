@@ -1,17 +1,18 @@
 Unreleased
 - Show the name and amount of floor items on mouse hover
+- Made the Mini-Map window resizable and added panning
+- Improved font rendering quality
+- Added support for the S and A dye channels, which replace exact colors in images
 - Added support for the sellProtected item attribute, which asks for confirmation before selling
-- Sell unstackable items to an NPC in a single request, instead of one per item
+- Added a start-delay property to particle emitters, controlling the pause before the first spawn
+- Particle effects are now loaded once and cached instead of being parsed from XML on every spawn
 - Fixed double-click in empty area of the server list triggering connect
 - Fixed sitting players staying seated when attacked
 - Fixed typed amounts being ignored when dropping, trading or storing items and in NPC number input
-- Particle effects are now loaded once and cached instead of being parsed from XML on every spawn
 - Fixed particle density of map particle effects that are resized to fit an object
-- Added a start-delay property to particle emitters, controlling the pause before the first spawn
 - Fixed mouse cursor rendering issue on Linux/X11
-- Added support for the S and A dye channels, which replace exact colors in images
 - Fixed default height of the Social window
-- Improved font rendering quality
+- TMWA: Sell unstackable items to an NPC in a single request, instead of one per item
 
 0.8.0 (27 August 2026)
 - Added health bars to damaged and targeted monsters
