@@ -41,6 +41,8 @@ class Dye;
 /**
  * Defines a class for loading and storing images.
  */
+class SubImage;
+
 class Image : public Resource
 {
     friend class SDLGraphics;
@@ -122,7 +124,7 @@ class Image : public Resource
          * @return <code>NULL</code> if creation failed and a valid
          *         object otherwise.
          */
-        Image *getSubImage(int x, int y, int width, int height);
+        SubImage *getSubImage(int x, int y, int width, int height);
 
         // SDL only public functions
 

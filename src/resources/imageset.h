@@ -21,7 +21,7 @@
 
 #pragma once
 
-#include "resources/resource.h"
+#include "resources/image.h"
 
 #include <vector>
 
@@ -53,7 +53,7 @@ class ImageSet : public Resource
          */
         int getHeight() const { return mHeight; }
 
-        Image *get(size_t i) const;
+        SubImage *get(size_t i) const;
 
         size_t size() const { return mImages.size(); }
 
@@ -70,7 +70,7 @@ class ImageSet : public Resource
         { mOffsetY = n; }
 
     private:
-        std::vector<Image*> mImages;
+        std::vector<SubImage*> mImages;
 
         int mWidth;  /**< Width of the images in the image set. */
         int mHeight; /**< Height of the images in the image set. */

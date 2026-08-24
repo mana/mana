@@ -329,7 +329,7 @@ int Image::powerOfTwo(int input)
 }
 #endif
 
-Image *Image::getSubImage(int x, int y, int width, int height)
+SubImage *Image::getSubImage(int x, int y, int width, int height)
 {
     // Create a new clipped sub-image
 #ifdef USE_OPENGL

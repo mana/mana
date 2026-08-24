@@ -21,9 +21,12 @@
 
 #pragma once
 
+#include <cstddef>
 #include <cstdint>
 #include <ctime>
 #include <string>
+
+class SubImage;
 
 template<typename T> class ResourceRef;
 
@@ -81,6 +84,16 @@ public:
         if (mResource)
             mResource->incRef();
     }
+
+    ResourceRef(std::nullptr_t)
+        : mResource(nullptr)
+    {}
+
+    /**
+     * Sub-images are not managed by the ResourceManager and should not
+     * be reference counted by the ResourceRef.
+     */
+    ResourceRef(SubImage *) = delete;
 
     // Copy constructor
     ResourceRef(const ResourceRef &other)
@@ -144,19 +157,6 @@ public:
     // Allow implicit conversion to RESOURCE *
     operator RESOURCE *() const
     { return mResource; }
-
-    /**
-     * Releases the resource without decrementing the reference count!
-     *
-     * This is currently necessary to avoid calls to decRef on instances of
-     * SubImage, which are not reference counted resources.
-     */
-    RESOURCE *release()
-    {
-        RESOURCE *resource = mResource;
-        mResource = nullptr;
-        return resource;
-    }
 
 private:
     RESOURCE *mResource;
