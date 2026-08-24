@@ -21,22 +21,21 @@
 
 #pragma once
 
-#include "gui/widgets/linkhandler.h"
-#include "gui/widgets/popup.h"
+#include "gui/widgets/menu.h"
 
 class Being;
-class BrowserBox;
 class FloorItem;
 class Item;
 class Window;
 
 /**
- * Window showing popup menu.
+ * The context menu shown when right-clicking a being, a floor item or an
+ * item in the inventory or storage.
  */
-class PopupMenu : public Popup, public LinkHandler
+class PopupMenu : public Menu
 {
     public:
-        PopupMenu();
+        PopupMenu() : Menu("PopupMenu") {}
 
         /**
          * Shows the being related popup menu at the specified mouse coords.
@@ -55,23 +54,4 @@ class PopupMenu : public Popup, public LinkHandler
          */
         void showPopup(Window *parent, int x, int y, Item *item,
                        bool isInventory, bool canDrop = true);
-
-        /**
-         * Handles link action.
-         */
-        void handleLink(const std::string &link) override;
-
-    private:
-        BrowserBox *mBrowserBox;
-
-        int mBeingId = 0;
-        FloorItem *mFloorItem = nullptr;
-        Item *mItem = nullptr;
-
-        Window *mWindow;
-
-        /**
-         * Shared code for the various showPopup functions.
-         */
-        void showPopup(int x, int y);
 };

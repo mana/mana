@@ -90,6 +90,8 @@ enum class SkinType
     ScrollAreaVMarker,
     DropDownFrame,
     DropDownButton,
+    MenuItem,
+    MenuSeparator,
     ProgressBar,
     Slider,
     SliderHandle,

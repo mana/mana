@@ -549,6 +549,8 @@ static std::optional<SkinType> readSkinType(std::string_view type)
     if (type == "ScrollAreaVMarker")    return SkinType::ScrollAreaVMarker;
     if (type == "DropDownFrame")        return SkinType::DropDownFrame;
     if (type == "DropDownButton")       return SkinType::DropDownButton;
+    if (type == "MenuItem")             return SkinType::MenuItem;
+    if (type == "MenuSeparator")        return SkinType::MenuSeparator;
     if (type == "ProgressBar")          return SkinType::ProgressBar;
     if (type == "Slider")               return SkinType::Slider;
     if (type == "SliderHandle")         return SkinType::SliderHandle;

@@ -543,7 +543,7 @@ void Viewport::showPopup(Window *parent, int x, int y, Item *item,
 
 void Viewport::closePopupMenu()
 {
-    mPopupMenu->handleLink("cancel");
+    mPopupMenu->close();
 }
 
 void Viewport::mouseMoved(gcn::MouseEvent &event)

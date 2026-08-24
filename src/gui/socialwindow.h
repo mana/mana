@@ -34,8 +34,8 @@
 class Avatar;
 class Button;
 class ConfirmDialog;
-class CreatePopup;
 class Guild;
+class Menu;
 class Party;
 class PlayerListTab;
 class SocialTab;
@@ -99,7 +99,7 @@ protected:
     std::map<Guild *, SocialTab *> mGuilds;
     std::map<Party *, SocialTab *> mParties;
 
-    CreatePopup *mCreatePopup;
+    Menu *mCreatePopup;
 
     PlayerListTab *mPlayerListTab;
 

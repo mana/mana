@@ -196,6 +196,22 @@
     </state>
   </skin>
 
+  <skin type="MenuItem" padding="2">
+    <state hovered="true">
+      <rect color="#c0c0c0" />
+      <text color="#000000" />
+    </state>
+    <state>
+      <text color="#000000" />
+    </state>
+  </skin>
+
+  <skin type="MenuSeparator" height="1" padding="2">
+    <state>
+      <rect color="#a0a0a0" />
+    </state>
+  </skin>
+
   <skin type="ScrollAreaVBar">
     <state>
       <rect color="#000000" alpha="32" />

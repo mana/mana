@@ -24,10 +24,8 @@
 #include "actorspritemanager.h"
 #include "being.h"
 #include "flooritem.h"
-#include "graphics.h"
 #include "item.h"
 #include "localplayer.h"
-#include "log.h"
 #include "playerinfo.h"
 #include "playerrelations.h"
 
@@ -36,15 +34,11 @@
 #include "gui/inventorywindow.h"
 #include "gui/itemamountwindow.h"
 
-#include "gui/widgets/browserbox.h"
-
 #include "net/adminhandler.h"
-#include "net/inventoryhandler.h"
 #include "net/net.h"
 #include "net/partyhandler.h"
 #include "net/tradehandler.h"
 
-#include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
 #include "utils/gettext.h"
@@ -54,341 +48,249 @@
 
 std::string tradePartnerName;
 
-PopupMenu::PopupMenu():
-    Popup("PopupMenu")
+/**
+ * Wraps an action on a being into one that looks the being up again when it
+ * is triggered, so that it is skipped when the being is gone by then.
+ */
+static Menu::Action onBeing(int beingId, std::function<void (Being *)> action)
 {
-    mBrowserBox = new BrowserBox;
-    mBrowserBox->setHighlightMode(BrowserBox::BACKGROUND);
-    mBrowserBox->setLinkHandler(this);
-    add(mBrowserBox);
+    return [beingId, action = std::move(action)] {
+        if (Being *being = actorSpriteManager->findBeing(beingId))
+            action(being);
+    };
+}
+
+/**
+ * Wraps an action on a floor item, see onBeing.
+ */
+static Menu::Action onFloorItem(int itemId, std::function<void (FloorItem *)> action)
+{
+    return [itemId, action = std::move(action)] {
+        if (FloorItem *floorItem = actorSpriteManager->findItem(itemId))
+            action(floorItem);
+    };
 }
 
 void PopupMenu::showPopup(int x, int y, Being *being)
 {
-    mBeingId = being->getId();
-    mBrowserBox->clearRows();
+    clear();
 
+    const int beingId = being->getId();
     const std::string &name = being->getName();
 
     switch (being->getType())
     {
         case ActorSprite::PLAYER:
+        {
+            // Players can be traded with.
+            addItem(strprintf(_("Trade with %s..."), name.c_str()),
+                    onBeing(beingId, [](Being *being) {
+                        Net::getTradeHandler()->request(being);
+                        tradePartnerName = being->getName();
+                    }));
+            // TRANSLATORS: Attacking a player.
+            addItem(strprintf(_("Attack %s"), name.c_str()),
+                    onBeing(beingId, [](Being *being) {
+                        local_player->attack(being, true);
+                    }));
+            // TRANSLATORS: Whispering a player.
+            addItem(strprintf(_("Whisper %s"), name.c_str()),
+                    onBeing(beingId, [](Being *being) {
+                        chatWindow->addInputText("/w \"" + being->getName() + "\" ");
+                    }));
+
+            addSeparator();
+
+            auto setRelation = [beingId](PlayerRelation relation) {
+                return onBeing(beingId, [relation](Being *being) {
+                    player_relations.setRelation(being->getName(), relation);
+                });
+            };
+
+            switch (player_relations.getRelation(name))
             {
-                // Players can be traded with.
-                mBrowserBox->addRow(strprintf("@@trade|%s@@",
-                                                strprintf(_("Trade with %s..."),
-                                                    name.c_str()).c_str()));
-                // TRANSLATORS: Attacking a player.
-                mBrowserBox->addRow(strprintf("@@attack|%s@@",
-                                                strprintf(_("Attack %s"),
-                                                    name.c_str()).c_str()));
-                // TRANSLATORS: Whispering a player.
-                mBrowserBox->addRow(strprintf("@@whisper|%s@@",
-                                                strprintf(_("Whisper %s"),
-                                                    name.c_str()).c_str()));
+                case PlayerRelation::Neutral:
+                    addItem(strprintf(_("Befriend %s"), name.c_str()),
+                            setRelation(PlayerRelation::Friend));
+                    [[fallthrough]];
 
-                mBrowserBox->addRow("##3---");
+                case PlayerRelation::Friend:
+                    addItem(strprintf(_("Disregard %s"), name.c_str()),
+                            setRelation(PlayerRelation::Disregarded));
+                    addItem(strprintf(_("Ignore %s"), name.c_str()),
+                            setRelation(PlayerRelation::Ignored));
+                    break;
 
-                switch (player_relations.getRelation(name))
-                {
-                    case PlayerRelation::Neutral:
-                        mBrowserBox->addRow(strprintf("@@friend|%s@@",
-                                                strprintf(_("Befriend %s"),
-                                                    name.c_str()).c_str()));
+                case PlayerRelation::Disregarded:
+                    addItem(strprintf(_("Unignore %s"), name.c_str()),
+                            setRelation(PlayerRelation::Neutral));
+                    addItem(strprintf(_("Completely ignore %s"), name.c_str()),
+                            setRelation(PlayerRelation::Ignored));
+                    break;
 
-                    case PlayerRelation::Friend:
-                        mBrowserBox->addRow(strprintf("@@disregard|%s@@",
-                                                strprintf(_("Disregard %s"),
-                                                    name.c_str()).c_str()));
-                        mBrowserBox->addRow(strprintf("@@ignore|%s@@",
-                                                strprintf(_("Ignore %s"),
-                                                    name.c_str()).c_str()));
-                        break;
+                case PlayerRelation::Ignored:
+                    addItem(strprintf(_("Unignore %s"), name.c_str()),
+                            setRelation(PlayerRelation::Neutral));
+                    break;
+            }
 
-                    case PlayerRelation::Disregarded:
-                        mBrowserBox->addRow(strprintf("@@unignore|%s@@",
-                                                strprintf(_("Unignore %s"),
-                                                    name.c_str()).c_str()));
-                        mBrowserBox->addRow(strprintf("@@ignore|%s@@",
-                                           strprintf(_("Completely ignore %s"),
-                                                    name.c_str()).c_str()));
-                        break;
+            if (local_player->getNumberOfGuilds())
+            {
+                addItem(strprintf(_("Invite %s to join your guild"), name.c_str()),
+                        onBeing(beingId, [](Being *being) {
+                            local_player->inviteToGuild(being);
+                        }));
+            }
+            if (local_player->isInParty() ||
+                Net::getNetworkType() == ServerType::ManaServ)
+            {
+                addItem(strprintf(_("Invite %s to join your party"), name.c_str()),
+                        onBeing(beingId, [](Being *being) {
+                            Net::getPartyHandler()->invite(being);
+                        }));
+            }
 
-                    case PlayerRelation::Ignored:
-                        mBrowserBox->addRow(strprintf("@@unignore|%s@@",
-                                                strprintf(_("Unignore %s"),
-                                                    name.c_str()).c_str()));
-                        break;
-                }
-
-                if (local_player->getNumberOfGuilds())
-                    mBrowserBox->addRow(strprintf("@@guild|%s@@",
-                                strprintf(_("Invite %s to join your guild"),
-                                                    name.c_str()).c_str()));
-                if (local_player->isInParty() ||
-                    Net::getNetworkType() == ServerType::ManaServ)
-                {
-                    mBrowserBox->addRow(strprintf("@@party|%s@@",
-                                strprintf(_("Invite %s to join your party"),
-                                                    name.c_str()).c_str()));
-                }
-
-                if (local_player->isGM())
-                {
-                    mBrowserBox->addRow("##3---");
-                    mBrowserBox->addRow(strprintf("@@admin-kick|%s@@",
-                                                  _("Kick player")));
-                }
+            if (local_player->isGM())
+            {
+                addSeparator();
+                addItem(_("Kick player"),
+                        onBeing(beingId, [](Being *being) {
+                            Net::getAdminHandler()->kick(being->getName());
+                        }));
             }
             break;
+        }
 
         case ActorSprite::NPC:
             // NPCs can be talked to (single option, candidate for removal
             // unless more options would be added)
-            mBrowserBox->addRow(strprintf("@@talk|%s@@",
-                                              strprintf(_("Talk to %s"),
-                                                    name.c_str()).c_str()));
+            addItem(strprintf(_("Talk to %s"), name.c_str()),
+                    onBeing(beingId, [](Being *being) {
+                        if (being->canTalk())
+                            being->talkTo();
+                    }));
             break;
 
         case ActorSprite::MONSTER:
-            {
-                // Monsters can be attacked
-                mBrowserBox->addRow(strprintf("@@attack|%s@@",
-                                              strprintf(_("Attack %s"),
-                                                    name.c_str()).c_str()));
-
-                if (local_player->isGM())
-                    mBrowserBox->addRow(strprintf("@@admin-kick|%s@@",
-                                                  _("Kick monster")));
-            }
+            // Monsters can be attacked
+            addItem(strprintf(_("Attack %s"), name.c_str()),
+                    onBeing(beingId, [](Being *being) {
+                        local_player->attack(being, true);
+                    }));
             break;
 
         default:
             /* Other beings aren't interesting... */
             return;
     }
-    mBrowserBox->addRow(strprintf("@@name|%s@@", _("Add name to chat")));
 
-    //mBrowserBox->addRow(strprintf("@@look|%s@@", _("Look To")));
-    mBrowserBox->addRow("##3---");
-    mBrowserBox->addRow(strprintf("@@cancel|%s@@", _("Cancel")));
+    addItem(_("Add name to chat"),
+            onBeing(beingId, [](Being *being) {
+                chatWindow->addInputText(being->getName());
+            }));
 
-    showPopup(x, y);
+    addSeparator();
+    addItem(_("Cancel"));
+
+    showAt(x, y);
 }
 
 void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
 {
-    mFloorItem = floorItem;
-    mBrowserBox->clearRows();
+    clear();
+
+    const int itemId = floorItem->getId();
+    const std::string &name = floorItem->getInfo().name;
 
     // Floor item can be picked up (single option, candidate for removal)
-    const std::string &name = floorItem->getInfo().name;
-    mBrowserBox->addRow(strprintf("@@pickup|%s@@", strprintf(_("Pick up %s"),
-                                                    name.c_str()).c_str()));
-    mBrowserBox->addRow(strprintf("@@chat|%s@@", _("Add to chat")));
+    addItem(strprintf(_("Pick up %s"), name.c_str()),
+            onFloorItem(itemId, [](FloorItem *floorItem) {
+                local_player->pickUp(floorItem);
+            }));
+    addItem(_("Add to chat"),
+            onFloorItem(itemId, [](FloorItem *floorItem) {
+                chatWindow->addItemText(floorItem->getInfo().name);
+            }));
 
-    //mBrowserBox->addRow(strprintf("@@look|%s@@", _("Look To")));
-    mBrowserBox->addRow("##3---");
-    mBrowserBox->addRow(strprintf("@@cancel|%s@@", _("Cancel")));
+    addSeparator();
+    addItem(_("Cancel"));
 
-    showPopup(x, y);
-}
-
-void PopupMenu::handleLink(const std::string &link)
-{
-    Being *being = actorSpriteManager->findBeing(mBeingId);
-
-    // Talk To action
-    if (link == "talk" && being && being->canTalk())
-    {
-        being->talkTo();
-    }
-
-    // Trade action
-    else if (link == "trade" && being &&
-             being->getType() == ActorSprite::PLAYER)
-    {
-        Net::getTradeHandler()->request(being);
-        tradePartnerName = being->getName();
-    }
-    // Attack action
-    else if (link == "attack" && being)
-    {
-        local_player->attack(being, true);
-    }
-    else if (link == "whisper" && being)
-    {
-        chatWindow->addInputText("/w \"" + being->getName() + "\" ");
-    }
-    else if (link == "unignore" && being &&
-             being->getType() == ActorSprite::PLAYER)
-    {
-        player_relations.setRelation(being->getName(), PlayerRelation::Neutral);
-    }
-
-    else if (link == "ignore" && being &&
-             being->getType() == ActorSprite::PLAYER)
-    {
-        player_relations.setRelation(being->getName(), PlayerRelation::Ignored);
-    }
-
-    else if (link == "disregard" && being &&
-             being->getType() == ActorSprite::PLAYER)
-    {
-        player_relations.setRelation(being->getName(), PlayerRelation::Disregarded);
-    }
-
-    else if (link == "friend" && being &&
-             being->getType() == ActorSprite::PLAYER)
-    {
-        player_relations.setRelation(being->getName(), PlayerRelation::Friend);
-    }
-    // Guild action
-    else if (link == "guild" && being &&
-             being->getType() == ActorSprite::PLAYER)
-    {
-        local_player->inviteToGuild(being);
-    }
-    // Pick Up Floor Item action
-    else if ((link == "pickup") && mFloorItem)
-    {
-        local_player->pickUp(mFloorItem);
-    }
-    // Look To action
-    else if (link == "look")
-    {
-    }
-    else if (link == "activate" || link == "equip" || link == "unequip")
-    {
-        assert(mItem);
-        if (mItem->isEquippable())
-        {
-            if (mItem->isEquipped())
-            {
-                PlayerInfo::getEquipment()->triggerUnequip(
-                                                equipmentWindow->getSelected());
-            }
-            else
-            {
-                mItem->doEvent(Event::DoEquip);
-            }
-        }
-        else
-        {
-            mItem->doEvent(Event::DoUse);
-        }
-    }
-    else if (link == "chat")
-    {
-        if (mItem)
-            chatWindow->addItemText(mItem->getInfo().name);
-        else if (mFloorItem)
-            chatWindow->addItemText(mFloorItem->getInfo().name);
-    }
-    else if (link == "drop")
-    {
-        ItemAmountWindow::showWindow(ItemAmountWindow::ItemDrop,
-                             inventoryWindow, mItem);
-    }
-    else if (link == "store")
-    {
-        ItemAmountWindow::showWindow(ItemAmountWindow::StoreAdd,
-                             inventoryWindow, mItem);
-    }
-    else if (link == "retrieve")
-    {
-        ItemAmountWindow::showWindow(ItemAmountWindow::StoreRemove, mWindow,
-                                     mItem);
-    }
-    else if (link == "party" && being &&
-             being->getType() == ActorSprite::PLAYER)
-    {
-        Net::getPartyHandler()->invite(being);
-    }
-    else if (link == "name" && being)
-    {
-        const std::string &name = being->getName();
-        chatWindow->addInputText(name);
-    }
-    else if (link == "admin-kick" && being &&
-             being->getType() == ActorSprite::PLAYER)
-    {
-        Net::getAdminHandler()->kick(being->getName());
-    }
-    // Unknown actions
-    else if (link != "cancel")
-    {
-        Log::info("PopupMenu: Warning, unknown action '%s'", link.c_str());
-    }
-
-    setVisible(false);
-
-    mBeingId = 0;
-    mFloorItem = nullptr;
-    mItem = nullptr;
+    showAt(x, y);
 }
 
 void PopupMenu::showPopup(Window *parent, int x, int y, Item *item,
                           bool isInventory, bool canDrop)
 {
     assert(item);
-    mItem = item;
-    mWindow = parent;
-    mBrowserBox->clearRows();
+    clear();
 
     if (isInventory)
     {
         if (PlayerInfo::getStorageCount() > 0)
         {
-            mBrowserBox->addRow(strprintf("@@store|%s@@", _("Store")));
+            addItem(_("Store"), [item] {
+                ItemAmountWindow::showWindow(ItemAmountWindow::StoreAdd,
+                                             inventoryWindow, item);
+            });
         }
 
         auto &itemInfo = item->getInfo();
 
-        if (itemInfo.equippable)
-        {
-            if (item->isEquipped())
-                mBrowserBox->addRow(strprintf("@@unequip|%s@@", _("Unequip")));
+        // Equipping, unequipping and activating all end up here, since
+        // whether an item is used or (un)equipped depends on the item.
+        auto useItem = [item] {
+            if (item->isEquippable())
+            {
+                if (item->isEquipped())
+                {
+                    PlayerInfo::getEquipment()->triggerUnequip(
+                                                equipmentWindow->getSelected());
+                }
+                else
+                {
+                    item->doEvent(Event::DoEquip);
+                }
+            }
             else
-                mBrowserBox->addRow(strprintf("@@equip|%s@@", _("Equip")));
-        }
+            {
+                item->doEvent(Event::DoUse);
+            }
+        };
+
+        if (itemInfo.equippable)
+            addItem(item->isEquipped() ? _("Unequip") : _("Equip"), useItem);
+
         if (itemInfo.activatable)
         {
-            mBrowserBox->addRow(strprintf(
-                "@@activate|%s@@",
-                itemInfo.useText.empty() ? _("Activate")
-                                         : gettext(itemInfo.useText.c_str())));
+            addItem(itemInfo.useText.empty()
+                        ? _("Activate")
+                        : gettext(itemInfo.useText.c_str()), useItem);
         }
 
         if (canDrop)
         {
-            if (item->getQuantity() > 1)
-                mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop...")));
-            else
-                mBrowserBox->addRow(strprintf("@@drop|%s@@", _("Drop")));
+            addItem(item->getQuantity() > 1 ? _("Drop...") : _("Drop"), [item] {
+                ItemAmountWindow::showWindow(ItemAmountWindow::ItemDrop,
+                                             inventoryWindow, item);
+            });
         }
     }
     // Assume in storage for now
     // TODO: make this whole system more flexible, if needed
     else
     {
-        mBrowserBox->addRow(strprintf("@@retrieve|%s@@", _("Retrieve")));
+        addItem(_("Retrieve"), [parent, item] {
+            ItemAmountWindow::showWindow(ItemAmountWindow::StoreRemove,
+                                         parent, item);
+        });
     }
-    mBrowserBox->addRow(strprintf("@@chat|%s@@", _("Add to chat")));
-    mBrowserBox->addRow("##3---");
-    mBrowserBox->addRow(strprintf("@@cancel|%s@@", _("Cancel")));
 
-    showPopup(x, y);
-}
+    addItem(_("Add to chat"), [item] {
+        chatWindow->addItemText(item->getInfo().name);
+    });
 
-void PopupMenu::showPopup(int x, int y)
-{
-    setContentSize(mBrowserBox->getWidth(), mBrowserBox->getHeight());
-    if (graphics->getWidth() < (x + getWidth() + 5))
-        x = graphics->getWidth() - getWidth();
-    if (graphics->getHeight() < (y + getHeight() + 5))
-        y = graphics->getHeight() - getHeight();
-    setPosition(x, y);
-    setVisible(true);
-    requestMoveToTop();
+    addSeparator();
+    addItem(_("Cancel"));
+
+    showAt(x, y);
 }

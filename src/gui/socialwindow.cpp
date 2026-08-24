@@ -32,11 +32,9 @@
 #include "gui/textdialog.h"
 
 #include "gui/widgets/avatarlistbox.h"
-#include "gui/widgets/browserbox.h"
 #include "gui/widgets/button.h"
 #include "gui/widgets/layout.h"
-#include "gui/widgets/linkhandler.h"
-#include "gui/widgets/popup.h"
+#include "gui/widgets/menu.h"
 #include "gui/widgets/scrollarea.h"
 #include "gui/widgets/tab.h"
 #include "gui/widgets/tabbedarea.h"
@@ -302,56 +300,6 @@ private:
     // TODO?
 };*/
 
-class CreatePopup : public Popup, public LinkHandler
-{
-public:
-    CreatePopup():
-        Popup("SocialCreatePopup")
-    {
-        mBrowserBox = new BrowserBox;
-        mBrowserBox->setHighlightMode(BrowserBox::BACKGROUND);
-        mBrowserBox->setLinkHandler(this);
-
-        if (Net::getGuildHandler()->isSupported())
-            mBrowserBox->addRow(strprintf("@@guild|%s@@", _("Create Guild")));
-        mBrowserBox->addRow(strprintf("@@party|%s@@", _("Create Party")));
-        mBrowserBox->addRow("##3---");
-        mBrowserBox->addRow(strprintf("@@cancel|%s@@", _("Cancel")));
-
-        add(mBrowserBox);
-
-        setContentSize(mBrowserBox->getWidth(),
-                       mBrowserBox->getHeight());
-    }
-
-    void handleLink(const std::string &link) override
-    {
-        if (link == "guild")
-        {
-            socialWindow->showGuildCreate();
-        }
-        else if (link == "party")
-        {
-            socialWindow->showPartyCreate();
-        }
-
-        setVisible(false);
-    }
-
-    void show(gcn::Widget *parent)
-    {
-        int x, y;
-        parent->getAbsolutePosition(x, y);
-        y += parent->getHeight();
-        setPosition(x, y);
-        setVisible(true);
-        requestMoveToTop();
-    }
-
-private:
-    BrowserBox* mBrowserBox;
-};
-
 SocialWindow::SocialWindow() :
     Window(_("Social"))
 {
@@ -381,7 +329,7 @@ SocialWindow::SocialWindow() :
     setDefaultSize(590, 200, 150, 124);
     loadWindowState();
 
-    mCreatePopup = new CreatePopup;
+    mCreatePopup = new Menu("SocialCreatePopup");
 
     mPlayerListTab = new PlayerListTab;
     mPlayerListTab->setCaption(strprintf(_("Online (%u)"), 0u));
@@ -521,9 +469,20 @@ void SocialWindow::action(const gcn::ActionEvent &event)
     else if (event.getId() == "create")
     {
         if (Net::getGuildHandler()->isSupported())
-            mCreatePopup->show(mCreateButton);
+        {
+            mCreatePopup->clear();
+            mCreatePopup->addItem(_("Create Guild"),
+                                  [this] { showGuildCreate(); });
+            mCreatePopup->addItem(_("Create Party"),
+                                  [this] { showPartyCreate(); });
+            mCreatePopup->addSeparator();
+            mCreatePopup->addItem(_("Cancel"));
+            mCreatePopup->showBelow(mCreateButton);
+        }
         else
+        {
             showPartyCreate();
+        }
     }
     else if (event.getId() == "invite" && mTabs->getSelectedTabIndex() > -1)
     {
