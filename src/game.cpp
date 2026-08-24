@@ -389,7 +389,7 @@ static void handleItemPickUp()
     int y = local_player->getTileY();
 
     // Let's look for items around until you find one.
-    FloorItem *item = actorSpriteManager->findItem(x, y, 1);
+    FloorItem *item = actorSpriteManager->findItem(x, y, config.pickupRange);
     if (!item)
         return;
 

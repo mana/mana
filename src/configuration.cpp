@@ -222,6 +222,7 @@ void serdeOptions(T option)
     option("showownname",                   &Config::showOwnName);
     option("showpickupparticle",            &Config::showPickupParticle);
     option("showpickupchat",                &Config::showPickupChat);
+    option("pickupRange",                   &Config::pickupRange);
     option("showMinimap",                   &Config::showMinimap);
     option("fontSize",                      &Config::fontSize);
     option("ReturnToggles",                 &Config::returnTogglesChat);

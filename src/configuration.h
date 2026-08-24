@@ -129,6 +129,7 @@ struct Config
     bool showOwnName = false;
     bool showPickupParticle = true;
     bool showPickupChat = true;
+    int pickupRange = 1;
     bool showMinimap = true;
     int fontSize = 12;
     bool returnTogglesChat = false;

@@ -10,6 +10,7 @@ Unreleased
 - Added support for a minimum player level requirement on quest effects
 - Added support for diagonal sprite directions (falling back to up/down when absent)
 - Added Alt+Enter to toggle fullscreen
+- Added a configurable pickup range (Setup > Interface)
 - Made --data option skip downloading and verifying updates (the news is still shown)
 - Added "Equip" button to the Outfit window
 - New window button icons by meway, used in Jewelry and Golden Delicious themes

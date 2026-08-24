@@ -34,6 +34,7 @@
 #include "resources/theme.h"
 
 #include "utils/gettext.h"
+#include "utils/stringutils.h"
 
 #include <guichan/key.hpp>
 #include <guichan/listmodel.hpp>
@@ -106,6 +107,11 @@ static const char *speechModeToString(Being::Speech mode)
     return "";
 }
 
+static std::string pickupRangeToString(int range)
+{
+    return strprintf(ngettext("%d tile", "%d tiles", range), range);
+}
+
 Setup_Interface::Setup_Interface():
     mShowMonsterDamageEnabled(config.showMonstersTakedDamage),
     mVisibleNamesEnabled(config.visibleNames),
@@ -113,6 +119,7 @@ Setup_Interface::Setup_Interface():
     mNPCLogEnabled(config.logNpcInGui),
     mPickupChatEnabled(config.showPickupChat),
     mPickupParticleEnabled(config.showPickupParticle),
+    mPickupRange(config.pickupRange),
     mOpacity(config.guiAlpha),
     mSpeechMode(config.speech),
     mVisibleNamesCheckBox(new CheckBox(_("Visible names"),
@@ -125,6 +132,8 @@ Setup_Interface::Setup_Interface():
     // TRANSLATORS: Refers to "Show pickup notification"
     mPickupParticleCheckBox(new CheckBox(_("as particle"),
                                          mPickupParticleEnabled)),
+    mPickupRangeSlider(new Slider(1, 10)),
+    mPickupRangeValueLabel(new Label(std::string())),
     mSpeechSlider(new Slider(0, 3)),
     mSpeechLabel(new Label(std::string())),
     mAlphaSlider(new Slider(0.2, 1.0))
@@ -137,6 +146,7 @@ Setup_Interface::Setup_Interface():
     mShowMonsterDamageCheckBox = new CheckBox(_("Show damage"),
                                               mShowMonsterDamageEnabled);
 
+    gcn::Label *pickupRangeLabel = new Label(_("Pickup range:"));
     gcn::Label *speechLabel = new Label(_("Overhead text:"));
     gcn::Label *alphaLabel = new Label(_("GUI opacity"));
     gcn::Label *themeLabel = new Label(_("Theme:"));
@@ -157,6 +167,7 @@ Setup_Interface::Setup_Interface():
     mVisibleNamesCheckBox->setActionEventId("visiblenames");
     mPickupChatCheckBox->setActionEventId("pickupchat");
     mPickupParticleCheckBox->setActionEventId("pickupparticle");
+    mPickupRangeSlider->setActionEventId("pickuprange");
     mNameCheckBox->setActionEventId("showownname");
     mNPCLogCheckBox->setActionEventId("lognpc");
     mThemeDropDown->setActionEventId("theme");
@@ -168,11 +179,15 @@ Setup_Interface::Setup_Interface():
     mVisibleNamesCheckBox->addActionListener(this);
     mPickupChatCheckBox->addActionListener(this);
     mPickupParticleCheckBox->addActionListener(this);
+    mPickupRangeSlider->addActionListener(this);
     mNameCheckBox->addActionListener(this);
     mNPCLogCheckBox->addActionListener(this);
     mThemeDropDown->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mSpeechSlider->addActionListener(this);
+
+    mPickupRangeValueLabel->setCaption(pickupRangeToString(mPickupRange));
+    mPickupRangeSlider->setValue(mPickupRange);
 
     mSpeechLabel->setCaption(speechModeToString(mSpeechMode));
     mSpeechSlider->setValue(mSpeechMode);
@@ -196,22 +211,26 @@ Setup_Interface::Setup_Interface():
     place(0, 4, mPickupChatCheckBox, 3);
     place(3, 4, mPickupParticleCheckBox, 3);
 
-    place(0, 5, space, 1, 1);
+    place(0, 5, mPickupRangeSlider, 2);
+    place(2, 5, pickupRangeLabel, 2);
+    place(4, 5, mPickupRangeValueLabel, 2).setPadding(2);
 
-    place(0, 6, themeLabel, 2);
-    place(2, 6, mThemeDropDown, 2).setPadding(2);
+    place(0, 6, space, 1, 1);
 
-    place(0, 7, fontSizeLabel, 2);
-    place(2, 7, mFontSizeDropDown, 2).setPadding(2);
+    place(0, 7, themeLabel, 2);
+    place(2, 7, mThemeDropDown, 2).setPadding(2);
 
-    place(0, 8, space, 1, 1);
+    place(0, 8, fontSizeLabel, 2);
+    place(2, 8, mFontSizeDropDown, 2).setPadding(2);
 
-    place(0, 9, mAlphaSlider, 2);
-    place(2, 9, alphaLabel, 2);
+    place(0, 9, space, 1, 1);
 
-    place(0, 10, mSpeechSlider, 2);
-    place(2, 10, speechLabel, 2);
-    place(4, 10, mSpeechLabel, 2).setPadding(2);
+    place(0, 10, mAlphaSlider, 2);
+    place(2, 10, alphaLabel, 2);
+
+    place(0, 11, mSpeechSlider, 2);
+    place(2, 11, speechLabel, 2);
+    place(4, 11, mSpeechLabel, 2).setPadding(2);
 }
 
 Setup_Interface::~Setup_Interface() = default;
@@ -236,6 +255,7 @@ void Setup_Interface::apply()
     mOpacity = config.guiAlpha;
     mPickupChatEnabled = config.showPickupChat;
     mPickupParticleEnabled = config.showPickupParticle;
+    mPickupRange = config.pickupRange;
 }
 
 void Setup_Interface::cancel()
@@ -249,6 +269,8 @@ void Setup_Interface::cancel()
     mFontSizeDropDown->setSelected(config.fontSize - 10);
     mAlphaSlider->setValue(mOpacity);
     //mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
+    mPickupRangeSlider->setValue(mPickupRange);
+    mPickupRangeValueLabel->setCaption(pickupRangeToString(mPickupRange));
 
     config.showMonstersTakedDamage = mShowMonsterDamageEnabled;
     setConfigValue(&Config::visibleNames, mVisibleNamesEnabled);
@@ -258,6 +280,7 @@ void Setup_Interface::cancel()
     setConfigValue<float>(&Config::guiAlpha, mOpacity);
     config.showPickupChat = mPickupChatEnabled;
     config.showPickupParticle = mPickupParticleEnabled;
+    config.pickupRange = mPickupRange;
 }
 
 void Setup_Interface::action(const gcn::ActionEvent &event)
@@ -283,6 +306,13 @@ void Setup_Interface::action(const gcn::ActionEvent &event)
     else if (id == "pickupparticle")
     {
         config.showPickupParticle = mPickupParticleCheckBox->isSelected();
+    }
+    else if (id == "pickuprange")
+    {
+        auto range = (int)mPickupRangeSlider->getValue();
+        mPickupRangeValueLabel->setCaption(pickupRangeToString(range));
+        mPickupRangeSlider->setValue(range);
+        config.pickupRange = range;
     }
     else if (id == "speech")
     {

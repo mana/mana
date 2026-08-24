@@ -48,6 +48,7 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
         bool mNPCLogEnabled;
         bool mPickupChatEnabled;
         bool mPickupParticleEnabled;
+        int mPickupRange;
         double mOpacity;
         Being::Speech mSpeechMode;
 
@@ -62,6 +63,9 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
         gcn::Label *mPickupNotifyLabel;
         gcn::CheckBox *mPickupChatCheckBox;
         gcn::CheckBox *mPickupParticleCheckBox;
+
+        gcn::Slider *mPickupRangeSlider;
+        gcn::Label *mPickupRangeValueLabel;
 
         gcn::Slider *mSpeechSlider;
         gcn::Label *mSpeechLabel;
