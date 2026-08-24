@@ -41,9 +41,14 @@ static std::set<std::string> processedFiles;
 
 Action::~Action() = default;
 
-const Animation *Action::getAnimation(int direction) const
+const Animation *Action::getAnimation(SpriteDirection direction) const
 {
     auto i = mAnimations.find(direction);
+
+    // Diagonal directions fall back to up or down, so that sprites without
+    // diagonal animations don't need to repeat their up and down ones.
+    if (i == mAnimations.end())
+        i = mAnimations.find(fallbackDirection(direction));
 
     // When the given direction is not available, return the first one.
     // (either DEFAULT, or more usually DOWN).
@@ -53,7 +58,7 @@ const Animation *Action::getAnimation(int direction) const
     return i == mAnimations.end() ? nullptr : &i->second;
 }
 
-void Action::setAnimation(int direction, Animation animation)
+void Action::setAnimation(SpriteDirection direction, Animation animation)
 {
     mAnimations[direction] = std::move(animation);
 }
@@ -74,6 +79,14 @@ static SpriteDirection makeSpriteDirection(const std::string &direction)
         return DIRECTION_RIGHT;
     if (direction == "down")
         return DIRECTION_DOWN;
+    if (direction == "upleft")
+        return DIRECTION_UPLEFT;
+    if (direction == "upright")
+        return DIRECTION_UPRIGHT;
+    if (direction == "downleft")
+        return DIRECTION_DOWNLEFT;
+    if (direction == "downright")
+        return DIRECTION_DOWNRIGHT;
 
     return DIRECTION_INVALID;
 }

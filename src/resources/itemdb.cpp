@@ -111,6 +111,14 @@ static uint8_t directionFromString(std::string_view name)
         return DIRECTION_UP;
     if (name == "right")
         return DIRECTION_RIGHT;
+    if (name == "upleft")
+        return DIRECTION_UPLEFT;
+    if (name == "upright")
+        return DIRECTION_UPRIGHT;
+    if (name == "downleft")
+        return DIRECTION_DOWNLEFT;
+    if (name == "downright")
+        return DIRECTION_DOWNRIGHT;
 
     // hack for died action.
     if (name == "died")

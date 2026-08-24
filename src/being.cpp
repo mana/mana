@@ -656,9 +656,13 @@ void Being::setAction(Action action, int attackId)
                     switch (mSpriteDirection)
                     {
                         case DIRECTION_DOWN: rotation = 0; break;
+                        case DIRECTION_DOWNLEFT: rotation = 45; break;
                         case DIRECTION_LEFT: rotation = 90; break;
+                        case DIRECTION_UPLEFT: rotation = 135; break;
                         case DIRECTION_UP: rotation = 180; break;
+                        case DIRECTION_UPRIGHT: rotation = 225; break;
                         case DIRECTION_RIGHT: rotation = 270; break;
+                        case DIRECTION_DOWNRIGHT: rotation = 315; break;
                         default: break;
                     }
                     effectManager->trigger(effectId, this, rotation);
@@ -700,84 +704,60 @@ void Being::setAction(const std::string &action)
     mSprites.play(action);
 }
 
+/**
+ * Returns the direction bitmask matching the given vector, dividing the
+ * circle into eight sectors of 45 degrees. Returns 0 for a null vector.
+ */
+static uint8_t directionFromVector(const Vector &vec)
+{
+    // The tangent of 22.5 degrees, where a direction turns diagonal.
+    constexpr float diagonalThreshold = 0.4142f;
+
+    const float dx = std::abs(vec.x);
+    const float dy = std::abs(vec.y);
+
+    uint8_t direction = 0;
+    if (dy > dx * diagonalThreshold)
+        direction |= vec.y > 0 ? Being::DOWN : Being::UP;
+    if (dx > dy * diagonalThreshold)
+        direction |= vec.x > 0 ? Being::RIGHT : Being::LEFT;
+    return direction;
+}
+
+/**
+ * Returns the direction a sprite faces for the given direction bitmask.
+ */
+static SpriteDirection spriteDirectionFromMask(uint8_t direction)
+{
+    if (direction & Being::UP)
+    {
+        if (direction & Being::LEFT)
+            return DIRECTION_UPLEFT;
+        if (direction & Being::RIGHT)
+            return DIRECTION_UPRIGHT;
+        return DIRECTION_UP;
+    }
+
+    if (direction & Being::DOWN)
+    {
+        if (direction & Being::LEFT)
+            return DIRECTION_DOWNLEFT;
+        if (direction & Being::RIGHT)
+            return DIRECTION_DOWNRIGHT;
+        return DIRECTION_DOWN;
+    }
+
+    if (direction & Being::RIGHT)
+        return DIRECTION_RIGHT;
+
+    return DIRECTION_LEFT;
+}
+
 void Being::lookAt(const Vector &destPos)
 {
-    // We first handle simple cases
-
-    // If the two positions are the same,
-    // don't update the direction since it's only a matter of keeping
-    // the previous one.
-    if (mPos.x == destPos.x && mPos.y == destPos.y)
-        return;
-
-    if (mPos.x == destPos.x)
-    {
-        if (mPos.y > destPos.y)
-            setDirection(UP);
-        else
-            setDirection(DOWN);
-        return;
-    }
-
-    if (mPos.y == destPos.y)
-    {
-        if (mPos.x > destPos.x)
-            setDirection(LEFT);
-        else
-            setDirection(RIGHT);
-        return;
-    }
-
-    // Now let's handle diagonal cases
-    // First, find the lower angle:
-    if (mPos.x < destPos.x)
-    {
-        // Up-right direction
-        if (mPos.y > destPos.y)
-        {
-            // Compute tan of the angle
-            if ((mPos.y - destPos.y) / (destPos.x - mPos.x) < 1)
-                // The angle is less than 45°, we look to the right
-                setDirection(RIGHT);
-            else
-                setDirection(UP);
-            return;
-        }
-        else // Down-right
-        {
-            // Compute tan of the angle
-            if ((destPos.y - mPos.y) / (destPos.x - mPos.x) < 1)
-                // The angle is less than 45°, we look to the right
-                setDirection(RIGHT);
-            else
-                setDirection(DOWN);
-            return;
-        }
-    }
-    else
-    {
-        // Up-left direction
-        if (mPos.y > destPos.y)
-        {
-            // Compute tan of the angle
-            if ((mPos.y - destPos.y) / (mPos.x - destPos.x) < 1)
-                // The angle is less than 45°, we look to the left
-                setDirection(LEFT);
-            else
-                setDirection(UP);
-            return;
-        }
-        else // Down-left
-        {
-            // Compute tan of the angle
-            if ((destPos.y - mPos.y) / (mPos.x - destPos.x) < 1)
-                // The angle is less than 45°, we look to the left
-                setDirection(LEFT);
-            else
-                setDirection(DOWN);
-            return;
-        }
-    }
+    // A null vector leaves the direction alone, which keeps the previous
+    // one when the destination is where we already are.
+    setDirection(directionFromVector(destPos - mPos));
 }
 
 void Being::setDirection(uint8_t direction)
@@ -786,20 +766,10 @@ void Being::setDirection(uint8_t direction)
         return;
 
     mDirection = direction;
-
-    SpriteDirection dir = DIRECTION_DEFAULT;
-    if (mDirection & UP)
-        dir = DIRECTION_UP;
-    else if (mDirection & DOWN)
-        dir = DIRECTION_DOWN;
-    else if (mDirection & RIGHT)
-        dir = DIRECTION_RIGHT;
-    else
-        dir = DIRECTION_LEFT;
-    mSpriteDirection = dir;
+    mSpriteDirection = spriteDirectionFromMask(direction);
 
     updatePlayerSprites();
-    mSprites.setDirection(dir);
+    mSprites.setDirection(getSpriteDirection());
 }
 
 int Being::getCollisionRadius() const
@@ -930,18 +900,7 @@ void Being::updateMovement()
             // 2. When it is the local_player but only by mouse
             // (because in that case, the path can have more than one tile.)
             if (local_player != this || local_player->isPathSetByMouse())
-            {
-                int direction = 0;
-                const float dx = std::abs(dir.x);
-                const float dy = std::abs(dir.y);
-
-                if (dx > dy)
-                    direction |= (dir.x > 0) ? RIGHT : LEFT;
-                else
-                    direction |= (dir.y > 0) ? DOWN : UP;
-
-                setDirection(direction);
-            }
+                setDirection(directionFromVector(dir));
         }
         else if (!mPath.empty())
         {
@@ -1188,7 +1147,12 @@ void Being::updatePlayerSprites()
         return;
 
     // hack for allow different logic in dead player
-    const int direction = mAction == DEAD ? DIRECTION_DEAD : mSpriteDirection;
+    const uint8_t direction = mAction == DEAD ? DIRECTION_DEAD
+                                              : mSpriteDirection;
+    // Replacements for up or down also apply to the diagonals falling back
+    // to them, matching how the sprite animations are chosen.
+    const uint8_t baseDirection =
+        fallbackDirection(SpriteDirection(direction));
 
     // Get the current item IDs
     std::vector<int> itemIDs(mSpriteStates.size());
@@ -1204,7 +1168,9 @@ void Being::updatePlayerSprites()
         auto &itemInfo = itemDb->get(spriteState.id);
         for (const auto &replacement : itemInfo.replacements)
         {
-            if (replacement.direction != DIRECTION_ALL && replacement.direction != direction)
+            if (replacement.direction != DIRECTION_ALL &&
+                replacement.direction != direction &&
+                replacement.direction != baseDirection)
                 continue;
 
             if (replacement.sprite == SPRITE_ALL)

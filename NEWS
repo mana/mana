@@ -8,6 +8,7 @@ Unreleased
 - Added --log-file parameter to set log file path or '-' for stdout
 - Added --load-map parameter to load a map offline using a dummy backend
 - Added support for a minimum player level requirement on quest effects
+- Added support for diagonal sprite directions (falling back to up/down when absent)
 - Made --data option skip downloading and verifying updates (the news is still shown)
 - Added "Equip" button to the Outfit window
 - New window button icons by meway, used in Jewelry and Golden Delicious themes

@@ -77,8 +77,34 @@ enum SpriteDirection
     DIRECTION_DOWN,
     DIRECTION_LEFT,
     DIRECTION_RIGHT,
+    DIRECTION_UPLEFT,
+    DIRECTION_UPRIGHT,
+    DIRECTION_DOWNLEFT,
+    DIRECTION_DOWNRIGHT,
     DIRECTION_INVALID
 };
+
+/**
+ * Returns the direction to use when the given direction is not available.
+ *
+ * The diagonal directions fall back to their vertical component, so that
+ * sprites which have no diagonal animations keep facing up or down while
+ * moving diagonally. Directions without a fallback are returned unchanged.
+ */
+constexpr SpriteDirection fallbackDirection(SpriteDirection direction)
+{
+    switch (direction)
+    {
+        case DIRECTION_UPLEFT:
+        case DIRECTION_UPRIGHT:
+            return DIRECTION_UP;
+        case DIRECTION_DOWNLEFT:
+        case DIRECTION_DOWNRIGHT:
+            return DIRECTION_DOWN;
+        default:
+            return direction;
+    }
+}
 
 /**
  * An action consists of several animations, one for each direction.
@@ -89,14 +115,14 @@ class Action
         Action() = default;
         ~Action();
 
-        void setAnimation(int direction, Animation animation);
-        const Animation *getAnimation(int direction) const;
+        void setAnimation(SpriteDirection direction, Animation animation);
+        const Animation *getAnimation(SpriteDirection direction) const;
 
-        const std::map<int, Animation> &getAnimations() const
+        const std::map<SpriteDirection, Animation> &getAnimations() const
         { return mAnimations; }
 
     protected:
-        std::map<int, Animation> mAnimations;
+        std::map<SpriteDirection, Animation> mAnimations;
 };
 
 /**
