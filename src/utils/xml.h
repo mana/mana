@@ -28,6 +28,7 @@
 #include <libxml/xmlwriter.h>
 
 #include <string_view>
+#include <type_traits>
 
 /**
  * XML helper functions.
@@ -53,6 +54,12 @@ namespace XML
         int getProperty(const char *name, int def) const;
         double getFloatProperty(const char *name, double def) const;
         std::string getProperty(const char *name, const std::string &def) const;
+
+        // A bool default would silently select the int overload, which does
+        // not parse "true" or "false". Use getBoolProperty instead.
+        template<typename T, std::enable_if_t<std::is_same_v<T, bool>, int> = 0>
+        bool getProperty(const char *name, T def) const = delete;
+
         bool getBoolProperty(const char *name, bool def) const;
         Node findFirstChildByName(const char *name) const;
 

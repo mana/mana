@@ -76,7 +76,7 @@ void MonsterDB::readMonsterNode(XML::Node node, const std::string &filename)
     currentInfo->setTargetCursorSize(node.getProperty("targetCursor", "medium"));
     currentInfo->setHoverCursor(node.getProperty("hoverCursor", "attack"));
 
-    currentInfo->targetSelection = node.getProperty("targetSelection", true);
+    currentInfo->targetSelection = node.getBoolProperty("targetSelection", true);
 
     SpriteDisplay &display = currentInfo->display;
 

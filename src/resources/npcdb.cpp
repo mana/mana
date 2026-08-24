@@ -55,7 +55,7 @@ void NPCDB::readNPCNode(XML::Node node, const std::string &filename)
     currentInfo->setTargetCursorSize(node.getProperty("targetCursor", "medium"));
     currentInfo->setHoverCursor(node.getProperty("hoverCursor", "talk"));
 
-    currentInfo->targetSelection = node.getProperty("targetSelection", true);
+    currentInfo->targetSelection = node.getBoolProperty("targetSelection", true);
 
     SpriteDisplay &display = currentInfo->display;
     for (auto spriteNode : node.children())
