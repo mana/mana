@@ -26,6 +26,8 @@
 #include <guichan/keylistener.hpp>
 #include <guichan/actionlistener.hpp>
 
+#include <list>
+
 class IntTextField;
 class Item;
 class ItemPopup;
@@ -75,10 +77,18 @@ class ItemAmountWindow : public Window,
         static void showWindow(Usage usage, Window *parent, const Item *item,
                                int maxRange = 0);
 
+        /**
+         * Closes all instances.
+         */
+        static void closeAll();
+
         ~ItemAmountWindow() override;
 
     private:
         static void finish(int itemId, int itemIndex, int amount, Usage usage);
+
+        using DialogList = std::list<ItemAmountWindow *>;
+        static DialogList instances;
 
         ItemAmountWindow(Usage usage, Window *parent, const Item *item,
                          int maxRange);

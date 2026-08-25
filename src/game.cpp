@@ -48,6 +48,7 @@
 #include "gui/gui.h"
 #include "gui/helpwindow.h"
 #include "gui/inventorywindow.h"
+#include "gui/itemamountwindow.h"
 #include "gui/minimap.h"
 #include "gui/ministatuswindow.h"
 #include "gui/npcdialog.h"
@@ -200,7 +201,9 @@ static void destroyGuiWindows()
     del_0(abilitiesWindow)
     del_0(socialWindow)
 
-    Event::trigger(Event::NpcChannel, Event::CloseAll); // Cleanup remaining NPC dialogs
+    // Cleanup any remaining dialogs from this session
+    ItemAmountWindow::closeAll();
+    Event::trigger(Event::NpcChannel, Event::CloseAll);
 
     Event::trigger(Event::GameChannel, Event::GuiWindowsUnloaded);
 }

@@ -92,6 +92,8 @@ void ItemAmountWindow::finish(int itemId, int itemIndex, int amount, Usage usage
     }
 }
 
+ItemAmountWindow::DialogList ItemAmountWindow::instances;
+
 ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent,
                                    const Item *item, int maxRange):
     Window(std::string(), true, parent),
@@ -168,10 +170,14 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent,
 
     mItemPopup = new ItemPopup;
     mItemIcon->addMouseListener(this);
+
+    instances.push_back(this);
 }
 
 ItemAmountWindow::~ItemAmountWindow()
 {
+    instances.remove(this);
+
     delete mItemPopup;
 }
 
@@ -251,4 +257,10 @@ void ItemAmountWindow::showWindow(Usage usage, Window *parent,
         finish(item->getId(), item->getInvIndex(), maxRange, usage);
     else
         new ItemAmountWindow(usage, parent, item, maxRange);
+}
+
+void ItemAmountWindow::closeAll()
+{
+    for (auto instance : instances)
+        instance->close();
 }
