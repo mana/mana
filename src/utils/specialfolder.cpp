@@ -22,7 +22,6 @@
 
 #ifdef _WIN32
 #include <windows.h>
-#include <stdlib.h>
 
 #ifdef SPECIALFOLDERLOCATION_TEST
 // compile with -DSPECIALFOLDERLOCATION_TEST to get a standalone
@@ -45,12 +44,14 @@ std::string getSpecialFolderLocation(const KNOWNFOLDERID &folderId)
     HRESULT hr = SHGetKnownFolderPath(folderId, 0, NULL, &widePath);
     if (hr == S_OK)
     {
-        // determine needed bytes
-        size_t len;
-        if (wcstombs_s(&len, nullptr, 0, widePath, 0) == 0)
+        // convert to UTF-8, since wcstombs_s would use the C locale
+        int len = WideCharToMultiByte(CP_UTF8, 0, widePath, -1,
+                                      nullptr, 0, nullptr, nullptr);
+        if (len > 0)
         {
             ret.resize(len - 1);    // subtract null character
-            if (wcstombs_s(nullptr, ret.data(), len, widePath, len - 1) != 0)
+            if (WideCharToMultiByte(CP_UTF8, 0, widePath, -1,
+                                    ret.data(), len, nullptr, nullptr) == 0)
                 ret.clear();
         }
     }
