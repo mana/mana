@@ -166,6 +166,7 @@ void TabbedArea::mousePressed(gcn::MouseEvent &mouseEvent)
         {
             setSelectedTab(tab);
             requestFocus();
+            mouseEvent.consume();
         }
     }
 }
