@@ -1164,24 +1164,33 @@ static std::string getLegacyConfigDir(const std::string &app)
  */
 static void migrateLegacyConfig(const std::string &configPath)
 {
-    std::error_code error;
+    try
+    {
+        std::error_code error;
 
-    if (std::filesystem::exists(configPath, error))
-        return;
+        if (std::filesystem::exists(configPath, error))
+            return;
 
-    // The application name defaulted to "manasource" here
-    const std::string app = branding.appShort.empty() ? "manasource"
-                                                      : branding.appShort;
-    const std::string legacyPath = getLegacyConfigDir(app) + "/config.xml";
+        // The application name defaulted to "manasource" here
+        const std::string app = branding.appShort.empty() ? "manasource"
+                                                          : branding.appShort;
+        const std::string legacyPath = getLegacyConfigDir(app) + "/config.xml";
 
-    if (!std::filesystem::exists(legacyPath, error))
-        return;
+        if (!std::filesystem::exists(legacyPath, error))
+            return;
 
-    if (std::filesystem::copy_file(legacyPath, configPath, error))
-        Log::info("Migrated configuration from %s", legacyPath.c_str());
-    else
-        Log::warn("Failed to migrate configuration from %s: %s",
-                  legacyPath.c_str(), error.message().c_str());
+        if (std::filesystem::copy_file(legacyPath, configPath, error))
+            Log::info("Migrated configuration from %s", legacyPath.c_str());
+        else
+            Log::warn("Failed to migrate configuration from %s: %s",
+                      legacyPath.c_str(), error.message().c_str());
+    }
+    catch (const std::exception &e)
+    {
+        // std::filesystem::path construction can throw, for example when a
+        // string can't be converted to the native encoding
+        Log::warn("Failed to migrate configuration: %s", e.what());
+    }
 }
 
 /**
