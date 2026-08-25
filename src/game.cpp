@@ -90,7 +90,6 @@
 
 Joystick *joystick;
 
-OkDialog *weightNotice;
 OkDialog *deathNotice;
 QuitDialog *quitDialog;
 

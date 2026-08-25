@@ -240,6 +240,7 @@ void Setup_Colors::valueChanged(const gcn::SelectionEvent &)
         case UserPalette::PARTICLE:
         case UserPalette::EXP_INFO:
         case UserPalette::PICKUP_INFO:
+        case UserPalette::OVERWEIGHT_INFO:
         case UserPalette::HIT_PLAYER_MONSTER:
         case UserPalette::HIT_MONSTER_PLAYER:
         case UserPalette::HIT_CRITICAL:

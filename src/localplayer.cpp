@@ -85,7 +85,7 @@ void LocalPlayer::logic()
                     gui->getInfoParticleFont(), true);
 
             mMessages.pop_front();
-            mMessageTimer.set(300);
+            mMessageTimer.set(400);
         }
     }
 

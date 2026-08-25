@@ -41,6 +41,7 @@ static constexpr const char *ColorTypeNames[] = {
     "Particle",
     "Experience",
     "Pickup",
+    "Overweight",
     "HitPlayerMonster",
     "HitMonsterPlayer",
     "HitCritical",
@@ -70,6 +71,8 @@ UserPalette::UserPalette():
     addColor(GUILD, 0xff00d8, STATIC, _("Guild Members"));
     addColor(PARTICLE, 0xffffff, STATIC, _("Particle Effects"));
     addColor(PICKUP_INFO, 0x28dc28, STATIC, _("Pickup Notification"));
+    addColor(OVERWEIGHT_INFO, 0xffa500, STATIC,
+             _("Overweight Notification"));
     addColor(EXP_INFO, 0xffff00, STATIC, _("Exp Notification"));
     addColor(HIT_PLAYER_MONSTER, 0x0064ff, STATIC,
              _("Other Player Hits Monster"));

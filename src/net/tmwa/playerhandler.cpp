@@ -40,11 +40,12 @@
 #include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
+#include "resources/userpalette.h"
+
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/time.h"
 
-extern OkDialog *weightNotice;
 extern OkDialog *deathNotice;
 
 // Max. distance we are willing to scroll after a teleport;
@@ -53,17 +54,6 @@ const int MAP_TELEPORT_SCROLL_DISTANCE = 8;
 
 // TODO Move somewhere else
 namespace {
-
-    /**
-     * Listener used for handling the overweight message.
-     */
-    struct WeightListener : public gcn::ActionListener
-    {
-        void action(const gcn::ActionEvent &event) override
-        {
-            weightNotice = nullptr;
-        }
-    } weightListener;
 
     /**
      * Listener used for handling death message.
@@ -251,12 +241,20 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                                          PlayerInfo::getAttribute(TOTAL_WEIGHT) <
                                          PlayerInfo::getAttribute(MAX_WEIGHT) / 2)
                                  {
-                                     weightNotice = new OkDialog(_("Message"),
-                                             _("You are carrying more than "
-                                               "half your weight. You are "
-                                               "unable to regain health."));
-                                     weightNotice->addActionListener(
-                                             &weightListener);
+                                     if (config.showPickupChat)
+                                     {
+                                         serverNotice(_("You are carrying more "
+                                                        "than half your weight. "
+                                                        "You are unable to "
+                                                        "regain health."));
+                                     }
+                                     if (config.showPickupParticle &&
+                                             local_player->getMap())
+                                     {
+                                         local_player->addMessageToQueue(
+                                                 _("Overweight!"),
+                                                 UserPalette::OVERWEIGHT_INFO);
+                                     }
                                  }
                                  PlayerInfo::setAttribute(TOTAL_WEIGHT, value);
                                  break;

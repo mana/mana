@@ -29,6 +29,7 @@ Unreleased
 - Moved the configuration to "client.xml" in the local data directory (existing settings are migrated)
 - Removed background color from shop list entries
 - Stop next to an item when walking to pick it up, instead of on top of it
+- Replaced the overweight popup with a chat message and floating text
 - Fixed performance issue when instantiating many non-moving beings
 - Fixed keyboard movement not stopping on NPC dialog opening
 - Fixed double handling of up/down keys when NPC choices are focused

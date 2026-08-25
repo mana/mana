@@ -45,6 +45,7 @@ class UserPalette : public Palette, public gcn::ListModel
             PARTICLE,
             EXP_INFO,
             PICKUP_INFO,
+            OVERWEIGHT_INFO,
             HIT_PLAYER_MONSTER,
             HIT_MONSTER_PLAYER,
             HIT_CRITICAL,
