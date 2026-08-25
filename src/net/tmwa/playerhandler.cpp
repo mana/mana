@@ -32,10 +32,7 @@
 #include "playerinfo.h"
 #include "units.h"
 
-#include "gui/buydialog.h"
-#include "gui/buyselldialog.h"
 #include "gui/okdialog.h"
-#include "gui/selldialog.h"
 #include "gui/statuswindow.h"
 #include "gui/viewport.h"
 
@@ -77,10 +74,6 @@ namespace {
         {
             Net::getPlayerHandler()->respawn();
             deathNotice = nullptr;
-
-            BuyDialog::closeAll();
-            BuySellDialog::closeAll();
-            SellDialog::closeAll();
 
             viewport->closePopupMenu();
 

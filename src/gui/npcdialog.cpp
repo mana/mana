@@ -29,8 +29,11 @@
 #include "item.h"
 #include "playerinfo.h"
 
+#include "gui/buydialog.h"
+#include "gui/buyselldialog.h"
 #include "gui/inventorywindow.h"
 #include "gui/npcpostdialog.h"
+#include "gui/selldialog.h"
 
 #include "gui/widgets/browserbox.h"
 #include "gui/widgets/button.h"
@@ -669,6 +672,10 @@ void NpcEventListener::event(Event::Channel channel,
     else if (event.getType() == Event::CloseAll)
     {
         NpcDialog::closeAll();
+        NpcPostDialog::closeAll();
+        BuyDialog::closeAll();
+        SellDialog::closeAll();
+        BuySellDialog::closeAll();
     }
     else if (event.getType() == Event::CloseDialog)
     {
