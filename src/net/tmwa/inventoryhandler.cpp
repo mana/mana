@@ -104,12 +104,8 @@ InventoryHandler::InventoryHandler()
 
 InventoryHandler::~InventoryHandler()
 {
-    if (mStorageWindow)
-    {
-        mStorageWindow->close();
-        mStorageWindow = nullptr;
-    }
-
+    // The storage window can't outlive the inventory it displays
+    delete mStorageWindow;
     delete mStorage;
 }
 
@@ -294,6 +290,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
                 if (!mStorageWindow)
                     mStorageWindow = new InventoryWindow(mStorage);
+                else
+                    mStorageWindow->setVisible(true);
             }
             break;
 
@@ -331,11 +329,9 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
         case SMSG_PLAYER_STORAGE_CLOSE:
             // Storage access has been closed
-
-            // Storage window deletes itself
+            delete mStorageWindow;
             mStorageWindow = nullptr;
 
-            mStorage->clear();
             delete mStorage;
             mStorage = nullptr;
             break;

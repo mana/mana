@@ -346,16 +346,15 @@ void InventoryWindow::updateButtons()
 
 void InventoryWindow::close()
 {
-    if (this == inventoryWindow)
-    {
-        setVisible(false);
-    }
-    else
+    // Only hide the window here. The storage window is deleted by the
+    // inventory handler, since it can't outlive the inventory it displays.
+    setVisible(false);
+
+    if (!isMainInventory())
     {
         Event event(Event::DoCloseInventory);
         event.setInt("type", mInventory->getType());
         event.trigger(Event::ItemChannel);
-        scheduleDelete();
     }
 }
 
