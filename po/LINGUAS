@@ -23,12 +23,13 @@ fr
 #nds   # Not enough translations
 #nl    # Not enough translations
 pl
-#pt    # Not enough translations
+pt
 pt_BR
 ru
 #sk    # Not enough translations
 #sq    # Not enough translations
 #sv    # Not enough translations
+#ta    # Disabled because of current client limitations (font fallbacking)
 #te    # Disabled because of current client limitations (font fallbacking)
 #th    # Disabled because of current client limitations (font fallbacking)
 #tr    # Not enough translations
