@@ -129,6 +129,14 @@ class Inventory
          */
         int getLastUsedSlot() const;
 
+        /**
+         * Returns a value that changes whenever the items in this inventory
+         * change, which can be used to check whether a cached view of the
+         * inventory is still up to date.
+         */
+        unsigned getRevision() const
+        { return mRevision; }
+
         void addInventoryListener(InventoryListener* listener);
         void removeInventoryListener(InventoryListener* listener);
 
@@ -146,4 +154,5 @@ class Inventory
         Type mType;
         std::vector<std::unique_ptr<Item>> mItems;  /**< The holder of items */
         int mUsed = 0;  /**< The number of slots in use */
+        unsigned mRevision = 0;  /**< Changes when the items change */
 };

@@ -30,8 +30,8 @@
 #include <guichan/widgetlistener.hpp>
 
 #include <list>
-#include <map>
 #include <memory>
+#include <vector>
 
 class Image;
 class Inventory;
@@ -67,7 +67,7 @@ class ItemContainer : public gcn::Widget,
         void hidePopup();
 
         /**
-         * Necessary for checking how full the inventory is.
+         * Checks whether the items to display have changed.
          */
         void logic() override;
 
@@ -166,6 +166,11 @@ class ItemContainer : public gcn::Widget,
         void setSelectedIndex(int index);
 
         /**
+         * Determines the items to display, taking the filter into account.
+         */
+        void updateVisibleItems();
+
+        /**
          * Determine and set the height of the container.
          */
         void adjustHeight();
@@ -189,19 +194,24 @@ class ItemContainer : public gcn::Widget,
         static const int NO_SLOT_INDEX = -1; /**< Slot has no index. */
 
         Inventory *mInventory;
+        unsigned mInventoryRevision = 0;
         int mGridColumns = 1;
         int mGridRows = 1;
         int mSelectedIndex = NO_SLOT_INDEX;
         int mClickedIndex = NO_SLOT_INDEX;
         int mHighlightedIndex = NO_SLOT_INDEX;
-        int mLastUsedSlot = NO_SLOT_INDEX;
         SelectionState mSelectionStatus = SEL_NONE;
         bool mSwapItems = false;
         bool mDescItems = false;
         bool mAcceptTradeDrops = false;
         bool mDragEnabled = true;
 
-        std::map<int, Item*> mFilteredMap;
+        /**
+         * The items to display, indexed by display slot. Without a filter,
+         * these are all slots up to the last used one, including the empty
+         * ones in between. With a filter, only the matching items.
+         */
+        std::vector<Item*> mVisibleItems;
 
         std::string mFilter;
 

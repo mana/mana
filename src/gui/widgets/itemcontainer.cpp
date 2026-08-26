@@ -44,6 +44,8 @@
 #include <guichan/mouseinput.hpp>
 #include <guichan/selectionlistener.hpp>
 
+#include <algorithm>
+
 ItemContainer::ItemContainer(Inventory *inventory):
     mInventory(inventory)
 {
@@ -55,6 +57,8 @@ ItemContainer::ItemContainer(Inventory *inventory):
     addKeyListener(this);
     addMouseListener(this);
     addWidgetListener(this);
+
+    updateVisibleItems();
 }
 
 ItemContainer::~ItemContainer() = default;
@@ -63,13 +67,8 @@ void ItemContainer::logic()
 {
     gcn::Widget::logic();
 
-    const int lastUsedSlot = mInventory->getLastUsedSlot();
-
-    if (lastUsedSlot != mLastUsedSlot)
-    {
-        mLastUsedSlot = lastUsedSlot;
-        adjustHeight();
-    }
+    if (mInventoryRevision != mInventory->getRevision())
+        updateVisibleItems();
 }
 
 void ItemContainer::draw(gcn::Graphics *graphics)
@@ -78,32 +77,6 @@ void ItemContainer::draw(gcn::Graphics *graphics)
     const auto *drag = gui->getActiveDrag();
 
     g->setFont(getFont());
-
-    mFilteredMap.clear();
-    int currentIndex = 0;
-    //Filter checking
-    for (int i = 0; i < mGridColumns; i++)
-    {
-        for (int j = 0; j < mGridRows; j++)
-        {
-            int itemIndex = j * mGridColumns + i;
-            Item *item = mInventory->getItem(itemIndex);
-            if (!item || item->getId() == 0)
-                continue;
-
-            if (!mFilter.empty())
-            {
-                if (normalize(item->getInfo().name).find(mFilter) == std::string::npos)
-                    continue;
-                mFilteredMap[currentIndex] = item;
-                currentIndex++;
-            }
-            else
-            {
-                mFilteredMap[itemIndex] = item;
-            }
-        }
-    }
 
     auto theme = gui->getTheme();
     auto &slotSkin = theme->getSkin(SkinType::ItemSlot);
@@ -196,13 +169,57 @@ Item *ItemContainer::getSelectedItem() const
 
 Item *ItemContainer::getItemAt(int index) const
 {
-    auto i = mFilteredMap.find(index);
-    return i == mFilteredMap.end() ? nullptr : i->second;
+    if (index < 0 || index >= static_cast<int>(mVisibleItems.size()))
+        return nullptr;
+
+    return mVisibleItems[index];
 }
 
 void ItemContainer::setFilter(const std::string &filter)
 {
-    mFilter = normalize(filter);
+    std::string normalizedFilter = normalize(filter);
+    if (mFilter == normalizedFilter)
+        return;
+
+    mFilter = std::move(normalizedFilter);
+    updateVisibleItems();
+}
+
+void ItemContainer::updateVisibleItems()
+{
+    Item *selectedItem = getSelectedItem();
+
+    mInventoryRevision = mInventory->getRevision();
+    mVisibleItems.clear();
+
+    for (int i = 0, end = mInventory->getLastUsedSlot() + 1; i < end; i++)
+    {
+        Item *item = mInventory->getItem(i);
+        if (item && !item->getId())
+            item = nullptr;
+
+        // Without a filter, the empty slots in between are shown as well
+        if (!mFilter.empty() &&
+            (!item || normalize(item->getInfo().name).find(mFilter) == std::string::npos))
+            continue;
+
+        mVisibleItems.push_back(item);
+    }
+
+    // Keep the selection on the same item, as long as it is still visible
+    if (selectedItem)
+    {
+        auto it = std::find(mVisibleItems.begin(), mVisibleItems.end(),
+                            selectedItem);
+        setSelectedIndex(it == mVisibleItems.end()
+                         ? NO_SLOT_INDEX
+                         : static_cast<int>(it - mVisibleItems.begin()));
+    }
+
+    if (mHighlightedIndex >= static_cast<int>(mVisibleItems.size()))
+        mHighlightedIndex = NO_SLOT_INDEX;
+
+    adjustHeight();
 }
 
 void ItemContainer::distributeValueChangedEvent()
@@ -486,10 +503,9 @@ void ItemContainer::death(const gcn::Event &event)
 void ItemContainer::adjustHeight()
 {
     auto &slotSkin = gui->getTheme()->getSkin(SkinType::ItemSlot);
+    const int slotCount = static_cast<int>(mVisibleItems.size());
 
-    mGridRows = (mLastUsedSlot + 1) / mGridColumns;
-    if (mGridRows == 0 || (mLastUsedSlot + 1) % mGridColumns > 0)
-        ++mGridRows;
+    mGridRows = std::max(1, (slotCount + mGridColumns - 1) / mGridColumns);
 
     setHeight(mGridRows * slotSkin.height);
 }

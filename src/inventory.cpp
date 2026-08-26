@@ -96,6 +96,9 @@ void Inventory::setItem(int index, int id, int quantity)
         }
         else
         {
+            if (mItems[index]->getId() != id)
+                mRevision++;
+
             mItems[index]->setId(id);
             mItems[index]->setQuantity(quantity);
         }
@@ -165,6 +168,8 @@ void Inventory::removeInventoryListener(InventoryListener* listener)
 
 void Inventory::distributeSlotsChangedEvent()
 {
+    mRevision++;
+
     for (auto inventoryListener : mInventoryListeners)
         inventoryListener->slotsChanged(this);
 }
