@@ -1,4 +1,4 @@
-Unreleased
+0.8.0 (27 August 2026)
 - Added health bars to damaged and targeted monsters
 - Added drag-n-drop for items (to inventory, storage, trade, shortcuts, equipment, NPC, outfits, and chat)
 - Added support for NPCs asking for items
@@ -13,6 +13,7 @@ Unreleased
 - Added a configurable pickup range (Setup > Interface)
 - Added context menus to the player lists in the Social window
 - Made --data option skip downloading and verifying updates (the news is still shown)
+- Made the downloading of music enabled by default
 - Added "Equip" button to the Outfit window
 - Made the Outfit window take any number of items, adding slots as needed
 - Made wearing an outfit cycle through its items that share an equipment slot
@@ -31,8 +32,10 @@ Unreleased
 - Removed background color from shop list entries
 - Stop next to an item when walking to pick it up, instead of on top of it
 - Replaced the overweight popup with a chat message and floating text
+- Reduced input lag when using the SDL renderer with an OpenGL backend
 - Fixed crash when leaving the game with the storage window open
 - Fixed performance issue when instantiating many non-moving beings
+- Fixed not being able to walk through a field of NPCs (dig sites...)
 - Fixed keyboard movement not stopping on NPC dialog opening
 - Fixed double handling of up/down keys when NPC choices are focused
 - Fixed issues with particle effects in some locales
@@ -44,9 +47,11 @@ Unreleased
 - Fixed decorative NPCs and monsters being selectable despite targetSelection="false"
 - Fixed empty being popup showing for beings without a name
 - Fixed the "Own Name" color not being applied to the local player
+- Fixed positioning of the monster name for sprites with an offset
 - Fixed portable mode being used when the installation directory is not writable on Windows
 - Fixed shop and other NPC dialogs staying open after leaving the game
-- Reduced input lag when using the SDL renderer with an OpenGL backend
+- Fixed the chat window moving when clicking one of its tabs
+- Enabled the Portuguese translation
 
 0.7.0 (21 August 2025)
 - Ported to SDL 2

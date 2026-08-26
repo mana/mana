@@ -4,6 +4,62 @@
 ##3                         === RECENT CHANGES ===
 
 
+##3Mana 0.8.0 (27 August 2026)
+
+- Added health bars to damaged and targeted monsters
+- Added drag-n-drop for items (to inventory, storage, trade, shortcuts, equipment, NPC, outfits, and chat)
+- Added support for NPCs asking for items
+- Added support for monster links
+- Added support for level-specific skill names, icons and descriptions
+- Added support for custom text on "use" button
+- Added --log-file parameter to set log file path or '-' for stdout
+- Added --load-map parameter to load a map offline using a dummy backend
+- Added support for a minimum player level requirement on quest effects
+- Added support for diagonal sprite directions (falling back to up/down when absent)
+- Added Alt+Enter to toggle fullscreen
+- Added a configurable pickup range (Setup > Interface)
+- Added context menus to the player lists in the Social window
+- Made --data option skip downloading and verifying updates (the news is still shown)
+- Made the downloading of music enabled by default
+- Added "Equip" button to the Outfit window
+- Made the Outfit window take any number of items, adding slots as needed
+- Made wearing an outfit cycle through its items that share an equipment slot
+- New window button icons by meway, used in Jewelry and Golden Delicious themes
+- Improved drag-n-drop for emote shortcuts
+- Restyled the context menus, which now close on Escape or a click elsewhere
+- Made window menu buttons indicate which windows are open
+- Disabled the skill "Up" button when it can't be used
+- Allowed closing the NPC dialog during a choice menu
+- Use online player list for name autocomplete
+- Show the player level in the being popup
+- Added a language option to the Interface settings
+- Show two-handed weapons faded in the second hand slot of the Equipment window
+- Show all item attributes in the item popup, including magic attack and defense
+- Moved the configuration to "client.xml" in the local data directory (existing settings are migrated)
+- Removed background color from shop list entries
+- Stop next to an item when walking to pick it up, instead of on top of it
+- Replaced the overweight popup with a chat message and floating text
+- Reduced input lag when using the SDL renderer with an OpenGL backend
+- Fixed crash when leaving the game with the storage window open
+- Fixed performance issue when instantiating many non-moving beings
+- Fixed not being able to walk through a field of NPCs (dig sites...)
+- Fixed keyboard movement not stopping on NPC dialog opening
+- Fixed double handling of up/down keys when NPC choices are focused
+- Fixed issues with particle effects in some locales
+- Fixed update flow aborting when news.txt fails to download
+- Fixed customdata archives not being loaded (regression in 0.7)
+- Fixed drag-n-drop moving the wrong item while a search filter is active
+- Fixed scrolling range and item display order when using inventory search filter
+- Fixed target reachability indicator after switching arrows
+- Fixed decorative NPCs and monsters being selectable despite targetSelection="false"
+- Fixed empty being popup showing for beings without a name
+- Fixed the "Own Name" color not being applied to the local player
+- Fixed positioning of the monster name for sprites with an offset
+- Fixed portable mode being used when the installation directory is not writable on Windows
+- Fixed shop and other NPC dialogs staying open after leaving the game
+- Fixed the chat window moving when clicking one of its tabs
+- Enabled the Portuguese translation
+
 ##3Mana 0.7.0 (21 August 2025)
 
 - Ported to SDL 2

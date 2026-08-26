@@ -22,6 +22,13 @@
   </description>
   <url type="homepage">https://manasource.org/</url>
   <releases>
+   <release version="0.8.0" type="stable" date="2026-08-27">
+     <description>
+       <p>A year of work since the Mana client came back to life. Items can now be dragged and dropped between every window that holds them, monsters show health bars when you damage or target them, and NPCs can ask you for items and link to monsters in their dialogs.</p>
+       <p>Also the language can now be overridden in the Interface settings, Alt+Enter toggles fullscreen from anywhere and the player lists have context menus.</p>
+       <p>Beyond that this release brings level-specific skill descriptions, diagonal sprite directions, a configurable pickup range, and a long list of fixes. Feedback is welcome, and so is anyone who would like to help out!</p>
+     </description>
+   </release>
    <release version="0.7.0" type="stable" date="2025-08-21">
      <description>
        <p>Major update! This release brings back the Mana client as a viable client for playing both The Mana World and its spin-off Source of Tales. It has been ported to SDL 2, ships with two additional UI themes and packs a tremendous list of new features to support the current versions of tmwAthena and Manaserv.</p>
