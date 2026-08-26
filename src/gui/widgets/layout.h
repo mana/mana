@@ -98,6 +98,12 @@ class LayoutArray
         void setRowHeight(int n, int h);
 
         /**
+         * Sets the spacing between rows and between columns.
+         */
+        void setSpacing(int s)
+        { mSpacing = s; }
+
+        /**
          * Sets the widths of two columns to the maximum of their widths.
          */
         void matchColWidth(int n1, int n2);
@@ -220,6 +226,12 @@ class LayoutCell
          */
         void setRowHeight(int n, int h)
         { getArray().setRowHeight(n, h); }
+
+        /**
+         * @see LayoutArray::setSpacing
+         */
+        void setSpacing(int s)
+        { getArray().setSpacing(s); }
 
         /**
          * @see LayoutArray::extend.

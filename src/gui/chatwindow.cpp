@@ -116,6 +116,7 @@ ChatWindow::ChatWindow():
     // to the border on this window.
     setPadding(std::min<unsigned>(getPadding(), 6));
     getLayout().setPadding(0);
+    getLayout().setSpacing(0);
 
     place(0, 0, mChatTabs, 3, 3);
     place(0, 3, mChatInput, 3).setPadding(mChatInput->getFrameSize());
