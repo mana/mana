@@ -59,11 +59,7 @@ void ScrollArea::init()
     if (scrollBarWidth > 0)
         setScrollbarWidth(scrollBarWidth);
 
-    auto &scrollAreaSkin = theme->getSkin(SkinType::ScrollArea);
-    setShowButtons(scrollAreaSkin.showButtons);
-
-    if (auto content = getContent())
-        content->setFrameSize(scrollAreaSkin.padding);
+    setShowButtons(theme->getSkin(SkinType::ScrollArea).showButtons);
 
     // The base color is only used when rendering a square in the corner where
     // the scrollbars meet. We disable rendering of this square by setting the
@@ -158,8 +154,13 @@ void ScrollArea::setOpaque(bool opaque)
 {
     mOpaque = opaque;
 
+    // Without a background there is no frame to leave room for, neither around
+    // the scroll area itself nor around its content.
     auto &skin = gui->getTheme()->getSkin(SkinType::ScrollArea);
     setFrameSize(mOpaque ? skin.frameSize : 0);
+
+    if (auto content = getContent())
+        content->setFrameSize(mOpaque ? skin.padding : 0);
 }
 
 void ScrollArea::drawBackground(gcn::Graphics *graphics)
