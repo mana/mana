@@ -61,6 +61,7 @@ ChatTab::ChatTab(const std::string &name)
                                  gcn::ScrollArea::SHOW_ALWAYS);
     mScrollArea->setScrollAmount(0, 1);
     mScrollArea->setOpaque(false);
+    mScrollArea->setKeepScrolledToBottom(true);
 
     chatWindow->addTab(this);
 
@@ -219,20 +220,8 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
     if (config.enableChatLog && !ignoreRecord)
         saveToLogFile(line);
 
-    // We look if the Vertical Scroll Bar is set at the max before
-    // adding a row, otherwise the max will always be a row higher
-    // at comparison.
-    if (mScrollArea->getVerticalScrollAmount() >= mScrollArea->getVerticalMaxScroll())
-    {
-        mTextOutput->addRow(line);
-        mScrollArea->setVerticalScrollAmount(mScrollArea->getVerticalMaxScroll());
-    }
-    else
-    {
-        mTextOutput->addRow(line);
-    }
-
-    mScrollArea->logic();
+    // The scroll area keeps the view at the bottom when it was there before
+    mTextOutput->addRow(line);
 
     chatWindow->mRecorder->record(line.substr(3));
 

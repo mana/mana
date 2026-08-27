@@ -52,6 +52,7 @@
 - Fixed portable mode being used when the installation directory is not writable on Windows
 - Fixed shop and other NPC dialogs staying open after leaving the game
 - Fixed the chat window moving when clicking one of its tabs
+- Fixed the chat log losing its position at the bottom when shrinking the chat window
 - Enabled the Portuguese translation
 
 0.7.0 (21 August 2025)

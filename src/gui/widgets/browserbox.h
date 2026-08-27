@@ -147,6 +147,11 @@ class BrowserBox : public gcn::Widget,
         void mouseExited(gcn::MouseEvent &event) override;
 
         /**
+         * Relayouts the text when the width has changed.
+         */
+        void logic() override;
+
+        /**
          * Draws the browser box.
          */
         void draw(gcn::Graphics *graphics) override;

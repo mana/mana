@@ -22,6 +22,7 @@
 #pragma once
 
 #include <guichan/widgets/scrollarea.hpp>
+#include <guichan/widgetlistener.hpp>
 
 /**
  * A scroll area.
@@ -34,7 +35,7 @@
  *
  * \ingroup GUI
  */
-class ScrollArea : public gcn::ScrollArea
+class ScrollArea : public gcn::ScrollArea, public gcn::WidgetListener
 {
     public:
         /**
@@ -56,9 +57,21 @@ class ScrollArea : public gcn::ScrollArea
         ~ScrollArea() override;
 
         /**
+         * Sets the content widget. Shadows the non-virtual version in
+         * gcn::ScrollArea to keep track of content resizes.
+         */
+        void setContent(gcn::Widget *widget);
+
+        /**
          * Sets whether the scroll bar buttons are shown.
          */
         void setShowButtons(bool showButtons);
+
+        /**
+         * Sets whether the view stays scrolled to the bottom when it or its
+         * content is resized while it was scrolled to the bottom.
+         */
+        void setKeepScrolledToBottom(bool keep) { mKeepScrolledToBottom = keep; }
 
         /**
          * Logic function optionally adapts width or height of contents. This
@@ -109,6 +122,8 @@ class ScrollArea : public gcn::ScrollArea
         void mousePressed(gcn::MouseEvent &mouseEvent) override;
         void mouseDragged(gcn::MouseEvent &mouseEvent) override;
 
+        void widgetResized(const gcn::Event &event) override;
+
     protected:
         /**
          * Initializes the scroll area.
@@ -151,4 +166,6 @@ class ScrollArea : public gcn::ScrollArea
         int mY = 0;
         bool mHasMouse = false;
         bool mShowButtons = true;
+        bool mKeepScrolledToBottom = false;
+        bool mScrolledToBottom = false;
 };

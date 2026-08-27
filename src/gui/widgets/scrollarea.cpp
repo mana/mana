@@ -43,6 +43,17 @@ ScrollArea::~ScrollArea()
     delete getContent();
 }
 
+void ScrollArea::setContent(gcn::Widget *widget)
+{
+    if (gcn::Widget *content = getContent())
+        content->removeWidgetListener(this);
+
+    gcn::ScrollArea::setContent(widget);
+
+    if (widget)
+        widget->addWidgetListener(this);
+}
+
 void ScrollArea::setShowButtons(bool showButtons)
 {
     mShowButtons = showButtons;
@@ -50,6 +61,10 @@ void ScrollArea::setShowButtons(bool showButtons)
 
 void ScrollArea::init()
 {
+    addWidgetListener(this);
+    if (gcn::Widget *content = getContent())
+        content->addWidgetListener(this);
+
     // Draw background by default
     setOpaque(true);
 
@@ -77,13 +92,15 @@ void ScrollArea::logic()
     if (!isVisible())
         return;
 
-    gcn::ScrollArea::logic();
     gcn::Widget *content = getContent();
 
     // When no scrollbar in a certain direction, adapt content size to match
-    // the content dimension exactly.
+    // the content dimension exactly. This is done before the content's logic
+    // runs, so that it can adjust its layout to the new size before drawing.
     if (content)
     {
+        checkPolicies();
+
         if (getHorizontalScrollPolicy() == gcn::ScrollArea::SHOW_NEVER)
         {
             content->setWidth(getChildrenArea().width -
@@ -95,6 +112,8 @@ void ScrollArea::logic()
                     2 * content->getFrameSize());
         }
     }
+
+    gcn::ScrollArea::logic();
 
     if (mUpButtonPressed)
     {
@@ -115,6 +134,26 @@ void ScrollArea::logic()
     {
         setHorizontalScrollAmount(getHorizontalScrollAmount() +
                                   mRightButtonScrollAmount);
+    }
+
+    mScrolledToBottom = getVerticalScrollAmount() >= getVerticalMaxScroll();
+}
+
+void ScrollArea::widgetResized(const gcn::Event &event)
+{
+    // Resizing either the scroll area or its content changes the maximum
+    // scroll amount. Keep the view at the bottom when it was there before.
+    if (mKeepScrolledToBottom && mScrolledToBottom)
+    {
+        setVerticalScrollAmount(getVerticalMaxScroll());
+
+        // Reposition the content right away, since this may happen after the
+        // content position has already been updated for the current frame.
+        if (gcn::Widget *content = getContent())
+        {
+            content->setPosition(-mHScroll + content->getFrameSize(),
+                                 -mVScroll + content->getFrameSize());
+        }
     }
 }
 

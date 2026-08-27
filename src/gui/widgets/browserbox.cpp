@@ -249,6 +249,12 @@ void BrowserBox::mouseExited(gcn::MouseEvent &event)
     mHoveredLink.reset();
 }
 
+void BrowserBox::logic()
+{
+    if (getWidth() != mLastLayoutWidth)
+        maybeRelayoutText();
+}
+
 void BrowserBox::draw(gcn::Graphics *graphics)
 {
     const gcn::ClipRectangle &cr = graphics->getCurrentClipArea();
@@ -256,9 +262,6 @@ void BrowserBox::draw(gcn::Graphics *graphics)
     int yEnd = yStart + cr.height;
     if (yStart < 0)
         yStart = 0;
-
-    if (getWidth() != mLastLayoutWidth)
-        maybeRelayoutText();
 
     if (mHoveredLink)
     {
