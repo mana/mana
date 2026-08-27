@@ -22,76 +22,47 @@
 
 #include "log.h"
 
-#include "net/tmwa/messagein.h"
-#include "net/tmwa/messageout.h"
-#include "net/tmwa/network.h"
-#include "net/tmwa/protocol.h"
+#include "net/tmwa/serverstatusbackend.h"
 
-using namespace TmwAthena;
+#ifdef MANASERV_SUPPORT
+#include "net/manaserv/serverstatusbackend.h"
+#endif
 
 ServerStatusChecker::ServerStatusChecker(const ServerInfo &server)
+    : mServer(server)
 {
-    static const uint16_t _messages[] = {
-        SMSG_SERVER_VERSION_RESPONSE,
-        0
-    };
-    handledMessages = _messages;
-
-    if (server.type != ServerType::TmwAthena)
-        return;
-
-    mNetworkOwner = std::make_unique<Network>();
-    mNetworkOwner->registerHandler(this);
-
-    if (!mNetworkOwner->connect(server))
+    switch (server.type)
     {
-        finish(ServerStatus::State::Offline);
+    case ServerType::TmwAthena:
+        mBackend = std::make_unique<TmwAthena::ServerStatusBackend>(server);
+        break;
+#ifdef MANASERV_SUPPORT
+    case ServerType::ManaServ:
+        mBackend = std::make_unique<ManaServ::ServerStatusBackend>(server);
+        break;
+#endif
+    default:
         return;
     }
 
     mStatus.state = ServerStatus::State::Checking;
-    sendMessage(CMSG_SERVER_VERSION_REQUEST);
+    update();
 }
 
 ServerStatusChecker::~ServerStatusChecker() = default;
 
 void ServerStatusChecker::update()
 {
-    if (!mNetworkOwner)
-        return;
-
-    // Also sends a pending disconnect request after the probe finished
-    mNetworkOwner->flush();
-
     if (mStatus.state != ServerStatus::State::Checking)
         return;
 
-    mNetworkOwner->dispatchMessages();
+    const ServerStatus::State state = mBackend->update();
+    if (state == ServerStatus::State::Checking)
+        return;
 
-    const int networkState = mNetworkOwner->getState();
-    if (networkState == Network::NET_ERROR)
-        finish(ServerStatus::State::Offline);
-    else if (networkState == Network::IDLE)
-        finish(ServerStatus::State::Online);   // server closed the connection
-}
-
-void ServerStatusChecker::handleMessage(MessageIn &msg)
-{
-    switch (msg.getId())
-    {
-    case SMSG_SERVER_VERSION_RESPONSE:
-        sendMessage(CMSG_CLIENT_DISCONNECT);
-        finish(ServerStatus::State::Online);
-        break;
-    }
-}
-
-void ServerStatusChecker::finish(ServerStatus::State state)
-{
     mStatus.state = state;
 
-    const ServerInfo &server = mNetworkOwner->getServer();
     Log::info("Server status of %s:%d: %s",
-              server.hostname.c_str(), server.port,
+              mServer.hostname.c_str(), mServer.port,
               state == ServerStatus::State::Online ? "online" : "offline");
 }

@@ -23,34 +23,32 @@
 #include "net/serverinfo.h"
 #include "net/serverstatusbackend.h"
 
+#include "net/tmwa/messagehandler.h"
+
 #include <memory>
 
+namespace TmwAthena {
+
+class Network;
+
 /**
- * Probes a server to find out whether it is online. The probe does not
- * require authentication.
- *
- * The actual work is done by a backend matching the server type. The
- * connection is processed on the main thread by calling update().
+ * Probes a tmwAthena login server by sending the version request without
+ * logging in. The server is considered online when it responds.
  */
-class ServerStatusChecker
+class ServerStatusBackend : public Net::ServerStatusBackend,
+                            public MessageHandler
 {
-public:
-    explicit ServerStatusChecker(const ServerInfo &server);
-    ~ServerStatusChecker();
+    public:
+        explicit ServerStatusBackend(const ServerInfo &server);
+        ~ServerStatusBackend() override;
 
-    ServerStatusChecker(const ServerStatusChecker &) = delete;
-    ServerStatusChecker &operator=(const ServerStatusChecker &) = delete;
+        ServerStatus::State update() override;
 
-    /**
-     * Processes the connection. Should be called regularly until the state
-     * is no longer ServerStatus::State::Checking.
-     */
-    void update();
+        void handleMessage(MessageIn &msg) override;
 
-    const ServerStatus &getStatus() const { return mStatus; }
-
-private:
-    const ServerInfo mServer;
-    std::unique_ptr<Net::ServerStatusBackend> mBackend;
-    ServerStatus mStatus;
+    private:
+        std::unique_ptr<Network> mNetworkOwner;
+        ServerStatus::State mState = ServerStatus::State::Checking;
 };
+
+} // namespace TmwAthena

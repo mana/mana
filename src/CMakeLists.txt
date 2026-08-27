@@ -312,6 +312,7 @@ set(SRCS
     net/serverinfo.h
     net/serverstatus.cpp
     net/serverstatus.h
+    net/serverstatusbackend.h
     net/abilityhandler.h
     net/tradehandler.h
     net/worldinfo.h
@@ -549,6 +550,8 @@ set(SRCS_TMWA
     net/tmwa/playerhandler.cpp
     net/tmwa/playerhandler.h
     net/tmwa/protocol.h
+    net/tmwa/serverstatusbackend.cpp
+    net/tmwa/serverstatusbackend.h
     net/tmwa/abilityhandler.cpp
     net/tmwa/abilityhandler.h
     net/tmwa/token.h
@@ -602,6 +605,8 @@ set(SRCS_MANA
     net/manaserv/playerhandler.cpp
     net/manaserv/playerhandler.h
     net/manaserv/manaserv_protocol.h
+    net/manaserv/serverstatusbackend.cpp
+    net/manaserv/serverstatusbackend.h
     net/manaserv/abilityhandler.cpp
     net/manaserv/abilityhandler.h
     net/manaserv/tradehandler.cpp
