@@ -11,4 +11,4 @@ git ls-files --recurse-submodules -z \
         -e '^Xcode/' \
     | tar caf $name-source.tar.gz --xform s:^:$name/: --null -T-
 
-echo "Release ready as $name.tar.gz"
+echo "Release ready as $name-source.tar.gz"
