@@ -393,8 +393,9 @@ void ServerDialog::valueChanged(const gcn::SelectionEvent &)
 
 void ServerDialog::mouseClicked(gcn::MouseEvent &mouseEvent)
 {
-    if (mouseEvent.getSource() == mServersList &&
-        isDoubleClick(mServersList->getSelected()))
+    const int selected = mServersList->getSelected();
+    if (mouseEvent.getSource() == mServersList && selected >= 0 &&
+        isDoubleClick(selected))
     {
         action(gcn::ActionEvent(mConnectButton,
                                 mConnectButton->getActionEventId()));

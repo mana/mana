@@ -1,3 +1,6 @@
+Unreleased
+- Fixed double-click in empty area of the server list triggering connect
+
 0.8.0 (27 August 2026)
 - Added health bars to damaged and targeted monsters
 - Added drag-n-drop for items (to inventory, storage, trade, shortcuts, equipment, NPC, outfits, and chat)
