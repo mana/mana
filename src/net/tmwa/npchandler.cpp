@@ -168,21 +168,21 @@ void NpcHandler::handleMessage(MessageIn &msg)
 
 void NpcHandler::buy(int beingId)
 {
-    MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
+    auto outMsg = sendMessage(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeInt32(beingId);
     outMsg.writeInt8(0); // Buy
 }
 
 void NpcHandler::sell(int beingId)
 {
-    MessageOut outMsg(CMSG_NPC_BUY_SELL_REQUEST);
+    auto outMsg = sendMessage(CMSG_NPC_BUY_SELL_REQUEST);
     outMsg.writeInt32(beingId);
     outMsg.writeInt8(1); // Sell
 }
 
 void NpcHandler::buyItem(int beingId, int itemId, int amount)
 {
-    MessageOut outMsg(CMSG_NPC_BUY_REQUEST);
+    auto outMsg = sendMessage(CMSG_NPC_BUY_REQUEST);
     outMsg.writeInt16(8); // One item (length of packet)
     outMsg.writeInt16(amount);
     outMsg.writeInt16(itemId);
@@ -190,7 +190,7 @@ void NpcHandler::buyItem(int beingId, int itemId, int amount)
 
 void NpcHandler::sellItem(int beingId, int itemId, int amount)
 {
-    MessageOut outMsg(CMSG_NPC_SELL_REQUEST);
+    auto outMsg = sendMessage(CMSG_NPC_SELL_REQUEST);
     outMsg.writeInt16(8); // One item (length of packet)
     outMsg.writeInt16(itemId + INVENTORY_OFFSET);
     outMsg.writeInt16(amount);
@@ -198,20 +198,20 @@ void NpcHandler::sellItem(int beingId, int itemId, int amount)
 
 void NpcHandler::talk(int npcId)
 {
-    MessageOut outMsg(CMSG_NPC_TALK);
+    auto outMsg = sendMessage(CMSG_NPC_TALK);
     outMsg.writeInt32(npcId);
     outMsg.writeInt8(0); // Unused
 }
 
 void NpcHandler::nextDialog(int npcId)
 {
-    MessageOut outMsg(CMSG_NPC_NEXT_REQUEST);
+    auto outMsg = sendMessage(CMSG_NPC_NEXT_REQUEST);
     outMsg.writeInt32(npcId);
 }
 
 void NpcHandler::closeDialog(int npcId)
 {
-    MessageOut outMsg(CMSG_NPC_CLOSE);
+    auto outMsg = sendMessage(CMSG_NPC_CLOSE);
     outMsg.writeInt32(npcId);
 }
 
@@ -224,21 +224,21 @@ void NpcHandler::cancelDialog(int npcId)
 
 void NpcHandler::menuSelect(int npcId, int choice)
 {
-    MessageOut outMsg(CMSG_NPC_LIST_CHOICE);
+    auto outMsg = sendMessage(CMSG_NPC_LIST_CHOICE);
     outMsg.writeInt32(npcId);
     outMsg.writeInt8(choice);
 }
 
 void NpcHandler::integerInput(int npcId, int value)
 {
-    MessageOut outMsg(CMSG_NPC_INT_RESPONSE);
+    auto outMsg = sendMessage(CMSG_NPC_INT_RESPONSE);
     outMsg.writeInt32(npcId);
     outMsg.writeInt32(value);
 }
 
 void NpcHandler::stringInput(int npcId, const std::string &value)
 {
-    MessageOut outMsg(CMSG_NPC_STR_RESPONSE);
+    auto outMsg = sendMessage(CMSG_NPC_STR_RESPONSE);
     outMsg.writeInt16(value.length() + 9);
     outMsg.writeInt32(npcId);
     outMsg.writeString(value, value.length());

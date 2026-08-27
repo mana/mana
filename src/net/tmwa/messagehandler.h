@@ -28,6 +28,7 @@
 namespace TmwAthena {
 
 class MessageIn;
+class MessageOut;
 class Network;
 
 /**
@@ -45,6 +46,12 @@ class MessageHandler : public Net::MessageHandler
         void setNetwork(Network *network);
 
     protected:
+        /**
+         * Starts a new outgoing message on the network connection of this
+         * handler. Any further data can be written to the returned object.
+         */
+        MessageOut sendMessage(uint16_t id);
+
         Network *mNetwork;
 };
 

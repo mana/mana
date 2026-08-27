@@ -114,7 +114,7 @@ void GameHandler::event(Event::Channel channel, const Event &event)
         }
         else if (event.getType() == Event::MapLoaded)
         {
-            MessageOut outMsg(CMSG_MAP_LOADED);
+            sendMessage(CMSG_MAP_LOADED);
         }
     }
 }
@@ -135,7 +135,7 @@ void GameHandler::connect()
     }
 
     // Send login infos
-    MessageOut outMsg(CMSG_MAP_SERVER_CONNECT);
+    auto outMsg = sendMessage(CMSG_MAP_SERVER_CONNECT);
     outMsg.writeInt32(token.account_ID);
     outMsg.writeInt32(mCharID);
     outMsg.writeInt32(token.session_ID1);
@@ -158,7 +158,7 @@ void GameHandler::disconnect()
 
 void GameHandler::quit()
 {
-    MessageOut outMsg(CMSG_CLIENT_QUIT);
+    sendMessage(CMSG_CLIENT_QUIT);
 }
 
 void GameHandler::setMap(const std::string &map)

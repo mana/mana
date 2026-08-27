@@ -26,15 +26,18 @@
 
 namespace TmwAthena {
 
+class Network;
+
 /**
- * Used for building an outgoing message to eAthena.
+ * Used for building an outgoing message to eAthena. The message is written
+ * directly into the output buffer of the given network connection.
  *
  * \ingroup Network
  */
 class MessageOut
 {
     public:
-        MessageOut(uint16_t id);
+        MessageOut(Network &network, uint16_t id);
 
         /**
          * Writes an unsigned 8-bit integer to the message.
@@ -68,7 +71,9 @@ class MessageOut
          * Expand the packet data to be able to hold more data. Returns a
          * pointer to the start of the new data.
          */
-        static char *expand(size_t size);
+        char *expand(size_t size);
+
+        Network &mNetwork;
 };
 
 } // namespace TmwAthena

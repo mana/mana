@@ -315,7 +315,7 @@ void CharServerHandler::chooseCharacter(int slot)
 
     mCharSelectDialog = nullptr;
 
-    MessageOut outMsg(CMSG_CHAR_SELECT);
+    auto outMsg = sendMessage(CMSG_CHAR_SELECT);
     outMsg.writeInt8(mSelectedCharacter->slot);
 }
 
@@ -323,7 +323,7 @@ void CharServerHandler::newCharacter(const std::string &name, int slot,
                                      Gender /*gender*/, int hairstyle, int hairColor,
                                      const std::vector<int> &stats)
 {
-    MessageOut outMsg(CMSG_CHAR_CREATE);
+    auto outMsg = sendMessage(CMSG_CHAR_CREATE);
     outMsg.writeString(name, 24);
     for (int i = 0; i < 6; i++)
     {
@@ -340,7 +340,7 @@ void CharServerHandler::deleteCharacter(int slot)
     if (!mSelectedCharacter)
         return;
 
-    MessageOut outMsg(CMSG_CHAR_DELETE);
+    auto outMsg = sendMessage(CMSG_CHAR_DELETE);
     outMsg.writeInt32(mSelectedCharacter->dummy->getId());
     outMsg.writeString("a@a.com", 40);
 }
@@ -348,7 +348,7 @@ void CharServerHandler::deleteCharacter(int slot)
 void CharServerHandler::switchCharacter()
 {
     // This is really a map-server packet
-    MessageOut outMsg(CMSG_PLAYER_REBOOT);
+    auto outMsg = sendMessage(CMSG_PLAYER_REBOOT);
     outMsg.writeInt8(1);
 }
 
@@ -391,7 +391,7 @@ void CharServerHandler::connect()
 
     mNetwork->disconnect();
     mNetwork->connect(charServer);
-    MessageOut outMsg(CMSG_CHAR_SERVER_CONNECT);
+    auto outMsg = sendMessage(CMSG_CHAR_SERVER_CONNECT);
     outMsg.writeInt32(token.account_ID);
     outMsg.writeInt32(token.session_ID1);
     outMsg.writeInt32(token.session_ID2);

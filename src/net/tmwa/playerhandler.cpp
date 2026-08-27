@@ -563,14 +563,14 @@ void PlayerHandler::handleMessage(MessageIn &msg)
 
 void PlayerHandler::attack(int id)
 {
-    MessageOut outMsg(CMSG_PLAYER_CHANGE_ACT);
+    auto outMsg = sendMessage(CMSG_PLAYER_CHANGE_ACT);
     outMsg.writeInt32(id);
     outMsg.writeInt8(0);
 }
 
 void PlayerHandler::emote(int emoteId)
 {
-    MessageOut outMsg(CMSG_PLAYER_EMOTE);
+    auto outMsg = sendMessage(CMSG_PLAYER_EMOTE);
     outMsg.writeInt8(emoteId + 1);
 }
 
@@ -578,7 +578,7 @@ void PlayerHandler::increaseAttribute(int attr)
 {
     if (attr >= STRENGTH && attr <= LUCK)
     {
-        MessageOut outMsg(CMSG_STAT_UPDATE_REQUEST);
+        auto outMsg = sendMessage(CMSG_STAT_UPDATE_REQUEST);
         outMsg.writeInt16(attr);
         outMsg.writeInt8(1);
     }
@@ -594,7 +594,7 @@ void PlayerHandler::increaseSkill(int skillId)
     if (PlayerInfo::getAttribute(SKILL_POINTS) <= 0)
         return;
 
-    MessageOut outMsg(CMSG_SKILL_LEVELUP_REQUEST);
+    auto outMsg = sendMessage(CMSG_SKILL_LEVELUP_REQUEST);
     outMsg.writeInt16(skillId);
 }
 
@@ -607,7 +607,7 @@ void PlayerHandler::pickUp(FloorItem *floorItem)
     if (!floorItem || !lastPickupTimer.passed())
         return;
 
-    MessageOut outMsg(CMSG_ITEM_PICKUP);
+    auto outMsg = sendMessage(CMSG_ITEM_PICKUP);
     outMsg.writeInt32(floorItem->getId());
 
     lastPickupTimer.set(100);
@@ -615,7 +615,7 @@ void PlayerHandler::pickUp(FloorItem *floorItem)
 
 void PlayerHandler::setDirection(char direction)
 {
-    MessageOut outMsg(CMSG_PLAYER_CHANGE_DIR);
+    auto outMsg = sendMessage(CMSG_PLAYER_CHANGE_DIR);
     outMsg.writeInt16(0);
     outMsg.writeInt8(direction);
 }
@@ -625,7 +625,7 @@ void PlayerHandler::setDestination(int x, int y, int direction)
     // The destination coordinates are received in pixel, so we translate them
     // into tiles.
     Map *map = Game::instance()->getCurrentMap();
-    MessageOut outMsg(CMSG_PLAYER_CHANGE_DEST);
+    auto outMsg = sendMessage(CMSG_PLAYER_CHANGE_DEST);
     outMsg.writeCoordinates(x / map->getTileWidth(), y / map->getTileHeight(),
                             direction);
 }
@@ -640,14 +640,14 @@ void PlayerHandler::changeAction(Being::Action action)
         default: return;
     }
 
-    MessageOut outMsg(CMSG_PLAYER_CHANGE_ACT);
+    auto outMsg = sendMessage(CMSG_PLAYER_CHANGE_ACT);
     outMsg.writeInt32(0);
     outMsg.writeInt8(static_cast<uint8_t>(type));
 }
 
 void PlayerHandler::respawn()
 {
-    MessageOut outMsg(CMSG_PLAYER_REBOOT);
+    auto outMsg = sendMessage(CMSG_PLAYER_REBOOT);
     outMsg.writeInt8(0);
 }
 

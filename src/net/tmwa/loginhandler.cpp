@@ -228,7 +228,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
 void LoginHandler::connect()
 {
     mNetwork->connect(mServer);
-    MessageOut outMsg(CMSG_SERVER_VERSION_REQUEST);
+    sendMessage(CMSG_SERVER_VERSION_REQUEST);
 }
 
 bool LoginHandler::isConnected()
@@ -274,7 +274,7 @@ void LoginHandler::changePassword(const std::string &username,
                                   const std::string &oldPassword,
                                   const std::string &newPassword)
 {
-    MessageOut outMsg(CMSG_CHAR_PASSWORD_CHANGE);
+    auto outMsg = sendMessage(CMSG_CHAR_PASSWORD_CHANGE);
     outMsg.writeString(oldPassword, 24);
     outMsg.writeString(newPassword, 24);
 }
@@ -318,7 +318,7 @@ void LoginHandler::unregisterAccount(const std::string &username,
 void LoginHandler::sendLoginRegister(const std::string &username,
                                      const std::string &password)
 {
-    MessageOut outMsg(CMSG_LOGIN_REGISTER);
+    auto outMsg = sendMessage(CMSG_LOGIN_REGISTER);
     outMsg.writeInt32(8); // client version
     outMsg.writeString(username, 24);
     outMsg.writeString(password, 24);

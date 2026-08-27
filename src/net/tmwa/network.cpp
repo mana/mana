@@ -31,9 +31,7 @@
 
 #include <cassert>
 #include <sstream>
-
-/** Warning: buffers and other variables are shared,
-    so there can be only one connection active at a time */
+#include <unordered_map>
 
 namespace TmwAthena {
 
@@ -243,21 +241,11 @@ int networkThread(void *data)
     return 0;
 }
 
-Network *Network::mInstance = nullptr;
-
 Network::Network():
     mInBuffer(new char[BUFFER_SIZE]),
     mOutBuffer(new char[BUFFER_SIZE])
 {
     SDLNet_Init();
-
-    mInstance = this;
-
-    for (const auto &packetInfo : packet_infos)
-    {
-        assert(packetInfo.length != 0);
-        mPacketInfo[packetInfo.id] = &packetInfo;
-    }
 }
 
 Network::~Network()
@@ -267,7 +255,6 @@ Network::~Network()
     if (mState != IDLE && mState != NET_ERROR)
         disconnect();
 
-    mInstance = nullptr;
 
     delete[] mInBuffer;
     delete[] mOutBuffer;
@@ -353,11 +340,26 @@ void Network::clearHandlers()
     mMessageHandlers.clear();
 }
 
+const PacketInfo *Network::findPacketInfo(uint16_t id)
+{
+    static const auto packetInfoById = [] {
+        std::unordered_map<uint16_t, const PacketInfo*> map;
+        for (const auto &packetInfo : packet_infos)
+        {
+            assert(packetInfo.length != 0);
+            map[packetInfo.id] = &packetInfo;
+        }
+        return map;
+    }();
+
+    auto it = packetInfoById.find(id);
+    return it != packetInfoById.end() ? it->second : nullptr;
+}
+
 const char *Network::messageName(uint16_t id) const
 {
-    auto packetInfoIt = mPacketInfo.find(id);
-    if (packetInfoIt != mPacketInfo.end())
-        return packetInfoIt->second->name;
+    if (auto packetInfo = findPacketInfo(id))
+        return packetInfo->name;
 
     return "Unknown";
 }
@@ -370,14 +372,12 @@ void Network::dispatchMessages()
     {
         const uint16_t msgId = readWord(0);
 
-        auto packetInfoIt = mPacketInfo.find(msgId);
-        if (packetInfoIt == mPacketInfo.end())
+        auto packetInfo = findPacketInfo(msgId);
+        if (!packetInfo)
         {
             Log::critical(strprintf("Unknown packet 0x%x received.", msgId));
             break;
         }
-
-        auto packetInfo = packetInfoIt->second;
 
         // Determine the length of the packet
         uint16_t len = packetInfo->length;

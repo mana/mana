@@ -425,7 +425,7 @@ void InventoryHandler::event(Event::Channel channel,
         if (event.getType() == Event::DoCloseInventory)
         {
             // No need to worry about type
-            MessageOut outMsg(CMSG_CLOSE_STORAGE);
+            sendMessage(CMSG_CLOSE_STORAGE);
         }
         else
         {
@@ -438,18 +438,18 @@ void InventoryHandler::event(Event::Channel channel,
 
             if (event.getType() == Event::DoEquip)
             {
-                MessageOut outMsg(CMSG_PLAYER_EQUIP);
+                auto outMsg = sendMessage(CMSG_PLAYER_EQUIP);
                 outMsg.writeInt16(index);
                 outMsg.writeInt16(0);
             }
             else if (event.getType() == Event::DoUnequip)
             {
-                MessageOut outMsg(CMSG_PLAYER_UNEQUIP);
+                auto outMsg = sendMessage(CMSG_PLAYER_UNEQUIP);
                 outMsg.writeInt16(index);
             }
             else if (event.getType() == Event::DoUse)
             {
-                MessageOut outMsg(CMSG_PLAYER_INVENTORY_USE);
+                auto outMsg = sendMessage(CMSG_PLAYER_INVENTORY_USE);
                 outMsg.writeInt16(index);
                 outMsg.writeInt32(itemId); // unused
             }
@@ -459,7 +459,7 @@ void InventoryHandler::event(Event::Channel channel,
 
                 // TODO: Fix wrong coordinates of drops, serverside?
                 // (what's wrong here?)
-                MessageOut outMsg(CMSG_PLAYER_INVENTORY_DROP);
+                auto outMsg = sendMessage(CMSG_PLAYER_INVENTORY_DROP);
                 outMsg.writeInt16(index);
                 outMsg.writeInt16(amount);
             }
@@ -480,14 +480,14 @@ void InventoryHandler::event(Event::Channel channel,
                     if (source == Inventory::INVENTORY
                             && destination == Inventory::STORAGE)
                     {
-                        MessageOut outMsg(CMSG_MOVE_TO_STORAGE);
+                        auto outMsg = sendMessage(CMSG_MOVE_TO_STORAGE);
                         outMsg.writeInt16(index);
                         outMsg.writeInt32(amount);
                     }
                     else if (source == Inventory::STORAGE
                              && destination == Inventory::INVENTORY)
                     {
-                        MessageOut outMsg(CMSG_MOVE_FROM_STORAGE);
+                        auto outMsg = sendMessage(CMSG_MOVE_FROM_STORAGE);
                         outMsg.writeInt16(index - INVENTORY_OFFSET
                                           + STORAGE_OFFSET);
                         outMsg.writeInt32(amount);

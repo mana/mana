@@ -70,6 +70,8 @@ class ChatHandler final : public MessageHandler, public Net::ChatHandler
         std::vector<std::string> getOnlinePlayerNames() const override;
 
     private:
+        void sendChatMessage(const std::string &mes);
+
         std::queue<std::string> mSentWhispers;
         std::vector<std::string> mOnlinePlayerNames;
 };

@@ -21,6 +21,7 @@
 
 #include "net/tmwa/messagehandler.h"
 
+#include "net/tmwa/messageout.h"
 #include "net/tmwa/network.h"
 
 #include <cassert>
@@ -42,6 +43,12 @@ void MessageHandler::setNetwork(Network *network)
 {
     assert(!(network && mNetwork));
     mNetwork = network;
+}
+
+MessageOut MessageHandler::sendMessage(uint16_t id)
+{
+    assert(mNetwork);
+    return MessageOut(*mNetwork, id);
 }
 
 } // namespace TmwAthena

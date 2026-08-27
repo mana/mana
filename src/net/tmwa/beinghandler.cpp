@@ -93,7 +93,7 @@ static ActorSprite::Type typeFromJob(short job)
     return ActorSprite::UNKNOWN;
 }
 
-static Being *createBeing(int id, short job)
+Being *BeingHandler::createBeing(int id, short job)
 {
     const auto type = typeFromJob(job);
     if (type == ActorSprite::PORTAL)
@@ -103,7 +103,7 @@ static Being *createBeing(int id, short job)
 
     if (type == ActorSprite::PLAYER || type == ActorSprite::NPC)
     {
-        MessageOut outMsg(CMSG_NAME_REQUEST);
+        auto outMsg = sendMessage(CMSG_NAME_REQUEST);
         outMsg.writeInt32(id);
     }
 
@@ -116,7 +116,7 @@ static Being *createBeing(int id, short job)
     return being;
 }
 
-static void updateBeingType(Being *being, short job)
+void BeingHandler::updateBeingType(Being *being, short job)
 {
     const auto type = typeFromJob(job);
     const bool typeChanged = being->getType() != type;
@@ -125,7 +125,7 @@ static void updateBeingType(Being *being, short job)
 
     if (typeChanged && type == ActorSprite::PLAYER)
     {
-        MessageOut outMsg(CMSG_NAME_REQUEST);
+        auto outMsg = sendMessage(CMSG_NAME_REQUEST);
         outMsg.writeInt32(being->getId());
     }
 }

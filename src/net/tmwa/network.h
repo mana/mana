@@ -33,7 +33,6 @@
 
 #include <map>
 #include <string>
-#include <unordered_map>
 
 /**
  * Protocol version, reported to the eAthena char and mapserver who can adjust
@@ -99,6 +98,8 @@ class Network
 
         uint16_t readWord(int pos);
 
+        static const PacketInfo *findPacketInfo(uint16_t id);
+
         bool realConnect();
 
         void receive();
@@ -119,10 +120,7 @@ class Network
         SDL_Thread *mWorkerThread = nullptr;
         Mutex mMutex;
 
-        std::unordered_map<uint16_t, const PacketInfo*> mPacketInfo;
         std::map<uint16_t, MessageHandler *> mMessageHandlers;
-
-        static Network *mInstance;
 };
 
 } // namespace TmwAthena

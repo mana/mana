@@ -240,7 +240,7 @@ void TradeHandler::handleMessage(MessageIn &msg)
 
 void TradeHandler::request(Being *being)
 {
-    MessageOut outMsg(CMSG_TRADE_REQUEST);
+    auto outMsg = sendMessage(CMSG_TRADE_REQUEST);
     outMsg.writeInt32(being->getId());
 }
 
@@ -249,13 +249,13 @@ void TradeHandler::respond(bool accept)
     if (!accept)
         mTrading = false;
 
-    MessageOut outMsg(CMSG_TRADE_RESPONSE);
+    auto outMsg = sendMessage(CMSG_TRADE_RESPONSE);
     outMsg.writeInt8(accept ? 3 : 4);
 }
 
 void TradeHandler::addItem(Item *item, int amount)
 {
-    MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
+    auto outMsg = sendMessage(CMSG_TRADE_ITEM_ADD_REQUEST);
     outMsg.writeInt16(item->getInvIndex() + INVENTORY_OFFSET);
     outMsg.writeInt32(amount);
 }
@@ -267,24 +267,24 @@ void TradeHandler::removeItem(int slotNum, int amount)
 
 void TradeHandler::setMoney(int amount)
 {
-    MessageOut outMsg(CMSG_TRADE_ITEM_ADD_REQUEST);
+    auto outMsg = sendMessage(CMSG_TRADE_ITEM_ADD_REQUEST);
     outMsg.writeInt16(0);
     outMsg.writeInt32(amount);
 }
 
 void TradeHandler::confirm()
 {
-    MessageOut outMsg(CMSG_TRADE_ADD_COMPLETE);
+    sendMessage(CMSG_TRADE_ADD_COMPLETE);
 }
 
 void TradeHandler::finish()
 {
-    MessageOut outMsg(CMSG_TRADE_OK);
+    sendMessage(CMSG_TRADE_OK);
 }
 
 void TradeHandler::cancel()
 {
-    MessageOut outMsg(CMSG_TRADE_CANCEL_REQUEST);
+    sendMessage(CMSG_TRADE_CANCEL_REQUEST);
 }
 
 } // namespace TmwAthena

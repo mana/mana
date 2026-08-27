@@ -290,7 +290,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
 
 void PartyHandler::create(const std::string &name)
 {
-    MessageOut outMsg(CMSG_PARTY_CREATE);
+    auto outMsg = sendMessage(CMSG_PARTY_CREATE);
     outMsg.writeString(name.substr(0, 23), 24);
 }
 
@@ -301,7 +301,7 @@ void PartyHandler::join(int partyId)
 
 void PartyHandler::invite(Being *being)
 {
-    MessageOut outMsg(CMSG_PARTY_INVITE);
+    auto outMsg = sendMessage(CMSG_PARTY_INVITE);
     outMsg.writeInt32(being->getId());
 }
 
@@ -328,19 +328,19 @@ void PartyHandler::invite(const std::string &name)
 
 void PartyHandler::inviteResponse(const std::string &inviter, bool accept)
 {
-    MessageOut outMsg(CMSG_PARTY_INVITED);
+    auto outMsg = sendMessage(CMSG_PARTY_INVITED);
     outMsg.writeInt32(local_player->getId());
     outMsg.writeInt32(accept ? 1 : 0);
 }
 
 void PartyHandler::leave()
 {
-    MessageOut outMsg(CMSG_PARTY_LEAVE);
+    sendMessage(CMSG_PARTY_LEAVE);
 }
 
 void PartyHandler::kick(Being *being)
 {
-    MessageOut outMsg(CMSG_PARTY_KICK);
+    auto outMsg = sendMessage(CMSG_PARTY_KICK);
     outMsg.writeInt32(being->getId());
     outMsg.writeString("", 24); //Unused
 }
@@ -355,14 +355,14 @@ void PartyHandler::kick(const std::string &name)
         return;
     }
 
-    MessageOut outMsg(CMSG_PARTY_KICK);
+    auto outMsg = sendMessage(CMSG_PARTY_KICK);
     outMsg.writeInt32(m->getID());
     outMsg.writeString(name, 24); //Unused
 }
 
 void PartyHandler::chat(const std::string &text)
 {
-    MessageOut outMsg(CMSG_PARTY_MESSAGE);
+    auto outMsg = sendMessage(CMSG_PARTY_MESSAGE);
     outMsg.writeInt16(text.length() + 4);
     outMsg.writeString(text, text.length());
 }
@@ -378,7 +378,7 @@ void PartyHandler::setShareExperience(PartyShare share)
     if (share == PARTY_SHARE_NOT_POSSIBLE)
         return;
 
-    MessageOut outMsg(CMSG_PARTY_SETTINGS);
+    auto outMsg = sendMessage(CMSG_PARTY_SETTINGS);
     outMsg.writeInt16(share);
     outMsg.writeInt16(mShareItems);
 }
@@ -388,7 +388,7 @@ void PartyHandler::setShareItems(PartyShare share)
     if (share == PARTY_SHARE_NOT_POSSIBLE)
         return;
 
-    MessageOut outMsg(CMSG_PARTY_SETTINGS);
+    auto outMsg = sendMessage(CMSG_PARTY_SETTINGS);
     outMsg.writeInt16(mShareExp);
     outMsg.writeInt16(share);
 }

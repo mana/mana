@@ -289,9 +289,9 @@ void ChatHandler::handleMessage(MessageIn &msg)
     }
 }
 
-static void sendChatMessage(const std::string &mes)
+void ChatHandler::sendChatMessage(const std::string &mes)
 {
-    MessageOut outMsg(CMSG_CHAT_MESSAGE);
+    auto outMsg = sendMessage(CMSG_CHAT_MESSAGE);
     // Added + 1 in order to let eAthena parse admin commands correctly
     outMsg.writeInt16(mes.length() + 4 + 1);
     outMsg.writeString(mes, mes.length() + 1);
@@ -317,7 +317,7 @@ void ChatHandler::me(const std::string &text)
 void ChatHandler::privateMessage(const std::string &recipient,
                                  const std::string &text)
 {
-    MessageOut outMsg(CMSG_CHAT_WHISPER);
+    auto outMsg = sendMessage(CMSG_CHAT_WHISPER);
     outMsg.writeInt16(text.length() + 28);
     outMsg.writeString(recipient, 24);
     outMsg.writeString(text, text.length());
@@ -368,7 +368,7 @@ void ChatHandler::kickUser(int channelId, const std::string &name)
 
 void ChatHandler::requestOnlineList()
 {
-    MessageOut outMsg(CMSG_ONLINE_LIST);
+    sendMessage(CMSG_ONLINE_LIST);
 }
 
 std::vector<std::string> ChatHandler::getOnlinePlayerNames() const

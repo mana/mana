@@ -23,6 +23,8 @@
 
 #include "net/tmwa/messagehandler.h"
 
+class Being;
+
 namespace TmwAthena {
 
 class BeingHandler final : public MessageHandler
@@ -31,6 +33,10 @@ class BeingHandler final : public MessageHandler
         BeingHandler();
 
         void handleMessage(MessageIn &msg) override;
+
+    private:
+        Being *createBeing(int id, short job);
+        void updateBeingType(Being *being, short job);
 };
 
 } // namespace TmwAthena

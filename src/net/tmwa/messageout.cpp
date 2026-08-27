@@ -31,19 +31,19 @@
 
 namespace TmwAthena {
 
-MessageOut::MessageOut(uint16_t id)
+MessageOut::MessageOut(Network &network, uint16_t id)
+    : mNetwork(network)
 {
 #ifdef DEBUG
-    Log::info("Sending %s (0x%x)", Network::mInstance->messageName(id), id);
+    Log::info("Sending %s (0x%x)", mNetwork.messageName(id), id);
 #endif
     writeInt16(id);
 }
 
 char *MessageOut::expand(size_t bytes)
 {
-    Network &net = *Network::mInstance;
-    char *data = net.mOutBuffer + net.mOutSize;
-    net.mOutSize += bytes;
+    char *data = mNetwork.mOutBuffer + mNetwork.mOutSize;
+    mNetwork.mOutSize += bytes;
     return data;
 }
 
