@@ -421,14 +421,13 @@ void Being::takeDamage(Being *attacker, int amount,
 
 void Being::handleAttack(Being *victim, int damage, int attackId)
 {
-    // Monsters, NPCs and remote players handle the first attack (id="1")
-    // per default.
+    // Monsters, NPCs and players (including the local player, whose attacks
+    // are driven by the server) handle the first attack (id="1") per default.
     // TODO: Fix this for Manaserv by sending the attack id.
     // TODO: Add attack type handling, see Attack struct and AttackType
     // and make use of it by grouping attacks per attack type and add random
     // attack use on tA, based on normal and critical attack types.
-    if (this != local_player)
-        setAction(Being::ATTACK, attackId);
+    setAction(Being::ATTACK, attackId);
 
     if (victim)
     {

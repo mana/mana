@@ -291,7 +291,7 @@ void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
     viewport->scrollBy(scrollOffsetX, scrollOffsetY);
 }
 
-void PlayerHandler::attack(int id)
+void PlayerHandler::attack(int id, bool /*continuous*/)
 {
     auto ability = AbilityDB::find("Strike");
     if (!ability)

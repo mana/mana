@@ -41,6 +41,7 @@
 - Stop next to an item when walking to pick it up, instead of on top of it
 - Replaced the overweight popup with a chat message and floating text
 - Reduced input lag when using the SDL renderer with an OpenGL backend
+- Only play the attack animation for actual attacks, and let the server repeat attacks on tmwAthena
 - Fixed crash when leaving the game with the storage window open
 - Fixed performance issue when instantiating many non-moving beings
 - Fixed not being able to walk through a field of NPCs (dig sites...)

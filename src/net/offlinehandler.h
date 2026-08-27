@@ -114,7 +114,7 @@ class OfflineHandler final : public Net::GeneralHandler,
         Equipment::Backend *getEquipmentBackend() override { return &mEquips; }
 
         // --- PlayerHandler ---
-        void attack(int id) override {}
+        void attack(int id, bool continuous) override {}
         void emote(int emoteId) override;
         void increaseAttribute(int attr) override {}
         void decreaseAttribute(int attr) override {}

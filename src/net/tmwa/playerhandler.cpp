@@ -561,11 +561,19 @@ void PlayerHandler::handleMessage(MessageIn &msg)
     }
 }
 
-void PlayerHandler::attack(int id)
+void PlayerHandler::attack(int id, bool continuous)
 {
+    DamageType type = continuous ? DamageType::CONTINUOUS
+                                 : DamageType::NORMAL;
+
     auto outMsg = sendMessage(CMSG_PLAYER_CHANGE_ACT);
     outMsg.writeInt32(id);
-    outMsg.writeInt8(0);
+    outMsg.writeInt8(static_cast<uint8_t>(type));
+}
+
+void PlayerHandler::stopAttack()
+{
+    sendMessage(CMSG_PLAYER_STOP_ATTACK);
 }
 
 void PlayerHandler::emote(int emoteId)

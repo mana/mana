@@ -42,7 +42,7 @@ class PlayerHandler final : public MessageHandler, public Net::PlayerHandler
 
         void handleMessage(MessageIn &msg) override;
 
-        void attack(int id) override;
+        void attack(int id, bool continuous) override;
         void emote(int emoteId) override;
 
         void increaseAttribute(int attr) override;

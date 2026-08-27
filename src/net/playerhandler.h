@@ -34,7 +34,9 @@ class PlayerHandler
     public:
         virtual ~PlayerHandler() = default;
 
-        virtual void attack(int id) = 0;
+        virtual void attack(int id, bool continuous) = 0;
+
+        virtual void stopAttack() {}
 
         virtual void emote(int emoteId) = 0;
 

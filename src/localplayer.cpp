@@ -877,15 +877,16 @@ void LocalPlayer::attack(Being *target, bool keep)
 
     mLastActionTimer.set(ACTION_TIMEOUT);
 
-    setAction(ATTACK);
-
-    Net::getPlayerHandler()->attack(target->getId());
+    // The attack animation is played once the server reports the attack.
+    Net::getPlayerHandler()->attack(target->getId(), keep);
 }
 
 void LocalPlayer::stopAttack()
 {
     if (mTarget)
     {
+        if (mAction == ATTACK || mKeepAttacking)
+            Net::getPlayerHandler()->stopAttack();
         if (mAction == ATTACK)
             setAction(STAND);
         setTarget(nullptr);
