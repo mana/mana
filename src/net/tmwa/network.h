@@ -32,6 +32,7 @@
 #include <SDL_thread.h>
 
 #include <map>
+#include <memory>
 #include <string>
 
 /**
@@ -53,14 +54,14 @@ class Network
         ~Network();
 
         bool connect(const ServerInfo &server);
-
         void disconnect();
 
-        const ServerInfo &getServer() const
-        { return mServer; }
+        /**
+         * Returns the server that was last passed to connect().
+         */
+        const ServerInfo &getServer() const;
 
         void registerHandler(MessageHandler *handler);
-
         void unregisterHandler(MessageHandler *handler);
 
         void clearHandlers();
@@ -72,8 +73,6 @@ class Network
         const std::string &getError() const { return mError; }
 
         bool isConnected() const { return mState == CONNECTED; }
-
-        int getInSize() const { return mInSize; }
 
         void skip(int len);
 
@@ -94,19 +93,31 @@ class Network
         friend int networkThread(void *data);
         friend class MessageOut;
 
+        /**
+         * Shared between a Network and its worker thread while connecting.
+         * Since opening a connection can't be interrupted, the Network may
+         * decide to abandon the thread by clearing the back-reference.
+         */
+        struct ConnectRequest
+        {
+            ConnectRequest(const ServerInfo &server, Network *network)
+                : server(server)
+                , network(network)
+            {}
+
+            const ServerInfo server;
+            ThreadSafe<Network *> network;
+        };
+
         void setError(const std::string &error);
 
         uint16_t readWord(int pos);
 
         static const PacketInfo *findPacketInfo(uint16_t id);
 
-        bool realConnect();
-
         void receive();
 
         TCPsocket mSocket = nullptr;
-
-        ServerInfo mServer;
 
         char *mInBuffer, *mOutBuffer;
         unsigned int mInSize = 0;
@@ -118,6 +129,7 @@ class Network
         std::string mError;
 
         SDL_Thread *mWorkerThread = nullptr;
+        std::shared_ptr<ConnectRequest> mConnectRequest;
         Mutex mMutex;
 
         std::map<uint16_t, MessageHandler *> mMessageHandlers;

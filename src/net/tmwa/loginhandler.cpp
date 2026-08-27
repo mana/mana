@@ -238,6 +238,7 @@ bool LoginHandler::isConnected()
 
 void LoginHandler::disconnect()
 {
+    // The same connection is reused for the char and map servers
     if (mNetwork->getServer() == mServer)
         mNetwork->disconnect();
 }

@@ -231,10 +231,59 @@ const unsigned int BUFFER_SIZE = 65536;
 
 int networkThread(void *data)
 {
-    auto *network = static_cast<Network*>(data);
+    std::unique_ptr<std::shared_ptr<Network::ConnectRequest>> ref(
+                static_cast<std::shared_ptr<Network::ConnectRequest>*>(data));
+    Network::ConnectRequest &request = **ref;
+    const ServerInfo &server = request.server;
 
-    if (!network->realConnect())
-        return -1;
+    // Resolve and connect without touching the Network, since it may be
+    // destroyed in the meantime
+    IPaddress ipAddress;
+    TCPsocket socket = nullptr;
+    std::string error;
+
+    if (SDLNet_ResolveHost(&ipAddress, server.hostname.c_str(),
+                           server.port) == -1)
+    {
+        error = strprintf(_("Unable to resolve host \"%s\""),
+                          server.hostname.c_str());
+        Log::info("SDLNet_ResolveHost: %s", error.c_str());
+    }
+    else
+    {
+        socket = SDLNet_TCP_Open(&ipAddress);
+        if (!socket)
+        {
+            error = SDLNet_GetError();
+            Log::info("Error in SDLNet_TCP_Open(): %s", error.c_str());
+        }
+    }
+
+    Network *network;
+    {
+        auto lockedNetwork = request.network.lock();
+        network = *lockedNetwork;
+
+        if (!network)
+        {
+            // The connection was abandoned
+            if (socket)
+                SDLNet_TCP_Close(socket);
+            return 0;
+        }
+
+        if (!socket)
+        {
+            network->setError(error);
+            return -1;
+        }
+
+        Log::info("Network::Started session with %s:%i",
+                  ipToString(ipAddress.host), ipAddress.port);
+
+        network->mSocket = socket;
+        network->mState = Network::CONNECTED;
+    }
 
     network->receive();
 
@@ -251,10 +300,7 @@ Network::Network():
 Network::~Network()
 {
     clearHandlers();
-
-    if (mState != IDLE && mState != NET_ERROR)
-        disconnect();
-
+    disconnect();
 
     delete[] mInBuffer;
     delete[] mOutBuffer;
@@ -280,18 +326,23 @@ bool Network::connect(const ServerInfo &server)
     Log::info("Network::Connecting to %s:%i", server.hostname.c_str(),
                                               server.port);
 
-    mServer.hostname = server.hostname;
-    mServer.port = server.port;
-
     // Reset to sane values
     mOutSize = 0;
     mInSize = 0;
     mToSkip = 0;
 
+    mConnectRequest = std::make_shared<ConnectRequest>(server, this);
+
+    // The thread holds its own reference, so that the request outlives the
+    // Network when the thread is abandoned
+    auto *ref = new std::shared_ptr<ConnectRequest>(mConnectRequest);
+
     mState = CONNECTING;
-    mWorkerThread = SDL_CreateThread(networkThread, "Network", this);
+    mWorkerThread = SDL_CreateThread(networkThread, "Network", ref);
     if (!mWorkerThread)
     {
+        delete ref;
+        mConnectRequest.reset();
         setError("Unable to create network worker thread");
         return false;
     }
@@ -301,19 +352,44 @@ bool Network::connect(const ServerInfo &server)
 
 void Network::disconnect()
 {
-    mState = IDLE;
-
     if (mWorkerThread)
     {
-        SDL_WaitThread(mWorkerThread, nullptr);
+        bool abandon;
+        {
+            // Opening a connection can take very long and can't be
+            // interrupted, so rather than waiting for it, the thread is
+            // abandoned and closes the socket itself once it is done.
+            auto network = mConnectRequest->network.lock();
+            abandon = mState == CONNECTING;
+            if (abandon)
+                *network = nullptr;
+
+            // Makes the receive loop exit
+            mState = IDLE;
+        }
+
+        if (abandon)
+            SDL_DetachThread(mWorkerThread);
+        else
+            SDL_WaitThread(mWorkerThread, nullptr);
+
         mWorkerThread = nullptr;
+        mConnectRequest.reset();
     }
+
+    mState = IDLE;
 
     if (mSocket)
     {
         SDLNet_TCP_Close(mSocket);
         mSocket = nullptr;
     }
+}
+
+const ServerInfo &Network::getServer() const
+{
+    static const ServerInfo noServer;
+    return mConnectRequest ? mConnectRequest->server : noServer;
 }
 
 void Network::registerHandler(MessageHandler *handler)
@@ -457,38 +533,6 @@ void Network::skip(int len)
         mToSkip -= mInSize;
         mInSize = 0;
     }
-}
-
-bool Network::realConnect()
-{
-    IPaddress ipAddress;
-
-    if (SDLNet_ResolveHost(&ipAddress, mServer.hostname.c_str(),
-                           mServer.port) == -1)
-    {
-        std::string errorMessage = strprintf(_("Unable to resolve host \"%s\""),
-                                             mServer.hostname.c_str());
-        setError(errorMessage);
-        Log::info("SDLNet_ResolveHost: %s", errorMessage.c_str());
-        return false;
-    }
-
-    mState = CONNECTING;
-
-    mSocket = SDLNet_TCP_Open(&ipAddress);
-    if (!mSocket)
-    {
-        Log::info("Error in SDLNet_TCP_Open(): %s", SDLNet_GetError());
-        setError(SDLNet_GetError());
-        return false;
-    }
-
-    Log::info("Network::Started session with %s:%i",
-              ipToString(ipAddress.host), ipAddress.port);
-
-    mState = CONNECTED;
-
-    return true;
 }
 
 void Network::receive()
