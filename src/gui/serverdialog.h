@@ -25,6 +25,7 @@
 
 #include "net/download.h"
 #include "net/serverinfo.h"
+#include "net/serverstatus.h"
 #include "utils/xml.h"
 
 #include <guichan/actionlistener.hpp>
@@ -32,6 +33,7 @@
 #include <guichan/listmodel.hpp>
 #include <guichan/selectionlistener.hpp>
 
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -70,9 +72,23 @@ class ServersListModel : public gcn::ListModel
 
         void setVersionString(int index, const std::string &version);
 
+        /**
+         * Starts probing the status of any servers that have not been
+         * probed yet.
+         */
+        void checkServerStatus();
+
+        /**
+         * Processes the status probes. Should be called regularly.
+         */
+        void updateServerStatus();
+
+        ServerStatus getServerStatus(int elementIndex) const;
+
     private:
         ServerInfos *mServers;
         std::vector<VersionString> mVersionStrings;
+        std::map<std::string, std::unique_ptr<ServerStatusChecker>> mStatusCheckers;
 };
 
 /**

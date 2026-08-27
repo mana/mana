@@ -310,6 +310,8 @@ set(SRCS
     net/partyhandler.h
     net/playerhandler.h
     net/serverinfo.h
+    net/serverstatus.cpp
+    net/serverstatus.h
     net/abilityhandler.h
     net/tradehandler.h
     net/worldinfo.h

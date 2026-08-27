@@ -24,6 +24,7 @@
 #include "chatlogger.h"
 #include "client.h"
 #include "configuration.h"
+#include "graphics.h"
 #include "gui.h"
 #include "log.h"
 
@@ -37,6 +38,7 @@
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
+#include "resources/image.h"
 #include "resources/theme.h"
 
 #include "utils/gettext.h"
@@ -79,6 +81,36 @@ void ServersListModel::setVersionString(int index, const std::string &version)
     }
 }
 
+static std::string serverStatusKey(const ServerInfo &server)
+{
+    return server.hostname + ":" + toString(server.port) + ":"
+            + toString(static_cast<int>(server.type));
+}
+
+void ServersListModel::checkServerStatus()
+{
+    for (const auto &server : *mServers)
+    {
+        const std::string key = serverStatusKey(server);
+        if (mStatusCheckers.find(key) == mStatusCheckers.end())
+            mStatusCheckers[key] = std::make_unique<ServerStatusChecker>(server);
+    }
+}
+
+void ServersListModel::updateServerStatus()
+{
+    for (auto &[_, checker] : mStatusCheckers)
+        checker->update();
+}
+
+ServerStatus ServersListModel::getServerStatus(int elementIndex) const
+{
+    auto it = mStatusCheckers.find(serverStatusKey(mServers->at(elementIndex)));
+    if (it == mStatusCheckers.end())
+        return {};
+    return it->second->getStatus();
+}
+
 class ServersListBox : public ListBox
 {
 public:
@@ -87,16 +119,28 @@ public:
     {
     }
 
-    void draw(gcn::Graphics *graphics) override
+    void draw(gcn::Graphics *gcnGraphics) override
     {
         if (!mListModel)
             return;
 
         auto *model = static_cast<ServersListModel*>(mListModel);
+        auto *graphics = static_cast<Graphics *>(gcnGraphics);
 
         graphics->setFont(getFont());
 
         const int height = getRowHeight();
+        const int fontHeight = getFont()->getHeight();
+
+        auto theme = gui->getTheme();
+        auto onlineIcon = theme->getIcon("online");
+        auto offlineIcon = theme->getIcon("offline");
+
+        // Reserve space for the status icon on every row, so that the text
+        // does not shift once a probe completes
+        int textX = 2;
+        if (onlineIcon)
+            textX += 2 + onlineIcon->getWidth() + 6;
 
         // Draw filled rectangle around the selected list element
         if (mSelected >= 0)
@@ -119,17 +163,29 @@ public:
             else
                 graphics->setColor(Theme::getThemeColor(Theme::TEXT));
 
+            const ServerStatus status = model->getServerStatus(i);
+
+            const Image *icon = offlineIcon;
+            if (status.state == ServerStatus::State::Online)
+                icon = onlineIcon;
+
+            if (icon)
+            {
+                graphics->drawImage(icon, 4,
+                                    y + (fontHeight - icon->getHeight()) / 2);
+            }
+
             if (!info.name.empty())
             {
                 graphics->setFont(boldFont);
-                graphics->drawText(info.name, 2, y);
+                graphics->drawText(info.name, textX, y);
             }
 
             graphics->setFont(getFont());
 
             int top = y + height / 2;
 
-            graphics->drawText(model->getElementAt(i), 2, top);
+            graphics->drawText(model->getElementAt(i), textX, top);
 
             if (info.version.first > 0)
             {
@@ -159,6 +215,7 @@ ServerDialog::ServerDialog(ServerInfo *serverInfo, const std::string &dir):
     loadCustomServers();
 
     mServersListModel = std::make_unique<ServersListModel>(&mServers);
+    mServersListModel->checkServerStatus();
     mServersList = new ServersListBox(mServersListModel.get());
 
     auto *usedScroll = new ScrollArea(mServersList);
@@ -348,6 +405,8 @@ void ServerDialog::logic()
 {
     Window::logic();
 
+    mServersListModel->updateServerStatus();
+
     if (mDownloadDone)
         return;
 
@@ -370,6 +429,7 @@ void ServerDialog::logic()
     case DownloadStatus::Complete:
         mDownloadDone = true;
         loadServers();
+        mServersListModel->checkServerStatus();
 
         if (mServers.empty())
         {
@@ -540,6 +600,7 @@ void ServerDialog::saveCustomServers(const ServerInfo &currentServer, int index)
     }
 
     config.servers = mServers;
+    mServersListModel->checkServerStatus();
 
     // Restore the correct description
     if (index < 0)
