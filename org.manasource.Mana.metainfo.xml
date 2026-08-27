@@ -21,6 +21,10 @@
     </p>
   </description>
   <url type="homepage">https://manasource.org/</url>
+  <branding>
+    <color type="primary" scheme_preference="light">#26354d</color>
+    <color type="primary" scheme_preference="dark">#3b4a66</color>
+  </branding>
   <releases>
    <release version="0.8.0" type="stable" date="2026-08-27">
      <description>
