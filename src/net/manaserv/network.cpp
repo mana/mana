@@ -24,19 +24,19 @@
 #include "log.h"
 
 #include "net/manaserv/connection.h"
+#include "net/manaserv/enethost.h"
 #include "net/manaserv/internal.h"
 #include "net/manaserv/messagehandler.h"
 #include "net/manaserv/messagein.h"
 
-#include <enet/enet.h>
-
 #include <map>
+#include <memory>
 
 /**
  * The local host which is shared for all outgoing connections.
  */
 namespace {
-    ENetHost *client;
+    std::unique_ptr<ManaServ::EnetHost> client;
 }
 
 namespace ManaServ
@@ -46,14 +46,9 @@ static std::map<unsigned short, MessageHandler *> mMessageHandlers;
 
 void initialize()
 {
-    if (enet_initialize())
-    {
-        Log::critical("Failed to initialize ENet.");
-    }
+    client = std::make_unique<EnetHost>(3);
 
-    client = enet_host_create(nullptr, 3, 0, 0, 0);
-
-    if (!client)
+    if (!*client)
     {
         Log::critical("Failed to create the local host.");
     }
@@ -71,7 +66,7 @@ void finalize()
     }
 
     clearNetworkHandlers();
-    enet_deinitialize();
+    client.reset();
 }
 
 Connection *getConnection()
@@ -82,7 +77,7 @@ Connection *getConnection()
                       "initializing the network subsystem!");
     }
 
-    return new Connection(client);
+    return new Connection(client->get());
 }
 
 void registerHandler(MessageHandler *handler)
@@ -137,7 +132,7 @@ void flush()
     ENetEvent event;
 
     // Check if there are any new events
-    while (enet_host_service(client, &event, 0) > 0)
+    while (enet_host_service(client->get(), &event, 0) > 0)
     {
         switch (event.type)
         {
