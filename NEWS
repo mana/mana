@@ -43,7 +43,6 @@
 - Fixed issues with particle effects in some locales
 - Fixed update flow aborting when news.txt fails to download
 - Fixed customdata archives not being loaded (regression in 0.7)
-- Fixed drag-n-drop moving the wrong item while a search filter is active
 - Fixed scrolling range and item display order when using inventory search filter
 - Fixed target reachability indicator after switching arrows
 - Fixed decorative NPCs and monsters being selectable despite targetSelection="false"
