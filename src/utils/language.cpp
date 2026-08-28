@@ -233,9 +233,9 @@ void initInternationalization()
 
     // When running the client from the build directory, use the catalogs
     // compiled there rather than any that may be installed system-wide.
-    const auto buildDir = std::filesystem::path(BUILD_DIR).generic_string();
-    if (std::filesystem::path(basePath).generic_string().rfind(buildDir, 0) == 0)
-        localeDir = buildDir + "po/locale";
+    const auto buildLocaleDir = std::filesystem::path(basePath) / ".." / "po" / "locale";
+    if (std::filesystem::is_directory(buildLocaleDir))
+        localeDir = buildLocaleDir.lexically_normal().generic_string();
 
     bindtextdomain("mana", localeDir.c_str());
     bind_textdomain_codeset("mana", "UTF-8");
