@@ -175,7 +175,8 @@ class OfflineHandler final : public Net::GeneralHandler,
         void buy(int beingId) override {}
         void sell(int beingId) override {}
         void buyItem(int beingId, int itemId, int amount) override {}
-        void sellItem(int beingId, int itemId, int amount) override {}
+        void sellItems(int beingId,
+                       const std::vector<Net::SellItem> &items) override {}
         // talk(int) doesn't conflict with ChatHandler::talk(string)
         void talk(int npcId) override {}
         void nextDialog(int npcId) override {}

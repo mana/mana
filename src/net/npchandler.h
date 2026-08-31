@@ -22,8 +22,18 @@
 #pragma once
 
 #include <iosfwd>
+#include <vector>
 
 namespace Net {
+
+/**
+ * An item to sell, as part of a sell request.
+ */
+struct SellItem
+{
+    int itemIndex;      /**< Inventory index (item ID on ManaServ). */
+    int amount;
+};
 
 class NpcHandler
 {
@@ -36,7 +46,8 @@ class NpcHandler
 
         virtual void buyItem(int beingId, int itemId, int amount) = 0;
 
-        virtual void sellItem(int beingId, int itemId, int amount) = 0;
+        virtual void sellItems(int beingId,
+                               const std::vector<SellItem> &items) = 0;
 
         virtual void talk(int npcId) = 0;
 

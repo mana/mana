@@ -149,12 +149,16 @@ void NpcHandler::buyItem(int beingId, int itemId, int amount)
     gameServerConnection->send(msg);
 }
 
-void NpcHandler::sellItem(int beingId, int itemId, int amount)
+void NpcHandler::sellItems(int beingId, const std::vector<Net::SellItem> &items)
 {
-    MessageOut msg(PGMSG_NPC_BUYSELL);
-    msg.writeInt16(itemId);
-    msg.writeInt16(amount);
-    gameServerConnection->send(msg);
+    // ManaServ has no batched sell message, so send one message per item.
+    for (const auto &item : items)
+    {
+        MessageOut msg(PGMSG_NPC_BUYSELL);
+        msg.writeInt16(item.itemIndex);
+        msg.writeInt16(item.amount);
+        gameServerConnection->send(msg);
+    }
 }
 
 void NpcHandler::talk(int npcId)

@@ -40,7 +40,8 @@ class NpcHandler final : public MessageHandler, public Net::NpcHandler
 
         void buyItem(int beingId, int itemId, int amount) override;
 
-        void sellItem(int beingId, int itemId, int amount) override;
+        void sellItems(int beingId,
+                       const std::vector<Net::SellItem> &items) override;
 
         void talk(int npcId) override;
 

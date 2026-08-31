@@ -188,12 +188,15 @@ void NpcHandler::buyItem(int beingId, int itemId, int amount)
     outMsg.writeInt16(itemId);
 }
 
-void NpcHandler::sellItem(int beingId, int itemId, int amount)
+void NpcHandler::sellItems(int beingId, const std::vector<Net::SellItem> &items)
 {
     auto outMsg = sendMessage(CMSG_NPC_SELL_REQUEST);
-    outMsg.writeInt16(8); // One item (length of packet)
-    outMsg.writeInt16(itemId + INVENTORY_OFFSET);
-    outMsg.writeInt16(amount);
+    outMsg.writeInt16(4 + items.size() * 4); // Length of packet
+    for (const auto &item : items)
+    {
+        outMsg.writeInt16(item.itemIndex + INVENTORY_OFFSET);
+        outMsg.writeInt16(item.amount);
+    }
 }
 
 void NpcHandler::talk(int npcId)

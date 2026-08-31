@@ -193,24 +193,28 @@ void SellDialog::action(const gcn::ActionEvent &event)
     {
         // Attempt sell
         ShopItem *item = mShopItems->at(selectedItem);
-        int sellCount, itemIndex;
-        mPlayerMoney +=
-            mAmountItems * mShopItems->at(selectedItem)->getPrice();
+        mPlayerMoney += mAmountItems * item->getPrice();
         mMaxItems -= mAmountItems;
+
+        // Unstackable items occupy an inventory slot each, so the sale may
+        // span several of them. They are sold in a single request.
+        std::vector<Net::SellItem> items;
         while (mAmountItems > 0)
         {
             // This order is important, item->getCurrentInvIndex() would return
             // the inventory index of the next Duplicate otherwise.
-            itemIndex = item->getCurrentInvIndex();
-            sellCount = item->sellCurrentDuplicate(mAmountItems);
+            int itemIndex = item->getCurrentInvIndex();
+            int sellCount = item->sellCurrentDuplicate(mAmountItems);
 
             // For Manaserv, the Item id is to be given as index.
             if ((Net::getNetworkType() == ServerType::ManaServ))
                 itemIndex = item->getId();
 
-            Net::getNpcHandler()->sellItem(mNpcId, itemIndex, sellCount);
+            items.push_back({itemIndex, sellCount});
             mAmountItems -= sellCount;
         }
+
+        Net::getNpcHandler()->sellItems(mNpcId, items);
 
         mAmountItems = 1;
         mSlider->setValue(0);
