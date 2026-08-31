@@ -709,8 +709,30 @@ if(APPLE)
 
   set(CPACK_GENERATOR "DRAGNDROP")
 
+  # sdl2-compat loads SDL3 at runtime, so fixup_bundle does not see the
+  # dependency. Bundle libSDL3.dylib next to libSDL2, where sdl2-compat finds
+  # it through its @loader_path/libSDL3.dylib fallback.
+  set(BUNDLE_EXTRA_LIBS "")
+  foreach(_sdl2_library ${SDL2_LINK_LIBRARIES})
+    if(_sdl2_library MATCHES "libSDL2[-.]")
+      file(STRINGS "${_sdl2_library}" _sdl2_compat REGEX "sdl2-compat" LIMIT_COUNT 1)
+      if(_sdl2_compat)
+        get_filename_component(_sdl2_library_dir "${_sdl2_library}" DIRECTORY)
+        find_library(SDL3_LIBRARY NAMES SDL3 HINTS "${_sdl2_library_dir}")
+        if(NOT SDL3_LIBRARY)
+          message(FATAL_ERROR "SDL2 is provided by sdl2-compat, but libSDL3 was not found")
+        endif()
+        get_filename_component(SDL3_LIBRARY_REAL "${SDL3_LIBRARY}" REALPATH)
+        install(FILES "${SDL3_LIBRARY_REAL}"
+                DESTINATION Mana.app/Contents/Frameworks
+                RENAME libSDL3.dylib)
+        set(BUNDLE_EXTRA_LIBS "\${CMAKE_INSTALL_PREFIX}/Mana.app/Contents/Frameworks/libSDL3.dylib")
+      endif()
+    endif()
+  endforeach()
+
   install(
     CODE "include(BundleUtilities)
-      fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/Mana.app\" \"\" \"/usr/local/lib;/opt/homebrew/lib\")"
+      fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/Mana.app\" \"${BUNDLE_EXTRA_LIBS}\" \"/usr/local/lib;/opt/homebrew/lib\")"
   )
 endif()
