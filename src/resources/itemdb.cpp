@@ -324,6 +324,7 @@ void ItemDB::loadCommonRef(ItemInfo &itemInfo, XML::Node node, const std::string
     std::string typeStr = node.getProperty("type", "other");
     itemInfo.type = itemTypeFromString(typeStr);
     node.attribute("weight", itemInfo.weight);
+    node.attribute("sellProtected", itemInfo.sellProtected);
 
     for (auto itemChild : node.children())
     {

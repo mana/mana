@@ -26,6 +26,7 @@
 #include "shopitem.h"
 #include "units.h"
 
+#include "gui/confirmdialog.h"
 #include "gui/setup.h"
 
 #include "gui/widgets/button.h"
@@ -118,6 +119,13 @@ SellDialog::SellDialog(int npcId):
 
 SellDialog::~SellDialog()
 {
+    if (mConfirmDialog)
+    {
+        mConfirmDialog->removeActionListener(this);
+        mConfirmDialog->close();
+        mConfirmDialog->scheduleDelete();
+    }
+
     delete mShopItems;
 
     instances.remove(this);
@@ -156,6 +164,14 @@ void SellDialog::action(const gcn::ActionEvent &event)
         return;
     }
 
+    if (event.getId() == "yes" || event.getId() == "no")
+    {
+        mConfirmDialog = nullptr;
+        if (event.getId() == "yes")
+            sellSelectedItems();
+        return;
+    }
+
     int selectedItem = mShopItemList->getSelected();
 
     // The following actions require a valid item selection
@@ -191,53 +207,76 @@ void SellDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "sell" && mAmountItems > 0
             && mAmountItems <= mMaxItems)
     {
-        // Attempt sell
-        ShopItem *item = mShopItems->at(selectedItem);
-        mPlayerMoney += mAmountItems * item->getPrice();
-        mMaxItems -= mAmountItems;
-
-        // Unstackable items occupy an inventory slot each, so the sale may
-        // span several of them. They are sold in a single request.
-        std::vector<Net::SellItem> items;
-        while (mAmountItems > 0)
+        const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
+        if (info.sellProtected)
         {
-            // This order is important, item->getCurrentInvIndex() would return
-            // the inventory index of the next Duplicate otherwise.
-            int itemIndex = item->getCurrentInvIndex();
-            int sellCount = item->sellCurrentDuplicate(mAmountItems);
-
-            // For Manaserv, the Item id is to be given as index.
-            if ((Net::getNetworkType() == ServerType::ManaServ))
-                itemIndex = item->getId();
-
-            items.push_back({itemIndex, sellCount});
-            mAmountItems -= sellCount;
-        }
-
-        Net::getNpcHandler()->sellItems(mNpcId, items);
-
-        mAmountItems = 1;
-        mSlider->setValue(0);
-
-        if (!mMaxItems)
-        {
-            // All were sold
-            mShopItemList->setSelected(-1);
-            delete mShopItems->at(selectedItem);
-            mShopItems->erase(selectedItem);
-
-            gcn::Rectangle scroll;
-            scroll.y = mShopItemList->getRowHeight() * (selectedItem + 1);
-            scroll.height = mShopItemList->getRowHeight();
-            mShopItemList->showPart(scroll);
+            std::string msg = strprintf(_("Do you really want to sell %s?"),
+                                        info.name.c_str());
+            mConfirmDialog = new ConfirmDialog(_("Sell Item?"), msg, this);
+            mConfirmDialog->addActionListener(this);
         }
         else
         {
-            mSlider->gcn::Slider::setScale(1, mMaxItems);
-            // Update only when there are items left, the entry doesn't exist
-            // otherwise and can't be updated
-            updateButtonsAndLabels();
+            sellSelectedItems();
         }
+    }
+}
+
+void SellDialog::sellSelectedItems()
+{
+    const int selectedItem = mShopItemList->getSelected();
+    if (selectedItem == -1 ||
+            selectedItem >= (int) mShopItems->getNumberOfElements() ||
+            mAmountItems <= 0 || mAmountItems > mMaxItems)
+    {
+        return;
+    }
+
+    ShopItem *item = mShopItems->at(selectedItem);
+    mPlayerMoney += mAmountItems * item->getPrice();
+    mMaxItems -= mAmountItems;
+
+    // Unstackable items occupy an inventory slot each, so the sale may
+    // span several of them. They are sold in a single request.
+    std::vector<Net::SellItem> items;
+    while (mAmountItems > 0)
+    {
+        // This order is important, item->getCurrentInvIndex() would return
+        // the inventory index of the next Duplicate otherwise.
+        int itemIndex = item->getCurrentInvIndex();
+        int sellCount = item->sellCurrentDuplicate(mAmountItems);
+
+        // For Manaserv, the Item id is to be given as index.
+        if ((Net::getNetworkType() == ServerType::ManaServ))
+            itemIndex = item->getId();
+
+        items.push_back({itemIndex, sellCount});
+        mAmountItems -= sellCount;
+    }
+
+    Net::getNpcHandler()->sellItems(mNpcId, items);
+
+    mAmountItems = 1;
+    mSlider->setValue(0);
+
+    if (!mMaxItems)
+    {
+        // All were sold
+        mShopItemList->setSelected(-1);
+        delete mShopItems->at(selectedItem);
+        mShopItems->erase(selectedItem);
+
+        gcn::Rectangle scroll;
+        scroll.y = mShopItemList->getRowHeight() * (selectedItem + 1);
+        scroll.height = mShopItemList->getRowHeight();
+        mShopItemList->showPart(scroll);
+    }
+    else
+    {
+        mSlider->gcn::Slider::setScale(1, mMaxItems);
+        // Update only when there are items left, the entry doesn't exist
+        // otherwise and can't be updated
+        updateButtonsAndLabels();
     }
 }
 

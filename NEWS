@@ -1,4 +1,5 @@
 Unreleased
+- Added support for the sellProtected item attribute, which asks for confirmation before selling
 - Sell unstackable items to an NPC in a single request, instead of one per item
 - Fixed double-click in empty area of the server list triggering connect
 

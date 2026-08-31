@@ -26,6 +26,7 @@
 #include <guichan/actionlistener.hpp>
 #include <guichan/selectionlistener.hpp>
 
+class ConfirmDialog;
 class Item;
 class ShopItems;
 class ShopListBox;
@@ -93,6 +94,11 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
          */
         void updateButtonsAndLabels();
 
+        /**
+         * Sells the selected amount of the currently selected item.
+         */
+        void sellSelectedItems();
+
         int mNpcId;
 
         gcn::Button *mSellButton;
@@ -107,6 +113,7 @@ class SellDialog : public Window, gcn::ActionListener, gcn::SelectionListener
         gcn::Slider *mSlider;
 
         ShopItems *mShopItems;
+        ConfirmDialog *mConfirmDialog = nullptr;
         int mPlayerMoney = 0;
 
         int mMaxItems = 0;

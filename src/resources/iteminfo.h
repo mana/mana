@@ -134,6 +134,9 @@ public:
     bool equippable = false;            /**< Whether this item can be equipped. */
     bool activatable = false;           /**< Whether this item can be activated. */
 
+    /** Whether to ask for confirmation before selling this item. */
+    bool sellProtected = false;
+
     ItemType type = ITEM_UNUSABLE;      /**< Item type. */
 
     std::vector<Replacement> replacements;
