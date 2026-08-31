@@ -121,6 +121,14 @@ macos-build:
     # project version, and a stable name gives the latest artifact a stable
     # download URL usable on the website
     - mv Mana-*.dmg ../Mana.dmg
+    # Smoke test the packaged app with Homebrew's libraries hidden from
+    # dyld's fallback search, to make sure the bundle also launches on
+    # machines without them (this catches libraries missing from the
+    # bundle, which abort at load time)
+    - hdiutil attach ../Mana.dmg -mountpoint "/tmp/mana-smoke-$CI_JOB_ID" -nobrowse
+    - DYLD_FALLBACK_LIBRARY_PATH=/usr/lib "/tmp/mana-smoke-$CI_JOB_ID/Mana.app/Contents/MacOS/Mana" --version
+  after_script:
+    - hdiutil detach "/tmp/mana-smoke-$CI_JOB_ID" -force || true
   artifacts:
     name: "macos-dmg-$CI_COMMIT_REF_SLUG"
     paths:
