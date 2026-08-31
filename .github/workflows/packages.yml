@@ -137,6 +137,12 @@ jobs:
       - name: Install (${{ matrix.arch }})
         run: cmake --install build --prefix $PWD/install
 
+      - name: Smoke test bundle (${{ matrix.arch }})
+        # Hide Homebrew's libraries from dyld's fallback search to make sure
+        # the bundle also launches on machines without them (this catches
+        # libraries missing from the bundle, which abort at load time)
+        run: DYLD_FALLBACK_LIBRARY_PATH=/usr/lib install/Mana.app/Contents/MacOS/Mana --version
+
       - name: Archive bundle (${{ matrix.arch }})
         run: tar -czf Mana-${{ matrix.arch }}.tar.gz -C install Mana.app
 
