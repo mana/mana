@@ -117,7 +117,12 @@ jobs:
       - name: Install dependencies (${{ matrix.arch }})
         run: |
           brew update
-          brew upgrade
+          # Tolerate failure, since upgrading unrelated pre-installed packages
+          # fails on the Intel runners now that they are a Homebrew Tier 3
+          # configuration without bottles for some of them. The packages we
+          # need are still upgraded, by this command or by the brew install
+          # below.
+          brew upgrade || true
           brew install \
             enet \
             guichan \
