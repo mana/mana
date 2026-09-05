@@ -207,16 +207,16 @@
   <progressbar id="DEFAULT" color="#969696" />
   <progressbar id="HP" color="#b80000" />
   <progressbar id="HP_SMALL" color="#ff0000,ffff00,00ff00"/>
-  <progressbar id="HP_POISON" color="#ffff00,70ff00,50ff00,30ff00" />
+  <!-- <progressbar id="HP_POISON" color="#ffff00,70ff00,50ff00,30ff00" /> -->
   <progressbar id="MP" color="#1a66e6" />
   <progressbar id="NO_MP" color="#646464" />
   <progressbar id="EXP" color="#8fc0d3" />
   <progressbar id="INVY_SLOTS" color="#e1c819" />
   <progressbar id="WEIGHT" color="#0000ff,ffff00,ff0000" />
   <progressbar id="JOB" color="#e187cb" />
-  <progressbar id="MONEY" color="#e1c819" />
-  <progressbar id="ARROWS" color="#e1c819" />
-  <progressbar id="STATUS" color="#8fc0d3" />
+  <!-- <progressbar id="MONEY" color="#e1c819" /> -->
+  <!-- <progressbar id="ARROWS" color="#e1c819" /> -->
+  <!-- <progressbar id="STATUS" color="#8fc0d3" /> -->
 
   <skin type="Window" frameSize="0" padding="10" titleBarHeight="33" titleOffsetX="20" titleOffsetY="8">
     <state>

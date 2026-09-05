@@ -167,7 +167,7 @@
     <text color="#97ff9f" outlineColor="#112211" />
   </progressbar>
   <progressbar id="HP_SMALL" color="#ff0000,ffff00,00ff00"/>
-  <progressbar id="HP_POISON" color="#ffff00,70ff00,50ff00,30ff00" />
+  <!-- <progressbar id="HP_POISON" color="#ffff00,70ff00,50ff00,30ff00" /> -->
   <progressbar id="MP" color="#1250b0">
     <text color="#9dcfff" outlineColor="#111122" />
   </progressbar>
@@ -186,15 +186,15 @@
   <progressbar id="JOB" color="#b86ea6">
     <text color="#ffa0a0" outlineColor="#221111" />
   </progressbar>
-  <progressbar id="MONEY" color="#606060">
+  <!-- <progressbar id="MONEY" color="#606060">
     <text color="#f9eabc" outlineColor="#111111" />
-  </progressbar>
-  <progressbar id="ARROWS" color="#e1c819">
+  </progressbar> -->
+  <!-- <progressbar id="ARROWS" color="#e1c819">
     <text color="#f9eabc" outlineColor="#111111" />
-  </progressbar>
-  <progressbar id="STATUS" color="#888808">
+  </progressbar> -->
+  <!-- <progressbar id="STATUS" color="#888808">
     <text color="#f9eabc" outlineColor="#111111" />
-  </progressbar>
+  </progressbar> -->
 
   <skin type="Window" frameSize="0" padding="7" titleBarHeight="31" titleOffsetX="14" titleOffsetY="6">
     <state>
