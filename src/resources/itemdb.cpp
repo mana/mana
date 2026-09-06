@@ -291,6 +291,14 @@ void ItemDB::unload()
     mLoaded = false;
 }
 
+template <class T>
+static void checkParameter(int id, const char *attribute, const T &value)
+{
+    if (value == T())
+        Log::info("ItemDB: Missing %s attribute for item id %d!",
+                  attribute, id);
+}
+
 void ItemDB::loadCommonRef(ItemInfo &itemInfo, XML::Node node, const std::string &filename)
 {
     node.attribute("id", itemInfo.id);
@@ -321,10 +329,20 @@ void ItemDB::loadCommonRef(ItemInfo &itemInfo, XML::Node node, const std::string
                                                     paths.criticalHitEffectId);
 
     // Load Ta Item Type
-    std::string typeStr = node.getProperty("type", "other");
+    std::string typeStr = node.getProperty("type", std::string());
     itemInfo.type = itemTypeFromString(typeStr);
     node.attribute("weight", itemInfo.weight);
     node.attribute("sellProtected", itemInfo.sellProtected);
+
+    // Items without a type are sprite carriers spawned by spells, which
+    // intentionally omit these attributes.
+    if (itemInfo.id >= 0 && !typeStr.empty())
+    {
+        checkParameter(itemInfo.id, "name", itemInfo.name);
+        checkParameter(itemInfo.id, "description", itemInfo.description);
+        checkParameter(itemInfo.id, "image", itemInfo.display.image);
+        checkParameter(itemInfo.id, "weight", itemInfo.weight);
+    }
 
     for (auto itemChild : node.children())
     {
@@ -369,32 +387,12 @@ void ItemDB::addItem(ItemInfo *itemInfo)
     }
 }
 
-template <class T>
-static void checkParameter(int id, const T param, const T errorValue)
-{
-    if (param == errorValue)
-    {
-        std::stringstream errMsg;
-        errMsg << "ItemDB: Missing " << param << " attribute for item id "
-               << id << "!";
-        Log::info("%s", errMsg.str().c_str());
-    }
-}
-
 void ItemDB::checkItemInfo(ItemInfo &itemInfo)
 {
-    int id = itemInfo.id;
     if (!itemInfo.attackAction.empty())
         if (itemInfo.attackRange == 0)
-            Log::info("ItemDB: Missing attack range from weapon %i!", id);
-
-    if (id >= 0)
-    {
-        checkParameter(id, itemInfo.name, std::string());
-        checkParameter(id, itemInfo.description, std::string());
-        checkParameter(id, itemInfo.display.image, std::string());
-        checkParameter(id, itemInfo.weight, 0);
-    }
+            Log::info("ItemDB: Missing attack range from weapon %i!",
+                      itemInfo.id);
 }
 
 namespace TmwAthena {
@@ -519,9 +517,6 @@ void TaItemDB::checkStatus()
 void TaItemDB::checkItemInfo(ItemInfo &itemInfo)
 {
     ItemDB::checkItemInfo(itemInfo);
-
-    // Check for unusable items?
-    //checkParameter(id, itemInfo->mType, 0);
 }
 
 }; // namespace TmwAthena
