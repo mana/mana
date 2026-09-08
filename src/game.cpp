@@ -87,7 +87,6 @@
 
 #include <cassert>
 #include <fstream>
-#include <sstream>
 
 Joystick *joystick;
 
@@ -296,8 +295,8 @@ static bool saveScreenshot()
     }
 
     // Search for an unused screenshot name
-    std::ostringstream filenameSuffix;
-    std::ostringstream filename;
+    std::string filenameSuffix;
+    std::string filename;
     std::ifstream testExists;
     std::string screenshotDirectory = Client::getScreenshotDirectory();
     bool found = false;
@@ -313,24 +312,22 @@ static bool saveScreenshot()
     do
     {
         screenshotCount++;
-        filenameSuffix.str(std::string());
-        filenameSuffix << branding.name()
-                       << "_Screenshot_" << screenshotCount << ".png";
-        filename.str(std::string());
-        filename << screenshotDirectory << "/" << filenameSuffix.str();
-        testExists.open(filename.str());
+        filenameSuffix = fmt::format("{}_Screenshot_{}.png",
+                                     branding.name(), screenshotCount);
+        filename = screenshotDirectory + "/" + filenameSuffix;
+        testExists.open(filename);
         found = !testExists.is_open();
         testExists.close();
     }
     while (!found);
 
-    const bool success = IMG_SavePNG(screenshot, filename.str().c_str()) == 0;
+    const bool success = IMG_SavePNG(screenshot, filename.c_str()) == 0;
 
     if (success)
     {
         std::string screenshotLink = fmt::format("@@screenshot:{}|{}@@",
-                                                 filenameSuffix.str(),
-                                                 filenameSuffix.str());
+                                                 filenameSuffix,
+                                                 filenameSuffix);
         serverNotice(strformat(_("Screenshot saved as {}"),
                                screenshotLink));
     }

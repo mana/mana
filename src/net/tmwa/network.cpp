@@ -31,7 +31,6 @@
 #include "utils/stringutils.h"
 
 #include <cassert>
-#include <sstream>
 #include <unordered_map>
 
 namespace TmwAthena {
@@ -608,10 +607,9 @@ void Network::receive()
             default:
                 // more than one socket is ready..
                 // this should not happen since we only listen once socket.
-                std::stringstream errorStream;
-                errorStream << "Error in SDLNet_TCP_Recv(), " << numReady
-                            << " sockets are ready: " << SDLNet_GetError();
-                setError(errorStream.str());
+                setError(fmt::format("Error in SDLNet_TCP_Recv(), {} sockets "
+                                     "are ready: {}",
+                                     numReady, SDLNet_GetError()));
                 break;
         }
     }

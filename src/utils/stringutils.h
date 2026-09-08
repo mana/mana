@@ -54,7 +54,6 @@ std::string &toLower(std::string &str);
  */
 std::string &toUpper(std::string &str);
 
-
 /**
  * Converts an ascii hexidecimal string to an integer
  *
@@ -79,13 +78,10 @@ template<typename T> std::string toString(const T &arg)
 /**
  * Converts the given IP address to a string.
  *
- * The returned string is statically allocated, and shouldn't be freed. It is
- * changed upon the next use of this method.
- *
  * @param address the address to convert to a string
  * @return the string representation of the address
  */
-const char *ipToString(int address);
+std::string ipToString(int address);
 
 /**
  * Replaces a set of characters with another character.

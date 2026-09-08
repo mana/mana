@@ -325,12 +325,11 @@ void CommandHandler::handleHelp(const std::string &args, ChatTab *tab)
 
 void CommandHandler::handleWhere(const std::string &args, ChatTab *tab)
 {
-    std::ostringstream where;
-    where << Game::instance()->getCurrentMapName() << ", coordinates: "
-          << local_player->getTileX() << ", "
-          << local_player->getTileY();
-
-    tab->chatLog(where.str(), BY_SERVER);
+    tab->chatLog(fmt::format("{}, coordinates: {}, {}",
+                             Game::instance()->getCurrentMapName(),
+                             local_player->getTileX(),
+                             local_player->getTileY()),
+                 BY_SERVER);
 }
 
 void CommandHandler::handleWho(const std::string &args, ChatTab *tab)

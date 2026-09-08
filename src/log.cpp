@@ -25,7 +25,6 @@
 
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <sys/time.h>
 
 static std::ofstream logFile;
@@ -52,31 +51,22 @@ static void logOutputFunction(void *userdata, int category, SDL_LogPriority prio
     gettimeofday(&tv, nullptr);
 
     // Create timestamp string
-    std::stringstream timeStr;
-    timeStr << "["
-        << ((((tv.tv_sec / 60) / 60) % 24 < 10) ? "0" : "")
-        << (int)(((tv.tv_sec / 60) / 60) % 24)
-        << ":"
-        << (((tv.tv_sec / 60) % 60 < 10) ? "0" : "")
-        << (int)((tv.tv_sec / 60) % 60)
-        << ":"
-        << ((tv.tv_sec % 60 < 10) ? "0" : "")
-        << (int)(tv.tv_sec % 60)
-        << "."
-        << (((tv.tv_usec / 10000) % 100) < 10 ? "0" : "")
-        << (int)((tv.tv_usec / 10000) % 100)
-        << "] ";
+    const std::string timeStr = fmt::format("[{:02}:{:02}:{:02}.{:02}] ",
+                                            (tv.tv_sec / 3600) % 24,
+                                            (tv.tv_sec / 60) % 60,
+                                            tv.tv_sec % 60,
+                                            (tv.tv_usec / 10000) % 100);
 
     const char *prefix = getLogPriorityPrefix(priority);
 
     if (logToStandardOut)
     {
-        std::cout << timeStr.str() << prefix << message << std::endl;
+        std::cout << timeStr << prefix << message << std::endl;
     }
 
     if (logFile.is_open())
     {
-        logFile << timeStr.str() << prefix << message << std::endl;
+        logFile << timeStr << prefix << message << std::endl;
     }
 }
 

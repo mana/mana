@@ -275,9 +275,7 @@ void Setup_Colors::valueChanged(const gcn::SelectionEvent &)
 void Setup_Colors::setEntry(gcn::Slider *s, TextField *t, int value)
 {
     s->setValue(value);
-    char buffer[100];
-    snprintf(buffer, 100, "%d", value);
-    t->setText(buffer);
+    t->setText(std::to_string(value));
 }
 
 void Setup_Colors::apply()

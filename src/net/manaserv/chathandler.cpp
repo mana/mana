@@ -221,11 +221,7 @@ void ChatHandler::handleListChannelsResponse(MessageIn &msg)
         std::string channelName = msg.readString();
         if (channelName.empty())
             return;
-        std::ostringstream numUsers;
-        numUsers << msg.readInt16();
-        channelName += " - ";
-        channelName += numUsers.str();
-        serverNotice(channelName);
+        serverNotice(fmt::format("{} - {}", channelName, msg.readInt16()));
     }
     serverNotice(_("End of channel list."));
 }

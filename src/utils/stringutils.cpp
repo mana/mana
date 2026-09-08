@@ -21,6 +21,8 @@
 
 #include "utils/stringutils.h"
 
+#include "utils/format.h"
+
 #include <algorithm>
 #include <cstdio>
 #include <cstring>
@@ -64,19 +66,14 @@ unsigned int atox(const std::string &str)
     return value;
 }
 
-const char *ipToString(int address)
+std::string ipToString(int address)
 {
-    static char asciiIP[16];
-
-    snprintf(asciiIP, 16, "%i.%i.%i.%i",
-             (unsigned char)(address),
-             (unsigned char)(address >> 8),
-             (unsigned char)(address >> 16),
-             (unsigned char)(address >> 24));
-
-    return asciiIP;
+    return fmt::format("{}.{}.{}.{}",
+                       (unsigned char)(address),
+                       (unsigned char)(address >> 8),
+                       (unsigned char)(address >> 16),
+                       (unsigned char)(address >> 24));
 }
-
 
 std::string &replaceCharacters(std::string &str,
                                std::string_view chars,
