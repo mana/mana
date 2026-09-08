@@ -28,6 +28,7 @@
 #include "resources/iteminfo.h"
 
 #include "utils/dtor.h"
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -419,33 +420,33 @@ static const struct ItemField
     const char *uninformative = "0";
 } fields[] =
 {
-    { "attack",          N_("Attack %s"),            true  },
-    { "mattack",         N_("M.Attack %s"),          true  },
-    { "criticalattack",  N_("Critical chance %s"),   true  },
-    { "hit",             N_("Accuracy %s"),          true  },
-    { "flee",            N_("Evade %s"),             true  },
-    { "atkspeed",        N_("Attack speed %s"),      true  },
-    { "attack-range",    N_("Attack range %s"),      false, "1" },
-    { "defense",         N_("Defense %s"),           true  },
-    { "mdefense",        N_("M.Defense %s"),         true  },
-    { "criticaldefense", N_("Critical defense %s"),  true  },
-    { "hp",              N_("HP %s"),                true  },
-    { "maxhp",           N_("Max HP %s"),            true  },
-    { "mp",              N_("MP %s"),                true  },
-    { "maxmp",           N_("Max MP %s"),            true  },
-    { "str",             N_("Strength %s"),          true  },
-    { "agi",             N_("Agility %s"),           true  },
-    { "vit",             N_("Vitality %s"),          true  },
-    { "int",             N_("Intelligence %s"),      true  },
-    { "dex",             N_("Dexterity %s"),         true  },
-    { "luk",             N_("Luck %s"),              true  },
-    { "level",           N_("Req. level %s"),        false },
-    { "req-str",         N_("Req. strength %s"),     false },
-    { "req-agi",         N_("Req. agility %s"),      false },
-    { "req-vit",         N_("Req. vitality %s"),     false },
-    { "req-int",         N_("Req. intelligence %s"), false },
-    { "req-dex",         N_("Req. dexterity %s"),    false },
-    { "req-luk",         N_("Req. luck %s"),         false },
+    { "attack",          N_("Attack {}"),            true  },
+    { "mattack",         N_("M.Attack {}"),          true  },
+    { "criticalattack",  N_("Critical chance {}"),   true  },
+    { "hit",             N_("Accuracy {}"),          true  },
+    { "flee",            N_("Evade {}"),             true  },
+    { "atkspeed",        N_("Attack speed {}"),      true  },
+    { "attack-range",    N_("Attack range {}"),      false, "1" },
+    { "defense",         N_("Defense {}"),           true  },
+    { "mdefense",        N_("M.Defense {}"),         true  },
+    { "criticaldefense", N_("Critical defense {}"),  true  },
+    { "hp",              N_("HP {}"),                true  },
+    { "maxhp",           N_("Max HP {}"),            true  },
+    { "mp",              N_("MP {}"),                true  },
+    { "maxmp",           N_("Max MP {}"),            true  },
+    { "str",             N_("Strength {}"),          true  },
+    { "agi",             N_("Agility {}"),           true  },
+    { "vit",             N_("Vitality {}"),          true  },
+    { "int",             N_("Intelligence {}"),      true  },
+    { "dex",             N_("Dexterity {}"),         true  },
+    { "luk",             N_("Luck {}"),              true  },
+    { "level",           N_("Req. level {}"),        false },
+    { "req-str",         N_("Req. strength {}"),     false },
+    { "req-agi",         N_("Req. agility {}"),      false },
+    { "req-vit",         N_("Req. vitality {}"),     false },
+    { "req-int",         N_("Req. intelligence {}"), false },
+    { "req-dex",         N_("Req. dexterity {}"),    false },
+    { "req-luk",         N_("Req. luck {}"),         false },
 };
 
 /**
@@ -461,7 +462,7 @@ static std::string describeItemField(const ItemField &field, XML::Node node)
     if (field.sign && value[0] != '-' && value[0] != '+')
         value.insert(0, 1, '+');
 
-    return strprintf(gettext(field.format), value.c_str());
+    return strformat(gettext(field.format), value);
 }
 
 void TaItemDB::init()
@@ -599,18 +600,19 @@ void ManaServItemDB::readItemNode(XML::Node node, const std::string &filename)
                         Log::warn("Unknown modifier tag %s in %s, skipping.", attribute.c_str(), filename.c_str());
                         continue;
                     }
-                    effect.push_back(
-                            strprintf(strprintf(
-                                    duration ?
-                                    strprintf("%%s%%s. This effect lasts %d ticks.", duration).c_str()
-                                    : "%s%s.", it->mFormat.c_str(), triggerLabel->second).c_str(), value));
+                    std::string format = fmt::format("{}{}.", it->mFormat,
+                                                     triggerLabel->second);
+                    if (duration)
+                        format += fmt::format(" This effect lasts {} ticks.",
+                                              duration);
+                    effect.push_back(strformat(format, value));
                 }
                 else if (effectChild.name() == "modifier")
-                    effect.push_back(strprintf("Provides an autoattack%s.",
-                                               triggerLabel->second));
+                    effect.push_back(fmt::format("Provides an autoattack{}.",
+                                                 triggerLabel->second));
                 else if (effectChild.name() == "consumes")
-                    effect.push_back(strprintf("This will be consumed%s.",
-                                               triggerLabel->second));
+                    effect.push_back(fmt::format("This will be consumed{}.",
+                                                 triggerLabel->second));
                 else if (effectChild.name() == "label")
                     effect.emplace_back(effectChild.textContent());
             }

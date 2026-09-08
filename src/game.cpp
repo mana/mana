@@ -77,6 +77,7 @@
 #include "resources/mapreader.h"
 
 #include "utils/filesystem.h"
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/mkdir.h"
 
@@ -327,11 +328,11 @@ static bool saveScreenshot()
 
     if (success)
     {
-        std::string screenshotLink = strprintf("@@screenshot:%s|%s@@",
-                                               filenameSuffix.str().c_str(),
-                                               filenameSuffix.str().c_str());
-        serverNotice(strprintf(_("Screenshot saved as %s"),
-                               screenshotLink.c_str()));
+        std::string screenshotLink = fmt::format("@@screenshot:{}|{}@@",
+                                                 filenameSuffix.str(),
+                                                 filenameSuffix.str());
+        serverNotice(strformat(_("Screenshot saved as {}"),
+                               screenshotLink));
     }
     else
     {
@@ -893,7 +894,7 @@ void Game::changeMap(const std::string &mapPath)
     {
         Log::info("Error while loading %s", fullMap.c_str());
         new OkDialog(_("Could Not Load Map"),
-                     strprintf(_("Error while loading %s"), fullMap.c_str()));
+                     strformat(_("Error while loading {}"), fullMap));
     }
 
     // Notify the minimap and beingManager about the map change

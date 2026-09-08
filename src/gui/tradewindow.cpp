@@ -41,6 +41,7 @@
 #include "net/net.h"
 #include "net/tradehandler.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -94,7 +95,7 @@ TradeWindow::TradeWindow():
     auto *partnerScroll = new ScrollArea(mPartnerItemContainer);
     partnerScroll->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
-    mMoneyLabel = new Label(strprintf(_("You get %s"), ""));
+    mMoneyLabel = new Label(strformat(_("You get {}"), ""));
     gcn::Label *mMoneyLabel2 = new Label(_("You give:"));
 
     mMoneyField = new TextField;
@@ -128,8 +129,8 @@ TradeWindow::~TradeWindow() = default;
 
 void TradeWindow::setMoney(int amount)
 {
-    mMoneyLabel->setCaption(strprintf(_("You get %s"),
-                                       Units::formatCurrency(amount).c_str()));
+    mMoneyLabel->setCaption(strformat(_("You get {}"),
+                                       Units::formatCurrency(amount)));
     mMoneyLabel->adjustSize();
 }
 
@@ -299,7 +300,7 @@ void TradeWindow::action(const gcn::ActionEvent &event)
             v = curMoney;
         }
         Net::getTradeHandler()->setMoney(v);
-        mMoneyField->setText(strprintf("%d", v));
+        mMoneyField->setText(toString(v));
     }
 }
 

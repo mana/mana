@@ -30,6 +30,7 @@
 
 #include "gui/widgets/label.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -88,8 +89,8 @@ void BeingPopup::show(int x, int y, Being *b)
 
     if (!(b->getPartyName().empty()))
     {
-        mBeingParty->setCaption(strprintf(_("Party: %s"),
-                                          b->getPartyName().c_str()));
+        mBeingParty->setCaption(strformat(_("Party: {}"),
+                                          b->getPartyName()));
         mBeingParty->adjustSize();
         mBeingParty->setPosition(0, height);
         minWidth = std::max(minWidth, mBeingParty->getWidth());
@@ -104,7 +105,7 @@ void BeingPopup::show(int x, int y, Being *b)
                                         : b->getLevel();
     if (level > 1)
     {
-        mBeingLevel->setCaption(strprintf(_("Level: %d"), level));
+        mBeingLevel->setCaption(strformat(_("Level: {}"), level));
         mBeingLevel->adjustSize();
         mBeingLevel->setPosition(0, height);
         minWidth = std::max(minWidth, mBeingLevel->getWidth());

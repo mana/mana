@@ -36,6 +36,7 @@
 
 #include "resources/questdb.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 
 #include <guichan/font.hpp>
@@ -273,17 +274,17 @@ void QuestsWindow::updateQuestDetails()
             mQuestDetails->addRow("[" + row.text + "]");
             break;
         case QuestRowType::Reward:
-            mQuestDetails->addRow(strprintf(_("Reward: %s"), row.text.c_str()));
+            mQuestDetails->addRow(strformat(_("Reward: {}"), row.text));
             break;
         case QuestRowType::Giver:
-            mQuestDetails->addRow(strprintf(_("Quest Giver: %s"), row.text.c_str()));
+            mQuestDetails->addRow(strformat(_("Quest Giver: {}"), row.text));
             break;
         case QuestRowType::Coordinates:
-            mQuestDetails->addRow(strprintf(_("Coordinates: %s (%d, %d)"),
-                                            row.text.c_str(), row.x, row.y));
+            mQuestDetails->addRow(strformat(_("Coordinates: {} ({}, {})"),
+                                            row.text, row.x, row.y));
             break;
         case QuestRowType::NPC:
-            mQuestDetails->addRow(strprintf(_("NPC: %s"), row.text.c_str()));
+            mQuestDetails->addRow(strformat(_("NPC: {}"), row.text));
             break;
         }
     }

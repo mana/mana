@@ -37,6 +37,7 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/manaserv_protocol.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -113,8 +114,8 @@ void TradeHandler::handleMessage(MessageIn &msg)
             tradePartnerName = being->getName();
             tradePartnerID = being->getId();
             auto *dlg = new ConfirmDialog(_("Request for Trade"),
-                    strprintf(_("%s wants to trade with you, do you accept?"),
-                            tradePartnerName.c_str()));
+                    strformat(_("{} wants to trade with you, do you accept?"),
+                            tradePartnerName));
             dlg->addActionListener(&listener);
         }   break;
 
@@ -131,8 +132,8 @@ void TradeHandler::handleMessage(MessageIn &msg)
 
         case GPMSG_TRADE_START:
             tradeWindow->reset();
-            tradeWindow->setCaption(strprintf(_("Trading with %s"),
-                                              tradePartnerName.c_str()));
+            tradeWindow->setCaption(strformat(_("Trading with {}"),
+                                              tradePartnerName));
             tradeWindow->setVisible(true);
             break;
 

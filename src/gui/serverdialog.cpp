@@ -41,6 +41,7 @@
 #include "resources/image.h"
 #include "resources/theme.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -415,8 +416,8 @@ void ServerDialog::logic()
 
     switch (state.status) {
     case DownloadStatus::InProgress:
-        mDownloadText->setCaption(strprintf(_("Downloading server list..."
-                                              "%2.0f%%"),
+        mDownloadText->setCaption(strformat(_("Downloading server list..."
+                                              "{:2.0f}%"),
                                             state.progress * 100));
         break;
 
@@ -520,7 +521,7 @@ void ServerDialog::loadServer(XML::Node serverNode)
     else if (version.empty())
         version = _("requires a newer version");
     else
-        version = strprintf(_("requires v%s"), version.c_str());
+        version = strformat(_("requires v{}"), version);
 
     for (auto subNode : serverNode.children())
     {

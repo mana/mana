@@ -36,6 +36,7 @@
 #include "resources/itemdb.h"
 #include "resources/iteminfo.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -80,7 +81,7 @@ OutfitWindow::OutfitWindow():
 
     mPreviousButton = new Button(_("<"), "previous", this);
     mNextButton = new Button(_(">"), "next", this);
-    mCurrentLabel = new Label(strprintf(_("Outfit: %d"), 1));
+    mCurrentLabel = new Label(strformat(_("Outfit: {}"), 1));
     mCurrentLabel->setAlignment(gcn::Graphics::CENTER);
     mUnequipCheck = new CheckBox(_("Unequip first"));
     mEquipButton = new Button(_("Equip"), "equip", this);
@@ -261,7 +262,7 @@ void OutfitWindow::action(const gcn::ActionEvent &event)
             mCurrentOutfit++;
         else
             mCurrentOutfit = 0;
-        mCurrentLabel->setCaption(strprintf(_("Outfit: %d"), mCurrentOutfit + 1));
+        mCurrentLabel->setCaption(strformat(_("Outfit: {}"), mCurrentOutfit + 1));
         mUnequipCheck->setSelected(mOutfits[mCurrentOutfit].unequip);
     }
     else if (event.getId() == "previous")
@@ -271,7 +272,7 @@ void OutfitWindow::action(const gcn::ActionEvent &event)
         else
             mCurrentOutfit = OUTFITS_COUNT - 1;
 
-        mCurrentLabel->setCaption(strprintf(_("Outfit: %d"), mCurrentOutfit + 1));
+        mCurrentLabel->setCaption(strformat(_("Outfit: {}"), mCurrentOutfit + 1));
         mUnequipCheck->setSelected(mOutfits[mCurrentOutfit].unequip);
     }
     else if (event.getId() == "unequip")

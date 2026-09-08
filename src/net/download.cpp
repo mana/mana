@@ -24,6 +24,7 @@
 #include "log.h"
 #include "main.h"
 
+#include "utils/format.h"
 #include "utils/stringutils.h"
 
 #include <SDL.h>
@@ -209,7 +210,7 @@ int Download::downloadThread(void *ptr)
 
         const std::string appShort = branding.shortName();
         const std::string userAgent =
-                strprintf(PACKAGE_EXTENDED_VERSION, appShort.c_str());
+                fmt::format(PACKAGE_EXTENDED_VERSION, appShort);
 
         curl_easy_setopt(curl, CURLOPT_USERAGENT, userAgent.c_str());
         curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, d->mError);

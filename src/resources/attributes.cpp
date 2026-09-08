@@ -162,7 +162,7 @@ namespace Attributes {
             a.playerInfoId = -1;
 
             attributes[a.id] = a;
-            tags.insert(std::make_pair("str", _("Strength %+.1f")));
+            tags.insert(std::make_pair("str", _("Strength {:+.1f}")));
         }
 
         {
@@ -174,7 +174,7 @@ namespace Attributes {
             a.playerInfoId = -1;
 
             attributes[a.id] = a;
-            tags.insert(std::make_pair("agi", _("Agility %+.1f")));
+            tags.insert(std::make_pair("agi", _("Agility {:+.1f}")));
         }
 
         {
@@ -186,7 +186,7 @@ namespace Attributes {
             a.playerInfoId = -1;
 
             attributes[a.id] = a;
-            tags.insert(std::make_pair("dex", _("Dexterity %+.1f")));
+            tags.insert(std::make_pair("dex", _("Dexterity {:+.1f}")));
         }
 
         {
@@ -198,7 +198,7 @@ namespace Attributes {
             a.playerInfoId = -1;
 
             attributes[a.id] = a;
-            tags.insert(std::make_pair("vit", _("Vitality %+.1f")));
+            tags.insert(std::make_pair("vit", _("Vitality {:+.1f}")));
         }
 
         {
@@ -210,7 +210,7 @@ namespace Attributes {
             a.playerInfoId = -1;
 
             attributes[a.id] = a;
-            tags.insert(std::make_pair("int", _("Intelligence %+.1f")));
+            tags.insert(std::make_pair("int", _("Intelligence {:+.1f}")));
         }
 
         {
@@ -222,7 +222,7 @@ namespace Attributes {
             a.playerInfoId = -1;
 
             attributes[a.id] = a;
-            tags.insert(std::make_pair("wil", _("Willpower %+.1f")));
+            tags.insert(std::make_pair("wil", _("Willpower {:+.1f}")));
         }
     }
 
@@ -304,7 +304,7 @@ namespace Attributes {
                     continue;
                 }
                 else
-                    effect = name + " %+f";
+                    effect = name + " {:+f}";
              }
             tags.insert(std::make_pair(tag, effect));
          }

@@ -40,6 +40,7 @@
 
 #include "resources/image.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -52,12 +53,12 @@ public:
 #ifdef USE_OPENGL
         if (Image::getLoadAsOpenGL())
         {
-            mFPSText = _("%d FPS (OpenGL)");
+            mFPSText = _("{} FPS (OpenGL)");
         }
         else
 #endif
         {
-            mFPSText = _("%d FPS");
+            mFPSText = _("{} FPS");
         }
 
         mFPSLabel = new Label(std::string());
@@ -85,7 +86,7 @@ public:
         if (!isVisible())
             return;
 
-        mFPSLabel->setCaption(strprintf(mFPSText.c_str(), fps.load()));
+        mFPSLabel->setCaption(strformat(mFPSText, fps.load()));
 
         if (const Map *map = Game::instance()->getCurrentMap())
         {
@@ -94,18 +95,18 @@ public:
                              viewport->getCameraX()) / map->getTileWidth();
             const int mouseTileY = (viewport->getMouseY() +
                             viewport->getCameraY()) / map->getTileHeight();
-            mTileMouseLabel->setCaption(strprintf(_("Cursor: (%d, %d)"),
+            mTileMouseLabel->setCaption(strformat(_("Cursor: ({}, {})"),
                                         mouseTileX, mouseTileY));
 
-            mMusicFileLabel->setCaption(strprintf(
-                        _("Music: %s"), map->getProperty("music").c_str()));
-            mMinimapLabel->setCaption(strprintf(_("Minimap: %s"),
-                                      map->getProperty("minimap").c_str()));
-            mMapLabel->setCaption(strprintf(_("Map: %s"),
-                                    map->getProperty("_filename").c_str()));
+            mMusicFileLabel->setCaption(strformat(
+                        _("Music: {}"), map->getProperty("music")));
+            mMinimapLabel->setCaption(strformat(_("Minimap: {}"),
+                                      map->getProperty("minimap")));
+            mMapLabel->setCaption(strformat(_("Map: {}"),
+                                    map->getProperty("_filename")));
         }
 
-        mParticleCountLabel->setCaption(strprintf(_("Particle count: %d"),
+        mParticleCountLabel->setCaption(strformat(_("Particle count: {}"),
                                         Particle::particleCount));
 
         mFPSLabel->adjustSize();

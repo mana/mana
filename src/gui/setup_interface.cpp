@@ -33,6 +33,7 @@
 
 #include "resources/theme.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/language.h"
 #include "utils/stringutils.h"
@@ -87,8 +88,8 @@ public:
         if (i == 0)
         {
             // TRANSLATORS: Placeholder is the name of a language
-            return strprintf(_("Default (%s)"),
-                             getSystemLanguage().name.c_str());
+            return strformat(_("Default ({})"),
+                             getSystemLanguage().name);
         }
 
         return getAvailableLanguages().at(i - 1).name;
@@ -157,7 +158,7 @@ static const char *speechModeToString(Being::Speech mode)
 
 static std::string pickupRangeToString(int range)
 {
-    return strprintf(ngettext("%d tile", "%d tiles", range), range);
+    return strformat(ngettext("{} tile", "{} tiles", range), range);
 }
 
 Setup_Interface::Setup_Interface():

@@ -35,6 +35,7 @@
 #include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -87,8 +88,8 @@ void ChatHandler::handleMessage(MessageIn &msg)
                     {
                         Event event(Event::WhisperError);
                         event.setString("nick", nick);
-                        event.setString("error", strprintf(_("Whisper could "
-                                  "not be sent, %s is offline."), nick.c_str()));
+                        event.setString("error", strformat(_("Whisper could "
+                                  "not be sent, {} is offline."), nick));
                         event.trigger(Event::ChatChannel);
                     }
                     break;
@@ -96,8 +97,8 @@ void ChatHandler::handleMessage(MessageIn &msg)
                     {
                         Event event(Event::WhisperError);
                         event.setString("nick", nick);
-                        event.setString("error", strprintf(_("Whisper could "
-                                 "not be sent, ignored by %s."), nick.c_str()));
+                        event.setString("error", strformat(_("Whisper could "
+                                 "not be sent, ignored by {}."), nick));
                         event.Event::trigger(Event::ChatChannel);
                     }
                     break;
@@ -309,7 +310,7 @@ void ChatHandler::talk(const std::string &text)
 
 void ChatHandler::me(const std::string &text)
 {
-    std::string action = strprintf("*%s*", text.c_str());
+    std::string action = fmt::format("*{}*", text);
 
     talk(action);
 }

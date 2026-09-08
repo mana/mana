@@ -35,6 +35,7 @@
 #include "net/loginhandler.h"
 #include "net/net.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -46,8 +47,8 @@ ChangeEmailDialog::ChangeEmailDialog(LoginData *loginData):
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
-    gcn::Label *accountLabel = new Label(strprintf(_("Account: %s"),
-                                                   mLoginData->username.c_str()));
+    gcn::Label *accountLabel = new Label(strformat(_("Account: {}"),
+                                                   mLoginData->username));
     gcn::Label *newEmailLabel = new Label(_("Type new email address twice:"));
     mFirstEmailField = new TextField;
     mSecondEmailField = new TextField;
@@ -124,15 +125,15 @@ void ChangeEmailDialog::action(const gcn::ActionEvent &event)
         if (newFirstEmail.length() < min)
         {
             // First email address too short
-            errorMessage << strprintf(_("The new email address needs to be at "
-                                        "least %d characters long."), min);
+            errorMessage << strformat(_("The new email address needs to be at "
+                                        "least {} characters long."), min);
             error = 1;
         }
         else if (newFirstEmail.length() > max - 1 )
         {
             // First email address too long
-            errorMessage << strprintf(_("The new email address needs to be "
-                                        "less than %d characters long."), max);
+            errorMessage << strformat(_("The new email address needs to be "
+                                        "less than {} characters long."), max);
             error = 1;
         }
         else if (newFirstEmail != newSecondEmail)

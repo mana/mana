@@ -39,6 +39,7 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/manaserv_protocol.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -256,8 +257,8 @@ void GuildHandler::handleMessage(MessageIn &msg)
                 Channel *channel = channelManager->findByName(guild->getName());
                 channelManager->removeChannel(channel);
                 local_player->removeGuild(guildId);
-                serverNotice(strprintf(_("Player %s kicked you out of guild %s."),
-                                       player.c_str(), guild->getName().c_str()));
+                serverNotice(strformat(_("Player {} kicked you out of guild {}."),
+                                       player, guild->getName()));
             }
         } break;
     }
@@ -282,7 +283,7 @@ void GuildHandler::joinedGuild(MessageIn &msg)
     // COMMENT: Should this go here??
     auto *channel = new Channel(channelId, guildName, announcement);
     channelManager->addChannel(channel);
-    channel->getTab()->chatLog(strprintf(_("Topic: %s"), announcement.c_str()),
+    channel->getTab()->chatLog(strformat(_("Topic: {}"), announcement),
                                BY_CHANNEL);
 }
 

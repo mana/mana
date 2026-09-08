@@ -22,7 +22,6 @@
 #include "utils/stringutils.h"
 
 #include <algorithm>
-#include <cstdarg>
 #include <cstdio>
 #include <cstring>
 
@@ -78,26 +77,6 @@ const char *ipToString(int address)
     return asciiIP;
 }
 
-std::string strprintf(char const *format, ...)
-{
-    char buf[256];
-    va_list args;
-    va_start(args, format);
-    int nb = vsnprintf(buf, 256, format, args);
-    va_end(args);
-    if (nb < 256)
-    {
-        return buf;
-    }
-    // The static size was not big enough, try again with a dynamic allocation.
-    ++nb;   // Add 1 for the null terminator.
-
-    std::string res(nb, char());
-    va_start(args, format);
-    vsnprintf(res.data(), nb, format, args);
-    va_end(args);
-    return res;
-}
 
 std::string &replaceCharacters(std::string &str,
                                std::string_view chars,

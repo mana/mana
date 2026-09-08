@@ -32,6 +32,7 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/manaserv_protocol.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -72,9 +73,9 @@ void PartyHandler::handleMessage(MessageIn &msg)
         case GPMSG_PARTY_INVITE_ERROR:
         {
             std::string name = msg.readString();
-            serverNotice(strprintf(_("Party invite failed, because no player "
-                                     "called %s is within the visual range."),
-                                   name.c_str()));
+            serverNotice(strformat(_("Party invite failed, because no player "
+                                     "called {} is within the visual range."),
+                                   name));
         } break;
 
         case CPMSG_PARTY_INVITED:
@@ -124,10 +125,10 @@ void PartyHandler::handleMessage(MessageIn &msg)
             std::string notice;
 
             if (inviter.empty())
-                notice = strprintf(_("%s joined the party."), name.c_str());
+                notice = strformat(_("{} joined the party."), name);
             else
-                notice = strprintf(_("%s joined the party on invitation from %s."),
-                                   name.c_str(), inviter.c_str());
+                notice = strformat(_("{} joined the party on invitation from {}."),
+                                   name, inviter);
 
             serverNotice(notice);
 
@@ -148,8 +149,8 @@ void PartyHandler::handleMessage(MessageIn &msg)
             switch (msg.readInt8())
             {
                 case ERRMSG_OK:
-                    serverNotice(strprintf(_("%s rejected your invite."),
-                                           name.c_str()));
+                    serverNotice(strformat(_("{} rejected your invite."),
+                                           name));
                     break;
                 case ERRMSG_LIMIT_REACHED:
                     serverNotice(_("Party invitation rejected by server, "
@@ -157,8 +158,8 @@ void PartyHandler::handleMessage(MessageIn &msg)
                                    "short time."));
                     break;
                 case ERRMSG_FAILURE:
-                    serverNotice(strprintf(_("%s is already in a party."),
-                                           name.c_str()));
+                    serverNotice(strformat(_("{} is already in a party."),
+                                           name));
                     break;
                 default:
                     Log::info("Unknown CPMSG_PARTY_REJECTED.");

@@ -42,6 +42,7 @@
 
 #include "resources/userpalette.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/time.h"
@@ -322,7 +323,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                         {
                             std::string money = Units::formatCurrency(newMoney - oldMoney);
                             if (config.showPickupChat)
-                                serverNotice(strprintf(_("You picked up %s."), money.c_str()));
+                                serverNotice(strformat(_("You picked up {}."), money));
                             if (config.showPickupParticle)
                                 local_player->addMessageToQueue(money, UserPalette::PICKUP_INFO);
                         }

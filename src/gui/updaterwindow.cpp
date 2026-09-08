@@ -39,6 +39,7 @@
 
 #include "resources/resourcemanager.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
@@ -262,8 +263,8 @@ void UpdaterWindow::logic()
         {
             Log::warn("Could not download news: %s", mDownload->getError());
 
-            mBrowserBox->addRows(strprintf(
-                    _("News could not be downloaded: %s"),
+            mBrowserBox->addRows(strformat(
+                    _("News could not be downloaded: {}"),
                     mDownload->getError()));
 
             newsFinished();

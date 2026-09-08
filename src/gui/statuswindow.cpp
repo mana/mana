@@ -43,6 +43,7 @@
 
 #include "resources/theme.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/mathutils.h"
 #include "utils/stringutils.h"
@@ -113,8 +114,8 @@ StatusWindow::StatusWindow():
     // Status Part
     // ----------------------
 
-    mLvlLabel = new Label(strprintf(_("Level: %d"), 0));
-    mMoneyLabel = new Label(strprintf(_("Money: %s"), ""));
+    mLvlLabel = new Label(strformat(_("Level: {}"), 0));
+    mMoneyLabel = new Label(strformat(_("Money: {}"), ""));
 
     int max = PlayerInfo::getAttribute(MAX_HP);
     mHpLabel = new Label(_("HP:"));
@@ -158,7 +159,7 @@ StatusWindow::StatusWindow():
 
     if (Net::getPlayerHandler()->getJobLocation() > 0)
     {
-        mJobLvlLabel = new Label(strprintf(_("Job: %d"), 0));
+        mJobLvlLabel = new Label(strformat(_("Job: {}"), 0));
         mJobLabel = new Label(_("Job:"));
         mJobBar = new ProgressBar(0.0f, 80, 15, Theme::PROG_JOB);
 
@@ -208,14 +209,14 @@ StatusWindow::StatusWindow():
     updateXPBar(mXpBar, false);
 
 
-    mMoneyLabel->setCaption(strprintf(_("Money: %s"),
-               Units::formatCurrency(PlayerInfo::getAttribute(MONEY)).c_str()));
+    mMoneyLabel->setCaption(strformat(_("Money: {}"),
+               Units::formatCurrency(PlayerInfo::getAttribute(MONEY))));
     mMoneyLabel->adjustSize();
-    mCharacterPointsLabel->setCaption(strprintf(_("Character points: %d"),
+    mCharacterPointsLabel->setCaption(strformat(_("Character points: {}"),
                                       PlayerInfo::getAttribute(CHAR_POINTS)));
     mCharacterPointsLabel->adjustSize();
 
-    mLvlLabel->setCaption(strprintf(_("Level: %d"),
+    mLvlLabel->setCaption(strformat(_("Level: {}"),
                           PlayerInfo::getAttribute(LEVEL)));
     mLvlLabel->adjustSize();
 }
@@ -240,30 +241,30 @@ void StatusWindow::event(Event::Channel channel,
             break;
 
             case MONEY:
-                mMoneyLabel->setCaption(strprintf(_("Money: %s"),
+                mMoneyLabel->setCaption(strformat(_("Money: {}"),
                                 Units::formatCurrency(
-                                event.getInt("newValue")).c_str()));
+                                event.getInt("newValue"))));
                 mMoneyLabel->adjustSize();
             break;
 
             case CHAR_POINTS:
-                mCharacterPointsLabel->setCaption(strprintf(
-                                              _("Character points: %d"),
+                mCharacterPointsLabel->setCaption(strformat(
+                                              _("Character points: {}"),
                                               event.getInt("newValue")));
                 mCharacterPointsLabel->adjustSize();
                 updateAttrs();
             break;
 
             case CORR_POINTS:
-                mCorrectionPointsLabel->setCaption(strprintf(
-                                               _("Correction points: %d"),
+                mCorrectionPointsLabel->setCaption(strformat(
+                                               _("Correction points: {}"),
                                                event.getInt("newValue")));
                 mCorrectionPointsLabel->adjustSize();
                 updateAttrs();
             break;
 
             case LEVEL:
-                mLvlLabel->setCaption(strprintf(_("Level: %d"),
+                mLvlLabel->setCaption(strformat(_("Level: {}"),
                                   event.getInt("newValue")));
                 mLvlLabel->adjustSize();
             break;
@@ -276,7 +277,7 @@ void StatusWindow::event(Event::Channel channel,
         if (id == Net::getPlayerHandler()->getJobLocation())
         {
 
-            mJobLvlLabel->setCaption(strprintf(_("Job: %d"),
+            mJobLvlLabel->setCaption(strformat(_("Job: {}"),
                                             PlayerInfo::getStatBase(id)));
             mJobLvlLabel->adjustSize();
 
@@ -399,7 +400,7 @@ void StatusWindow::updateProgressBar(ProgressBar *bar, int value, int max,
         float progress = ((float) value) / max;
 
         if (percent)
-            bar->setText(strprintf("%2.2f", 100 * progress) + "%");
+            bar->setText(fmt::format("{:2.2f}", 100 * progress) + "%");
         else
             bar->setText(toString(value) + "/" + toString(max));
 
@@ -444,7 +445,7 @@ std::string AttrDisplay::update()
     int bonus = PlayerInfo::getStatMod(mId);
     std::string value = toString(base);
     if (bonus)
-        value += strprintf(" (%+d)", bonus);
+        value += fmt::format(" ({:+})", bonus);
     mValue->setCaption(value);
 
     return mName;

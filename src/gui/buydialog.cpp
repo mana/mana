@@ -39,6 +39,7 @@
 
 #include "resources/iteminfo.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -63,9 +64,9 @@ BuyDialog::BuyDialog(int npcId):
     mScrollArea->setHorizontalScrollPolicy(gcn::ScrollArea::SHOW_NEVER);
 
     mSlider = new Slider(1.0);
-    mQuantityLabel = new Label(strprintf("%d / %d", mAmountItems, mMaxItems));
+    mQuantityLabel = new Label(fmt::format("{} / {}", mAmountItems, mMaxItems));
     mQuantityLabel->setAlignment(gcn::Graphics::CENTER);
-    mMoneyLabel = new Label(strprintf(_("Price: %s / Total: %s"),
+    mMoneyLabel = new Label(strformat(_("Price: {} / Total: {}"),
                                             "", ""));
 
     // TRANSLATORS: This is a narrow symbol used to denote 'increasing'.
@@ -282,11 +283,11 @@ void BuyDialog::updateButtonsAndLabels()
     mSlider->setEnabled(mMaxItems > 1);
 
     // Update quantity and money labels
-    mQuantityLabel->setCaption(strprintf("%d / %d", mAmountItems, mMaxItems));
+    mQuantityLabel->setCaption(fmt::format("{} / {}", mAmountItems, mMaxItems));
     mMoneyLabel->setCaption
-        (strprintf(_("Price: %s / Total: %s"),
-                    Units::formatCurrency(price).c_str(),
-                    Units::formatCurrency(mMoney - price).c_str()));
+        (strformat(_("Price: {} / Total: {}"),
+                    Units::formatCurrency(price),
+                    Units::formatCurrency(mMoney - price)));
 }
 
 void BuyDialog::setVisible(bool visible)

@@ -45,6 +45,7 @@
 
 #include "resources/iteminfo.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -294,8 +295,8 @@ void ChatWindow::doPresent()
         }
     }
 
-    std::string log = strprintf(_("Present: %s; %d players are present."),
-                                response.c_str(), playercount);
+    std::string log = strformat(_("Present: {}; {} players are present."),
+                                response, playercount);
 
     if (mRecorder->isRecording())
     {
@@ -498,8 +499,8 @@ void ChatWindow::whisper(const std::string &nick,
         {
             Net::getChatHandler()->privateMessage(nick, mes);
 
-            localChatTab->chatLog(strprintf(_("Whispering to %s: %s"),
-                            nick.c_str(), mes.c_str()), BY_PLAYER);
+            localChatTab->chatLog(strformat(_("Whispering to {}: {}"),
+                            nick, mes), BY_PLAYER);
         }
         else
         {

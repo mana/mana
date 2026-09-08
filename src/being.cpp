@@ -58,6 +58,7 @@
 #include "resources/theme.h"
 #include "resources/userpalette.h"
 
+#include "utils/format.h"
 #include "utils/stringutils.h"
 
 #include <cassert>
@@ -1049,7 +1050,7 @@ void Being::updateName()
         if (Net::getNetworkType() == ServerType::TmwAthena && local_player
                 && local_player->getShowIp() && getIp())
         {
-            mDisplayName += strprintf(" %s", ipToString(getIp()));
+            mDisplayName += fmt::format(" {}", ipToString(getIp()));
         }
     }
 

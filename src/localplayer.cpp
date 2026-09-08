@@ -45,6 +45,7 @@
 #include "resources/iteminfo.h"
 #include "resources/userpalette.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -929,10 +930,10 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
         {
             // TRANSLATORS: This sentence may be translated differently
             // for different grammatical numbers (singular, plural, ...)
-            serverNotice(strprintf(ngettext("You picked up %d [@@%d|%s@@].",
-                                            "You picked up %d [@@%d|%s@@].",
+            serverNotice(strformat(ngettext("You picked up {} [@@{}|{}@@].",
+                                            "You picked up {} [@@{}|{}@@].",
                                             amount),
-                                   amount, itemInfo.id, itemInfo.name.c_str()));
+                                   amount, itemInfo.id, itemInfo.name));
         }
 
         if (mMap && config.showPickupParticle)
@@ -940,7 +941,7 @@ void LocalPlayer::pickedUp(const ItemInfo &itemInfo, int amount,
             // Show pickup notification
             std::string msg;
             if (amount > 1)
-                msg = strprintf("%i ", amount);
+                msg = fmt::format("{} ", amount);
             msg += itemInfo.name;
             addMessageToQueue(msg, UserPalette::PICKUP_INFO);
         }
@@ -1106,7 +1107,7 @@ void LocalPlayer::afkRespond(ChatTab *tab, const std::string &nick)
     if (!mAwayMode || !mAfkTimer.passed())
         return;
 
-    auto msg = strprintf(_("*AFK*: %s"), afkMessage().c_str());
+    auto msg = strformat(_("*AFK*: {}"), afkMessage());
 
     Net::getChatHandler()->privateMessage(nick, msg);
     if (!tab)

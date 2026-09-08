@@ -34,12 +34,13 @@
 #include "net/net.h"
 #include "net/partyhandler.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
 std::string booleanOptionInstructions(const char *command)
 {
-    return strprintf(_("Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."),
+    return strformat(_("Options to /{} are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."),
                      command);
 }
 
@@ -405,8 +406,8 @@ void CommandHandler::handleQuery(const std::string &args, ChatTab *tab)
         return;
     }
 
-    tab->chatLog(strprintf(_("Cannot create a whisper tab for nick \"%s\"! "
-            "It either already exists, or is you."), args.c_str()), BY_SERVER);
+    tab->chatLog(strformat(_("Cannot create a whisper tab for nick \"{}\"! "
+            "It either already exists, or is you."), args), BY_SERVER);
 }
 
 void CommandHandler::handleClear(const std::string &args, ChatTab *tab)
@@ -419,7 +420,7 @@ void CommandHandler::handleJoin(const std::string &args, ChatTab *tab)
     std::string::size_type pos = args.find(' ');
     std::string name(args, 0, pos);
     std::string password(args, pos + 1);
-    tab->chatLog(strprintf(_("Requesting to join channel %s."), name.c_str()));
+    tab->chatLog(strformat(_("Requesting to join channel {}."), name));
     Net::getChatHandler()->enterChannel(name, password);
 }
 

@@ -24,6 +24,7 @@
 
 #include "configuration.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -103,7 +104,7 @@ UserPalette::~UserPalette()
             configColor.delay = color.delay;
 
         if (color.grad == STATIC || color.grad == PULSE)
-            configColor.color = strprintf("0x%06x", color.getRGB());
+            configColor.color = fmt::format("0x{:06x}", color.getRGB());
     }
 }
 

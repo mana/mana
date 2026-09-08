@@ -29,7 +29,7 @@ macro(MANA_GETTEXT_CREATE_TRANSLATIONS _potFile _firstPoFileArg)
     add_custom_command(
       OUTPUT ${_gmoFile}
       COMMAND ${CMAKE_COMMAND} -E make_directory ${_moDir}
-      COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} -o ${_gmoFile} ${_absFile}
+      COMMAND ${GETTEXT_MSGFMT_EXECUTABLE} --check -o ${_gmoFile} ${_absFile}
       DEPENDS ${_absPotFile} ${_absFile})
 
     install(
@@ -51,7 +51,8 @@ macro(MANA_GETTEXT_UPDATE_PO _potFile _languages)
 
   add_custom_target(
     update-pot COMMAND xgettext --files-from=translatable-files --directory=.
-                       --output=${_potFile} -d mana --keyword=_ --keyword=N_)
+                       --output=${_potFile} -d mana --keyword=_ --keyword=N_
+                       --flag=strformat:1:c++-format)
 
   add_custom_target(update-translatable-files COMMAND grep '_\(' -Irl ../src |
                                                       sort > translatable-files)

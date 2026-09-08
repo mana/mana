@@ -42,6 +42,7 @@
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
@@ -268,7 +269,7 @@ std::string SkillDialog::update(int id)
 
 void SkillDialog::update()
 {
-    mPointsLabel->setCaption(strprintf(_("Skill points available: %d"),
+    mPointsLabel->setCaption(strformat(_("Skill points available: {}"),
                                        PlayerInfo::getAttribute(SKILL_POINTS)));
     mPointsLabel->adjustSize();
 
@@ -358,7 +359,7 @@ void SkillDialog::loadSkills()
             set.name() == "skill-set")
         {
             setCount++;
-            setName = set.getProperty("name", strprintf(_("Skill Set %d"), setCount));
+            setName = set.getProperty("name", strformat(_("Skill Set {}"), setCount));
 
             auto model = std::make_unique<SkillModel>();
 
@@ -382,7 +383,7 @@ void SkillDialog::loadSkills()
 
                     SkillInfo::Level &levelInfo = skill.levels[level];
                     levelInfo.name = node.getProperty(
-                                "name", strprintf(_("Skill %d"), id));
+                                "name", strformat(_("Skill {}"), id));
                     levelInfo.icon = node.getProperty("icon", "");
                     levelInfo.description = node.getProperty(
                                 "description", std::string());
@@ -479,7 +480,7 @@ void SkillInfo::update()
 
     if (effLevel != baseLevel)
     {
-        skillLevel = strprintf(_("Lvl: %d (%+d)"), baseLevel,
+        skillLevel = strformat(_("Lvl: {} ({:+})"), baseLevel,
                                effLevel - baseLevel);
     }
     else
@@ -490,7 +491,7 @@ void SkillInfo::update()
         }
         else
         {
-            skillLevel = strprintf(_("Lvl: %d"), baseLevel);
+            skillLevel = strformat(_("Lvl: {}"), baseLevel);
         }
     }
     skillLevelWidth = -1;
@@ -498,7 +499,7 @@ void SkillInfo::update()
     if (exp.second)
     {
         progress = exp.second != 0 ? (float) exp.first / exp.second : 0;
-        skillExp = strprintf("%.2f%%", progress * 100);
+        skillExp = fmt::format("{:.2f}%", progress * 100);
     }
     else
     {

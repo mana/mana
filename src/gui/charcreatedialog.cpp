@@ -39,6 +39,7 @@
 #include "resources/chardb.h"
 #include "resources/hairdb.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -91,7 +92,7 @@ CharCreateDialog::CharCreateDialog(CharSelectDialog *parent, int slot):
     mNameField->addActionListener(this);
 
     mAttributesLeft = new Label(
-            strprintf(_("Please distribute %d points"), 99));
+            strformat(_("Please distribute {} points"), 99));
 
     int w = 200;
     int h = 330;
@@ -280,12 +281,12 @@ void CharCreateDialog::updateSliders()
         if (pointsLeft > 0)
         {
             mAttributesLeft->setCaption(
-                    strprintf(_("Please distribute %d points"), pointsLeft));
+                    strformat(_("Please distribute {} points"), pointsLeft));
         }
         else
         {
             mAttributesLeft->setCaption(
-                    strprintf(_("Please remove %d points"), -pointsLeft));
+                    strformat(_("Please remove {} points"), -pointsLeft));
         }
     }
 

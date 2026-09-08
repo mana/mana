@@ -31,6 +31,7 @@
 #include "gui/widgets/label.h"
 #include "gui/widgets/textbox.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -190,8 +191,8 @@ void ItemPopup::setItem(const ItemInfo &item, bool showImage)
 
     mItemDesc->setTextWrapped(item.description, ITEMPOPUP_WRAP_WIDTH);
     mItemEffect->setTextWrapped(join(item.effect, "\n"), ITEMPOPUP_WRAP_WIDTH);
-    mItemWeight->setTextWrapped(strprintf(_("Weight: %s"),
-                                Units::formatWeight(item.weight).c_str()),
+    mItemWeight->setTextWrapped(strformat(_("Weight: {}"),
+                                Units::formatWeight(item.weight)),
                                 ITEMPOPUP_WRAP_WIDTH);
 
     int minWidth = mItemName->getWidth() + space;

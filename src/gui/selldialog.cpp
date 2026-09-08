@@ -42,6 +42,7 @@
 
 #include "resources/iteminfo.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -68,9 +69,9 @@ SellDialog::SellDialog(int npcId):
 
     mSlider = new Slider(1.0);
 
-    mQuantityLabel = new Label(strprintf("%d / %d", mAmountItems, mMaxItems));
+    mQuantityLabel = new Label(fmt::format("{} / {}", mAmountItems, mMaxItems));
     mQuantityLabel->setAlignment(gcn::Graphics::CENTER);
-    mMoneyLabel = new Label(strprintf(_("Price: %s / Total: %s"),
+    mMoneyLabel = new Label(strformat(_("Price: {} / Total: {}"),
                                       "", ""));
 
     mIncreaseButton = new Button(_("+"), "inc", this);
@@ -210,8 +211,8 @@ void SellDialog::action(const gcn::ActionEvent &event)
         const ItemInfo &info = mShopItems->at(selectedItem)->getInfo();
         if (info.sellProtected)
         {
-            std::string msg = strprintf(_("Do you really want to sell %s?"),
-                                        info.name.c_str());
+            std::string msg = strformat(_("Do you really want to sell {}?"),
+                                        info.name);
             mConfirmDialog = new ConfirmDialog(_("Sell Item?"), msg, this);
             mConfirmDialog->addActionListener(this);
         }
@@ -335,10 +336,10 @@ void SellDialog::updateButtonsAndLabels()
     mSlider->setEnabled(mMaxItems > 1);
 
     // Update the quantity and money labels
-    mQuantityLabel->setCaption(strprintf("%d / %d", mAmountItems, mMaxItems));
-    mMoneyLabel->setCaption(strprintf(_("Price: %s / Total: %s"),
-                    Units::formatCurrency(income).c_str(),
-                    Units::formatCurrency(mPlayerMoney + income).c_str()));
+    mQuantityLabel->setCaption(fmt::format("{} / {}", mAmountItems, mMaxItems));
+    mMoneyLabel->setCaption(strformat(_("Price: {} / Total: {}"),
+                    Units::formatCurrency(income),
+                    Units::formatCurrency(mPlayerMoney + income)));
 }
 
 void SellDialog::setVisible(bool visible)

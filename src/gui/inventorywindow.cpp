@@ -42,6 +42,7 @@
 #include "resources/iteminfo.h"
 #include "resources/theme.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -381,8 +382,8 @@ void InventoryWindow::updateWeight()
 
     // Adjust progress bar
     mWeightBar->setProgress((float) total / max);
-    mWeightBar->setText(strprintf("%s/%s", Units::formatWeight(total).c_str(),
-                                  Units::formatWeight(max).c_str()));
+    mWeightBar->setText(fmt::format("{}/{}", Units::formatWeight(total),
+                                    Units::formatWeight(max)));
 }
 
 bool InventoryWindow::isInputFocused() const
@@ -407,6 +408,6 @@ void InventoryWindow::slotsChanged(Inventory *inventory)
         const int maxSlots = mInventory->getSize();
 
         mSlotsBar->setProgress((float) usedSlots / maxSlots);
-        mSlotsBar->setText(strprintf("%d/%d", usedSlots, maxSlots));
+        mSlotsBar->setText(fmt::format("{}/{}", usedSlots, maxSlots));
     }
 }

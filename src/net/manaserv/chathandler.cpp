@@ -37,6 +37,7 @@
 #include "net/manaserv/messageout.h"
 #include "net/manaserv/manaserv_protocol.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -187,7 +188,7 @@ void ChatHandler::handleEnterChannelResponse(MessageIn &msg)
         auto *channel = new Channel(channelId, channelName, announcement);
         channelManager->addChannel(channel);
         ChatTab *tab = channel->getTab();
-        tab->chatLog(strprintf(_("Topic: %s"), announcement.c_str()), BY_CHANNEL);
+        tab->chatLog(strformat(_("Topic: {}"), announcement), BY_CHANNEL);
 
         std::string user;
         std::string userModes;
@@ -311,18 +312,18 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
         switch(eventId)
         {
             case CHAT_EVENT_NEW_PLAYER:
-                channel->getTab()->chatLog(strprintf(_("%s entered the "
-                        "channel."), line.c_str()), BY_CHANNEL);
+                channel->getTab()->chatLog(strformat(_("{} entered the "
+                        "channel."), line), BY_CHANNEL);
                 break;
 
             case CHAT_EVENT_LEAVING_PLAYER:
-                channel->getTab()->chatLog(strprintf(_("%s left the channel."),
-                        line.c_str()), BY_CHANNEL);
+                channel->getTab()->chatLog(strformat(_("{} left the channel."),
+                        line), BY_CHANNEL);
                 break;
 
             case CHAT_EVENT_TOPIC_CHANGE:
-                channel->getTab()->chatLog(strprintf(_("Topic: %s"),
-                        line.c_str()), BY_CHANNEL);
+                channel->getTab()->chatLog(strformat(_("Topic: {}"),
+                        line), BY_CHANNEL);
                 break;
 
             case CHAT_EVENT_MODE_CHANGE:
@@ -332,9 +333,9 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
                 std::string user1 = line.substr(0, first);
                 std::string user2 = line.substr(first+1, second);
                 std::string mode = line.substr(second+1, line.length());
-                channel->getTab()->chatLog(strprintf(_("%s has set mode %s "
-                        "on user %s."), user1.c_str(), mode.c_str(),
-                        user2.c_str()), BY_CHANNEL);
+                channel->getTab()->chatLog(strformat(_("{} has set mode {} "
+                        "on user {}."), user1, mode,
+                        user2), BY_CHANNEL);
             } break;
 
             case CHAT_EVENT_KICKED_PLAYER:
@@ -342,8 +343,8 @@ void ChatHandler::handleChannelEvent(MessageIn &msg)
                 int first = line.find(":");
                 std::string user1 = line.substr(0, first);
                 std::string user2 = line.substr(first+1, line.length());
-                channel->getTab()->chatLog(strprintf(_("%s has kicked %s."),
-                        user1.c_str(), user2.c_str()), BY_CHANNEL);
+                channel->getTab()->chatLog(strformat(_("{} has kicked {}."),
+                        user1, user2), BY_CHANNEL);
             } break;
 
             default:

@@ -25,6 +25,7 @@
 
 #include "gui/setup_keyboard.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -54,18 +55,18 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     { "BeingSit",           SDLK_s,             _("Sit") },
     { "Screenshot",         SDLK_p,             _("Screenshot") },
     { "Trade",              SDLK_r,             _("Enable/Disable Trading") },
-    { "Shortcut1",          SDLK_1,             strprintf(_("Item Shortcut %d"), 1) },
-    { "Shortcut2",          SDLK_2,             strprintf(_("Item Shortcut %d"), 2) },
-    { "Shortcut3",          SDLK_3,             strprintf(_("Item Shortcut %d"), 3) },
-    { "Shortcut4",          SDLK_4,             strprintf(_("Item Shortcut %d"), 4) },
-    { "Shortcut5",          SDLK_5,             strprintf(_("Item Shortcut %d"), 5) },
-    { "Shortcut6",          SDLK_6,             strprintf(_("Item Shortcut %d"), 6) },
-    { "Shortcut7",          SDLK_7,             strprintf(_("Item Shortcut %d"), 7) },
-    { "Shortcut8",          SDLK_8,             strprintf(_("Item Shortcut %d"), 8) },
-    { "Shortcut9",          SDLK_9,             strprintf(_("Item Shortcut %d"), 9) },
-    { "Shortcut10",         SDLK_0,             strprintf(_("Item Shortcut %d"), 10) },
-    { "Shortcut11",         SDLK_MINUS,         strprintf(_("Item Shortcut %d"), 11) },
-    { "Shortcut12",         SDLK_EQUALS,        strprintf(_("Item Shortcut %d"), 12) },
+    { "Shortcut1",          SDLK_1,             strformat(_("Item Shortcut {}"), 1) },
+    { "Shortcut2",          SDLK_2,             strformat(_("Item Shortcut {}"), 2) },
+    { "Shortcut3",          SDLK_3,             strformat(_("Item Shortcut {}"), 3) },
+    { "Shortcut4",          SDLK_4,             strformat(_("Item Shortcut {}"), 4) },
+    { "Shortcut5",          SDLK_5,             strformat(_("Item Shortcut {}"), 5) },
+    { "Shortcut6",          SDLK_6,             strformat(_("Item Shortcut {}"), 6) },
+    { "Shortcut7",          SDLK_7,             strformat(_("Item Shortcut {}"), 7) },
+    { "Shortcut8",          SDLK_8,             strformat(_("Item Shortcut {}"), 8) },
+    { "Shortcut9",          SDLK_9,             strformat(_("Item Shortcut {}"), 9) },
+    { "Shortcut10",         SDLK_0,             strformat(_("Item Shortcut {}"), 10) },
+    { "Shortcut11",         SDLK_MINUS,         strformat(_("Item Shortcut {}"), 11) },
+    { "Shortcut12",         SDLK_EQUALS,        strformat(_("Item Shortcut {}"), 12) },
     { "WindowHelp",         SDLK_F1,            _("Help Window") },
     { "WindowStatus",       SDLK_F2,            _("Status Window") },
     { "WindowInventory",    SDLK_F3,            _("Inventory Window") },
@@ -82,18 +83,18 @@ static KeyData const keyData[KeyboardConfig::KEY_TOTAL] = {
     { "WindowOutfit",       SDLK_o,             _("Outfits Window") },
     { "WearOutfit",         SDLK_RCTRL,         _("Wear Outfit") },
     { "CopyOutfit",         SDLK_RALT,          _("Copy Outfit") },
-    { "EmoteShortcut1",     SDLK_1,             strprintf(_("Emote Shortcut %d"), 1) },
-    { "EmoteShortcut2",     SDLK_2,             strprintf(_("Emote Shortcut %d"), 2) },
-    { "EmoteShortcut3",     SDLK_3,             strprintf(_("Emote Shortcut %d"), 3) },
-    { "EmoteShortcut4",     SDLK_4,             strprintf(_("Emote Shortcut %d"), 4) },
-    { "EmoteShortcut5",     SDLK_5,             strprintf(_("Emote Shortcut %d"), 5) },
-    { "EmoteShortcut6",     SDLK_6,             strprintf(_("Emote Shortcut %d"), 6) },
-    { "EmoteShortcut7",     SDLK_7,             strprintf(_("Emote Shortcut %d"), 7) },
-    { "EmoteShortcut8",     SDLK_8,             strprintf(_("Emote Shortcut %d"), 8) },
-    { "EmoteShortcut9",     SDLK_9,             strprintf(_("Emote Shortcut %d"), 9) },
-    { "EmoteShortcut10",    SDLK_0,             strprintf(_("Emote Shortcut %d"), 10) },
-    { "EmoteShortcut11",    SDLK_MINUS,         strprintf(_("Emote Shortcut %d"), 11) },
-    { "EmoteShortcut12",    SDLK_EQUALS,        strprintf(_("Emote Shortcut %d"), 12) },
+    { "EmoteShortcut1",     SDLK_1,             strformat(_("Emote Shortcut {}"), 1) },
+    { "EmoteShortcut2",     SDLK_2,             strformat(_("Emote Shortcut {}"), 2) },
+    { "EmoteShortcut3",     SDLK_3,             strformat(_("Emote Shortcut {}"), 3) },
+    { "EmoteShortcut4",     SDLK_4,             strformat(_("Emote Shortcut {}"), 4) },
+    { "EmoteShortcut5",     SDLK_5,             strformat(_("Emote Shortcut {}"), 5) },
+    { "EmoteShortcut6",     SDLK_6,             strformat(_("Emote Shortcut {}"), 6) },
+    { "EmoteShortcut7",     SDLK_7,             strformat(_("Emote Shortcut {}"), 7) },
+    { "EmoteShortcut8",     SDLK_8,             strformat(_("Emote Shortcut {}"), 8) },
+    { "EmoteShortcut9",     SDLK_9,             strformat(_("Emote Shortcut {}"), 9) },
+    { "EmoteShortcut10",    SDLK_0,             strformat(_("Emote Shortcut {}"), 10) },
+    { "EmoteShortcut11",    SDLK_MINUS,         strformat(_("Emote Shortcut {}"), 11) },
+    { "EmoteShortcut12",    SDLK_EQUALS,        strformat(_("Emote Shortcut {}"), 12) },
     { "Chat",               SDLK_RETURN,        _("Toggle Chat") },
     { "ChatScrollUp",       SDLK_PAGEUP,        _("Scroll Chat Up") },
     { "ChatScrollDown",     SDLK_PAGEDOWN,      _("Scroll Chat Down") },
@@ -193,10 +194,10 @@ bool KeyboardConfig::hasConflicts()
             // Finally test to see if a conflict DOES exist.
             if (mKey[i].value == mKey[j].value)
             {
-                mBindError = strprintf(_("Conflict \"%s\" and \"%s\" keys. "
+                mBindError = strformat(_("Conflict \"{}\" and \"{}\" keys. "
                     "Resolve them, or gameplay may result"
                     " in strange behaviour."),
-                    keyData[i].caption.c_str(), keyData[j].caption.c_str());
+                    keyData[i].caption, keyData[j].caption);
                 return true;
             }
         }

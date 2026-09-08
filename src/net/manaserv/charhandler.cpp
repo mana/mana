@@ -43,6 +43,7 @@
 #include "resources/hairdb.h"
 
 #include "utils/dtor.h"
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -170,8 +171,8 @@ void CharHandler::handleCharacterCreateResponse(MessageIn &msg)
                 errorMessage = _("Character's stats are too low.");
                 break;
             case CREATE_ATTRIBUTES_OUT_OF_RANGE:
-                errorMessage = strprintf( _("At least one stat "
-                                   "is out of the permitted range: (%u - %u)."),
+                errorMessage = strformat( _("At least one stat "
+                                   "is out of the permitted range: ({} - {})."),
                                    Attributes::getAttributeMinimum(),
                                    Attributes::getAttributeMaximum());
                 break;
@@ -234,7 +235,7 @@ void CharHandler::handleCharacterDeleteResponse(MessageIn &msg)
                 errorMessage = _("Selection out of range.");
                 break;
             default:
-                errorMessage = strprintf(_("Unknown error (%d)."), errMsg);
+                errorMessage = strformat(_("Unknown error ({})."), errMsg);
         }
         new OkDialog(_("Error"), errorMessage);
     }
@@ -277,8 +278,8 @@ void CharHandler::handleCharacterSelectResponse(MessageIn &msg)
                 errorMessage = _("Invalid character slot selected.");
                 break;
             default:
-                errorMessage = strprintf(_("Unhandled character select "
-                                           "error message %i."), errMsg);
+                errorMessage = strformat(_("Unhandled character select "
+                                           "error message {}."), errMsg);
         }
         mCharacters.clear();
         Client::setState(State::Error);

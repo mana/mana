@@ -43,6 +43,7 @@
 #include "resources/statuseffectdb.h"
 #include "resources/theme.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/time.h"
@@ -219,20 +220,20 @@ void MiniStatusWindow::mouseMoved(gcn::MouseEvent &event)
     {
         const int xp = PlayerInfo::getAttribute(EXP);
         const int xpNeeded = PlayerInfo::getAttribute(EXP_NEEDED);
-        tooltip1 = strprintf("%u/%u", xp, xpNeeded);
-        tooltip2 = strprintf("%s: %u", _("Need"), xpNeeded - xp);
+        tooltip1 = fmt::format("{}/{}", xp, xpNeeded);
+        tooltip2 = fmt::format("{}: {}", _("Need"), xpNeeded - xp);
     }
     else if (event.getSource() == mHpBar)
     {
         const int hp = PlayerInfo::getAttribute(HP);
         const int maxHp = PlayerInfo::getAttribute(MAX_HP);
-        tooltip1 = strprintf("%u/%u", hp, maxHp);
+        tooltip1 = fmt::format("{}/{}", hp, maxHp);
     }
     else if (event.getSource() == mMpBar)
     {
         const int mp = PlayerInfo::getAttribute(MP);
         const int maxMp = PlayerInfo::getAttribute(MAX_MP);
-        tooltip1 = strprintf("%u/%u", mp, maxMp);
+        tooltip1 = fmt::format("{}/{}", mp, maxMp);
     }
     else
     {

@@ -32,6 +32,7 @@
 #include "net/tmwa/protocol.h"
 
 #include "utils/dtor.h"
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -174,11 +175,11 @@ void LoginHandler::handleMessage(MessageIn &msg)
                     errorMessage = _("Client too old.");
                     break;
                 case 6:
-                    errorMessage = strprintf(_("You have been temporarily "
+                    errorMessage = strformat(_("You have been temporarily "
                                                "banned from the game until "
-                                               "%s.\nPlease contact the GM "
+                                               "{}.\nPlease contact the GM "
                                                "team via the forums."),
-                                               msg.readString(20).c_str());
+                                               msg.readString(20));
                     break;
                 case 7:
                     errorMessage = _("Server overpopulated.");

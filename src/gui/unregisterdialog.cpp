@@ -35,6 +35,7 @@
 #include "net/loginhandler.h"
 #include "net/net.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -46,8 +47,8 @@ UnRegisterDialog::UnRegisterDialog(LoginData *loginData):
     mWrongDataNoticeListener(new WrongDataNoticeListener),
     mLoginData(loginData)
 {
-    gcn::Label *userLabel = new Label(strprintf(_("Name: %s"), mLoginData->
-                                                username.c_str()));
+    gcn::Label *userLabel = new Label(strformat(_("Name: {}"), mLoginData->
+                                                username));
     gcn::Label *passwordLabel = new Label(_("Password:"));
     mPasswordField = new PasswordField(mLoginData->password);
     mUnRegisterButton = new Button(_("Unregister"), "unregister", this);
@@ -111,15 +112,15 @@ void UnRegisterDialog::action(const gcn::ActionEvent &event)
         if (password.length() < min)
         {
             // Pass too short
-            errorMessage << strprintf(_("The password needs to be at least %d "
+            errorMessage << strformat(_("The password needs to be at least {} "
                                         "characters long."), min);
             error = true;
         }
         else if (password.length() > max - 1)
         {
             // Pass too long
-            errorMessage << strprintf(_("The password needs to be less than "
-                                        "%d characters long."), max);
+            errorMessage << strformat(_("The password needs to be less than "
+                                        "{} characters long."), max);
             error = true;
         }
 

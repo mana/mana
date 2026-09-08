@@ -32,6 +32,7 @@
 #include "resources/resourcemanager.h"
 #include "resources/wallpaper.h"
 
+#include "utils/format.h"
 #include "utils/stringutils.h"
 
 Desktop::Desktop()
@@ -43,9 +44,9 @@ Desktop::Desktop()
     if (branding.appName.empty())
         mVersionLabel = new Label(FULL_VERSION);
     else
-        mVersionLabel = new Label(strprintf("%s (%s)",
-                                            branding.appName.c_str(),
-                                            FULL_VERSION));
+        mVersionLabel = new Label(fmt::format("{} ({})",
+                                              branding.appName,
+                                              FULL_VERSION));
 
     mVersionLabel->setBackgroundColor(gcn::Color(255, 255, 255, 128));
     add(mVersionLabel, 25, 2);

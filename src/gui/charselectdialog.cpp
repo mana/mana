@@ -46,6 +46,7 @@
 #include "net/loginhandler.h"
 #include "net/net.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -398,7 +399,7 @@ void CharacterDisplay::update()
         const LocalPlayer *character = mCharacter->dummy.get();
         mButton->setCaption(_("Choose"));
         mButton->setActionEventId("use");
-        mName->setCaption(strprintf("%s", character->getName().c_str()));
+        mName->setCaption(character->getName());
         mDelete->setVisible(true);
     }
     else
@@ -423,7 +424,7 @@ void CharacterDisplay::mouseMoved(gcn::MouseEvent &event)
         int absX, absY;
         mPlayerBox->getAbsolutePosition(absX, absY);
 
-        const auto level = strprintf(_("Level %d"),
+        const auto level = strformat(_("Level {}"),
                                      mCharacter->data.getAttribute(LEVEL));
         const auto money = Units::formatCurrency(
                                      mCharacter->data.getAttribute(MONEY));

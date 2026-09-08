@@ -353,6 +353,7 @@ set(SRCS
     utils/copynpaste.h
     utils/dtor.h
     utils/filesystem.h
+    utils/format.cpp
     utils/format.h
     utils/gettext.h
     utils/language.cpp

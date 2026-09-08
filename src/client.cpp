@@ -78,6 +78,7 @@
 #if defined(_WIN32) || defined(__APPLE__)
 #include "utils/specialfolder.h"
 #endif
+#include "utils/format.h"
 #include "utils/stringutils.h"
 #include "utils/time.h"
 
@@ -272,7 +273,7 @@ Client::Client(const Options &options):
     Log::info("Initializing SDL...");
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
     {
-        Log::critical(strprintf("Could not initialize SDL: %s",
+        Log::critical(fmt::format("Could not initialize SDL: {}",
                       SDL_GetError()));
     }
     atexit(SDL_Quit);
@@ -281,8 +282,8 @@ Client::Client(const Options &options):
 
     if (!FS::setWriteDir(mLocalDataDir))
     {
-        Log::critical(strprintf("%s couldn't be set as write directory! "
-                                "Exiting.", mLocalDataDir.c_str()));
+        Log::critical(fmt::format("{} couldn't be set as write directory! "
+                                  "Exiting.", mLocalDataDir));
     }
 
 #if defined __APPLE__
@@ -1222,8 +1223,8 @@ void Client::initHomeDir()
 
     if (mkdir_r(mLocalDataDir.c_str()))
     {
-        Log::critical(strprintf(_("%s doesn't exist and can't be created! "
-                                  "Exiting."), mLocalDataDir.c_str()));
+        Log::critical(strformat(_("{} doesn't exist and can't be created! "
+                                  "Exiting."), mLocalDataDir));
     }
 
     mConfigDir = mOptions.configDir;
@@ -1233,8 +1234,8 @@ void Client::initHomeDir()
 
     if (mkdir_r(mConfigDir.c_str()))
     {
-        Log::critical(strprintf(_("%s doesn't exist and can't be created! "
-                                  "Exiting."), mConfigDir.c_str()));
+        Log::critical(strformat(_("{} doesn't exist and can't be created! "
+                                  "Exiting."), mConfigDir));
     }
 }
 
@@ -1312,16 +1313,16 @@ bool Client::initUpdatesDir()
                 Log::error("%s can't be made, but doesn't exist!",
                            newDir.c_str());
                 errorMessage =
-                    strprintf(_("Error creating updates directory!\n(%s)"),
-                                newDir.c_str());
+                    strformat(_("Error creating updates directory!\n({})"),
+                                newDir);
                 mState = State::Error;
             }
 #else
             Log::error("%s/%s can't be made, but doesn't exist!",
                        mLocalDataDir.c_str(), mUpdatesDir.c_str());
             errorMessage =
-                strprintf(_("Error creating updates directory!\n(%s/%s)"),
-                            mLocalDataDir.c_str(), mUpdatesDir.c_str());
+                strformat(_("Error creating updates directory!\n({}/{})"),
+                            mLocalDataDir, mUpdatesDir);
             mState = State::Error;
             return false;
 #endif

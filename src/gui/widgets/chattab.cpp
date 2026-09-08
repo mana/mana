@@ -41,6 +41,7 @@
 #include "resources/iteminfo.h"
 #include "resources/itemdb.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -159,8 +160,8 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
             }
             else
             {
-                tmp.nick = strprintf(_("Global announcement from %s:"),
-                                     tmp.nick.c_str());
+                tmp.nick = strformat(_("Global announcement from {}:"),
+                                     tmp.nick);
                 tmp.nick += " ";
                 lineColor = "##g";
             }
@@ -185,7 +186,7 @@ void ChatTab::chatLog(std::string line, Own own, bool ignoreRecord)
             lineColor = "##2"; // Equiv. to BrowserBox::GREEN
             break;
         case ACT_WHISPER:
-            tmp.nick = strprintf(_("%s whispers: %s"), tmp.nick.c_str(), "");
+            tmp.nick = strformat(_("{} whispers: {}"), tmp.nick, "");
             lineColor = "##W";
             break;
         case ACT_IS:

@@ -49,6 +49,7 @@
 #include "net/npchandler.h"
 
 #include "resources/iteminfo.h"
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -253,7 +254,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
                 break;
             }
             case NPC_INPUT_INTEGER: {
-                printText = strprintf("%d", mIntField->getValue());
+                printText = toString(mIntField->getValue());
                 Net::getNpcHandler()->integerInput(mNpcId, mIntField->getValue());
                 break;
             }
@@ -279,7 +280,7 @@ void NpcDialog::action(const gcn::ActionEvent &event)
             }
 
             // addText will auto remove the input layout
-            addText(strprintf("> \"%s\"", printText.c_str()), false);
+            addText(fmt::format("> \"{}\"", printText), false);
             addText(std::string(), false);
 
             mNewText.clear();

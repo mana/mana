@@ -33,6 +33,7 @@
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -180,8 +181,8 @@ void Setup_Keyboard::refreshAssignedKey(int index)
     {
         const char *temp = SDL_GetKeyName(keyboard.getKeyValue(index));
 
-        caption = strprintf("%-25s",
-            (keyboard.getKeyCaption(index) + ": ").c_str()) + toString(temp);
+        caption = fmt::format("{:<25}",
+            (keyboard.getKeyCaption(index) + ": ")) + toString(temp);
 
     }
     mKeyListModel->setElementAt(index, caption);

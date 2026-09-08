@@ -26,6 +26,7 @@
 #include "net/tmwa/messagein.h"
 #include "net/tmwa/protocol.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -245,8 +246,8 @@ int networkThread(void *data)
     if (SDLNet_ResolveHost(&ipAddress, server.hostname.c_str(),
                            server.port) == -1)
     {
-        error = strprintf(_("Unable to resolve host \"%s\""),
-                          server.hostname.c_str());
+        error = strformat(_("Unable to resolve host \"{}\""),
+                          server.hostname);
         Log::info("SDLNet_ResolveHost: %s", error.c_str());
     }
     else
@@ -451,7 +452,7 @@ void Network::dispatchMessages()
         auto packetInfo = findPacketInfo(msgId);
         if (!packetInfo)
         {
-            Log::critical(strprintf("Unknown packet 0x%x received.", msgId));
+            Log::critical(fmt::format("Unknown packet 0x{:x} received.", msgId));
             break;
         }
 
@@ -467,8 +468,8 @@ void Network::dispatchMessages()
 
             if (len < 4)
             {
-                Log::critical(strprintf("Variable length packet 0x%x has invalid length %d.",
-                                        msgId, len));
+                Log::critical(fmt::format("Variable length packet 0x{:x} has invalid length {}.",
+                                          msgId, len));
                 break;
             }
         }

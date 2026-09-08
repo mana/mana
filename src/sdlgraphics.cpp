@@ -24,6 +24,7 @@
 #include "configuration.h"
 #include "log.h"
 #include "resources/image.h"
+#include "utils/format.h"
 #include "utils/stringutils.h"
 #include "video.h"
 
@@ -40,8 +41,8 @@ std::unique_ptr<Graphics> SDLGraphics::create(SDL_Window *window, const VideoSet
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, rendererFlags);
     if (!renderer)
     {
-        Log::critical(strprintf("Failed to create renderer: %s",
-                                SDL_GetError()));
+        Log::critical(fmt::format("Failed to create renderer: {}",
+                                  SDL_GetError()));
         return {};
     }
 

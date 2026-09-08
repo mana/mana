@@ -120,130 +120,130 @@ msgid "% Evade"
 msgstr "% தவிர்க்கவும்"
 
 #: ../src/gui/debugwindow.cpp:60
-#, c-format
-msgid "%d FPS"
-msgstr "%d fps"
+#, c++-format
+msgid "{} FPS"
+msgstr "{} fps"
 
 #: ../src/gui/debugwindow.cpp:55
-#, c-format
-msgid "%d FPS (OpenGL)"
-msgstr "%d fps (opengl)"
+#, c++-format
+msgid "{} FPS (OpenGL)"
+msgstr "{} fps (opengl)"
 
 #: ../src/gui/setup_interface.cpp:160
-#, c-format
-msgid "%d tile"
-msgid_plural "%d tiles"
+#, c++-format
+msgid "{} tile"
+msgid_plural "{} tiles"
 msgstr[0] ""
 msgstr[1] ""
 
 #: ../src/gui/setup_video.cpp:178
-#, c-format
-msgid "%dx"
-msgstr "%d.எக்ச்"
+#, c++-format
+msgid "{}x"
+msgstr "{}.எக்ச்"
 
 #: ../src/client.cpp:1223 ../src/client.cpp:1234
-#, c-format
-msgid "%s doesn't exist and can't be created! Exiting."
-msgstr "%s இல்லை, உருவாக்க முடியாது! வெளியேறுதல்."
+#, c++-format
+msgid "{} doesn't exist and can't be created! Exiting."
+msgstr "{} இல்லை, உருவாக்க முடியாது! வெளியேறுதல்."
 
 #: ../src/net/manaserv/chathandler.cpp:314
-#, c-format
-msgid "%s entered the channel."
-msgstr "%s சேனலில் நுழைந்தன."
+#, c++-format
+msgid "{} entered the channel."
+msgstr "{} சேனலில் நுழைந்தன."
 
 #: ../src/gui/socialwindow.cpp:672
-#, c-format
-msgid "%s has invited you to join the %s party."
-msgstr "%s உங்களை %s கட்சியில் சேர அழைத்தார்."
+#, c++-format
+msgid "{} has invited you to join the {} party."
+msgstr "{} உங்களை {} கட்சியில் சேர அழைத்தார்."
 
 #: ../src/gui/socialwindow.cpp:629
-#, c-format
-msgid "%s has invited you to join the guild %s."
-msgstr "கில்ட் %s சேர %s உங்களை அழைத்தது."
+#, c++-format
+msgid "{} has invited you to join the guild {}."
+msgstr "கில்ட் {} சேர {} உங்களை அழைத்தது."
 
 #: ../src/gui/socialwindow.cpp:667
-#, c-format
-msgid "%s has invited you to join their party."
-msgstr "%s தங்கள் கட்சியில் சேர உங்களை அழைத்துள்ளன."
+#, c++-format
+msgid "{} has invited you to join their party."
+msgstr "{} தங்கள் கட்சியில் சேர உங்களை அழைத்துள்ளன."
 
 #: ../src/net/manaserv/chathandler.cpp:345
-#, c-format
-msgid "%s has kicked %s."
-msgstr "%s %s உதைத்துள்ளன."
+#, c++-format
+msgid "{} has kicked {}."
+msgstr "{} {} உதைத்துள்ளன."
 
 #: ../src/net/tmwa/partyhandler.cpp:231
-#, c-format
-msgid "%s has left your party."
-msgstr "%s உங்கள் கட்சியை விட்டு வெளியேறிவிட்டன."
+#, c++-format
+msgid "{} has left your party."
+msgstr "{} உங்கள் கட்சியை விட்டு வெளியேறிவிட்டன."
 
 #: ../src/net/manaserv/chathandler.cpp:335
-#, c-format
-msgid "%s has set mode %s on user %s."
-msgstr "%s பயன்முறை %s பயனர்மீது %s அமைத்துள்ளார்."
+#, c++-format
+msgid "{} has set mode {} on user {}."
+msgstr "{} பயன்முறை {} பயனர்மீது {} அமைத்துள்ளார்."
 
 #: ../src/net/tmwa/partyhandler.cpp:119
-#, c-format
-msgid "%s is already a member of a party."
-msgstr "%s ஏற்கனவே ஒரு கட்சியின் உறுப்பினராக உள்ளார்."
+#, c++-format
+msgid "{} is already a member of a party."
+msgstr "{} ஏற்கனவே ஒரு கட்சியின் உறுப்பினராக உள்ளார்."
 
 #: ../src/net/manaserv/partyhandler.cpp:160
-#, c-format
-msgid "%s is already in a party."
-msgstr "%s ஏற்கனவே ஒரு கட்சியில் உள்ளன."
+#, c++-format
+msgid "{} is already in a party."
+msgstr "{} ஏற்கனவே ஒரு கட்சியில் உள்ளன."
 
 #: ../src/net/tmwa/partyhandler.cpp:353
-#, c-format
-msgid "%s is not in your party!"
-msgstr "%s உங்கள் கட்சியில் இல்லை!"
+#, c++-format
+msgid "{} is not in your party!"
+msgstr "{} உங்கள் கட்சியில் இல்லை!"
 
 #: ../src/net/tmwa/partyhandler.cpp:127
-#, c-format
-msgid "%s is now a member of your party."
-msgstr "%s இப்போது உங்கள் கட்சியின் உறுப்பினராக உள்ளார்."
+#, c++-format
+msgid "{} is now a member of your party."
+msgstr "{} இப்போது உங்கள் கட்சியின் உறுப்பினராக உள்ளார்."
 
 #: ../src/net/manaserv/partyhandler.cpp:129
-#, c-format
-msgid "%s joined the party on invitation from %s."
-msgstr "%s அழைப்பின் பேரில் %s கட்சியில் சேர்ந்தார்."
+#, c++-format
+msgid "{} joined the party on invitation from {}."
+msgstr "{} அழைப்பின் பேரில் {} கட்சியில் சேர்ந்தார்."
 
 #: ../src/net/manaserv/partyhandler.cpp:127
-#, c-format
-msgid "%s joined the party."
-msgstr "%s கட்சியில் சேர்ந்தார்."
+#, c++-format
+msgid "{} joined the party."
+msgstr "{} கட்சியில் சேர்ந்தார்."
 
 #: ../src/net/manaserv/chathandler.cpp:319
-#, c-format
-msgid "%s left the channel."
-msgstr "%s சேனலை விட்டு வெளியேறின."
+#, c++-format
+msgid "{} left the channel."
+msgstr "{} சேனலை விட்டு வெளியேறின."
 
 #: ../src/net/tmwa/partyhandler.cpp:123
-#, c-format
-msgid "%s refused your invitation."
-msgstr "%s உங்கள் அழைப்பை மறுத்துவிட்டன."
+#, c++-format
+msgid "{} refused your invitation."
+msgstr "{} உங்கள் அழைப்பை மறுத்துவிட்டன."
 
 #: ../src/net/manaserv/partyhandler.cpp:151
-#, c-format
-msgid "%s rejected your invite."
-msgstr "%s உங்கள் அழைப்பை நிராகரித்தன."
+#, c++-format
+msgid "{} rejected your invite."
+msgstr "{} உங்கள் அழைப்பை நிராகரித்தன."
 
 #: ../src/net/manaserv/tradehandler.cpp:116
 #: ../src/net/tmwa/tradehandler.cpp:105
-#, c-format
-msgid "%s wants to trade with you, do you accept?"
-msgstr "%s உங்களுடன் வணிகம் செய்ய விரும்புகின்றன, நீங்கள் ஏற்றுக்கொள்கிறீர்களா?"
+#, c++-format
+msgid "{} wants to trade with you, do you accept?"
+msgstr "{} உங்களுடன் வணிகம் செய்ய விரும்புகின்றன, நீங்கள் ஏற்றுக்கொள்கிறீர்களா?"
 
 #: ../src/gui/widgets/chattab.cpp:187
-#, c-format
-msgid "%s whispers: %s"
-msgstr "%s கிசுகிசுக்கள்: %s"
+#, c++-format
+msgid "{} whispers: {}"
+msgstr "{} கிசுகிசுக்கள்: {}"
 
 #: ../src/gui/charselectdialog.cpp:408
 msgid "(empty)"
 msgstr "(காலியாக)"
 
 #: ../src/localplayer.cpp:1108
-#, c-format
-msgid "*AFK*: %s"
+#, c++-format
+msgid "*AFK*: {}"
 msgstr ""
 
 #: ../src/gui/buydialog.cpp:73 ../src/gui/itemamountwindow.cpp:126
@@ -468,9 +468,9 @@ msgid "Accepted guild invite"
 msgstr "ஏற்றுக்கொள்ளப்பட்ட கில்ட் அழைப்பு"
 
 #: ../src/gui/socialwindow.cpp:507
-#, c-format
-msgid "Accepted party invite from %s."
-msgstr "ஏற்றுக்கொள்ளப்பட்ட கட்சி %s இலிருந்து அழைப்பு."
+#, c++-format
+msgid "Accepted party invite from {}."
+msgstr "ஏற்றுக்கொள்ளப்பட்ட கட்சி {} இலிருந்து அழைப்பு."
 
 #: ../src/game.cpp:694
 msgid "Accepting incoming trade requests"
@@ -510,13 +510,13 @@ msgid "Account was not found. Please re-login."
 msgstr "கணக்கு காணப்படவில்லை. தயவுசெய்து மீண்டும் பதிவு செய்யுங்கள்."
 
 #: ../src/gui/changeemaildialog.cpp:49 ../src/gui/changepassworddialog.cpp:52
-#, c-format
-msgid "Account: %s"
-msgstr "கணக்கு: %s"
+#, c++-format
+msgid "Account: {}"
+msgstr "கணக்கு: {}"
 
 #: ../src/resources/itemdb.cpp:426
-#, fuzzy, c-format
-msgid "Accuracy %s"
+#, fuzzy, c++-format
+msgid "Accuracy {}"
 msgstr "% துல்லியம்"
 
 #: ../src/gui/inventorywindow.cpp:56 ../src/gui/inventorywindow.cpp:117
@@ -558,14 +558,14 @@ msgid "Agility"
 msgstr "சுறுசுறுப்பு"
 
 #: ../src/resources/attributes.cpp:177
-#, c-format
-msgid "Agility %+.1f"
-msgstr "சுறுசுறுப்பு %+.1f"
+#, c++-format
+msgid "Agility {:+.1f}"
+msgstr "சுறுசுறுப்பு {:+.1f}"
 
 #: ../src/resources/itemdb.cpp:438
-#, fuzzy, c-format
-msgid "Agility %s"
-msgstr "சுறுசுறுப்பு %+d"
+#, fuzzy, c++-format
+msgid "Agility {}"
+msgstr "சுறுசுறுப்பு {:+}"
 
 #: ../src/net/tmwa/charserverhandler.cpp:280
 msgid "Agility:"
@@ -609,9 +609,9 @@ msgid "Ammo"
 msgstr "அம்மோ"
 
 #: ../src/net/tmwa/partyhandler.cpp:284
-#, c-format
-msgid "An unknown member tried to say: %s"
-msgstr "தெரியாத உறுப்பினர் சொல்ல முயன்றார்: %s"
+#, c++-format
+msgid "An unknown member tried to say: {}"
+msgstr "தெரியாத உறுப்பினர் சொல்ல முயன்றார்: {}"
 
 #: ../src/net/manaserv/beinghandler.cpp:367
 #: ../src/net/tmwa/playerhandler.cpp:97
@@ -643,14 +643,14 @@ msgid "Are you sure you want to delete this character?"
 msgstr "இந்த கதாபாத்திரத்தை நீக்க விரும்புகிறீர்களா?"
 
 #: ../src/gui/socialwindow.cpp:230
-#, c-format
-msgid "Are you sure you want to leave guild %s?"
-msgstr "கில்ட் %s விட்டு வெளியேற விரும்புகிறீர்களா?"
+#, c++-format
+msgid "Are you sure you want to leave guild {}?"
+msgstr "கில்ட் {} விட்டு வெளியேற விரும்புகிறீர்களா?"
 
 #: ../src/gui/socialwindow.cpp:297
-#, c-format
-msgid "Are you sure you want to leave party %s?"
-msgstr "கட்சி%s விட்டுவிட விரும்புகிறீர்களா?"
+#, c++-format
+msgid "Are you sure you want to leave party {}?"
+msgstr "கட்சி{} விட்டுவிட விரும்புகிறீர்களா?"
 
 #: ../src/net/tmwa/inventoryhandler.h:66
 msgid "Arms"
@@ -661,9 +661,9 @@ msgid "Assign"
 msgstr "ஒதுக்க"
 
 #: ../src/net/manaserv/charhandler.cpp:173
-#, c-format
-msgid "At least one stat is out of the permitted range: (%u - %u)."
-msgstr "அனுமதிக்கப்பட்ட வரம்பில் குறைந்தது ஒரு புள்ளிவிவரம் இல்லை: (%u - %u)."
+#, c++-format
+msgid "At least one stat is out of the permitted range: ({} - {})."
+msgstr "அனுமதிக்கப்பட்ட வரம்பில் குறைந்தது ஒரு புள்ளிவிவரம் இல்லை: ({} - {})."
 
 #: ../src/keyboardconfig.cpp:44 ../src/net/offlinehandler.cpp:152
 #: ../src/net/tmwa/generalhandler.cpp:211
@@ -672,19 +672,19 @@ msgstr "தாக்குதல்"
 
 #: ../src/gui/popupmenu.cpp:128 ../src/gui/popupmenu.cpp:181
 #: ../src/resources/itemdb.cpp:423
-#, c-format
-msgid "Attack %s"
-msgstr "தாக்குதல் %s"
+#, c++-format
+msgid "Attack {}"
+msgstr "தாக்குதல் {}"
 
 #: ../src/resources/itemdb.cpp:429
-#, fuzzy, c-format
-msgid "Attack range %s"
-msgstr "தாக்குதல் %s"
+#, fuzzy, c++-format
+msgid "Attack range {}"
+msgstr "தாக்குதல் {}"
 
 #: ../src/resources/itemdb.cpp:428
-#, fuzzy, c-format
-msgid "Attack speed %s"
-msgstr "தாக்குதல் %s"
+#, fuzzy, c++-format
+msgid "Attack speed {}"
+msgstr "தாக்குதல் {}"
 
 #: ../src/gui/chatwindow.cpp:315
 msgid "Attendance written to record log."
@@ -699,9 +699,9 @@ msgid "Authentication failed."
 msgstr "ஏற்பு தோல்வியடைந்தது."
 
 #: ../src/gui/setup_video.cpp:176
-#, c-format
-msgid "Auto (%dx)"
-msgstr "ஆட்டோ (%dஎக்ச்)"
+#, c++-format
+msgid "Auto ({}x)"
+msgstr "ஆட்டோ ({}எக்ச்)"
 
 #: ../src/net/offlinehandler.cpp:485
 msgid "Available commands:"
@@ -712,9 +712,9 @@ msgid "Away"
 msgstr "தொலைவில்"
 
 #: ../src/gui/popupmenu.cpp:85
-#, c-format
-msgid "Befriend %s"
-msgstr "நட்பு %s"
+#, c++-format
+msgid "Befriend {}"
+msgstr "நட்பு {}"
 
 #: ../src/resources/userpalette.cpp:64
 msgid "Being"
@@ -776,12 +776,12 @@ msgid "Cancel"
 msgstr "ரத்துசெய்"
 
 #: ../src/commandhandler.cpp:408
-#, c-format
+#, c++-format
 msgid ""
-"Cannot create a whisper tab for nick \"%s\"! It either already exists, or is "
+"Cannot create a whisper tab for nick \"{}\"! It either already exists, or is "
 "you."
 msgstr ""
-"நிக் \"%s\" க்கு ஒரு விச்பர் தாவலை உருவாக்க முடியாது! இது ஏற்கனவே உள்ளது, அல்லது "
+"நிக் \"{}\" க்கு ஒரு விச்பர் தாவலை உருவாக்க முடியாது! இது ஏற்கனவே உள்ளது, அல்லது "
 "நீங்கள் தான்."
 
 #: ../src/gui/socialwindow.cpp:691
@@ -798,8 +798,8 @@ msgid "Cannot raise skill!"
 msgstr "திறனை உயர்த்த முடியாது!"
 
 #: ../src/net/offlinehandler.cpp:312
-#, fuzzy, c-format
-msgid "Cannot send a private message to %s in offline mode."
+#, fuzzy, c++-format
+msgid "Cannot send a private message to {} in offline mode."
 msgstr "/msg> ஒரு பயனருக்கு ஒரு தனிப்பட்ட செய்தியை அனுப்பவும்"
 
 #: ../src/gui/widgets/whispertab.cpp:52
@@ -849,8 +849,8 @@ msgid "Change map"
 msgstr "மின்னஞ்சலை மாற்றவும்"
 
 #: ../src/net/offlinehandler.cpp:454
-#, fuzzy, c-format
-msgid "Changed map to %s."
+#, fuzzy, c++-format
+msgid "Changed map to {}."
 msgstr "மின்னஞ்சலை மாற்றவும்"
 
 #: ../src/gui/setup_video.cpp:511
@@ -885,9 +885,9 @@ msgid "Character deleted."
 msgstr "எழுத்து நீக்கப்பட்டது."
 
 #: ../src/gui/statuswindow.cpp:214 ../src/gui/statuswindow.cpp:251
-#, c-format
-msgid "Character points: %d"
-msgstr "எழுத்து புள்ளிகள்: %d"
+#, c++-format
+msgid "Character points: {}"
+msgstr "எழுத்து புள்ளிகள்: {}"
 
 #: ../src/gui/charcreatedialog.cpp:274
 msgid "Character stats OK"
@@ -1124,9 +1124,9 @@ msgid "Completely ignore"
 msgstr "முற்றிலும் புறக்கணிக்கவும்"
 
 #: ../src/gui/popupmenu.cpp:99
-#, c-format
-msgid "Completely ignore %s"
-msgstr "%s ஐ முற்றிலும் புறக்கணிக்கவும்"
+#, c++-format
+msgid "Completely ignore {}"
+msgstr "{} ஐ முற்றிலும் புறக்கணிக்கவும்"
 
 #: ../src/gui/charselectdialog.cpp:67
 msgid "Confirm Character Delete"
@@ -1141,12 +1141,12 @@ msgid "Confirmed. Waiting..."
 msgstr "உறுதிப்படுத்தப்பட்டது. காத்திருக்கிறது ..."
 
 #: ../src/keyboardconfig.cpp:196
-#, c-format
+#, c++-format
 msgid ""
-"Conflict \"%s\" and \"%s\" keys. Resolve them, or gameplay may result in "
+"Conflict \"{}\" and \"{}\" keys. Resolve them, or gameplay may result in "
 "strange behaviour."
 msgstr ""
-"மோதல் \"%s\" மற்றும் \"%s\" விசைகள். அவற்றைத் தீர்க்கவும், அல்லது விளையாட்டு விசித்திரமான "
+"மோதல் \"{}\" மற்றும் \"{}\" விசைகள். அவற்றைத் தீர்க்கவும், அல்லது விளையாட்டு விசித்திரமான "
 "நடத்தைக்கு வழிவகுக்கும்."
 
 #: ../src/gui/serverdialog.cpp:171
@@ -1170,18 +1170,18 @@ msgid "Connection to server terminated. "
 msgstr "சேவையகத்திற்கான இணைப்பு நிறுத்தப்பட்டது. "
 
 #: ../src/gui/questswindow.cpp:282
-#, fuzzy, c-format
-msgid "Coordinates: %s (%d, %d)"
-msgstr "கர்சர்: ( %d, %d)"
+#, fuzzy, c++-format
+msgid "Coordinates: {} ({}, {})"
+msgstr "கர்சர்: ( {}, {})"
 
 #: ../src/keyboardconfig.cpp:84
 msgid "Copy Outfit"
 msgstr "அலங்காரத்தை நகலெடுக்கவும்"
 
 #: ../src/gui/statuswindow.cpp:259
-#, c-format
-msgid "Correction points: %d"
-msgstr "திருத்தம் புள்ளிகள்: %d"
+#, c++-format
+msgid "Correction points: {}"
+msgstr "திருத்தம் புள்ளிகள்: {}"
 
 #: ../src/game.cpp:902
 msgid "Could Not Load Map"
@@ -1221,18 +1221,18 @@ msgid "Create Party"
 msgstr "கட்சியை உருவாக்குங்கள்"
 
 #: ../src/gui/socialwindow.cpp:574
-#, c-format
-msgid "Creating guild called %s."
-msgstr "கில்ட்டை உருவாக்குதல் %s என்று அழைக்கப்படுகிறது."
+#, c++-format
+msgid "Creating guild called {}."
+msgstr "கில்ட்டை உருவாக்குதல் {} என்று அழைக்கப்படுகிறது."
 
 #: ../src/gui/socialwindow.cpp:566
 msgid "Creating guild failed, please choose a shorter name."
 msgstr "கில்ட்டை உருவாக்குவது தோல்வியுற்றது, தயவுசெய்து குறுகிய பெயரைத் தேர்வுசெய்க."
 
 #: ../src/gui/socialwindow.cpp:598
-#, c-format
-msgid "Creating party called %s."
-msgstr "%s எனப்படும் கட்சியை உருவாக்குதல்."
+#, c++-format
+msgid "Creating party called {}."
+msgstr "{} எனப்படும் கட்சியை உருவாக்குதல்."
 
 #: ../src/gui/socialwindow.cpp:590
 msgid "Creating party failed, please choose a shorter name."
@@ -1243,19 +1243,19 @@ msgid "Critical Hit"
 msgstr "சிக்கலான செய்"
 
 #: ../src/resources/itemdb.cpp:425
-#, fuzzy, c-format
-msgid "Critical chance %s"
+#, fuzzy, c++-format
+msgid "Critical chance {}"
 msgstr "சிக்கலான செய்"
 
 #: ../src/resources/itemdb.cpp:432
-#, c-format
-msgid "Critical defense %s"
+#, c++-format
+msgid "Critical defense {}"
 msgstr ""
 
 #: ../src/gui/debugwindow.cpp:97
-#, c-format
-msgid "Cursor: (%d, %d)"
-msgstr "கர்சர்: ( %d, %d)"
+#, c++-format
+msgid "Cursor: ({}, {})"
+msgstr "கர்சர்: ( {}, {})"
 
 #: ../src/gui/setup_video.cpp:102
 msgid "Custom"
@@ -1286,8 +1286,8 @@ msgid "Default"
 msgstr "இயல்புநிலை"
 
 #: ../src/gui/setup_interface.cpp:90
-#, fuzzy, c-format
-msgid "Default (%s)"
+#, fuzzy, c++-format
+msgid "Default ({})"
 msgstr "இயல்புநிலை"
 
 #: ../src/net/offlinehandler.cpp:153 ../src/net/tmwa/generalhandler.cpp:212
@@ -1295,9 +1295,9 @@ msgid "Defense"
 msgstr "பாதுகாப்பு"
 
 #: ../src/resources/itemdb.cpp:430
-#, fuzzy, c-format
-msgid "Defense %s"
-msgstr "பாதுகாப்பு %+d"
+#, fuzzy, c++-format
+msgid "Defense {}"
+msgstr "பாதுகாப்பு {:+}"
 
 #: ../src/gui/setup_colors.cpp:94
 msgid "Delay:"
@@ -1318,14 +1318,14 @@ msgid "Dexterity"
 msgstr "திறமை"
 
 #: ../src/resources/attributes.cpp:189
-#, c-format
-msgid "Dexterity %+.1f"
-msgstr "திறமை %+.1f"
+#, c++-format
+msgid "Dexterity {:+.1f}"
+msgstr "திறமை {:+.1f}"
 
 #: ../src/resources/itemdb.cpp:441
-#, fuzzy, c-format
-msgid "Dexterity %s"
-msgstr "திறமை %+d"
+#, fuzzy, c++-format
+msgid "Dexterity {}"
+msgstr "திறமை {:+}"
 
 #: ../src/net/tmwa/charserverhandler.cpp:283
 msgid "Dexterity:"
@@ -1340,9 +1340,9 @@ msgid "Disable transparency (Low CPU mode)"
 msgstr "வெளிப்படைத்தன்மையை முடக்கு (குறைந்த சிபியு பயன்முறை)"
 
 #: ../src/gui/popupmenu.cpp:90
-#, c-format
-msgid "Disregard %s"
-msgstr "%s புறக்கணிக்கவும்"
+#, c++-format
+msgid "Disregard {}"
+msgstr "{} புறக்கணிக்கவும்"
 
 #: ../src/gui/setup_players.cpp:62
 msgid "Disregarded"
@@ -1363,9 +1363,9 @@ msgid "Download music"
 msgstr "இசையைப் பதிவிறக்கவும்"
 
 #: ../src/gui/serverdialog.cpp:358
-#, fuzzy, c-format
-msgid "Downloading server list...%2.0f%%"
-msgstr "சேவையக பட்டியலைப் பதிவிறக்குகிறது ...%2.2f %%"
+#, fuzzy, c++-format
+msgid "Downloading server list...{:2.0f}%"
+msgstr "சேவையக பட்டியலைப் பதிவிறக்குகிறது ...{:2.2f} %"
 
 #: ../src/gui/inventorywindow.cpp:58
 msgid "Drink"
@@ -1410,9 +1410,9 @@ msgstr "மின்னஞ்சல்:"
 #: ../src/keyboardconfig.cpp:91 ../src/keyboardconfig.cpp:92
 #: ../src/keyboardconfig.cpp:93 ../src/keyboardconfig.cpp:94
 #: ../src/keyboardconfig.cpp:95 ../src/keyboardconfig.cpp:96
-#, c-format
-msgid "Emote Shortcut %d"
-msgstr "எமோட் குறுக்குவழி %d"
+#, c++-format
+msgid "Emote Shortcut {}"
+msgstr "எமோட் குறுக்குவழி {}"
 
 #: ../src/keyboardconfig.cpp:81
 msgid "Emote Shortcut Window"
@@ -1485,22 +1485,22 @@ msgid "Error creating guild."
 msgstr "கில்ட் உருவாக்கும் பிழை."
 
 #: ../src/client.cpp:1313
-#, c-format
+#, c++-format
 msgid ""
 "Error creating updates directory!\n"
-"(%s)"
+"({})"
 msgstr ""
 "புதுப்பிப்புகள் கோப்பகத்தை உருவாக்குவது பிழை!\n"
-" (%s)"
+" ({})"
 
 #: ../src/client.cpp:1321
-#, c-format
+#, c++-format
 msgid ""
 "Error creating updates directory!\n"
-"(%s/%s)"
+"({}/{})"
 msgstr ""
 "புதுப்பிப்புகள் கோப்பகத்தை உருவாக்குவது பிழை!\n"
-" (%s/%s)"
+" ({}/{})"
 
 #: ../src/net/manaserv/chathandler.cpp:211
 msgid "Error joining channel."
@@ -1517,13 +1517,13 @@ msgid "Error while downloading"
 msgstr "%s ஐ ஏற்றும்போது பிழை"
 
 #: ../src/game.cpp:903
-#, c-format
-msgid "Error while loading %s"
-msgstr "%s ஐ ஏற்றும்போது பிழை"
+#, c++-format
+msgid "Error while loading {}"
+msgstr "{} ஐ ஏற்றும்போது பிழை"
 
 #: ../src/resources/itemdb.cpp:427
-#, fuzzy, c-format
-msgid "Evade %s"
+#, fuzzy, c++-format
+msgid "Evade {}"
 msgstr "% தவிர்க்கவும்"
 
 #: ../src/resources/userpalette.cpp:76
@@ -1668,9 +1668,9 @@ msgid "General"
 msgstr "பொது"
 
 #: ../src/gui/widgets/chattab.cpp:161
-#, c-format
-msgid "Global announcement from %s:"
-msgstr "%s இலிருந்து உலகளாவிய அறிவிப்பு:"
+#, c++-format
+msgid "Global announcement from {}:"
+msgstr "{} இலிருந்து உலகளாவிய அறிவிப்பு:"
 
 #: ../src/gui/widgets/chattab.cpp:155
 msgid "Global announcement:"
@@ -1693,9 +1693,9 @@ msgid "Guild"
 msgstr "கில்ட்"
 
 #: ../src/gui/socialwindow.cpp:205
-#, c-format
-msgid "Guild %s quit requested."
-msgstr "கில்ட் %s கோரப்பட்டன."
+#, c++-format
+msgid "Guild {} quit requested."
+msgstr "கில்ட் {} கோரப்பட்டன."
 
 #: ../src/resources/userpalette.cpp:71
 msgid "Guild Members"
@@ -1718,9 +1718,9 @@ msgid "Guild name is missing."
 msgstr "கில்ட் பெயர் காணவில்லை."
 
 #: ../src/resources/itemdb.cpp:433
-#, fuzzy, c-format
-msgid "HP %s"
-msgstr "எச்பி %+d"
+#, fuzzy, c++-format
+msgid "HP {}"
+msgstr "எச்பி {:+}"
 
 #: ../src/gui/statuswindow.cpp:120
 msgid "HP:"
@@ -1795,9 +1795,9 @@ msgid "If you're the last person in the channel, it will be deleted."
 msgstr "நீங்கள் சேனலில் கடைசி நபராக இருந்தால், அது நீக்கப்படும்."
 
 #: ../src/gui/popupmenu.cpp:92
-#, c-format
-msgid "Ignore %s"
-msgstr "%s புறக்கணிக்கவும்"
+#, c++-format
+msgid "Ignore {}"
+msgstr "{} புறக்கணிக்கவும்"
 
 #: ../src/keyboardconfig.cpp:104
 msgid "Ignore input 1"
@@ -1842,14 +1842,14 @@ msgid "Intelligence"
 msgstr "நுண்ணறிவு"
 
 #: ../src/resources/attributes.cpp:213
-#, c-format
-msgid "Intelligence %+.1f"
-msgstr "நுண்ணறிவு %+.1f"
+#, c++-format
+msgid "Intelligence {:+.1f}"
+msgstr "நுண்ணறிவு {:+.1f}"
 
 #: ../src/resources/itemdb.cpp:440
-#, fuzzy, c-format
-msgid "Intelligence %s"
-msgstr "நுண்ணறிவு %+d"
+#, fuzzy, c++-format
+msgid "Intelligence {}"
+msgstr "நுண்ணறிவு {:+}"
 
 #: ../src/net/tmwa/charserverhandler.cpp:282
 msgid "Intelligence:"
@@ -1905,14 +1905,14 @@ msgid "Invite"
 msgstr "அழைக்கவும்"
 
 #: ../src/gui/popupmenu.cpp:144 ../src/gui/socialwindow.cpp:110
-#, c-format
-msgid "Invite %s to join your guild"
-msgstr "உங்கள் கில்டில் சேர %s ஐ அழைக்கவும்"
+#, c++-format
+msgid "Invite {} to join your guild"
+msgstr "உங்கள் கில்டில் சேர {} ஐ அழைக்கவும்"
 
 #: ../src/gui/popupmenu.cpp:152 ../src/gui/socialwindow.cpp:122
-#, c-format
-msgid "Invite %s to join your party"
-msgstr "உங்கள் கட்சியில் சேர %s ஐ அழைக்கவும்"
+#, c++-format
+msgid "Invite {} to join your party"
+msgstr "உங்கள் கட்சியில் சேர {} ஐ அழைக்கவும்"
 
 #: ../src/net/manaserv/guildhandler.cpp:108
 msgid "Invite failed."
@@ -1931,20 +1931,20 @@ msgid "Invited player is already in that guild."
 msgstr "அழைக்கப்பட்ட வீரர் ஏற்கனவே அந்த கில்டில் இருக்கிறார்."
 
 #: ../src/gui/socialwindow.cpp:192
-#, c-format
-msgid "Invited user %s to guild %s."
-msgstr "கில்ட் %s பயனர் %s அழைக்கப்பட்டன."
+#, c++-format
+msgid "Invited user {} to guild {}."
+msgstr "கில்ட் {} பயனர் {} அழைக்கப்பட்டன."
 
 #: ../src/gui/socialwindow.cpp:261 ../src/net/tmwa/partyhandler.cpp:315
-#, c-format
-msgid "Invited user %s to party."
-msgstr "கட்சிக்கு பயனர் %s அழைக்கப்பட்டன."
+#, c++-format
+msgid "Invited user {} to party."
+msgstr "கட்சிக்கு பயனர் {} அழைக்கப்பட்டன."
 
 #: ../src/net/tmwa/partyhandler.cpp:320
-#, c-format
-msgid "Inviting failed, because you can't see a player called %s."
+#, c++-format
+msgid "Inviting failed, because you can't see a player called {}."
 msgstr ""
-"அழைப்பது தோல்வியுற்றது, ஏனென்றால் %s என்று அழைக்கப்படும் ஒரு வீரரை நீங்கள் பார்க்க முடியாது."
+"அழைப்பது தோல்வியுற்றது, ஏனென்றால் {} என்று அழைக்கப்படும் ஒரு வீரரை நீங்கள் பார்க்க முடியாது."
 
 #: ../src/keyboardconfig.cpp:57 ../src/keyboardconfig.cpp:58
 #: ../src/keyboardconfig.cpp:59 ../src/keyboardconfig.cpp:60
@@ -1952,9 +1952,9 @@ msgstr ""
 #: ../src/keyboardconfig.cpp:63 ../src/keyboardconfig.cpp:64
 #: ../src/keyboardconfig.cpp:65 ../src/keyboardconfig.cpp:66
 #: ../src/keyboardconfig.cpp:67 ../src/keyboardconfig.cpp:68
-#, c-format
-msgid "Item Shortcut %d"
-msgstr "பொருள் குறுக்குவழி %d"
+#, c++-format
+msgid "Item Shortcut {}"
+msgstr "பொருள் குறுக்குவழி {}"
 
 #: ../src/keyboardconfig.cpp:77
 msgid "Item Shortcut Window"
@@ -1993,9 +1993,9 @@ msgid "Job:"
 msgstr "வேலை:"
 
 #: ../src/gui/statuswindow.cpp:161 ../src/gui/statuswindow.cpp:279
-#, c-format
-msgid "Job: %d"
-msgstr "வேலை: %d"
+#, c++-format
+msgid "Job: {}"
+msgstr "வேலை: {}"
 
 #: ../src/net/manaserv/partyhandler.cpp:98
 msgid ""
@@ -2013,8 +2013,8 @@ msgid "Joystick"
 msgstr "இயக்குப்பிடி"
 
 #: ../src/net/offlinehandler.cpp:400
-#, c-format
-msgid "Jumped to %d, %d."
+#, c++-format
+msgid "Jumped to {}, {}."
 msgstr ""
 
 #: ../src/gui/setup_keyboard.cpp:123
@@ -2026,8 +2026,8 @@ msgid "Keyboard"
 msgstr "விசைப்பலகை"
 
 #: ../src/gui/socialwindow.cpp:134
-#, c-format
-msgid "Kick %s from party"
+#, c++-format
+msgid "Kick {} from party"
 msgstr ""
 
 #: ../src/net/tmwa/adminhandler.cpp:63
@@ -2075,15 +2075,15 @@ msgid "Legs"
 msgstr "கால்கள்"
 
 #: ../src/gui/charselectdialog.cpp:426
-#, fuzzy, c-format
-msgid "Level %d"
-msgstr "நிலை: %d"
+#, fuzzy, c++-format
+msgid "Level {}"
+msgstr "நிலை: {}"
 
 #: ../src/gui/beingpopup.cpp:97 ../src/gui/statuswindow.cpp:116
 #: ../src/gui/statuswindow.cpp:218 ../src/gui/statuswindow.cpp:266
-#, c-format
-msgid "Level: %d"
-msgstr "நிலை: %d"
+#, c++-format
+msgid "Level: {}"
+msgstr "நிலை: {}"
 
 #: ../src/net/manaserv/chathandler.cpp:217
 msgid "Listing channels."
@@ -2131,46 +2131,46 @@ msgid "Luck"
 msgstr "அதிர்ச்டம்"
 
 #: ../src/resources/itemdb.cpp:442
-#, fuzzy, c-format
-msgid "Luck %s"
-msgstr "அதிர்ச்டம் %+d"
+#, fuzzy, c++-format
+msgid "Luck {}"
+msgstr "அதிர்ச்டம் {:+}"
 
 #: ../src/net/tmwa/charserverhandler.cpp:284
 msgid "Luck:"
 msgstr "அதிர்ச்டம்:"
 
 #: ../src/gui/skilldialog.cpp:493
-#, c-format
-msgid "Lvl: %d"
-msgstr "எல்விஎல்: %d"
+#, c++-format
+msgid "Lvl: {}"
+msgstr "எல்விஎல்: {}"
 
 #: ../src/gui/skilldialog.cpp:482
-#, c-format
-msgid "Lvl: %d (%+d)"
-msgstr "எல்விஎல்: %d (%+d)"
+#, c++-format
+msgid "Lvl: {} ({:+})"
+msgstr "எல்விஎல்: {} ({:+})"
 
 #: ../src/net/offlinehandler.cpp:154 ../src/net/tmwa/generalhandler.cpp:213
 msgid "M.Attack"
 msgstr "M.attack"
 
 #: ../src/resources/itemdb.cpp:424
-#, fuzzy, c-format
-msgid "M.Attack %s"
-msgstr "தாக்குதல் %s"
+#, fuzzy, c++-format
+msgid "M.Attack {}"
+msgstr "தாக்குதல் {}"
 
 #: ../src/net/offlinehandler.cpp:155 ../src/net/tmwa/generalhandler.cpp:214
 msgid "M.Defense"
 msgstr "எம்"
 
 #: ../src/resources/itemdb.cpp:431
-#, fuzzy, c-format
-msgid "M.Defense %s"
+#, fuzzy, c++-format
+msgid "M.Defense {}"
 msgstr "எம்"
 
 #: ../src/resources/itemdb.cpp:435
-#, fuzzy, c-format
-msgid "MP %s"
-msgstr "Mp %+d"
+#, fuzzy, c++-format
+msgid "MP {}"
+msgstr "Mp {:+}"
 
 #: ../src/gui/statuswindow.cpp:133
 msgid "MP:"
@@ -2185,9 +2185,9 @@ msgid "Map"
 msgstr "வரைபடம்"
 
 #: ../src/gui/debugwindow.cpp:104
-#, c-format
-msgid "Map: %s"
-msgstr "வரைபடம்: %s"
+#, c++-format
+msgid "Map: {}"
+msgstr "வரைபடம்: {}"
 
 #: ../src/gui/buydialog.cpp:79 ../src/gui/selldialog.cpp:79
 #: ../src/gui/statuswindow.cpp:394 ../src/gui/statuswindow.cpp:466
@@ -2196,13 +2196,13 @@ msgid "Max"
 msgstr "அதிகபட்சம்"
 
 #: ../src/resources/itemdb.cpp:434
-#, c-format
-msgid "Max HP %s"
+#, c++-format
+msgid "Max HP {}"
 msgstr ""
 
 #: ../src/resources/itemdb.cpp:436
-#, c-format
-msgid "Max MP %s"
+#, c++-format
+msgid "Max MP {}"
 msgstr ""
 
 #: ../src/gui/setup_interface.cpp:125
@@ -2238,9 +2238,9 @@ msgid "Minimap Window"
 msgstr "மினிமாப் சாளரம்"
 
 #: ../src/gui/debugwindow.cpp:102
-#, c-format
-msgid "Minimap: %s"
-msgstr "மினிமாப்: %s"
+#, c++-format
+msgid "Minimap: {}"
+msgstr "மினிமாப்: {}"
 
 #: ../src/resources/userpalette.cpp:87
 msgid "Misses"
@@ -2251,15 +2251,15 @@ msgid "Modify..."
 msgstr "மாற்றவும் ..."
 
 #: ../src/net/offlinehandler.cpp:468
-#, c-format
-msgid "Money set to %d."
+#, c++-format
+msgid "Money set to {}."
 msgstr ""
 
 #: ../src/gui/statuswindow.cpp:117 ../src/gui/statuswindow.cpp:211
 #: ../src/gui/statuswindow.cpp:243
-#, c-format
-msgid "Money: %s"
-msgstr "பணம்: %s"
+#, c++-format
+msgid "Money: {}"
+msgstr "பணம்: {}"
 
 #: ../src/resources/userpalette.cpp:79
 msgid "Monster Hits Player"
@@ -2294,18 +2294,18 @@ msgid "Music volume"
 msgstr "இசை தொகுதி"
 
 #: ../src/gui/debugwindow.cpp:101
-#, c-format
-msgid "Music: %s"
-msgstr "இசை: %s"
+#, c++-format
+msgid "Music: {}"
+msgstr "இசை: {}"
 
 #: ../src/gui/npcdialog.cpp:84 ../src/gui/npcpostdialog.cpp:41
 msgid "NPC"
 msgstr "NPC"
 
 #: ../src/gui/questswindow.cpp:286
-#, fuzzy, c-format
-msgid "NPC: %s"
-msgstr "பெயர்: %s"
+#, fuzzy, c++-format
+msgid "NPC: {}"
+msgstr "பெயர்: {}"
 
 #: ../src/resources/userpalette.cpp:68
 msgid "NPCs"
@@ -2321,9 +2321,9 @@ msgid "Name:"
 msgstr "பெயர்:"
 
 #: ../src/gui/unregisterdialog.cpp:49
-#, c-format
-msgid "Name: %s"
-msgstr "பெயர்: %s"
+#, c++-format
+msgid "Name: {}"
+msgstr "பெயர்: {}"
 
 #: ../src/net/tmwa/inventoryhandler.h:78
 msgid "Necklace"
@@ -2362,8 +2362,8 @@ msgid "New password too short."
 msgstr "புதிய கடவுச்சொல் மிகக் குறைவு."
 
 #: ../src/gui/updaterwindow.cpp:266
-#, fuzzy, c-format
-msgid "News could not be downloaded: %s"
+#, fuzzy, c++-format
+msgid "News could not be downloaded: {}"
 msgstr "வீரரை புறக்கணிக்க முடியவில்லை!"
 
 #: ../src/gui/npcdialog.cpp:61
@@ -2468,9 +2468,9 @@ msgid "Old password incorrect."
 msgstr "பழைய கடவுச்சொல் தவறானது."
 
 #: ../src/gui/socialwindow.cpp:404 ../src/gui/socialwindow.cpp:707
-#, fuzzy, c-format
-msgid "Online (%u)"
-msgstr "நிகழ்நிலை (%zu)"
+#, fuzzy, c++-format
+msgid "Online ({})"
+msgstr "நிகழ்நிலை ({})"
 
 #: ../src/gui/inventorywindow.cpp:60
 #, fuzzy
@@ -2496,9 +2496,9 @@ msgid "Opening of URLs requires SDL 2.0.14."
 msgstr "முகவரி களின் திறப்புக்கு SDL 2.0.14 தேவைப்படுகிறது."
 
 #: ../src/commandhandler.cpp:42
-#, c-format
-msgid "Options to /%s are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
-msgstr "/%s க்கான விருப்பங்கள் \"ஆம்\", \"இல்லை\", \"உண்மை\", \"பொய்\", \"1\", \"0\"."
+#, c++-format
+msgid "Options to /{} are \"yes\", \"no\", \"true\", \"false\", \"1\", \"0\"."
+msgstr "/{} க்கான விருப்பங்கள் \"ஆம்\", \"இல்லை\", \"உண்மை\", \"பொய்\", \"1\", \"0\"."
 
 #: ../src/main.cpp:50
 msgid "Options:"
@@ -2514,9 +2514,9 @@ msgstr "மற்ற வீரர்களின் பெயர்கள்"
 
 #: ../src/gui/outfitwindow.cpp:83 ../src/gui/outfitwindow.cpp:264
 #: ../src/gui/outfitwindow.cpp:274
-#, c-format
-msgid "Outfit: %d"
-msgstr "ஆடை: %d"
+#, c++-format
+msgid "Outfit: {}"
+msgstr "ஆடை: {}"
 
 #: ../src/gui/inventorywindow.cpp:119 ../src/gui/outfitwindow.cpp:70
 msgid "Outfits"
@@ -2552,9 +2552,9 @@ msgid "Particle Effects"
 msgstr "துகள் விளைவுகள்"
 
 #: ../src/gui/debugwindow.cpp:108
-#, c-format
-msgid "Particle count: %d"
-msgstr "துகள் எண்ணிக்கை: %d"
+#, c++-format
+msgid "Particle count: {}"
+msgstr "துகள் எண்ணிக்கை: {}"
 
 #: ../src/gui/setup_video.cpp:249
 msgid "Particle detail:"
@@ -2569,9 +2569,9 @@ msgid "Party"
 msgstr "கட்சி"
 
 #: ../src/gui/socialwindow.cpp:272
-#, c-format
-msgid "Party %s quit requested."
-msgstr "கட்சி %s கோரப்பட்டன."
+#, c++-format
+msgid "Party {} quit requested."
+msgstr "கட்சி {} கோரப்பட்டன."
 
 #: ../src/resources/userpalette.cpp:70
 msgid "Party Members"
@@ -2590,11 +2590,11 @@ msgstr ""
 "அழைப்பிதழ்கள்."
 
 #: ../src/net/manaserv/partyhandler.cpp:75
-#, c-format
+#, c++-format
 msgid ""
-"Party invite failed, because no player called %s is within the visual range."
+"Party invite failed, because no player called {} is within the visual range."
 msgstr ""
-"கட்சி அழைப்பு தோல்வியடைந்தது, ஏனென்றால் %s என்று அழைக்கப்படும் எந்த வீரரும் காட்சி "
+"கட்சி அழைப்பு தோல்வியடைந்தது, ஏனென்றால் {} என்று அழைக்கப்படும் எந்த வீரரும் காட்சி "
 "வரம்பிற்குள் இல்லை."
 
 #: ../src/commandhandler.cpp:434 ../src/net/tmwa/gui/partytab.cpp:101
@@ -2606,9 +2606,9 @@ msgid "Party successfully created."
 msgstr "கட்சி வெற்றிகரமாக உருவாக்கப்பட்டது."
 
 #: ../src/gui/beingpopup.cpp:81
-#, c-format
-msgid "Party: %s"
-msgstr "கட்சி: %s"
+#, c++-format
+msgid "Party: {}"
+msgstr "கட்சி: {}"
 
 #: ../src/client.cpp:959
 msgid "Password Change"
@@ -2628,9 +2628,9 @@ msgid "Passwords do not match."
 msgstr "கடவுச்சொற்கள் பொருந்தவில்லை."
 
 #: ../src/gui/popupmenu.cpp:208
-#, c-format
-msgid "Pick up %s"
-msgstr "%s ஐ எடுக்கவும்"
+#, c++-format
+msgid "Pick up {}"
+msgstr "{} ஐ எடுக்கவும்"
 
 #: ../src/keyboardconfig.cpp:52
 msgid "Pickup"
@@ -2650,9 +2650,9 @@ msgid "Play"
 msgstr "விளையாடுங்கள்"
 
 #: ../src/net/manaserv/guildhandler.cpp:259
-#, c-format
-msgid "Player %s kicked you out of guild %s."
-msgstr "வீரர்கள் %s உங்களைக் கில்ட் %s இலிருந்து உதைத்தனர்."
+#, c++-format
+msgid "Player {} kicked you out of guild {}."
+msgstr "வீரர்கள் {} உங்களைக் கில்ட் {} இலிருந்து உதைத்தனர்."
 
 #: ../src/commandhandler.cpp:523
 msgid "Player already ignored!"
@@ -2692,14 +2692,14 @@ msgid "Players in this channel:"
 msgstr "இந்த சேனலில் வீரர்கள்:"
 
 #: ../src/gui/charcreatedialog.cpp:94 ../src/gui/charcreatedialog.cpp:283
-#, c-format
-msgid "Please distribute %d points"
-msgstr "தயவுசெய்து %d புள்ளிகளை விநியோகிக்கவும்"
+#, c++-format
+msgid "Please distribute {} points"
+msgstr "தயவுசெய்து {} புள்ளிகளை விநியோகிக்கவும்"
 
 #: ../src/gui/charcreatedialog.cpp:288
-#, c-format
-msgid "Please remove %d points"
-msgstr "தயவுசெய்து %d புள்ளிகளை அகற்றவும்"
+#, c++-format
+msgid "Please remove {} points"
+msgstr "தயவுசெய்து {} புள்ளிகளை அகற்றவும்"
 
 #: ../src/gui/serverdialog.cpp:288
 msgid "Please select a custom server."
@@ -2727,9 +2727,9 @@ msgid "Port:"
 msgstr "போர்ட்:"
 
 #: ../src/gui/chatwindow.cpp:297
-#, c-format
-msgid "Present: %s; %d players are present."
-msgstr "தற்போது: %s; %d வீரர்கள் உள்ளனர்."
+#, c++-format
+msgid "Present: {}; {} players are present."
+msgstr "தற்போது: {}; {} வீரர்கள் உள்ளனர்."
 
 #: ../src/net/manaserv/beinghandler.cpp:374
 msgid "Press OK to respawn."
@@ -2745,9 +2745,9 @@ msgstr "முந்தைய அரட்டை தாவல்"
 
 #: ../src/gui/buydialog.cpp:68 ../src/gui/buydialog.cpp:287
 #: ../src/gui/selldialog.cpp:72 ../src/gui/selldialog.cpp:296
-#, c-format
-msgid "Price: %s / Total: %s"
-msgstr "விலை: %s / மொத்தம்: %s"
+#, c++-format
+msgid "Price: {} / Total: {}"
+msgstr "விலை: {} / மொத்தம்: {}"
 
 #: ../src/playerrelations.cpp:206
 msgid "Print '...'"
@@ -2766,9 +2766,9 @@ msgid "Put all whispers in tabs"
 msgstr "அனைத்து கிசுகிசுக்களையும் தாவல்களில் வைக்கவும்"
 
 #: ../src/gui/questswindow.cpp:279
-#, fuzzy, c-format
-msgid "Quest Giver: %s"
-msgstr "%s கிசுகிசுக்கள்: %s"
+#, fuzzy, c++-format
+msgid "Quest Giver: {}"
+msgstr "{} கிசுகிசுக்கள்: {}"
 
 #: ../src/keyboardconfig.cpp:74
 #, fuzzy
@@ -2835,9 +2835,9 @@ msgid "Rejected guild invite."
 msgstr "நிராகரிக்கப்பட்ட கில்ட் அழைப்பு."
 
 #: ../src/gui/socialwindow.cpp:513
-#, c-format
-msgid "Rejected party invite from %s."
-msgstr "நிராகரிக்கப்பட்ட கட்சி %s இலிருந்து அழைப்பு."
+#, c++-format
+msgid "Rejected party invite from {}."
+msgstr "நிராகரிக்கப்பட்ட கட்சி {} இலிருந்து அழைப்பு."
 
 #: ../src/gui/setup_players.cpp:55
 msgid "Relation"
@@ -2848,39 +2848,39 @@ msgid "Remember username"
 msgstr "பயனர்பெயரை நினைவில் கொள்க"
 
 #: ../src/resources/itemdb.cpp:445
-#, fuzzy, c-format
-msgid "Req. agility %s"
-msgstr "சுறுசுறுப்பு %+d"
+#, fuzzy, c++-format
+msgid "Req. agility {}"
+msgstr "சுறுசுறுப்பு {:+}"
 
 #: ../src/resources/itemdb.cpp:448
-#, fuzzy, c-format
-msgid "Req. dexterity %s"
-msgstr "திறமை %+d"
+#, fuzzy, c++-format
+msgid "Req. dexterity {}"
+msgstr "திறமை {:+}"
 
 #: ../src/resources/itemdb.cpp:447
-#, fuzzy, c-format
-msgid "Req. intelligence %s"
-msgstr "நுண்ணறிவு %+d"
+#, fuzzy, c++-format
+msgid "Req. intelligence {}"
+msgstr "நுண்ணறிவு {:+}"
 
 #: ../src/resources/itemdb.cpp:443
-#, c-format
-msgid "Req. level %s"
+#, c++-format
+msgid "Req. level {}"
 msgstr ""
 
 #: ../src/resources/itemdb.cpp:449
-#, c-format
-msgid "Req. luck %s"
+#, c++-format
+msgid "Req. luck {}"
 msgstr ""
 
 #: ../src/resources/itemdb.cpp:444
-#, fuzzy, c-format
-msgid "Req. strength %s"
-msgstr "வலிமை %+d"
+#, fuzzy, c++-format
+msgid "Req. strength {}"
+msgstr "வலிமை {:+}"
 
 #: ../src/resources/itemdb.cpp:446
-#, fuzzy, c-format
-msgid "Req. vitality %s"
-msgstr "உயிர்ச்சக்தி %+d"
+#, fuzzy, c++-format
+msgid "Req. vitality {}"
+msgstr "உயிர்ச்சக்தி {:+}"
 
 #: ../src/net/manaserv/tradehandler.cpp:115
 #: ../src/net/tmwa/tradehandler.cpp:104
@@ -2900,9 +2900,9 @@ msgid "Requesting registration details"
 msgstr "பதிவு விவரங்களை கோருகிறது"
 
 #: ../src/commandhandler.cpp:422
-#, c-format
-msgid "Requesting to join channel %s."
-msgstr "சேனல் %s இல் சேரக் கோருகிறது."
+#, c++-format
+msgid "Requesting to join channel {}."
+msgstr "சேனல் {} இல் சேரக் கோருகிறது."
 
 #: ../src/gui/npcdialog.cpp:149
 msgid "Reset"
@@ -2933,9 +2933,9 @@ msgid "Revive yourself"
 msgstr ""
 
 #: ../src/gui/questswindow.cpp:276
-#, fuzzy, c-format
-msgid "Reward: %s"
-msgstr "கட்சி: %s"
+#, fuzzy, c++-format
+msgid "Reward: {}"
+msgstr "கட்சி: {}"
 
 #: ../src/net/tmwa/inventoryhandler.h:74
 msgid "Ring 1/2"
@@ -2971,9 +2971,9 @@ msgid "Screenshot"
 msgstr "திரைக்காட்சி"
 
 #: ../src/game.cpp:340
-#, c-format
-msgid "Screenshot saved as %s"
-msgstr "திரைக்காட்சி %s ஆக சேமிக்கப்பட்டது"
+#, c++-format
+msgid "Screenshot saved as {}"
+msgstr "திரைக்காட்சி {} ஆக சேமிக்கப்பட்டது"
 
 #: ../src/keyboardconfig.cpp:99
 msgid "Scroll Chat Down"
@@ -3106,31 +3106,31 @@ msgid "Sit failed!"
 msgstr "உட்கார்ந்து தோல்வியடைந்தார்!"
 
 #: ../src/gui/skilldialog.cpp:385
-#, c-format
-msgid "Skill %d"
-msgstr "திறன் %d"
+#, c++-format
+msgid "Skill {}"
+msgstr "திறன் {}"
 
 #: ../src/gui/skilldialog.cpp:361
-#, c-format
-msgid "Skill Set %d"
-msgstr "திறன் தொகுப்பு %d"
+#, c++-format
+msgid "Skill Set {}"
+msgstr "திறன் தொகுப்பு {}"
 
 #: ../src/keyboardconfig.cpp:73
 msgid "Skill Window"
 msgstr "திறன் சாளரம்"
 
 #: ../src/gui/skilldialog.cpp:271
-#, c-format
-msgid "Skill points available: %d"
-msgstr "திறன் புள்ளிகள் கிடைக்கின்றன: %d"
+#, c++-format
+msgid "Skill points available: {}"
+msgstr "திறன் புள்ளிகள் கிடைக்கின்றன: {}"
 
 #: ../src/gui/skilldialog.cpp:204 ../src/gui/windowmenu.cpp:69
 msgid "Skills"
 msgstr "திறன்கள்"
 
 #: ../src/net/offlinehandler.cpp:375
-#, c-format
-msgid "Slot %d now holds %d of item %d."
+#, c++-format
+msgid "Slot {} now holds {} of item {}."
 msgstr ""
 
 #: ../src/gui/inventorywindow.cpp:97
@@ -3239,14 +3239,14 @@ msgid "Strength"
 msgstr "வலிமை"
 
 #: ../src/resources/attributes.cpp:165
-#, c-format
-msgid "Strength %+.1f"
-msgstr "வலிமை %+.1f"
+#, c++-format
+msgid "Strength {:+.1f}"
+msgstr "வலிமை {:+.1f}"
 
 #: ../src/resources/itemdb.cpp:437
-#, fuzzy, c-format
-msgid "Strength %s"
-msgstr "வலிமை %+d"
+#, fuzzy, c++-format
+msgid "Strength {}"
+msgstr "வலிமை {:+}"
 
 #: ../src/net/tmwa/charserverhandler.cpp:279
 msgid "Strength:"
@@ -3273,9 +3273,9 @@ msgid "Talk"
 msgstr "பேச்சு"
 
 #: ../src/gui/popupmenu.cpp:172
-#, c-format
-msgid "Talk to %s"
-msgstr "%s உடன் பேசுங்கள்"
+#, c++-format
+msgid "Talk to {}"
+msgstr "{} உடன் பேசுங்கள்"
 
 #: ../src/keyboardconfig.cpp:45
 msgid "Target & Attack"
@@ -3319,38 +3319,38 @@ msgid "The new email address already exists."
 msgstr "புதிய மின்னஞ்சல் முகவரி ஏற்கனவே உள்ளது."
 
 #: ../src/gui/changeemaildialog.cpp:127
-#, c-format
-msgid "The new email address needs to be at least %d characters long."
-msgstr "புதிய மின்னஞ்சல் முகவரி குறைந்தது %d எழுத்துக்கள் நீளமாக இருக்க வேண்டும்."
+#, c++-format
+msgid "The new email address needs to be at least {} characters long."
+msgstr "புதிய மின்னஞ்சல் முகவரி குறைந்தது {} எழுத்துக்கள் நீளமாக இருக்க வேண்டும்."
 
 #: ../src/gui/changeemaildialog.cpp:134
-#, c-format
-msgid "The new email address needs to be less than %d characters long."
-msgstr "புதிய மின்னஞ்சல் முகவரி %d எழுத்துக்கள் குறைவாக இருக்க வேண்டும்."
+#, c++-format
+msgid "The new email address needs to be less than {} characters long."
+msgstr "புதிய மின்னஞ்சல் முகவரி {} எழுத்துக்கள் குறைவாக இருக்க வேண்டும்."
 
 #: ../src/gui/changepassworddialog.cpp:130
 msgid "The new password entries mismatch."
 msgstr "புதிய கடவுச்சொல் உள்ளீடுகள் பொருந்தவில்லை."
 
 #: ../src/gui/changepassworddialog.cpp:116
-#, c-format
-msgid "The new password needs to be at least %d characters long."
-msgstr "புதிய கடவுச்சொல் குறைந்தது %d எழுத்துக்கள் நீளமாக இருக்க வேண்டும்."
+#, c++-format
+msgid "The new password needs to be at least {} characters long."
+msgstr "புதிய கடவுச்சொல் குறைந்தது {} எழுத்துக்கள் நீளமாக இருக்க வேண்டும்."
 
 #: ../src/gui/changepassworddialog.cpp:123
-#, c-format
-msgid "The new password needs to be less than %d characters long."
-msgstr "புதிய கடவுச்சொல் %d எழுத்துக்கள் குறைவாக இருக்க வேண்டும்."
+#, c++-format
+msgid "The new password needs to be less than {} characters long."
+msgstr "புதிய கடவுச்சொல் {} எழுத்துக்கள் குறைவாக இருக்க வேண்டும்."
 
 #: ../src/gui/register.cpp:180 ../src/gui/unregisterdialog.cpp:114
-#, c-format
-msgid "The password needs to be at least %d characters long."
-msgstr "கடவுச்சொல் குறைந்தது %d எழுத்துக்கள் நீளமாக இருக்க வேண்டும்."
+#, c++-format
+msgid "The password needs to be at least {} characters long."
+msgstr "கடவுச்சொல் குறைந்தது {} எழுத்துக்கள் நீளமாக இருக்க வேண்டும்."
 
 #: ../src/gui/register.cpp:188 ../src/gui/unregisterdialog.cpp:121
-#, c-format
-msgid "The password needs to be less than %d characters long."
-msgstr "கடவுச்சொல் %d எழுத்துக்கள் குறைவாக இருக்க வேண்டும்."
+#, c++-format
+msgid "The password needs to be less than {} characters long."
+msgstr "கடவுச்சொல் {} எழுத்துக்கள் குறைவாக இருக்க வேண்டும்."
 
 #: ../src/gui/updaterwindow.cpp:278
 msgid ""
@@ -3359,14 +3359,14 @@ msgid ""
 msgstr ""
 
 #: ../src/gui/register.cpp:164
-#, c-format
-msgid "The username needs to be at least %d characters long."
-msgstr "பயனர்பெயர் குறைந்தது %d எழுத்துக்கள் நீளமாக இருக்க வேண்டும்."
+#, c++-format
+msgid "The username needs to be at least {} characters long."
+msgstr "பயனர்பெயர் குறைந்தது {} எழுத்துக்கள் நீளமாக இருக்க வேண்டும்."
 
 #: ../src/gui/register.cpp:172
-#, c-format
-msgid "The username needs to be less than %d characters long."
-msgstr "பயனர்பெயர் %d கதாபாத்திரங்களுக்கும் குறைவாக இருக்க வேண்டும்."
+#, c++-format
+msgid "The username needs to be less than {} characters long."
+msgstr "பயனர்பெயர் {} கதாபாத்திரங்களுக்கும் குறைவாக இருக்க வேண்டும்."
 
 #: ../src/gui/setup_interface.cpp:200
 msgid "Theme:"
@@ -3556,9 +3556,9 @@ msgstr "அரட்டையை மாற்றவும்"
 #: ../src/net/manaserv/chathandler.cpp:190
 #: ../src/net/manaserv/chathandler.cpp:324
 #: ../src/net/manaserv/guildhandler.cpp:285
-#, c-format
-msgid "Topic: %s"
-msgstr "தலைப்பு: %s"
+#, c++-format
+msgid "Topic: {}"
+msgstr "தலைப்பு: {}"
 
 #: ../src/net/tmwa/inventoryhandler.h:64
 msgid "Torso"
@@ -3588,23 +3588,23 @@ msgid "Trade failed!"
 msgstr "வணிகம் தோல்வியடைந்தது!"
 
 #: ../src/net/tmwa/tradehandler.cpp:142
-#, fuzzy, c-format
-msgid "Trade with %s canceled."
-msgstr "%s ரத்துசெய்யப்பட்ட வணிகம்."
+#, fuzzy, c++-format
+msgid "Trade with {} canceled."
+msgstr "{} ரத்துசெய்யப்பட்ட வணிகம்."
 
 #: ../src/gui/popupmenu.cpp:122
-#, c-format
-msgid "Trade with %s..."
-msgstr "%s உடன் வணிகம் ..."
+#, c++-format
+msgid "Trade with {}..."
+msgstr "{} உடன் வணிகம் ..."
 
 #: ../src/gui/tradewindow.cpp:55
 msgid "Trade: You"
 msgstr "வர்த்தகம்: நீங்கள்"
 
 #: ../src/net/tmwa/tradehandler.cpp:134
-#, c-format
-msgid "Trade: You and %s"
-msgstr "வர்த்தகம்: நீங்களும் %s"
+#, c++-format
+msgid "Trade: You and {}"
+msgstr "வர்த்தகம்: நீங்களும் {}"
 
 #: ../src/net/tmwa/tradehandler.cpp:125
 msgid "Trading isn't possible. Character doesn't exist."
@@ -3615,9 +3615,9 @@ msgid "Trading isn't possible. Trade partner is too far away."
 msgstr "வணிகம் சாத்தியமில்லை. வர்த்தக பங்குதாரர் மிகவும் தொலைவில் உள்ளது."
 
 #: ../src/net/manaserv/tradehandler.cpp:134
-#, c-format
-msgid "Trading with %s"
-msgstr "%s உடன் வணிகம்"
+#, c++-format
+msgid "Trading with {}"
+msgstr "{} உடன் வணிகம்"
 
 #: ../src/gui/setup_video.cpp:405
 msgid "Transparency disabled"
@@ -3656,9 +3656,9 @@ msgid "Unable to equip."
 msgstr "சித்தப்படுத்த முடியவில்லை."
 
 #: ../src/net/tmwa/network.cpp:469
-#, c-format
-msgid "Unable to resolve host \"%s\""
-msgstr "புரவலன் \"%s\" ஐ தீர்க்க முடியவில்லை"
+#, c++-format
+msgid "Unable to resolve host \"{}\""
+msgstr "புரவலன் \"{}\" ஐ தீர்க்க முடியவில்லை"
 
 #: ../src/net/tmwa/buysellhandler.cpp:122
 msgid "Unable to sell."
@@ -3686,18 +3686,18 @@ msgid "Unequip first"
 msgstr "முதலில்"
 
 #: ../src/net/manaserv/charhandler.cpp:280
-#, c-format
-msgid "Unhandled character select error message %i."
-msgstr "தடையற்ற எழுத்து தேர்ந்தெடுக்கப்பட்ட பிழை செய்தி %i."
+#, c++-format
+msgid "Unhandled character select error message {}."
+msgstr "தடையற்ற எழுத்து தேர்ந்தெடுக்கப்பட்ட பிழை செய்தி {}."
 
 #: ../src/net/tmwa/tradehandler.cpp:151
 msgid "Unhandled trade cancel packet."
 msgstr "தடையற்ற வர்த்தக ரத்து பாக்கெட்டை."
 
 #: ../src/gui/popupmenu.cpp:97 ../src/gui/popupmenu.cpp:104
-#, c-format
-msgid "Unignore %s"
-msgstr "Uniginore %s"
+#, c++-format
+msgid "Unignore {}"
+msgstr "Uniginore {}"
 
 #: ../src/net/net.cpp:141
 msgid "Unknown Server Type! Exiting."
@@ -3716,8 +3716,8 @@ msgid "Unknown command."
 msgstr "தெரியாத கட்டளை."
 
 #: ../src/net/offlinehandler.cpp:500
-#, fuzzy, c-format
-msgid "Unknown command: %s. Type %s for a list of commands."
+#, fuzzy, c++-format
+msgid "Unknown command: {}. Type {} for a list of commands."
 msgstr "கட்டளைகளின் பட்டியலுக்கு தட்டச்சு /உதவி."
 
 #: ../src/net/tmwa/generalhandler.cpp:129
@@ -3725,9 +3725,9 @@ msgid "Unknown connection error."
 msgstr "தெரியாத இணைப்பு பிழை."
 
 #: ../src/net/manaserv/charhandler.cpp:237
-#, c-format
-msgid "Unknown error (%d)."
-msgstr "தெரியாத பிழை (%d)."
+#, c++-format
+msgid "Unknown error ({})."
+msgstr "தெரியாத பிழை ({})."
 
 #: ../src/net/manaserv/charhandler.cpp:182
 #: ../src/net/manaserv/loginhandler.cpp:101
@@ -3740,9 +3740,9 @@ msgid "Unknown error."
 msgstr "தெரியாத பிழை."
 
 #: ../src/net/tmwa/partyhandler.cpp:131
-#, c-format
-msgid "Unknown invite response for %s."
-msgstr "%s க்கான அறியப்படாத அழைப்பு பதில்."
+#, c++-format
+msgid "Unknown invite response for {}."
+msgstr "{} க்கான அறியப்படாத அழைப்பு பதில்."
 
 #: ../src/resources/itemdb.cpp:138
 msgid "Unknown item"
@@ -3780,9 +3780,9 @@ msgstr "புதுப்பித்தல் ..."
 
 #: ../src/net/offlinehandler.cpp:332 ../src/net/offlinehandler.cpp:385
 #: ../src/net/offlinehandler.cpp:410 ../src/net/offlinehandler.cpp:463
-#, fuzzy, c-format
-msgid "Usage: %s"
-msgstr "பெயர்: %s"
+#, fuzzy, c++-format
+msgid "Usage: {}"
+msgstr "பெயர்: {}"
 
 #: ../src/gui/inventorywindow.cpp:65 ../src/gui/inventorywindow.cpp:104
 msgid "Use"
@@ -3814,14 +3814,14 @@ msgid "Vitality"
 msgstr "உயிர்ச்சக்தி"
 
 #: ../src/resources/attributes.cpp:201
-#, c-format
-msgid "Vitality %+.1f"
-msgstr "உயிர்ச்சக்தி %+.1f"
+#, c++-format
+msgid "Vitality {:+.1f}"
+msgstr "உயிர்ச்சக்தி {:+.1f}"
 
 #: ../src/resources/itemdb.cpp:439
-#, fuzzy, c-format
-msgid "Vitality %s"
-msgstr "உயிர்ச்சக்தி %+d"
+#, fuzzy, c++-format
+msgid "Vitality {}"
+msgstr "உயிர்ச்சக்தி {:+}"
 
 #: ../src/net/tmwa/charserverhandler.cpp:281
 msgid "Vitality:"
@@ -3850,52 +3850,52 @@ msgid "Weight:"
 msgstr "எடை:"
 
 #: ../src/gui/itempopup.cpp:193
-#, c-format
-msgid "Weight: %s"
-msgstr "எடை: %s"
+#, c++-format
+msgid "Weight: {}"
+msgstr "எடை: {}"
 
 #: ../src/gui/setup_players.cpp:245
 msgid "When ignoring:"
 msgstr "புறக்கணிக்கும்போது:"
 
 #: ../src/gui/popupmenu.cpp:133 ../src/gui/socialwindow.cpp:100
-#, c-format
-msgid "Whisper %s"
-msgstr "விச்பர் %s"
+#, c++-format
+msgid "Whisper {}"
+msgstr "விச்பர் {}"
 
 #: ../src/net/tmwa/chathandler.cpp:90
-#, c-format
-msgid "Whisper could not be sent, %s is offline."
-msgstr "விச்பரை அனுப்ப முடியவில்லை, %s ஆஃப்லைனில் உள்ளன."
+#, c++-format
+msgid "Whisper could not be sent, {} is offline."
+msgstr "விச்பரை அனுப்ப முடியவில்லை, {} ஆஃப்லைனில் உள்ளன."
 
 #: ../src/net/tmwa/chathandler.cpp:99
-#, c-format
-msgid "Whisper could not be sent, ignored by %s."
-msgstr "விச்பரை அனுப்ப முடியவில்லை, %s ஆல் புறக்கணிக்கப்பட்டது."
+#, c++-format
+msgid "Whisper could not be sent, ignored by {}."
+msgstr "விச்பரை அனுப்ப முடியவில்லை, {} ஆல் புறக்கணிக்கப்பட்டது."
 
 #: ../src/gui/chatwindow.cpp:501
-#, c-format
-msgid "Whispering to %s: %s"
-msgstr "%s க்கு கிசுகிசுக்கும்: %s"
+#, c++-format
+msgid "Whispering to {}: {}"
+msgstr "{} க்கு கிசுகிசுக்கும்: {}"
 
 #: ../src/gui/socialwindow.cpp:220
-#, c-format
-msgid "Who would you like to invite to guild %s?"
-msgstr "கில்ட் %s யாருக்கு அழைக்க விரும்புகிறீர்கள்?"
+#, c++-format
+msgid "Who would you like to invite to guild {}?"
+msgstr "கில்ட் {} யாருக்கு அழைக்க விரும்புகிறீர்கள்?"
 
 #: ../src/gui/socialwindow.cpp:287
-#, c-format
-msgid "Who would you like to invite to party %s?"
-msgstr "கட்சி %s யாருக்கு அழைக்க விரும்புகிறீர்கள்?"
+#, c++-format
+msgid "Who would you like to invite to party {}?"
+msgstr "கட்சி {} யாருக்கு அழைக்க விரும்புகிறீர்கள்?"
 
 #: ../src/resources/attributes.cpp:219
 msgid "Willpower"
 msgstr "மன உறுதி"
 
 #: ../src/resources/attributes.cpp:225
-#, c-format
-msgid "Willpower %+.1f"
-msgstr "மன உறுதியான %+.1f"
+#, c++-format
+msgid "Willpower {:+.1f}"
+msgstr "மன உறுதியான {:+.1f}"
 
 #: ../src/gui/setup_video.cpp:313
 msgid "Window mode:"
@@ -3980,18 +3980,18 @@ msgid "You don't have enough money."
 msgstr "உங்களிடம் போதுமான பணம் இல்லை."
 
 #: ../src/gui/tradewindow.cpp:97 ../src/gui/tradewindow.cpp:131
-#, c-format
-msgid "You get %s"
-msgstr "நீங்கள் %s பெறுவீர்கள்"
+#, c++-format
+msgid "You get {}"
+msgstr "நீங்கள் {} பெறுவீர்கள்"
 
 #: ../src/gui/tradewindow.cpp:98
 msgid "You give:"
 msgstr "நீங்கள் கொடுங்கள்:"
 
 #: ../src/gui/socialwindow.cpp:659
-#, c-format
-msgid "You have been invited to join the %s party."
-msgstr "%s கட்சியில் சேர நீங்கள் அழைக்கப்பட்டுள்ளீர்கள்."
+#, c++-format
+msgid "You have been invited to join the {} party."
+msgstr "{} கட்சியில் சேர நீங்கள் அழைக்கப்பட்டுள்ளீர்கள்."
 
 #: ../src/gui/socialwindow.cpp:655
 msgid "You have been invited you to join a party."
@@ -4004,12 +4004,12 @@ msgstr ""
 "நீங்கள் விளையாட்டிலிருந்து நிரந்தரமாக தடை செய்யப்பட்டுள்ளீர்கள். GM அணியை தொடர்பு கொள்ளவும்."
 
 #: ../src/net/tmwa/loginhandler.cpp:177
-#, c-format
+#, c++-format
 msgid ""
-"You have been temporarily banned from the game until %s.\n"
+"You have been temporarily banned from the game until {}.\n"
 "Please contact the GM team via the forums."
 msgstr ""
-"நீங்கள் தற்காலிகமாக விளையாட்டிலிருந்து %s வரை தடை செய்யப்பட்டுள்ளீர்கள்.\n"
+"நீங்கள் தற்காலிகமாக விளையாட்டிலிருந்து {} வரை தடை செய்யப்பட்டுள்ளீர்கள்.\n"
 " மன்றங்கள் வழியாக GM குழுவை தொடர்பு கொள்ளவும்."
 
 #: ../src/net/tmwa/playerhandler.cpp:106
@@ -4051,16 +4051,16 @@ msgid "You need to use the website to register an account for this server."
 msgstr "இந்த சேவையகத்திற்கான கணக்கை பதிவு செய்ய நீங்கள் வலைத்தளத்தைப் பயன்படுத்த வேண்டும்."
 
 #: ../src/localplayer.cpp:931
-#, c-format
-msgid "You picked up %d [@@%d|%s@@]."
-msgid_plural "You picked up %d [@@%d|%s@@]."
-msgstr[0] "நீங்கள்%d ஐ எடுத்தீர்கள் [@@%d |%s @@]."
-msgstr[1] "நீங்கள்%d ஐ எடுத்தீர்கள் [@@%d |%s @@]."
+#, c++-format
+msgid "You picked up {} [@@{}|{}@@]."
+msgid_plural "You picked up {} [@@{}|{}@@]."
+msgstr[0] "நீங்கள்{} ஐ எடுத்தீர்கள் [@@{} |{} @@]."
+msgstr[1] "நீங்கள்{} ஐ எடுத்தீர்கள் [@@{} |{} @@]."
 
 #: ../src/net/tmwa/playerhandler.cpp:325
-#, c-format
-msgid "You picked up %s."
-msgstr "நீங்கள் %s எடுத்தீர்கள்."
+#, c++-format
+msgid "You picked up {}."
+msgstr "நீங்கள் {} எடுத்தீர்கள்."
 
 #: ../src/net/manaserv/beinghandler.cpp:369
 #: ../src/net/tmwa/playerhandler.cpp:101
@@ -4168,9 +4168,9 @@ msgid "requires a newer version"
 msgstr "புதிய பதிப்பு தேவை"
 
 #: ../src/gui/serverdialog.cpp:462
-#, c-format
-msgid "requires v%s"
-msgstr "v%s தேவை"
+#, c++-format
+msgid "requires v{}"
+msgstr "v{} தேவை"
 
 #: ../src/resources/beinginfo.cpp:62 ../src/resources/itemdb.cpp:356
 #: ../src/resources/monsterdb.cpp:74

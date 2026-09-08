@@ -36,6 +36,7 @@
 
 #include "configuration.h"
 
+#include "utils/format.h"
 #include "utils/stringutils.h"
 
 static std::string getDateString()
@@ -119,10 +120,10 @@ void ChatLogger::log(std::string str)
     if (!mLogFile.is_open() || dateStr != mLogDate)
     {
         mLogDate = dateStr;
-        setLogFile(strprintf("%s/%s/#General_%s.log",
-                             mLogDir.c_str(),
-                             mServerName.c_str(),
-                             dateStr.c_str()));
+        setLogFile(fmt::format("{}/{}/#General_{}.log",
+                               mLogDir,
+                               mServerName,
+                               dateStr));
     }
 
     removeColors(str);
@@ -132,11 +133,11 @@ void ChatLogger::log(std::string str)
 void ChatLogger::log(std::string name, std::string str)
 {
     std::ofstream logFile;
-    logFile.open(strprintf("%s/%s/%s_%s.log",
-                           mLogDir.c_str(),
-                           mServerName.c_str(),
-                           secureName(name).c_str(),
-                           getDateString().c_str())
+    logFile.open(fmt::format("{}/{}/{}_{}.log",
+                             mLogDir,
+                             mServerName,
+                             secureName(name),
+                             getDateString())
                      .c_str(),
                  std::ios_base::app);
 

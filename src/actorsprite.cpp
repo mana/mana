@@ -33,6 +33,7 @@
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
 
+#include "utils/format.h"
 #include "utils/time.h"
 
 #include <algorithm>
@@ -163,7 +164,6 @@ void ActorSprite::unload()
 
 void ActorSprite::initTargetCursor()
 {
-    static const std::string targetCursor = "graphics/target-cursor-%s-%s.png";
     static const char * const cursorTypeStr[NUM_TCT] = {
         "normal",
         "in-range"
@@ -177,9 +177,9 @@ void ActorSprite::initTargetCursor()
     {
         for (int type = 0; type < NUM_TCT; type++)
         {
-            loadTargetCursor(strprintf(targetCursor.c_str(),
-                                       cursorTypeStr[type],
-                                       cursorSizeStr[size]),
+            loadTargetCursor(fmt::format("graphics/target-cursor-{}-{}.png",
+                                         cursorTypeStr[type],
+                                         cursorSizeStr[size]),
                              targetWidths[size],
                              targetHeights[size], type, size);
         }

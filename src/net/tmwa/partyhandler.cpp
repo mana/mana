@@ -35,6 +35,7 @@
 
 #include "net/tmwa/gui/partytab.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -116,20 +117,20 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 switch (msg.readInt8())
                 {
                     case 0:
-                        partyTab->chatLog(strprintf(_("%s is already a member of a party."),
-                                    nick.c_str()), BY_SERVER);
+                        partyTab->chatLog(strformat(_("{} is already a member of a party."),
+                                    nick), BY_SERVER);
                         break;
                     case 1:
-                        partyTab->chatLog(strprintf(_("%s refused your invitation."),
-                                    nick.c_str()), BY_SERVER);
+                        partyTab->chatLog(strformat(_("{} refused your invitation."),
+                                    nick), BY_SERVER);
                         break;
                     case 2:
-                        partyTab->chatLog(strprintf(_("%s is now a member of your party."),
-                                    nick.c_str()), BY_SERVER);
+                        partyTab->chatLog(strformat(_("{} is now a member of your party."),
+                                    nick), BY_SERVER);
                         break;
                     default:
-                        partyTab->chatLog(strprintf(_("Unknown invite response for %s."),
-                                    nick.c_str()), BY_SERVER);
+                        partyTab->chatLog(strformat(_("Unknown invite response for {}."),
+                                    nick), BY_SERVER);
                         break;
                 }
                 break;
@@ -228,8 +229,8 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 }
                 else
                 {
-                    partyTab->chatLog(strprintf(_("%s has left your party."),
-                                    nick.c_str()), BY_SERVER);
+                    partyTab->chatLog(strformat(_("{} has left your party."),
+                                    nick), BY_SERVER);
 
                     if (Being *b = actorSpriteManager->findBeing(id))
                     {
@@ -281,8 +282,8 @@ void PartyHandler::handleMessage(MessageIn &msg)
                 if (member)
                     partyTab->chatLog(member->getName(), chatMsg);
                 else
-                    partyTab->chatLog(strprintf(_("An unknown member tried to "
-                                    "say: %s"), chatMsg.c_str()), BY_SERVER);
+                    partyTab->chatLog(strformat(_("An unknown member tried to "
+                                    "say: {}"), chatMsg), BY_SERVER);
             }
             break;
     }
@@ -312,13 +313,13 @@ void PartyHandler::invite(const std::string &name)
     if (invitee)
     {
         invite(invitee);
-        partyTab->chatLog(strprintf(_("Invited user %s to party."),
-                                    invitee->getName().c_str()), BY_SERVER);
+        partyTab->chatLog(strformat(_("Invited user {} to party."),
+                                    invitee->getName()), BY_SERVER);
     }
     else if (partyTab)
     {
-        partyTab->chatLog(strprintf(_("Inviting failed, because you can't see "
-                            "a player called %s."), name.c_str()), BY_SERVER);
+        partyTab->chatLog(strformat(_("Inviting failed, because you can't see "
+                            "a player called {}."), name), BY_SERVER);
     }
     else
     {
@@ -350,7 +351,7 @@ void PartyHandler::kick(const std::string &name)
     PartyMember *m = taParty->getMember(name);
     if (!m)
     {
-        partyTab->chatLog(strprintf(_("%s is not in your party!"), name.c_str()),
+        partyTab->chatLog(strformat(_("{} is not in your party!"), name),
                           BY_SERVER);
         return;
     }

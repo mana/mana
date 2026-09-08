@@ -36,6 +36,7 @@
 #include "gui/widgets/slider.h"
 #include "gui/widgets/spacer.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -172,9 +173,9 @@ public:
     std::string getElementAt(int i) override
     {
         if (i == 0)
-            return strprintf(_("Auto (%dx)"), mVideoSettings.autoScale());
+            return strformat(_("Auto ({}x)"), mVideoSettings.autoScale());
 
-        return strprintf(_("%dx"), i);
+        return strformat(_("{}x"), i);
     }
 
 private:

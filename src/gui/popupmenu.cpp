@@ -41,6 +41,7 @@
 
 #include "resources/iteminfo.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -82,26 +83,26 @@ void addPlayerRelationItems(Menu &menu, const std::string &name)
     switch (player_relations.getRelation(name))
     {
         case PlayerRelation::Neutral:
-            menu.addItem(strprintf(_("Befriend %s"), name.c_str()),
+            menu.addItem(strformat(_("Befriend {}"), name),
                          setRelation(PlayerRelation::Friend));
             [[fallthrough]];
 
         case PlayerRelation::Friend:
-            menu.addItem(strprintf(_("Disregard %s"), name.c_str()),
+            menu.addItem(strformat(_("Disregard {}"), name),
                          setRelation(PlayerRelation::Disregarded));
-            menu.addItem(strprintf(_("Ignore %s"), name.c_str()),
+            menu.addItem(strformat(_("Ignore {}"), name),
                          setRelation(PlayerRelation::Ignored));
             break;
 
         case PlayerRelation::Disregarded:
-            menu.addItem(strprintf(_("Unignore %s"), name.c_str()),
+            menu.addItem(strformat(_("Unignore {}"), name),
                          setRelation(PlayerRelation::Neutral));
-            menu.addItem(strprintf(_("Completely ignore %s"), name.c_str()),
+            menu.addItem(strformat(_("Completely ignore {}"), name),
                          setRelation(PlayerRelation::Ignored));
             break;
 
         case PlayerRelation::Ignored:
-            menu.addItem(strprintf(_("Unignore %s"), name.c_str()),
+            menu.addItem(strformat(_("Unignore {}"), name),
                          setRelation(PlayerRelation::Neutral));
             break;
     }
@@ -119,18 +120,18 @@ void PopupMenu::showPopup(int x, int y, Being *being)
         case ActorSprite::PLAYER:
         {
             // Players can be traded with.
-            addItem(strprintf(_("Trade with %s..."), name.c_str()),
+            addItem(strformat(_("Trade with {}..."), name),
                     onBeing(beingId, [](Being *being) {
                         Net::getTradeHandler()->request(being);
                         tradePartnerName = being->getName();
                     }));
             // TRANSLATORS: Attacking a player.
-            addItem(strprintf(_("Attack %s"), name.c_str()),
+            addItem(strformat(_("Attack {}"), name),
                     onBeing(beingId, [](Being *being) {
                         local_player->attack(being, true);
                     }));
             // TRANSLATORS: Whispering a player.
-            addItem(strprintf(_("Whisper %s"), name.c_str()),
+            addItem(strformat(_("Whisper {}"), name),
                     onBeing(beingId, [](Being *being) {
                         chatWindow->addInputText("/w \"" + being->getName() + "\" ");
                     }));
@@ -141,7 +142,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
             if (local_player->getNumberOfGuilds())
             {
-                addItem(strprintf(_("Invite %s to join your guild"), name.c_str()),
+                addItem(strformat(_("Invite {} to join your guild"), name),
                         onBeing(beingId, [](Being *being) {
                             local_player->inviteToGuild(being);
                         }));
@@ -149,7 +150,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
             if (local_player->isInParty() ||
                 Net::getNetworkType() == ServerType::ManaServ)
             {
-                addItem(strprintf(_("Invite %s to join your party"), name.c_str()),
+                addItem(strformat(_("Invite {} to join your party"), name),
                         onBeing(beingId, [](Being *being) {
                             Net::getPartyHandler()->invite(being);
                         }));
@@ -169,7 +170,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
         case ActorSprite::NPC:
             // NPCs can be talked to (single option, candidate for removal
             // unless more options would be added)
-            addItem(strprintf(_("Talk to %s"), name.c_str()),
+            addItem(strformat(_("Talk to {}"), name),
                     onBeing(beingId, [](Being *being) {
                         if (being->canTalk())
                             being->talkTo();
@@ -178,7 +179,7 @@ void PopupMenu::showPopup(int x, int y, Being *being)
 
         case ActorSprite::MONSTER:
             // Monsters can be attacked
-            addItem(strprintf(_("Attack %s"), name.c_str()),
+            addItem(strformat(_("Attack {}"), name),
                     onBeing(beingId, [](Being *being) {
                         local_player->attack(being, true);
                     }));
@@ -205,7 +206,7 @@ void PopupMenu::showPopup(int x, int y, FloorItem *floorItem)
     const std::string &name = floorItem->getInfo().name;
 
     // Floor item can be picked up (single option, candidate for removal)
-    addItem(strprintf(_("Pick up %s"), name.c_str()),
+    addItem(strformat(_("Pick up {}"), name),
             onFloorItem(itemId, [](FloorItem *floorItem) {
                 local_player->pickUp(floorItem);
             }));

@@ -75,7 +75,7 @@ static void printHelp()
 
 static void printVersion()
 {
-    std::cout << strprintf("%s", FULL_VERSION) << std::endl;
+    std::cout << FULL_VERSION << std::endl;
 }
 
 static void parseOptions(int argc, char *argv[], Client::Options &options)

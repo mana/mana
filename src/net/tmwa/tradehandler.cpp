@@ -34,6 +34,7 @@
 #include "net/tmwa/messageout.h"
 #include "net/tmwa/protocol.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -102,8 +103,8 @@ void TradeHandler::handleMessage(MessageIn &msg)
                     tradePartnerName = tradePartnerNameTemp;
                     mTrading = true;
                     confirmDlg = new ConfirmDialog(_("Request for Trade"),
-                            strprintf(_("%s wants to trade with you, do you "
-                                      "accept?"), tradePartnerName.c_str()));
+                            strformat(_("{} wants to trade with you, do you "
+                                      "accept?"), tradePartnerName));
                     confirmDlg->addActionListener(&listener);
                 }
                 else
@@ -131,16 +132,16 @@ void TradeHandler::handleMessage(MessageIn &msg)
                     break;
                 case 3: // Trade accepted
                     tradeWindow->reset();
-                    tradeWindow->setCaption(strprintf(_("Trade: You and %s"),
-                                                      tradePartnerName.c_str()));
+                    tradeWindow->setCaption(strformat(_("Trade: You and {}"),
+                                                      tradePartnerName));
                     tradeWindow->setVisible(true);
                     break;
                 case 4: // Trade canceled
                     if (player_relations.hasPermission(tradePartnerName,
                                                        PlayerPermissions::SPEECH_LOG))
                     {
-                        serverNotice(strprintf(_("Trade with %s canceled."),
-                                               tradePartnerName.c_str()));
+                        serverNotice(strformat(_("Trade with {} canceled."),
+                                               tradePartnerName));
                     }
                     // otherwise ignore silently
 

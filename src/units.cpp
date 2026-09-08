@@ -23,9 +23,11 @@
 
 #include "log.h"
 
+#include "utils/format.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
 
+#include <algorithm>
 #include <climits>
 #include <vector>
 
@@ -103,7 +105,7 @@ void Units::readUnitNode(XML::Node node, const std::string &filename)
     UnitLevel bu;
     bu.symbol = node.getProperty("base", "¤");
     bu.count = 1;
-    bu.round = node.getProperty("round", 2);
+    bu.round = std::max(0, node.getProperty("round", 2));
 
     ud.levels.push_back(bu);
 
@@ -112,9 +114,9 @@ void Units::readUnitNode(XML::Node node, const std::string &filename)
         if (uLevel.name() == "level")
         {
             UnitLevel ul;
-            ul.symbol = uLevel.getProperty("symbol", strprintf("¤%d", level));
+            ul.symbol = uLevel.getProperty("symbol", fmt::format("¤{}", level));
             ul.count = uLevel.getProperty("count", -1);
-            ul.round = uLevel.getProperty("round", bu.round);
+            ul.round = std::max(0, uLevel.getProperty("round", bu.round));
 
             if (ul.count > 0)
             {
@@ -156,7 +158,7 @@ std::string formatUnit(int value, int type)
     if (value <= 0)
     {
         ul = ud.levels[0];
-        return strprintf("0%s", ul.symbol.c_str());
+        return fmt::format("0{}", ul.symbol);
     }
 
     double amount = ud.conversion * value;
@@ -176,8 +178,8 @@ std::string formatUnit(int value, int type)
 
         if (amount > 0)
         {
-            output = strprintf("%.*f%s", pl.round, amount,
-                                pl.symbol.c_str());
+            output = fmt::format("{:.{}f}{}", amount, pl.round,
+                                 pl.symbol);
         }
 
         for (unsigned int i = 2; i < ud.levels.size(); i++)
@@ -188,8 +190,8 @@ std::string formatUnit(int value, int type)
             nextAmount = levelAmount / ul.count;
             levelAmount %= ul.count;
 
-            if (levelAmount > 0) output = strprintf("%d%s",
-                levelAmount, pl.symbol.c_str()) + output;
+            if (levelAmount > 0) output = fmt::format("{}{}",
+                levelAmount, pl.symbol) + output;
 
             if (!nextAmount)
                 break;
@@ -210,7 +212,7 @@ std::string formatUnit(int value, int type)
         amount /= ul.count;
     }
 
-    return strprintf("%.*f%s", ul.round, amount, ul.symbol.c_str());
+    return fmt::format("{:.{}f}{}", amount, ul.round, ul.symbol);
 }
 
 std::string Units::formatCurrency(int value)

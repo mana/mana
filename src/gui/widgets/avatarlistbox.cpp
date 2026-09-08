@@ -28,6 +28,7 @@
 #include "resources/resourcemanager.h"
 #include "resources/theme.h"
 
+#include "utils/format.h"
 #include "utils/stringutils.h"
 
 #include <guichan/font.hpp>
@@ -102,8 +103,8 @@ void AvatarListBox::draw(gcn::Graphics *gcnGraphics)
 
         if (a->getMaxHp() > 0)
         {
-            text = strprintf("%s %d/%d", a->getName().c_str(),
-                             a->getHp(), a->getMaxHp());
+            text = fmt::format("{} {}/{}", a->getName(),
+                               a->getHp(), a->getMaxHp());
         }
         else
         {

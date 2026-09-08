@@ -37,6 +37,7 @@
 #include "net/loginhandler.h"
 #include "net/net.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -49,7 +50,7 @@ ChangePasswordDialog::ChangePasswordDialog(LoginData *loginData):
     mLoginData(loginData)
 {
     gcn::Label *accountLabel = new Label(
-            strprintf(_("Account: %s"), mLoginData->username.c_str()));
+            strformat(_("Account: {}"), mLoginData->username));
     mOldPassField = new PasswordField;
     mFirstPassField = new PasswordField;
     mSecondPassField = new PasswordField;
@@ -113,15 +114,15 @@ void ChangePasswordDialog::action(const gcn::ActionEvent &event)
         else if (newFirstPass.length() < min)
         {
             // First password too short
-            errorMessage << strprintf(_("The new password needs to be at least"
-                                        " %d characters long."), min);
+            errorMessage << strformat(_("The new password needs to be at least"
+                                        " {} characters long."), min);
             error = 2;
         }
         else if (newFirstPass.length() > max - 1 )
         {
             // First password too long
-            errorMessage << strprintf(_("The new password needs to be less "
-                                        "than %d characters long."), max);
+            errorMessage << strformat(_("The new password needs to be less "
+                                        "than {} characters long."), max);
             error = 2;
         }
         else if (newFirstPass != newSecondPass)

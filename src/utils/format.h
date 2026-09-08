@@ -33,6 +33,13 @@ namespace fmt = std;
 #endif
 
 /**
+ * Formats a string using a format string that is only known at runtime. When
+ * the format string is invalid, a warning is logged and the format string is
+ * returned unchanged.
+ */
+std::string vstrformat(std::string_view format, fmt::format_args args);
+
+/**
  * Formats a string using a format string that is only known at runtime, like
  * a translated one.
  *
@@ -42,5 +49,5 @@ namespace fmt = std;
 template<typename... Args>
 std::string strformat(std::string_view format, Args &&...args)
 {
-    return fmt::vformat(format, fmt::make_format_args(args...));
+    return vstrformat(format, fmt::make_format_args(args...));
 }

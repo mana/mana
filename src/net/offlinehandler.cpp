@@ -42,6 +42,7 @@
 #include "resources/emotedb.h"
 #include "resources/hairdb.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/time.h"
@@ -300,17 +301,17 @@ void OfflineHandler::me(const std::string &text)
 {
     if (localChatTab && local_player)
     {
-        localChatTab->chatLog(strprintf("* %s %s",
-                              local_player->getName().c_str(),
-                              text.c_str()));
+        localChatTab->chatLog(fmt::format("* {} {}",
+                              local_player->getName(),
+                              text));
     }
 }
 
 void OfflineHandler::privateMessage(const std::string &recipient,
                                     const std::string &text)
 {
-    serverNotice(strprintf(_("Cannot send a private message to %s in offline "
-                             "mode."), recipient.c_str()));
+    serverNotice(strformat(_("Cannot send a private message to {} in offline "
+                             "mode."), recipient));
 }
 
 void OfflineHandler::handleCommand(const std::string &text)
@@ -329,7 +330,7 @@ void OfflineHandler::handleCommand(const std::string &text)
 
         if (id <= 0)
         {
-            serverNotice(strprintf(_("Usage: %s"), "@item <id> [amount]"));
+            serverNotice(strformat(_("Usage: {}"), "@item <id> [amount]"));
             return;
         }
 
@@ -372,7 +373,7 @@ void OfflineHandler::handleCommand(const std::string &text)
         }
 
         PlayerInfo::setInventoryItem(freeSlot, id, amount);
-        serverNotice(strprintf(_("Slot %d now holds %d of item %d."),
+        serverNotice(strformat(_("Slot {} now holds {} of item {}."),
                                freeSlot, amount, id));
     }
     else if (cmd == "jump")
@@ -382,7 +383,7 @@ void OfflineHandler::handleCommand(const std::string &text)
 
         if (x <= 0 || y <= 0)
         {
-            serverNotice(strprintf(_("Usage: %s"), "@jump <x> <y>"));
+            serverNotice(strformat(_("Usage: {}"), "@jump <x> <y>"));
             return;
         }
 
@@ -397,7 +398,7 @@ void OfflineHandler::handleCommand(const std::string &text)
         local_player->setPosition(map->getTileCenter(x, y));
         local_player->setDestination(map->getTileCenter(x, y).x,
                                      map->getTileCenter(x, y).y);
-        serverNotice(strprintf(_("Jumped to %d, %d."), x, y));
+        serverNotice(strformat(_("Jumped to {}, {}."), x, y));
     }
     else if (cmd == "map")
     {
@@ -407,7 +408,7 @@ void OfflineHandler::handleCommand(const std::string &text)
 
         if (mapName.empty())
         {
-            serverNotice(strprintf(_("Usage: %s"), "@map <mapname> [x] [y]"));
+            serverNotice(strformat(_("Usage: {}"), "@map <mapname> [x] [y]"));
             return;
         }
 
@@ -451,7 +452,7 @@ void OfflineHandler::handleCommand(const std::string &text)
             }
         }
 
-        serverNotice(strprintf(_("Changed map to %s."), mapName.c_str()));
+        serverNotice(strformat(_("Changed map to {}."), mapName));
     }
     else if (cmd == "zeny")
     {
@@ -460,12 +461,12 @@ void OfflineHandler::handleCommand(const std::string &text)
 
         if (!iss || amount < 0)
         {
-            serverNotice(strprintf(_("Usage: %s"), "@zeny <amount>"));
+            serverNotice(strformat(_("Usage: {}"), "@zeny <amount>"));
             return;
         }
 
         PlayerInfo::setAttribute(MONEY, amount);
-        serverNotice(strprintf(_("Money set to %d."), amount));
+        serverNotice(strformat(_("Money set to {}."), amount));
     }
     else if (cmd == "die")
     {
@@ -483,22 +484,22 @@ void OfflineHandler::handleCommand(const std::string &text)
     {
         // The command names are not translatable, only their descriptions
         serverNotice(_("Available commands:"));
-        serverNotice(strprintf("  %s - %s", "@item <id> [amount]",
-                               _("Add an item to the inventory")));
-        serverNotice(strprintf("  %s - %s", "@jump <x> <y>",
-                               _("Teleport to a position")));
-        serverNotice(strprintf("  %s - %s", "@map <mapname> [x] [y]",
-                               _("Change map")));
-        serverNotice(strprintf("  %s - %s", "@zeny <amount>",
-                               _("Set the amount of money")));
-        serverNotice(strprintf("  %s - %s", "@die", _("Kill yourself")));
-        serverNotice(strprintf("  %s - %s", "@alive", _("Revive yourself")));
-        serverNotice(strprintf("  %s - %s", "@help", _("Show this help")));
+        serverNotice(fmt::format("  {} - {}", "@item <id> [amount]",
+                                 _("Add an item to the inventory")));
+        serverNotice(fmt::format("  {} - {}", "@jump <x> <y>",
+                                 _("Teleport to a position")));
+        serverNotice(fmt::format("  {} - {}", "@map <mapname> [x] [y]",
+                                 _("Change map")));
+        serverNotice(fmt::format("  {} - {}", "@zeny <amount>",
+                                 _("Set the amount of money")));
+        serverNotice(fmt::format("  {} - {}", "@die", _("Kill yourself")));
+        serverNotice(fmt::format("  {} - {}", "@alive", _("Revive yourself")));
+        serverNotice(fmt::format("  {} - {}", "@help", _("Show this help")));
     }
     else
     {
-        serverNotice(strprintf(_("Unknown command: %s. Type %s for a list of "
-                                 "commands."), ("@" + cmd).c_str(), "@help"));
+        serverNotice(strformat(_("Unknown command: {}. Type {} for a list of "
+                                 "commands."), ("@" + cmd), "@help"));
     }
 }
 

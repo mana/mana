@@ -78,9 +78,9 @@
 #endif
 
 #ifdef PACKAGE_VERSION
-#define PACKAGE_EXTENDED_VERSION "Mana/" PACKAGE_VERSION " (" PACKAGE_OS "; %s)"
+#define PACKAGE_EXTENDED_VERSION "Mana/" PACKAGE_VERSION " (" PACKAGE_OS "; {})"
 #else
-#define PACKAGE_EXTENDED_VERSION "Mana (" PACKAGE_OS "; %s)"
+#define PACKAGE_EXTENDED_VERSION "Mana (" PACKAGE_OS "; {})"
 #endif
 
 #ifndef PKG_DATADIR

@@ -31,6 +31,7 @@
 
 #include "configuration.h"
 
+#include "utils/format.h"
 #include "utils/xml.h"
 
 #include <algorithm>
@@ -236,8 +237,8 @@ void SpriteDef::loadImageSet(XML::Node node, const std::string &palettes)
     auto imageSet = resman->getImageSet(imageSrc, width, height);
     if (!imageSet)
     {
-        Log::critical(strprintf("Couldn't load imageset (%s)!",
-                                imageSrc.c_str()));
+        Log::critical(fmt::format("Couldn't load imageset ({})!",
+                                  imageSrc));
     }
 
     imageSet->setOffsetX(node.getProperty("offsetX", 0));

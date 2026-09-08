@@ -23,6 +23,7 @@
 
 #include "log.h"
 #include "sdlgraphics.h"
+#include "utils/format.h"
 #include "utils/stringutils.h"
 
 #ifdef USE_OPENGL
@@ -156,7 +157,7 @@ Graphics *Video::initialize(const VideoSettings &settings)
 
     if (!mWindow)
     {
-        Log::critical(strprintf("Failed to create window: %s", SDL_GetError()));
+        Log::critical(fmt::format("Failed to create window: {}", SDL_GetError()));
         return nullptr;
     }
 
@@ -207,7 +208,7 @@ bool Video::apply(const VideoSettings &videoSettings)
         SDL_DisplayMode displayMode;
         if (SDL_GetWindowDisplayMode(mWindow, &displayMode) != 0)
         {
-            Log::critical(strprintf("SDL_GetCurrentDisplayMode failed: %s", SDL_GetError()));
+            Log::critical(fmt::format("SDL_GetCurrentDisplayMode failed: {}", SDL_GetError()));
             return false;
         }
 
@@ -225,7 +226,7 @@ bool Video::apply(const VideoSettings &videoSettings)
 
             if (SDL_SetWindowDisplayMode(mWindow, &displayMode) != 0)
             {
-                Log::critical(strprintf("SDL_SetWindowDisplayMode failed: %s", SDL_GetError()));
+                Log::critical(fmt::format("SDL_SetWindowDisplayMode failed: {}", SDL_GetError()));
                 return false;
             }
         }
@@ -246,7 +247,7 @@ bool Video::apply(const VideoSettings &videoSettings)
 
     if (SDL_SetWindowFullscreen(mWindow, windowFlags) != 0)
     {
-        Log::critical(strprintf("SDL_SetWindowFullscreen failed: %s", SDL_GetError()));
+        Log::critical(fmt::format("SDL_SetWindowFullscreen failed: {}", SDL_GetError()));
         return false;
     }
 

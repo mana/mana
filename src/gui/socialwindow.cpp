@@ -49,6 +49,7 @@
 
 #include "resources/theme.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -97,7 +98,7 @@ protected:
 
         if (name != local_player->getName())
         {
-            menu->addItem(strprintf(_("Whisper %s"), name.c_str()), [name] {
+            menu->addItem(strformat(_("Whisper {}"), name), [name] {
                 chatWindow->addInputText("/w \"" + name + "\" ");
             });
 
@@ -107,8 +108,8 @@ protected:
 
             if (local_player->getNumberOfGuilds())
             {
-                menu->addItem(strprintf(_("Invite %s to join your guild"),
-                                        name.c_str()), [name] {
+                menu->addItem(strformat(_("Invite {} to join your guild"),
+                                        name), [name] {
                     local_player->inviteToGuild(name);
                 });
             }
@@ -119,8 +120,8 @@ protected:
             if (!member && (local_player->isInParty() ||
                             Net::getNetworkType() == ServerType::ManaServ))
             {
-                menu->addItem(strprintf(_("Invite %s to join your party"),
-                                        name.c_str()), [name] {
+                menu->addItem(strformat(_("Invite {} to join your party"),
+                                        name), [name] {
                     Net::getPartyHandler()->invite(name);
                 });
             }
@@ -131,8 +132,8 @@ protected:
 
                 if (self && self->getLeader())
                 {
-                    menu->addItem(strprintf(_("Kick %s from party"),
-                                            name.c_str()), [name] {
+                    menu->addItem(strformat(_("Kick {} from party"),
+                                            name), [name] {
                         Net::getPartyHandler()->kick(name);
                     });
                 }
@@ -189,9 +190,9 @@ public:
             if (!name.empty())
             {
                 Net::getGuildHandler()->invite(mGuild->getId(), name);
-                serverNotice(strprintf(_("Invited user %s to guild %s."),
-                                       name.c_str(),
-                                       mGuild->getName().c_str()));
+                serverNotice(strformat(_("Invited user {} to guild {}."),
+                                       name,
+                                       mGuild->getName()));
             }
             mInviteDialog = nullptr;
         }
@@ -202,8 +203,8 @@ public:
         else if (event.getId() == "yes")
         {
             Net::getGuildHandler()->leave(mGuild->getId());
-            serverNotice(strprintf(_("Guild %s quit requested."),
-                                   mGuild->getName().c_str()));
+            serverNotice(strformat(_("Guild {} quit requested."),
+                                   mGuild->getName()));
             mConfirmDialog = nullptr;
         }
         else if (event.getId() == "no")
@@ -217,8 +218,8 @@ protected:
     {
         // TODO - Give feedback on whether the invite succeeded
         mInviteDialog = new TextDialog(_("Member Invite to Guild"),
-                     strprintf(_("Who would you like to invite to guild %s?"),
-                               mGuild->getName().c_str()),
+                     strformat(_("Who would you like to invite to guild {}?"),
+                               mGuild->getName()),
                      socialWindow, true);
         mInviteDialog->setActionEventId("do invite");
         mInviteDialog->addActionListener(this);
@@ -227,8 +228,8 @@ protected:
     void leave() override
     {
         mConfirmDialog = new ConfirmDialog(_("Leave Guild?"),
-                       strprintf(_("Are you sure you want to leave guild %s?"),
-                                 mGuild->getName().c_str()),
+                       strformat(_("Are you sure you want to leave guild {}?"),
+                                 mGuild->getName()),
                        socialWindow);
 
         mConfirmDialog->addActionListener(this);
@@ -258,8 +259,8 @@ public:
             std::string name = mInviteDialog->getText();
 
             if (!name.empty())
-                serverNotice(strprintf(_("Invited user %s to party."),
-                                       name.c_str()));
+                serverNotice(strformat(_("Invited user {} to party."),
+                                       name));
             mInviteDialog = nullptr;
         }
         else if (event.getId() == "~do invite")
@@ -269,8 +270,8 @@ public:
         else if (event.getId() == "yes")
         {
             Net::getPartyHandler()->leave();
-            serverNotice(strprintf(_("Party %s quit requested."),
-                                   mParty->getName().c_str()));
+            serverNotice(strformat(_("Party {} quit requested."),
+                                   mParty->getName()));
             mConfirmDialog = nullptr;
         }
         else if (event.getId() == "no")
@@ -284,8 +285,8 @@ protected:
     {
         // TODO - Give feedback on whether the invite succeeded
         mInviteDialog = new TextDialog(_("Member Invite to Party"),
-                      strprintf(_("Who would you like to invite to party %s?"),
-                                mParty->getName().c_str()),
+                      strformat(_("Who would you like to invite to party {}?"),
+                                mParty->getName()),
                       socialWindow, true);
         mInviteDialog->setActionEventId("do invite");
         mInviteDialog->addActionListener(this);
@@ -294,8 +295,8 @@ protected:
     void leave() override
     {
         mConfirmDialog = new ConfirmDialog(_("Leave Party?"),
-                       strprintf(_("Are you sure you want to leave party %s?"),
-                                 mParty->getName().c_str()),
+                       strformat(_("Are you sure you want to leave party {}?"),
+                                 mParty->getName()),
                        socialWindow);
 
         mConfirmDialog->addActionListener(this);
@@ -401,7 +402,7 @@ SocialWindow::SocialWindow() :
     mMenu = new Menu("SocialMenu");
 
     mPlayerListTab = new PlayerListTab;
-    mPlayerListTab->setCaption(strprintf(_("Online (%u)"), 0u));
+    mPlayerListTab->setCaption(strformat(_("Online ({})"), 0u));
 
     mTabs->addTab(mPlayerListTab, mPlayerListTab->mScroll.get());
 
@@ -504,14 +505,14 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         // check if they accepted the invite
         if (eventId == "yes")
         {
-            serverNotice(strprintf(_("Accepted party invite from %s."),
-                                   mPartyInviter.c_str()));
+            serverNotice(strformat(_("Accepted party invite from {}."),
+                                   mPartyInviter));
             Net::getPartyHandler()->inviteResponse(mPartyInviter, true);
         }
         else if (eventId == "no")
         {
-            serverNotice(strprintf(_("Rejected party invite from %s."),
-                                   mPartyInviter.c_str()));
+            serverNotice(strformat(_("Rejected party invite from {}."),
+                                   mPartyInviter));
             Net::getPartyHandler()->inviteResponse(mPartyInviter, false);
         }
 
@@ -571,8 +572,8 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         if (!name.empty())
         {
             Net::getGuildHandler()->create(name);
-            serverNotice(strprintf(_("Creating guild called %s."),
-                                   name.c_str()));
+            serverNotice(strformat(_("Creating guild called {}."),
+                                   name));
         }
 
         mGuildCreateDialog = nullptr;
@@ -595,8 +596,8 @@ void SocialWindow::action(const gcn::ActionEvent &event)
         if (!name.empty())
         {
             Net::getPartyHandler()->create(name);
-            serverNotice(strprintf(_("Creating party called %s."),
-                                   name.c_str()));
+            serverNotice(strformat(_("Creating party called {}."),
+                                   name));
         }
 
         mPartyCreateDialog = nullptr;
@@ -626,8 +627,8 @@ void SocialWindow::showGuildInvite(const std::string &guildName,
         return;
     }
 
-    std::string msg = strprintf(_("%s has invited you to join the guild %s."),
-                                inviterName.c_str(), guildName.c_str());
+    std::string msg = strformat(_("{} has invited you to join the guild {}."),
+                                inviterName, guildName);
     serverNotice(msg);
 
     // show invite
@@ -656,21 +657,21 @@ void SocialWindow::showPartyInvite(const std::string &inviter,
         }
         else
         {
-            msg = strprintf(_("You have been invited to join the %s party."),
-                            partyName.c_str());
+            msg = strformat(_("You have been invited to join the {} party."),
+                            partyName);
         }
     }
     else
     {
         if (partyName.empty())
         {
-            msg = strprintf(_("%s has invited you to join their party."),
-                            inviter.c_str());
+            msg = strformat(_("{} has invited you to join their party."),
+                            inviter);
         }
         else
         {
-            msg = strprintf(_("%s has invited you to join the %s party."),
-                            inviter.c_str(), partyName.c_str());
+            msg = strformat(_("{} has invited you to join the {} party."),
+                            inviter, partyName);
         }
     }
 
@@ -704,7 +705,7 @@ void SocialWindow::setPlayersOnline(const std::vector<Avatar*> &players)
     mPlayerListTab->setPlayers(players);
 
     unsigned playerCount = static_cast<unsigned>(players.size());
-    mPlayerListTab->setCaption(strprintf(_("Online (%u)"), playerCount));
+    mPlayerListTab->setCaption(strformat(_("Online ({})"), playerCount));
 }
 
 void SocialWindow::logic()

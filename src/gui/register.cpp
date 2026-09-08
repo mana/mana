@@ -38,6 +38,7 @@
 #include "net/loginhandler.h"
 #include "net/net.h"
 
+#include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -160,32 +161,28 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
         if (user.length() < minUser)
         {
             // Name too short
-            errorMessage = strprintf
-                (_("The username needs to be at least %d characters long."),
+            errorMessage = strformat(_("The username needs to be at least {} characters long."),
                  minUser);
             error = 1;
         }
         else if (user.length() > maxUser - 1)
         {
             // Name too long
-            errorMessage = strprintf
-                (_("The username needs to be less than %d characters long."),
+            errorMessage = strformat(_("The username needs to be less than {} characters long."),
                  maxUser);
             error = 1;
         }
         else if (mPasswordField->getText().length() < minPass)
         {
             // Pass too short
-            errorMessage = strprintf
-                (_("The password needs to be at least %d characters long."),
+            errorMessage = strformat(_("The password needs to be at least {} characters long."),
                  minPass);
             error = 2;
         }
         else if (mPasswordField->getText().length() > maxPass - 1)
         {
             // Pass too long
-            errorMessage = strprintf
-                (_("The password needs to be less than %d characters long."),
+            errorMessage = strformat(_("The password needs to be less than {} characters long."),
                  maxPass);
             error = 2;
         }
