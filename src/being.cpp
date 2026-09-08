@@ -317,6 +317,11 @@ void Being::setSpeech(const std::string &text, int time)
 void Being::takeDamage(Being *attacker, int amount,
                        AttackType type, int attackId)
 {
+    // Being attacked stands a sitting being up, also on a miss or dodge.
+    // The server does not send a separate stand action for this.
+    if (mAction == SIT)
+        setAction(STAND);
+
     gcn::Font *font;
     std::string damage = amount ? toString(amount)
                                 : (type == FLEE ? "dodge" : "miss");
