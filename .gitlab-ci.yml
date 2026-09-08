@@ -34,6 +34,7 @@ stages:
         gettext
         libcurl4-openssl-dev
         libenet-dev
+        libfmt-dev
         libguichan-dev
         libphysfs-dev
         libpng-dev

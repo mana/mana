@@ -10,3 +10,8 @@ add_executable(dyecmd
 
 target_include_directories(dyecmd PRIVATE ${CMAKE_SOURCE_DIR}/src)
 target_link_libraries(dyecmd PRIVATE PkgConfig::SDL2)
+
+if(USE_FMT)
+  target_compile_definitions(dyecmd PRIVATE USE_FMT)
+  target_link_libraries(dyecmd PRIVATE fmt::fmt)
+endif()

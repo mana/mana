@@ -245,7 +245,7 @@ void Map::initializeAmbientLayers()
 {
     ResourceManager *resman = ResourceManager::getInstance();
 
-    auto addAmbientLayer = [=](const std::string &name, std::vector<AmbientLayer> &list)
+    auto addAmbientLayer = [this, resman](const std::string &name, std::vector<AmbientLayer> &list)
     {
         if (auto img = resman->getImage(getProperty(name + "image")))
         {

@@ -94,8 +94,10 @@ jobs:
         include:
           - arch: arm64
             runner: macos-15
+            deployment-target: "13.3"
           - arch: x86_64
             runner: macos-15-intel
+            deployment-target: "10.15"
     runs-on: ${{ matrix.runner }}
     env:
       CMAKE_C_COMPILER_LAUNCHER: ccache
@@ -125,6 +127,7 @@ jobs:
           brew upgrade || true
           brew install \
             enet \
+            fmt \
             guichan \
             physfs \
             sdl2 \
@@ -134,7 +137,9 @@ jobs:
             sdl2_ttf
 
       - name: Configure (${{ matrix.arch }})
-        run: cmake -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }}
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+            -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }}
+            -DCMAKE_OSX_DEPLOYMENT_TARGET=${{ matrix.deployment-target }}
 
       - name: Build (${{ matrix.arch }})
         run: cmake --build build

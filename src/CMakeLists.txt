@@ -353,6 +353,7 @@ set(SRCS
     utils/copynpaste.h
     utils/dtor.h
     utils/filesystem.h
+    utils/format.h
     utils/gettext.h
     utils/language.cpp
     utils/language.h
@@ -624,6 +625,11 @@ target_link_libraries(
     ${GUICHAN_LIBRARIES}
     ${PHYSFS_LIBRARY}
     ${Intl_LIBRARIES})
+
+if(USE_FMT)
+  target_compile_definitions(mana PRIVATE USE_FMT)
+  target_link_libraries(mana PRIVATE fmt::fmt)
+endif()
 
 if(ENABLE_NLS)
   target_compile_definitions(mana PRIVATE ENABLE_NLS=1)

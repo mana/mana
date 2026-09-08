@@ -5,7 +5,7 @@ With the Mana client you can play The Mana World and related games. The Mana
 World is a free 2D open source MMORPG. This client supports games hosted by
 either tmwAthena or manaserv.
 
-The Mana client is written in C++17 and builds upon:
+The Mana client is written in C++20 and builds upon:
 
 - [SDL2](https://www.libsdl.org/),
   [SDL2\_image](https://github.com/libsdl-org/SDL_image),
@@ -19,6 +19,7 @@ The Mana client is written in C++17 and builds upon:
 - [GNU gettext](https://www.gnu.org/software/gettext/) (translations)
 - libcurl (HTTP downloads)
 - [zlib 1.2](https://zlib.net/) (compression)
+- [fmt](https://fmt.dev/) (only when std::format is not available)
 
 See the `AUTHORS` file for the list of developers.
 

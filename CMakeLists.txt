@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.22...4.2)
 
-set(CMAKE_OSX_DEPLOYMENT_TARGET "10.15")
+# Default minimum macOS version, below which std::format is unavailable at
+# runtime. The Intel CI build overrides this to 10.15.
+set(CMAKE_OSX_DEPLOYMENT_TARGET "13.3" CACHE STRING "macOS deployment target")
 
 if(NOT VERSION)
   set(VERSION 0.8.0)
@@ -20,7 +22,44 @@ project(
   DESCRIPTION "Mana MMORPG Client"
   HOMEPAGE_URL "https://www.manasource.org")
 
-set(CMAKE_CXX_STANDARD 17)
+# Use C++17 with the fmt library when std::format is not available, like with
+# GCC 11, or when targeting macOS before 13.3, which lacks it at runtime
+include(CheckCXXSourceCompiles)
+set(CMAKE_CXX_STANDARD 20)
+check_cxx_source_compiles("
+  #include <format>
+  int main() { return std::format(\"{} {}\", 1, 2.5).empty(); }"
+  HAVE_STD_FORMAT)
+
+if(NOT HAVE_STD_FORMAT OR
+   (APPLE AND CMAKE_OSX_DEPLOYMENT_TARGET VERSION_LESS 13.3))
+  set(USE_FMT_DEFAULT ON)
+else()
+  set(USE_FMT_DEFAULT OFF)
+endif()
+option(USE_FMT "Use the fmt library instead of std::format (implies C++17)"
+       ${USE_FMT_DEFAULT})
+
+if(USE_FMT)
+  set(CMAKE_CXX_STANDARD 17)
+
+  find_package(fmt 8 CONFIG QUIET)
+  if(fmt_FOUND)
+    message(STATUS "Using system fmt ${fmt_VERSION}")
+  else()
+    message(STATUS "Using downloaded fmt")
+    include(FetchContent)
+    set(FMT_SYSTEM_HEADERS ON)
+    FetchContent_Declare(
+      fmt
+      GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+      GIT_TAG 12.2.0
+      GIT_SHALLOW TRUE)
+    FetchContent_MakeAvailable(fmt)
+  endif()
+else()
+  set(CMAKE_CXX_STANDARD 20)
+endif()
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # where to look for cmake modules

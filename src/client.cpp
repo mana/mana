@@ -115,8 +115,8 @@ HairDB hairDB;                /**< Hair styles and colors info database */
 
 Sound sound;
 
-volatile int fps = 0;         /**< Frames counted in the last second */
-volatile int frame_count = 0; /**< Counts the frames during one second */
+std::atomic<int> fps = 0;         /**< Frames counted in the last second */
+std::atomic<int> frame_count = 0; /**< Counts the frames during one second */
 
 #ifdef _WIN32
 static bool isDirWritable(const std::string &dir)
@@ -139,8 +139,7 @@ static bool isDirWritable(const std::string &dir)
  */
 static Uint32 nextSecond(Uint32 interval, void *param)
 {
-    fps = frame_count;
-    frame_count = 0;
+    fps = frame_count.exchange(0);
 
     return interval;
 }

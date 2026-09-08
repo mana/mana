@@ -30,6 +30,7 @@
 
 #include <SDL.h>
 
+#include <atomic>
 #include <string>
 
 class Game;
@@ -39,7 +40,7 @@ class LoginData;
 class Window;
 class QuitDialog;
 
-extern volatile int fps;
+extern std::atomic<int> fps;
 
 extern std::string errorMessage;
 extern LoginData loginData;
