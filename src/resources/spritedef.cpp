@@ -98,7 +98,7 @@ Action *SpriteDef::getAction(const std::string &action) const
 
     if (i == mActions.end())
     {
-        Log::warn("No action \"%s\" defined!", action.c_str());
+        Log::warn("No action \"{}\" defined!", action);
         return nullptr;
     }
 
@@ -120,7 +120,7 @@ SpriteDef *SpriteDef::load(const std::string &animationFile, int variant)
 
     if (!rootNode || rootNode.name() != "sprite")
     {
-        Log::info("Error, failed to parse %s", animationFile.c_str());
+        Log::info("Error, failed to parse {}", animationFile);
 
         std::string errorFile = paths.sprites + paths.spriteErrorFile;
         if (animationFile != errorFile)
@@ -237,8 +237,8 @@ void SpriteDef::loadImageSet(XML::Node node, const std::string &palettes)
     auto imageSet = resman->getImageSet(imageSrc, width, height);
     if (!imageSet)
     {
-        Log::critical(fmt::format("Couldn't load imageset ({})!",
-                                  imageSrc));
+        Log::critical("Couldn't load imageset ({})!",
+                      imageSrc);
     }
 
     imageSet->setOffsetX(node.getProperty("offsetX", 0));
@@ -254,16 +254,16 @@ void SpriteDef::loadAction(XML::Node node, int variant_offset)
     auto si = mImageSets.find(imageSetName);
     if (si == mImageSets.end())
     {
-        Log::warn("imageset \"%s\" not defined in %s",
-                  imageSetName.c_str(), getIdPath().c_str());
+        Log::warn("imageset \"{}\" not defined in {}",
+                  imageSetName, getIdPath());
         return;
     }
     ImageSet *imageSet = si->second;
 
     if (actionName == SpriteAction::INVALID)
     {
-        Log::warn("Unknown action \"%s\" defined in %s",
-                  actionName.c_str(), getIdPath().c_str());
+        Log::warn("Unknown action \"{}\" defined in {}",
+                  actionName, getIdPath());
         return;
     }
     auto *action = new Action;
@@ -295,8 +295,8 @@ void SpriteDef::loadAnimation(XML::Node animationNode,
 
     if (directionType == DIRECTION_INVALID)
     {
-        Log::warn("Unknown direction \"%s\" used in %s",
-                  directionName.c_str(), getIdPath().c_str());
+        Log::warn("Unknown direction \"{}\" used in {}",
+                  directionName, getIdPath());
         return;
     }
 
@@ -325,7 +325,7 @@ void SpriteDef::loadAnimation(XML::Node animationNode,
 
             if (!img)
             {
-                Log::info("No image at index %d", index + variant_offset);
+                Log::info("No image at index {}", index + variant_offset);
                 continue;
             }
 
@@ -348,7 +348,7 @@ void SpriteDef::loadAnimation(XML::Node animationNode,
 
                 if (!img)
                 {
-                    Log::info("No image at index %d", start + variant_offset);
+                    Log::info("No image at index {}", start + variant_offset);
                     break;
                 }
 
@@ -375,8 +375,8 @@ void SpriteDef::includeSprite(XML::Node includeNode)
 
     if (processedFiles.find(filename) != processedFiles.end())
     {
-        Log::info("Error, Tried to include %s which already is included.",
-                  filename.c_str());
+        Log::info("Error, Tried to include {} which already is included.",
+                  filename);
         return;
     }
     processedFiles.insert(filename);
@@ -386,7 +386,7 @@ void SpriteDef::includeSprite(XML::Node includeNode)
 
     if (!rootNode || rootNode.name() != "sprite")
     {
-        Log::info("Error, no sprite root node in %s", filename.c_str());
+        Log::info("Error, no sprite root node in {}", filename);
         return;
     }
 

@@ -23,7 +23,6 @@
 
 #include <SDL.h>
 
-#include <cstdarg>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -102,37 +101,38 @@ void Log::setLogToStandardOut(bool value)
     logToStandardOut = value;
 }
 
-#define DEFINE_LOG_FUNCTION(name, priority) \
-    void Log::name(const char *fmt, ...) \
-    { \
-        va_list ap; \
-        va_start(ap, fmt); \
-        SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, priority, fmt, ap); \
-        va_end(ap); \
-    }
-
-DEFINE_LOG_FUNCTION(verbose, SDL_LOG_PRIORITY_VERBOSE)
-DEFINE_LOG_FUNCTION(debug, SDL_LOG_PRIORITY_DEBUG)
-DEFINE_LOG_FUNCTION(info, SDL_LOG_PRIORITY_INFO)
-DEFINE_LOG_FUNCTION(warn, SDL_LOG_PRIORITY_WARN)
-DEFINE_LOG_FUNCTION(error, SDL_LOG_PRIORITY_ERROR)
-
-#undef DEFINE_LOG_FUNCTION
-
-void Log::vinfo(const char *fmt, va_list ap)
+static SDL_LogPriority toSdlPriority(Log::Priority priority)
 {
-    SDL_LogMessageV(SDL_LOG_CATEGORY_APPLICATION, SDL_LOG_PRIORITY_INFO, fmt, ap);
+    switch (priority) {
+    case Log::Priority::Verbose:
+        return SDL_LOG_PRIORITY_VERBOSE;
+    case Log::Priority::Debug:
+        return SDL_LOG_PRIORITY_DEBUG;
+    case Log::Priority::Info:
+        return SDL_LOG_PRIORITY_INFO;
+    case Log::Priority::Warn:
+        return SDL_LOG_PRIORITY_WARN;
+    case Log::Priority::Error:
+        return SDL_LOG_PRIORITY_ERROR;
+    }
+    return SDL_LOG_PRIORITY_INFO;
 }
 
-void Log::critical(const std::string &message)
+void Log::message(Priority priority, const std::string &text)
 {
-    SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "%s", message.c_str());
+    SDL_LogMessage(SDL_LOG_CATEGORY_APPLICATION, toSdlPriority(priority),
+                   "%s", text.c_str());
+}
+
+void Log::critical(const std::string &text)
+{
+    SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "%s", text.c_str());
 
     if (!logToStandardOut)
     {
-        std::cerr << getLogPriorityPrefix(SDL_LOG_PRIORITY_CRITICAL) << message << std::endl;
+        std::cerr << getLogPriorityPrefix(SDL_LOG_PRIORITY_CRITICAL) << text << std::endl;
     }
 
-    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", message.c_str(), nullptr);
+    SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", text.c_str(), nullptr);
     exit(1);
 }

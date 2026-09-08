@@ -134,7 +134,7 @@ void BeingPopup::show(int x, int y, FloorItem *item)
     std::string caption = info.name;
     const int amount = item->getAmount();
     if (amount > 1)
-        caption += strprintf(" x%d", amount);
+        caption += fmt::format(" x{}", amount);
 
     mItemName->setCaption(caption);
     mItemName->adjustSize();

@@ -62,7 +62,7 @@ void ServerStatusChecker::update()
 
     mStatus.state = state;
 
-    Log::info("Server status of %s:%d: %s",
-              mServer.hostname.c_str(), mServer.port,
+    Log::info("Server status of {}:{}: {}",
+              mServer.hostname, mServer.port,
               state == ServerStatus::State::Online ? "online" : "offline");
 }

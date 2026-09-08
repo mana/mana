@@ -82,7 +82,7 @@ void EffectHandler::handleCreateEffectBeing(MessageIn &msg)
     if (b)
         effectManager->trigger(eid, b);
     else
-        Log::warn("CreateEffect called for unknown being #%d", bid);
+        Log::warn("CreateEffect called for unknown being #{}", bid);
 }
 
 void EffectHandler::handleCreateTextParticle(MessageIn &msg)
@@ -120,7 +120,7 @@ void EffectHandler::handleShake(MessageIn &msg)
             viewport->shakeScreen(intensityX, intensityY, decay, duration);
             break;
         default:
-            Log::warn("Received GPMSG_SHAKE message with unexpected length of %d bytes", msg.getUnreadLength());
+            Log::warn("Received GPMSG_SHAKE message with unexpected length of {} bytes", msg.getUnreadLength());
     }
 }
 

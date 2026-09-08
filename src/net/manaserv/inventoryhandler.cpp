@@ -86,7 +86,7 @@ void EquipBackend::equip(int inventorySlot, int equipmentSlot)
     auto slotIt = mSlots.find(equipmentSlot);
     if (slotIt == mSlots.end())
     {
-        Log::info("ManaServ::EquipBackend: Equipment slot %i"
+        Log::info("ManaServ::EquipBackend: Equipment slot {}"
                   " is not existing.", equipmentSlot);
         return;
     }
@@ -113,7 +113,7 @@ void EquipBackend::unequip(int inventorySlot)
     }
 
     Log::info("ManaServ::EquipBackend: No equipped item found at inventory "
-              "slot %i!", inventorySlot);
+              "slot {}!", inventorySlot);
 }
 
 void EquipBackend::event(Event::Channel, const Event &event)

@@ -159,8 +159,8 @@ void ChatHandler::handleGameChatMessage(MessageIn &msg)
 
     if (!being)
     {
-        Log::warn("Received GPMSG_SAY for unknown being with id %i."
-                  " (Message is: %s)", id, chatMsg.c_str());
+        Log::warn("Received GPMSG_SAY for unknown being with id {}."
+                  " (Message is: {})", id, chatMsg);
         return;
     }
 
@@ -263,7 +263,7 @@ void ChatHandler::handleChatMessage(MessageIn &msg)
     else
     {
         // Can't find channel
-        Log::info("Couldn't find chat channel id: %hi", channelId);
+        Log::info("Couldn't find chat channel id: {}", channelId);
     }
 }
 

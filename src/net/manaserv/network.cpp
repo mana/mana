@@ -112,13 +112,13 @@ namespace
 
         if (iter != mMessageHandlers.end())
         {
-            //Log::info("Received packet %x (%i B)",
+            //Log::info("Received packet {:x} ({} B)",
             //          msg.getId(), msg.getLength());
             iter->second->handleMessage(msg);
         }
         else
         {
-            Log::info("Unhandled packet %x (%i B)",
+            Log::info("Unhandled packet {:x} ({} B)",
                       msg.getId(), msg.getLength());
         }
 
@@ -137,7 +137,7 @@ void flush()
         switch (event.type)
         {
             case ENET_EVENT_TYPE_CONNECT:
-                Log::info("Connected to port %d.", event.peer->address.port);
+                Log::info("Connected to port {}.", event.peer->address.port);
                 // Store any relevant server information here.
                 event.peer->data = nullptr;
                 break;

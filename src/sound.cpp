@@ -78,7 +78,7 @@ void Sound::init()
                                   MIX_DEFAULT_CHANNELS, audioBuffer);
     if (res < 0)
     {
-        Log::info("Sound::init Could not initialize audio: %s",
+        Log::info("Sound::init Could not initialize audio: {}",
                   Mix_GetError());
         return;
     }
@@ -122,18 +122,18 @@ void Sound::info()
         case AUDIO_S16MSB: format = "S16MSB"; break;
     }
 
-    Log::info("Sound::info() SDL_mixer: %i.%i.%i (compiled)",
+    Log::info("Sound::info() SDL_mixer: {}.{}.{} (compiled)",
             compiledVersion.major,
             compiledVersion.minor,
             compiledVersion.patch);
-    Log::info("Sound::info() SDL_mixer: %i.%i.%i (linked)",
+    Log::info("Sound::info() SDL_mixer: {}.{}.{} (linked)",
             linkedVersion->major,
             linkedVersion->minor,
             linkedVersion->patch);
-    Log::info("Sound::info() Driver: %s", driver);
-    Log::info("Sound::info() Format: %s", format);
-    Log::info("Sound::info() Rate: %i", rate);
-    Log::info("Sound::info() Channels: %i", channels);
+    Log::info("Sound::info() Driver: {}", driver);
+    Log::info("Sound::info() Format: {}", format);
+    Log::info("Sound::info() Rate: {}", rate);
+    Log::info("Sound::info() Channels: {}", channels);
 }
 
 void Sound::setMusicVolume(int volume)
@@ -201,7 +201,7 @@ void Sound::fadeOutMusic(int ms)
     if (!mInstalled)
         return;
 
-    Log::info("Sound::fadeOutMusic() Fading-out (%i ms)", ms);
+    Log::info("Sound::fadeOutMusic() Fading-out ({} ms)", ms);
 
     if (mMusic)
     {
@@ -260,7 +260,7 @@ void Sound::playSfx(const std::string &path, int x, int y)
 
     if (ResourceRef<SoundEffect> sound = resman->getSoundEffect(tmpPath))
     {
-        Log::info("Sound::playSfx() Playing: %s", path.c_str());
+        Log::info("Sound::playSfx() Playing: {}", path);
         int vol = 120;
 
         if (local_player && (x > 0 || y > 0))

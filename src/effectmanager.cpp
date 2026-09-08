@@ -67,7 +67,7 @@ bool EffectManager::trigger(int id, Being *being, int rotation)
     auto it = mEffects.find(id);
     if (it == mEffects.end())
     {
-        Log::warn("EffectManager::trigger: effect %d not found", id);
+        Log::warn("EffectManager::trigger: effect {} not found", id);
         return false;
     }
 
@@ -90,7 +90,7 @@ bool EffectManager::trigger(int id, int x, int y, int rotation)
     auto it = mEffects.find(id);
     if (it == mEffects.end())
     {
-        Log::warn("EffectManager::trigger: effect %d not found", id);
+        Log::warn("EffectManager::trigger: effect {} not found", id);
         return false;
     }
 

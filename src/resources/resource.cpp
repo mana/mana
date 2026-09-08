@@ -39,7 +39,7 @@ void Resource::decRef(Resource *resource, OrphanPolicy orphanPolicy)
 
     // Reference may not already have reached zero
     if (resource->mRefCount == 0) {
-        Log::warn("mRefCount already zero for %s", resource->mIdPath.c_str());
+        Log::warn("mRefCount already zero for {}", resource->mIdPath);
         assert(false);
     }
 

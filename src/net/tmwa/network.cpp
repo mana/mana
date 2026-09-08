@@ -248,7 +248,7 @@ int networkThread(void *data)
     {
         error = strformat(_("Unable to resolve host \"{}\""),
                           server.hostname);
-        Log::info("SDLNet_ResolveHost: %s", error.c_str());
+        Log::info("SDLNet_ResolveHost: {}", error);
     }
     else
     {
@@ -256,7 +256,7 @@ int networkThread(void *data)
         if (!socket)
         {
             error = SDLNet_GetError();
-            Log::info("Error in SDLNet_TCP_Open(): %s", error.c_str());
+            Log::info("Error in SDLNet_TCP_Open(): {}", error);
         }
     }
 
@@ -279,7 +279,7 @@ int networkThread(void *data)
             return -1;
         }
 
-        Log::info("Network::Started session with %s:%i",
+        Log::info("Network::Started session with {}:{}",
                   ipToString(ipAddress.host), ipAddress.port);
 
         network->mSocket = socket;
@@ -324,7 +324,7 @@ bool Network::connect(const ServerInfo &server)
         return false;
     }
 
-    Log::info("Network::Connecting to %s:%i", server.hostname.c_str(),
+    Log::info("Network::Connecting to {}:{}", server.hostname,
                                               server.port);
 
     // Reset to sane values
@@ -452,7 +452,7 @@ void Network::dispatchMessages()
         auto packetInfo = findPacketInfo(msgId);
         if (!packetInfo)
         {
-            Log::critical(fmt::format("Unknown packet 0x{:x} received.", msgId));
+            Log::critical("Unknown packet 0x{:x} received.", msgId);
             break;
         }
 
@@ -468,8 +468,8 @@ void Network::dispatchMessages()
 
             if (len < 4)
             {
-                Log::critical(fmt::format("Variable length packet 0x{:x} has invalid length {}.",
-                                          msgId, len));
+                Log::critical("Variable length packet 0x{:x} has invalid length {}.",
+                              msgId, len);
                 break;
             }
         }
@@ -485,14 +485,14 @@ void Network::dispatchMessages()
         if (iter != mMessageHandlers.end())
         {
 #ifdef DEBUG
-            Log::info("Handling %s (0x%x) of length %d", packetInfo->name, msgId, len);
+            Log::info("Handling {} (0x{:x}) of length {}", packetInfo->name, msgId, len);
 #endif
 
             iter->second->handleMessage(message);
         }
         else
         {
-            Log::info("Unhandled %s (0x%x) of length %d", packetInfo->name, msgId, len);
+            Log::info("Unhandled {} (0x{:x}) of length {}", packetInfo->name, msgId, len);
         }
 
         skip(len);
@@ -618,7 +618,7 @@ void Network::receive()
 
     if (SDLNet_TCP_DelSocket(set, mSocket) == -1)
     {
-        Log::info("Error in SDLNet_DelSocket(): %s", SDLNet_GetError());
+        Log::info("Error in SDLNet_DelSocket(): {}", SDLNet_GetError());
     }
 
     SDLNet_FreeSocketSet(set);
@@ -626,7 +626,7 @@ void Network::receive()
 
 void Network::setError(const std::string &error)
 {
-    Log::info("Network error: %s", error.c_str());
+    Log::info("Network error: {}", error);
     mError = error;
     mState = NET_ERROR;
 }

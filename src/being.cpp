@@ -487,15 +487,15 @@ void Being::setShowName(bool doShowName)
 
 void Being::setGuildName(const std::string &name)
 {
-    Log::info("Got guild name \"%s\" for being %s(%i)", name.c_str(),
-              mName.c_str(), mId);
+    Log::info("Got guild name \"{}\" for being {}({})", name,
+              mName, mId);
 }
 
 
 void Being::setGuildPos(const std::string &pos)
 {
-    Log::info("Got guild position \"%s\" for being %s(%i)", pos.c_str(),
-              mName.c_str(), mId);
+    Log::info("Got guild position \"{}\" for being {}({})", pos,
+              mName, mId);
 }
 
 void Being::addGuild(Guild *guild)

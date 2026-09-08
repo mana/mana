@@ -129,7 +129,7 @@ void AbilityHandler::handleMessage(MessageIn &msg)
             auto type  = msg.readInt8();
             if (btype == BSKILL_EMOTE)
             {
-                Log::info("Action: %d", btype);
+                Log::info("Action: {}", btype);
             }
 
             std::string msg;

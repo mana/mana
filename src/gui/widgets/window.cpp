@@ -52,7 +52,7 @@ Window::Window(SkinType skinType, const std::string &caption, bool modal, Window
     , mMaxWinWidth(graphics->getWidth())
     , mMaxWinHeight(graphics->getHeight())
 {
-    Log::debug("Window::Window(\"%s\")", caption.c_str());
+    Log::debug("Window::Window(\"{}\")", caption);
 
     if (!windowContainer)
         throw GCN_EXCEPTION("Window::Window(): no windowContainer set");
@@ -81,7 +81,7 @@ Window::Window(SkinType skinType, const std::string &caption, bool modal, Window
 
 Window::~Window()
 {
-    Log::debug("Window::~Window(\"%s\")", getCaption().c_str());
+    Log::debug("Window::~Window(\"{}\")", getCaption());
 
     saveWindowState();
 

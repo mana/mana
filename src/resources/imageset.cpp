@@ -50,7 +50,7 @@ SubImage *ImageSet::get(size_t i) const
 {
     if (i >= mImages.size())
     {
-        Log::warn("No sprite %d in this image set", (int) i);
+        Log::warn("No sprite {} in this image set", (int) i);
         return nullptr;
     }
 

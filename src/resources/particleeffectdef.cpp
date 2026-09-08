@@ -206,8 +206,8 @@ static ParticleEmitterDef readEmitter(XML::Node emitterNode,
             }
             else
             {
-                Log::info("Particle Engine: Warning, unknown emitter property \"%s\"",
-                          name.c_str());
+                Log::info("Particle Engine: Warning, unknown emitter property \"{}\"",
+                          name);
             }
         }
         else if (propertyNode.name() == "emitter")
@@ -276,7 +276,7 @@ ParticleEffectDef *ParticleEffectDef::load(const std::string &effectFile)
 
     if (!rootNode || rootNode.name() != "effect")
     {
-        Log::info("Error loading particle: %s", effectFile.c_str());
+        Log::info("Error loading particle: {}", effectFile);
         return nullptr;
     }
 

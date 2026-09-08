@@ -358,7 +358,7 @@ void setLanguageOverride(const std::string &code)
                          }))
         {
             Log::warn("Failed to activate a locale, the language override "
-                      "'%s' will not be applied", code.c_str());
+                      "'{}' will not be applied", code);
         }
     }
 #endif // _WIN32
@@ -367,8 +367,8 @@ void setLanguageOverride(const std::string &code)
 
 void logLanguageSetup()
 {
-    Log::info("Message catalogs: %s", localeDir.empty() ? "none"
-                                                        : localeDir.c_str());
+    Log::info("Message catalogs: {}", localeDir.empty() ? "none"
+                                                        : localeDir);
 
     std::string codes;
     for (auto &language : getAvailableLanguages())
@@ -377,19 +377,19 @@ void logLanguageSetup()
             codes += ' ';
         codes += language.code;
     }
-    Log::info("Available languages: %s", codes.c_str());
+    Log::info("Available languages: {}", codes);
 
-    Log::info("System language: %s, override: %s",
+    Log::info("System language: {}, override: {}",
               systemLanguage.empty() ? "English (no catalog loaded)"
-                                     : systemLanguage.c_str(),
-              languageOverride.empty() ? "none" : languageOverride.c_str());
+                                     : systemLanguage,
+              languageOverride.empty() ? "none" : languageOverride);
 
     // These are what gettext derives the language from
     for (const char *variable : { "LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG" })
         if (const char *value = getenv(variable); value && *value)
-            Log::info("  %s=%s", variable, value);
+            Log::info("  {}={}", variable, value);
 
     // LANGUAGE only applies while this is not a "C" locale
     if (const char *messagesLocale = setlocale(LC_MESSAGES, nullptr))
-        Log::info("  messages locale: %s", messagesLocale);
+        Log::info("  messages locale: {}", messagesLocale);
 }

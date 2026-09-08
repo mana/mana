@@ -283,7 +283,7 @@ void clearAbilityStatus(int id)
 
 void setAbilityStatus(int id, int current, int max, int recharge)
 {
-    Log::info("AbilityUpdate Skill #%d -- (%d/%d) -> %d", id, current, max,
+    Log::info("AbilityUpdate Skill #{} -- ({}/{}) -> {}", id, current, max,
               recharge);
     mAbilities[id].currentMana = current;
     mAbilities[id].neededMana = max;

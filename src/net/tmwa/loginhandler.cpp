@@ -109,8 +109,8 @@ void LoginHandler::handleMessage(MessageIn &msg)
              mUpdateHost = msg.readString(len);
              loginData.updateHost = mUpdateHost;
 
-             Log::info("Received update host \"%s\" from login server.",
-                     mUpdateHost.c_str());
+             Log::info("Received update host \"{}\" from login server.",
+                     mUpdateHost);
              break;
         }
         case SMSG_LOGIN_DATA:
@@ -139,8 +139,8 @@ void LoginHandler::handleMessage(MessageIn &msg)
                 msg.readInt16();                    // maintenance
                 msg.readInt16();                    // is_new
 
-                Log::info("Network: Server: %s (%s:%d)",
-                          world->name.c_str(),
+                Log::info("Network: Server: {} ({}:{})",
+                          world->name,
                           ipToString(world->address),
                           world->port);
 
@@ -151,7 +151,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
 
         case SMSG_LOGIN_ERROR:
             code = msg.readInt8();
-            Log::info("Login::error code: %i", code);
+            Log::info("Login::error code: {}", code);
 
             switch (code)
             {
@@ -213,7 +213,7 @@ void LoginHandler::handleMessage(MessageIn &msg)
                     mServerVersion = 0;
 
                 if (mServerVersion > 0)
-                    Log::info("TMW server version: x%06x", mServerVersion);
+                    Log::info("TMW server version: x{:06x}", mServerVersion);
                 else
                     Log::info("Server without version");
 

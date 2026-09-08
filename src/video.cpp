@@ -45,7 +45,7 @@ static void limitToUsableBounds(int display, int &width, int &height)
     SDL_Rect usableBounds;
     if (SDL_GetDisplayUsableBounds(display, &usableBounds) != 0)
     {
-        Log::info("SDL_GetDisplayUsableBounds failed: %s", SDL_GetError());
+        Log::info("SDL_GetDisplayUsableBounds failed: {}", SDL_GetError());
         return;
     }
 
@@ -88,7 +88,7 @@ Graphics *Video::initialize(const VideoSettings &settings)
 
     if (!initDisplayModes())
     {
-        Log::info("Failed to initialize display modes: %s", SDL_GetError());
+        Log::info("Failed to initialize display modes: {}", SDL_GetError());
     }
 
     SDL_DisplayMode displayMode;
@@ -104,7 +104,7 @@ Graphics *Video::initialize(const VideoSettings &settings)
 
         if (SDL_GetClosestDisplayMode(mSettings.display, &requestedMode, &displayMode) == nullptr)
         {
-            Log::info("SDL_GetClosestDisplayMode failed: %s, falling back to borderless mode", SDL_GetError());
+            Log::info("SDL_GetClosestDisplayMode failed: {}, falling back to borderless mode", SDL_GetError());
             mSettings.windowMode = WindowMode::WindowedFullscreen;
         }
     }
@@ -142,7 +142,7 @@ Graphics *Video::initialize(const VideoSettings &settings)
     if (mSettings.windowMode == WindowMode::Windowed)
         limitToUsableBounds(mSettings.display, mSettings.width, mSettings.height);
 
-    Log::info("Setting video mode %dx%d %s",
+    Log::info("Setting video mode {}x{} {}",
               mSettings.width,
               mSettings.height,
               videoMode);
@@ -157,7 +157,7 @@ Graphics *Video::initialize(const VideoSettings &settings)
 
     if (!mWindow)
     {
-        Log::critical(fmt::format("Failed to create window: {}", SDL_GetError()));
+        Log::critical("Failed to create window: {}", SDL_GetError());
         return nullptr;
     }
 
@@ -167,7 +167,7 @@ Graphics *Video::initialize(const VideoSettings &settings)
     {
         if (SDL_SetWindowDisplayMode(mWindow, &displayMode) != 0)
         {
-            Log::info("SDL_SetWindowDisplayMode failed: %s", SDL_GetError());
+            Log::info("SDL_SetWindowDisplayMode failed: {}", SDL_GetError());
         }
     }
 
@@ -180,7 +180,7 @@ Graphics *Video::initialize(const VideoSettings &settings)
         mGraphics = OpenGLGraphics::create(mWindow, mSettings);
         if (!mGraphics)
         {
-            Log::info("Failed to create OpenGL context, falling back to SDL renderer: %s",
+            Log::info("Failed to create OpenGL context, falling back to SDL renderer: {}",
                         SDL_GetError());
             mSettings.openGL = false;
         }
@@ -208,7 +208,7 @@ bool Video::apply(const VideoSettings &videoSettings)
         SDL_DisplayMode displayMode;
         if (SDL_GetWindowDisplayMode(mWindow, &displayMode) != 0)
         {
-            Log::critical(fmt::format("SDL_GetCurrentDisplayMode failed: {}", SDL_GetError()));
+            Log::critical("SDL_GetCurrentDisplayMode failed: {}", SDL_GetError());
             return false;
         }
 
@@ -226,7 +226,7 @@ bool Video::apply(const VideoSettings &videoSettings)
 
             if (SDL_SetWindowDisplayMode(mWindow, &displayMode) != 0)
             {
-                Log::critical(fmt::format("SDL_SetWindowDisplayMode failed: {}", SDL_GetError()));
+                Log::critical("SDL_SetWindowDisplayMode failed: {}", SDL_GetError());
                 return false;
             }
         }
@@ -247,7 +247,7 @@ bool Video::apply(const VideoSettings &videoSettings)
 
     if (SDL_SetWindowFullscreen(mWindow, windowFlags) != 0)
     {
-        Log::critical(fmt::format("SDL_SetWindowFullscreen failed: {}", SDL_GetError()));
+        Log::critical("SDL_SetWindowFullscreen failed: {}", SDL_GetError());
         return false;
     }
 

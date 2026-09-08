@@ -304,9 +304,9 @@ static bool saveScreenshot()
 
     if (mkdir_r(screenshotDirectory.c_str()) != 0)
     {
-        Log::info("Directory %s doesn't exist and can't be created! "
+        Log::info("Directory {} doesn't exist and can't be created! "
                   "Setting screenshot directory to home.",
-                  screenshotDirectory.c_str());
+                  screenshotDirectory);
         screenshotDirectory = FS::getUserDir();
     }
 
@@ -337,7 +337,7 @@ static bool saveScreenshot()
     else
     {
         serverNotice(_("Saving screenshot failed!"));
-        Log::error("Could not save screenshot: %s", IMG_GetError());
+        Log::error("Could not save screenshot: {}", IMG_GetError());
     }
 
     SDL_FreeSurface(screenshot);
@@ -892,7 +892,7 @@ void Game::changeMap(const std::string &mapPath)
 
     if (!newMap)
     {
-        Log::info("Error while loading %s", fullMap.c_str());
+        Log::info("Error while loading {}", fullMap);
         new OkDialog(_("Could Not Load Map"),
                      strformat(_("Error while loading {}"), fullMap));
     }

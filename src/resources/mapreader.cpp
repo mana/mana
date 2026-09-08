@@ -77,7 +77,7 @@ static std::string resolveRelativePath(std::string base, std::string relative)
 
 Map *MapReader::readMap(const std::string &filename)
 {
-    Log::info("Attempting to read map %s", filename.c_str());
+    Log::info("Attempting to read map {}", filename);
     Map *map = nullptr;
 
     XML::Document doc(filename);
@@ -89,7 +89,7 @@ Map *MapReader::readMap(const std::string &filename)
     {
         if (node.name() != "map")
         {
-            Log::error("Not a map file (%s)!", filename.c_str());
+            Log::error("Not a map file ({})!", filename);
         }
         else
         {
@@ -98,7 +98,7 @@ Map *MapReader::readMap(const std::string &filename)
     }
     else
     {
-        Log::info("Error while parsing map file (%s)!", filename.c_str());
+        Log::info("Error while parsing map file ({})!", filename);
     }
 
     if (map)
@@ -120,8 +120,8 @@ Map *MapReader::readMap(XML::Node node, const std::string &path)
     if (tilew < 0 || tileh < 0)
     {
         Log::info("MapReader: Warning: "
-                  "Missing tilewidth or tileheight attributes for map: %s",
-                  path.c_str());
+                  "Missing tilewidth or tileheight attributes for map: {}",
+                  path);
         return nullptr;
     }
 
@@ -174,8 +174,8 @@ Map *MapReader::readMap(XML::Node node, const std::string &path)
                     const int objW = objectNode.getProperty("width", 0);
                     const int objH = objectNode.getProperty("height", 0);
 
-                    Log::info("- Loading object name: %s type: %s at %d:%d",
-                              objName.c_str(), objType.c_str(),
+                    Log::info("- Loading object name: {} type: {} at {}:{}",
+                              objName, objType,
                               objX, objY);
 
                     if (objType == "PARTICLE_EFFECT")
@@ -293,7 +293,7 @@ static void readLayer(XML::Node node, Map *map)
         map->addLayer(layer);
     }
 
-    Log::info("- Loading layer \"%s\"", name.c_str());
+    Log::info("- Loading layer \"{}\"", name);
     int x = 0;
     int y = 0;
 
@@ -536,7 +536,7 @@ static Tileset *readTileset(XML::Node node, const std::string &path,
                 }
                 else
                 {
-                    Log::warn("Failed to load tileset (%s)", source.c_str());
+                    Log::warn("Failed to load tileset ({})", source);
                 }
             }
         }

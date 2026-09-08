@@ -41,8 +41,8 @@ std::unique_ptr<Graphics> SDLGraphics::create(SDL_Window *window, const VideoSet
     SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, rendererFlags);
     if (!renderer)
     {
-        Log::critical(fmt::format("Failed to create renderer: {}",
-                                  SDL_GetError()));
+        Log::critical("Failed to create renderer: {}",
+                      SDL_GetError());
         return {};
     }
 
@@ -59,24 +59,24 @@ SDLGraphics::SDLGraphics(SDL_Renderer *renderer)
     SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     if (const char *driver = SDL_GetCurrentVideoDriver())
-        Log::info("Using video driver: %s", driver);
+        Log::info("Using video driver: {}", driver);
     else
         Log::info("Using video driver: not initialized");
 
     SDL_RendererInfo info;
 
     if (SDL_GetRendererInfo(renderer, &info) == 0) {
-        Log::info("Using renderer: %s", info.name);
+        Log::info("Using renderer: {}", info.name);
 
-        Log::info("The renderer is a software fallback: %s",
+        Log::info("The renderer is a software fallback: {}",
                   (info.flags & SDL_RENDERER_SOFTWARE) ? "yes" : "no");
-        Log::info("The renderer is hardware accelerated: %s",
+        Log::info("The renderer is hardware accelerated: {}",
                   (info.flags & SDL_RENDERER_ACCELERATED) ? "yes" : "no");
-        Log::info("Vsync: %s",
+        Log::info("Vsync: {}",
                   (info.flags & SDL_RENDERER_PRESENTVSYNC) ? "on" : "off");
-        Log::info("Renderer supports rendering to texture: %s",
+        Log::info("Renderer supports rendering to texture: {}",
                   (info.flags & SDL_RENDERER_TARGETTEXTURE) ? "yes" : "no");
-        Log::info("Max texture size: %dx%d",
+        Log::info("Max texture size: {}x{}",
                   info.max_texture_width, info.max_texture_height);
     }
 }

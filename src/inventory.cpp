@@ -80,7 +80,7 @@ void Inventory::setItem(int index, int id, int quantity)
 {
     if (index < 0 || index >= getSize())
     {
-        Log::warn("Invalid inventory index: %d", index);
+        Log::warn("Invalid inventory index: {}", index);
         return;
     }
 

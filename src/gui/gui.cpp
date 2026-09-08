@@ -421,8 +421,8 @@ void Gui::loadCustomCursors()
     SDL_Surface *mouseSurface = loadSurface(cursorPath);
     if (!mouseSurface)
     {
-        Log::warn("Unable to load mouse cursor file (%s): %s",
-                  cursorPath.c_str(), SDL_GetError());
+        Log::warn("Unable to load mouse cursor file ({}): {}",
+                  cursorPath, SDL_GetError());
         return;
     }
 
@@ -473,7 +473,7 @@ void Gui::loadCustomCursors()
                                                    17 * mCustomCursorScale);
         if (!cursor)
         {
-            Log::warn("Unable to create cursor: %s", SDL_GetError());
+            Log::warn("Unable to create cursor: {}", SDL_GetError());
         }
 
         mCustomMouseCursors.push_back(cursor);

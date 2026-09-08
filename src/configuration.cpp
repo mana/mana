@@ -457,7 +457,7 @@ void warnUnknownOptions(const std::string &fileName,
                         const std::map<std::string, std::string> &options)
 {
     for (const auto &[name, value] : options)
-        Log::warn("Unknown option \"%s\" in %s", name.c_str(), fileName.c_str());
+        Log::warn("Unknown option \"{}\" in {}", name, fileName);
 }
 
 void deserialize(std::map<std::string, std::string> &options, Branding &branding)

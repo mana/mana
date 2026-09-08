@@ -35,7 +35,7 @@ MessageOut::MessageOut(Network &network, uint16_t id)
     : mNetwork(network)
 {
 #ifdef DEBUG
-    Log::info("Sending %s (0x%x)", mNetwork.messageName(id), id);
+    Log::info("Sending {} (0x{:x})", mNetwork.messageName(id), id);
 #endif
     writeInt16(id);
 }

@@ -97,7 +97,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
             netToken = msg.readString(32);
             std::string address = msg.readString();
             int port = msg.readInt16();
-            Log::info("Changing server to %s:%d", address.c_str(), port);
+            Log::info("Changing server to {}:{}", address, port);
 
             gameServer.hostname = address;
             gameServer.port = port;
@@ -148,14 +148,14 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 } break;
                 case ATTRIBMOD_INVALID_ATTRIBUTE:
                 {
-                    Log::warn("Server denied increase of attribute %d (unknown attribute) ", attrNum);
+                    Log::warn("Server denied increase of attribute {} (unknown attribute) ", attrNum);
                 } break;
                 case ATTRIBMOD_NO_POINTS_LEFT:
                 {
                     // when the server says "you got no points" it
                     // has to be correct. The server is always right!
                     // undo attribute change and set points to 0
-                    Log::warn("Server denied increase of attribute %d (no points left) ", attrNum);
+                    Log::warn("Server denied increase of attribute {} (no points left) ", attrNum);
                     int attrValue = PlayerInfo::getStatBase(attrNum) - 1;
                     PlayerInfo::setAttribute(CHAR_POINTS, 0);
                     PlayerInfo::setStatBase(attrNum, attrValue);
@@ -163,7 +163,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 case ATTRIBMOD_DENIED:
                 {
                     // undo attribute change
-                    Log::warn("Server denied increase of attribute %d (reason unknown) ", attrNum);
+                    Log::warn("Server denied increase of attribute {} (reason unknown) ", attrNum);
                     int points = PlayerInfo::getAttribute(CHAR_POINTS) - 1;
                     PlayerInfo::setAttribute(CHAR_POINTS, points);
 
@@ -185,14 +185,14 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 } break;
                 case ATTRIBMOD_INVALID_ATTRIBUTE:
                 {
-                    Log::warn("Server denied reduction of attribute %d (unknown attribute) ", attrNum);
+                    Log::warn("Server denied reduction of attribute {} (unknown attribute) ", attrNum);
                 } break;
                 case ATTRIBMOD_NO_POINTS_LEFT:
                 {
                     // when the server says "you got no points" it
                     // has to be correct. The server is always right!
                     // undo attribute change and set points to 0
-                    Log::warn("Server denied reduction of attribute %d (no points left) ", attrNum);
+                    Log::warn("Server denied reduction of attribute {} (no points left) ", attrNum);
                     int attrValue = PlayerInfo::getStatBase(attrNum) + 1;
                     // TODO are these right?
                     PlayerInfo::setAttribute(CHAR_POINTS, 0);
@@ -202,7 +202,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                 case ATTRIBMOD_DENIED:
                 {
                     // undo attribute change
-                    Log::warn("Server denied reduction of attribute %d (reason unknown) ", attrNum);
+                    Log::warn("Server denied reduction of attribute {} (reason unknown) ", attrNum);
                     int charaPoints = PlayerInfo::getAttribute(CHAR_POINTS) - 1;
                     PlayerInfo::setAttribute(CHAR_POINTS, charaPoints);
 
@@ -246,7 +246,7 @@ void PlayerHandler::handleMessage(MessageIn &msg)
                                              BY_SERVER);
                         break;
                     default:
-                        Log::info("0x013b: Unhandled message %i", type);
+                        Log::info("0x013b: Unhandled message {}", type);
                         break;
                 }
             }
@@ -264,7 +264,7 @@ void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
     Game *game = Game::instance();
     const bool sameMap = (game->getCurrentMapName() == mapName);
 
-    Log::info("Changing map to %s (%d, %d)", mapName.c_str(), x, y);
+    Log::info("Changing map to {} ({}, {})", mapName, x, y);
 
     // Switch the actual map, deleting the previous one
     game->changeMap(mapName);
@@ -286,7 +286,7 @@ void PlayerHandler::handleMapChangeMessage(MessageIn &msg)
     local_player->setPosition(x, y);
     local_player->setDestination(x, y);
 
-    Log::info("Adjust scrolling by %d,%d", (int) scrollOffsetX,
+    Log::info("Adjust scrolling by {},{}", (int) scrollOffsetX,
                                            (int) scrollOffsetY);
     viewport->scrollBy(scrollOffsetX, scrollOffsetY);
 }

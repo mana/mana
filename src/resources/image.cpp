@@ -102,7 +102,7 @@ Resource *Image::load(SDL_RWops *rw)
 
     if (!tmpImage)
     {
-        Log::info("Error, image load failed: %s", IMG_GetError());
+        Log::info("Error, image load failed: {}", IMG_GetError());
         return nullptr;
     }
 
@@ -118,20 +118,20 @@ Resource *Image::load(SDL_RWops *rw, const Dye &dye)
 
     if (!surf)
     {
-        Log::info("Error, image load failed: %s", IMG_GetError());
+        Log::info("Error, image load failed: {}", IMG_GetError());
         return nullptr;
     }
 
     if (surf->format->format != SDL_PIXELFORMAT_RGBA32)
     {
-        Log::debug("Image format is %s, not SDL_PIXELFORMAT_RGBA32. Converting...",
+        Log::debug("Image format is {}, not SDL_PIXELFORMAT_RGBA32. Converting...",
                    SDL_GetPixelFormatName(surf->format->format));
 
         SDL_Surface *convertedSurf = SDL_ConvertSurfaceFormat(surf, SDL_PIXELFORMAT_RGBA32, 0);
         SDL_FreeSurface(surf);
         if (!convertedSurf)
         {
-            Log::info("Error, image convert failed: %s", SDL_GetError());
+            Log::info("Error, image convert failed: {}", SDL_GetError());
             return nullptr;
         }
         surf = convertedSurf;
@@ -204,7 +204,7 @@ Image *Image::_GLload(SDL_Surface *image)
 
     if (realWidth < width || realHeight < height)
     {
-        Log::warn("Image too large, cropping to %dx%d texture!",
+        Log::warn("Image too large, cropping to {}x{} texture!",
                   realWidth, realHeight);
     }
 
@@ -293,7 +293,7 @@ Image *Image::_GLload(SDL_Surface *image)
                 errmsg = "GL_OUT_OF_MEMORY";
                 break;
         }
-        Log::error("Image GL import failed: %s", errmsg);
+        Log::error("Image GL import failed: {}", errmsg);
         return nullptr;
     }
 

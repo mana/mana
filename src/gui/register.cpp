@@ -148,7 +148,7 @@ void RegisterDialog::action(const gcn::ActionEvent &event)
     else if (event.getId() == "register" && canSubmit())
     {
         const std::string user = mUserField->getText();
-        Log::info("RegisterDialog::register Username is %s", user.c_str());
+        Log::info("RegisterDialog::register Username is {}", user);
 
         std::string errorMessage;
         int error = 0;

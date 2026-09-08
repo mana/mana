@@ -21,14 +21,10 @@
 
 #pragma once
 
-#include <string>
-#include <cstdarg>
+#include "utils/format.h"
 
-#ifdef __GNUC__
-#  define LOG_PRINTF_ATTR __attribute__((__format__(__printf__, 1, 2)))
-#else
-#  define LOG_PRINTF_ATTR
-#endif
+#include <string>
+#include <utility>
 
 /**
  * The Log namespace: Useful to write debug or info messages to the log file
@@ -36,6 +32,15 @@
  */
 namespace Log
 {
+    enum class Priority
+    {
+        Verbose,
+        Debug,
+        Info,
+        Warn,
+        Error,
+    };
+
     /**
      * Initializes the log system.
      */
@@ -51,21 +56,53 @@ namespace Log
      */
     void setLogToStandardOut(bool value);
 
-    void verbose(const char *log_text, ...) LOG_PRINTF_ATTR;
-    void debug(const char *log_text, ...) LOG_PRINTF_ATTR;
-    void info(const char *log_text, ...) LOG_PRINTF_ATTR;
-    void warn(const char *log_text, ...) LOG_PRINTF_ATTR;
-    void error(const char *log_text, ...) LOG_PRINTF_ATTR;
+    /**
+     * Logs an already formatted message with the given priority.
+     */
+    void message(Priority priority, const std::string &text);
 
-    void vinfo(const char *log_text, va_list ap);
+    template<typename... Args>
+    void verbose(fmt::format_string<Args...> format, Args &&...args)
+    {
+        message(Priority::Verbose, fmt::format(format, std::forward<Args>(args)...));
+    }
+
+    template<typename... Args>
+    void debug(fmt::format_string<Args...> format, Args &&...args)
+    {
+        message(Priority::Debug, fmt::format(format, std::forward<Args>(args)...));
+    }
+
+    template<typename... Args>
+    void info(fmt::format_string<Args...> format, Args &&...args)
+    {
+        message(Priority::Info, fmt::format(format, std::forward<Args>(args)...));
+    }
+
+    template<typename... Args>
+    void warn(fmt::format_string<Args...> format, Args &&...args)
+    {
+        message(Priority::Warn, fmt::format(format, std::forward<Args>(args)...));
+    }
+
+    template<typename... Args>
+    void error(fmt::format_string<Args...> format, Args &&...args)
+    {
+        message(Priority::Error, fmt::format(format, std::forward<Args>(args)...));
+    }
 
     /**
-     * Log an error and quit. The error will be printed to standard error
+     * Logs an error and quits. The error will be printed to standard error
      * and shown in a simple message box.
      */
-    __attribute__((noreturn))
-    void critical(const std::string &error_text);
+    [[noreturn]] void critical(const std::string &text);
+
+    template<typename T, typename... Args>
+    [[noreturn]] void critical(fmt::format_string<T, Args...> format,
+                               T &&arg, Args &&...args)
+    {
+        critical(fmt::format(format, std::forward<T>(arg),
+                             std::forward<Args>(args)...));
+    }
 
 } // namespace Log
-
-#undef LOG_PRINTF_ATTR

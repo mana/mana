@@ -36,7 +36,7 @@ SoundEffect *SoundEffect::load(SDL_RWops *rw)
         return new SoundEffect(soundEffect);
     }
 
-    Log::info("Error, failed to load sound effect: %s", Mix_GetError());
+    Log::info("Error, failed to load sound effect: {}", Mix_GetError());
     return nullptr;
 }
 

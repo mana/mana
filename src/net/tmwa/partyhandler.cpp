@@ -182,7 +182,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                         partyTab->chatLog(_("Experience sharing not possible."), BY_SERVER);
                         break;
                     default:
-                        Log::info("Unknown party exp option: %d", exp);
+                        Log::info("Unknown party exp option: {}", exp);
                 }
 
                 switch (item)
@@ -206,7 +206,7 @@ void PartyHandler::handleMessage(MessageIn &msg)
                         partyTab->chatLog(_("Item sharing not possible."), BY_SERVER);
                         break;
                     default:
-                        Log::info("Unknown party item option: %d", exp);
+                        Log::info("Unknown party item option: {}", exp);
                 }
                 break;
             }

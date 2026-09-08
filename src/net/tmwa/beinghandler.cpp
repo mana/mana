@@ -535,7 +535,7 @@ void BeingHandler::handleMessage(MessageIn &msg)
                     break;
                 default:
                     Log::info("SMSG_BEING_CHANGE_LOOKS2: unsupported type: "
-                              "%d, id: %d", static_cast<int>(type), id);
+                              "{}, id: {}", static_cast<int>(type), id);
                     break;
             }
         }

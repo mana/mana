@@ -150,8 +150,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
                 if (debugInventory)
                 {
-                    Log::info("Index: %d, ID: %d, Type: %d, Identified: %d, "
-                              "Qty: %d, Cards: %d, %d, %d, %d",
+                    Log::info("Index: {}, ID: {}, Type: {}, Identified: {}, "
+                              "Qty: {}, Cards: {}, {}, {}, {}",
                               index, itemId, itemType, identified, amount,
                               cards[0], cards[1], cards[2], cards[3]);
                 }
@@ -184,8 +184,8 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
                 if (debugInventory)
                 {
-                    Log::info("Index: %d, ID: %d, Type: %d, Identified: %d, "
-                              "Qty: %d, Cards: %d, %d, %d, %d",
+                    Log::info("Index: {}, ID: {}, Type: {}, Identified: {}, "
+                              "Qty: {}, Cards: {}, {}, {}, {}",
                               index, itemId, itemType, identified, amount,
                               cards[0], cards[1], cards[2], cards[3]);
                 }
@@ -411,7 +411,7 @@ void InventoryHandler::handleMessage(MessageIn &msg)
 
             index -= INVENTORY_OFFSET;
 
-            Log::info("Arrows equipped: %i", index);
+            Log::info("Arrows equipped: {}", index);
             mEquips.setEquipment(EQUIP_PROJECTILE_SLOT, index);
             break;
     }

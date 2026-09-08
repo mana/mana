@@ -279,7 +279,7 @@ bool OfflineHandler::loadSavedState()
         }
     }
 
-    Log::info("Loaded offline state from %s", path.c_str());
+    Log::info("Loaded offline state from {}", path);
     return true;
 }
 
@@ -640,7 +640,7 @@ void OfflineHandler::saveState()
 
     if (!writer.isValid())
     {
-        Log::warn("Could not save offline state to %s", path.c_str());
+        Log::warn("Could not save offline state to {}", path);
         return;
     }
 
@@ -694,7 +694,7 @@ void OfflineHandler::saveState()
 
     writer.endElement();
 
-    Log::info("Saved offline state to %s", path.c_str());
+    Log::info("Saved offline state to {}", path);
 }
 
 void OfflineHandler::restoreInventory()

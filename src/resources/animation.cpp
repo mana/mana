@@ -92,7 +92,7 @@ Animation Animation::fromXML(XML::Node node, const std::string &dyePalettes)
 
             if (!img)
             {
-                Log::info("No image at index %d", index);
+                Log::info("No image at index {}", index);
                 continue;
             }
 
@@ -115,7 +115,7 @@ Animation Animation::fromXML(XML::Node node, const std::string &dyePalettes)
 
                 if (!img)
                 {
-                    Log::info("No image at index %d", start);
+                    Log::info("No image at index {}", start);
                     continue;
                 }
 

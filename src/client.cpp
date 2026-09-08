@@ -228,8 +228,8 @@ Client::Client(const Options &options):
         }
         else
         {
-            Log::info("Couldn't read branding file: %s",
-                      options.brandingPath.c_str());
+            Log::info("Couldn't read branding file: {}",
+                      options.brandingPath);
         }
     }
 
@@ -250,7 +250,7 @@ Client::Client(const Options &options):
         Log::setLogFile(options.logFile);
     else
         Log::setLogFile(mLocalDataDir + "/mana.log");
-    Log::info("%s", FULL_VERSION);
+    Log::info("{}", FULL_VERSION);
 
     logLanguageSetup();
 
@@ -273,8 +273,8 @@ Client::Client(const Options &options):
     Log::info("Initializing SDL...");
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) < 0)
     {
-        Log::critical(fmt::format("Could not initialize SDL: {}",
-                      SDL_GetError()));
+        Log::critical("Could not initialize SDL: {}",
+          SDL_GetError());
     }
     atexit(SDL_Quit);
 
@@ -282,8 +282,8 @@ Client::Client(const Options &options):
 
     if (!FS::setWriteDir(mLocalDataDir))
     {
-        Log::critical(fmt::format("{} couldn't be set as write directory! "
-                                  "Exiting.", mLocalDataDir));
+        Log::critical("{} couldn't be set as write directory! "
+                      "Exiting.", mLocalDataDir);
     }
 
 #if defined __APPLE__
@@ -351,7 +351,7 @@ Client::Client(const Options &options):
     iconFile += ".png";
 #endif
     iconFile = ResourceManager::getPath(iconFile);
-    Log::info("Loading icon from file: %s", iconFile.c_str());
+    Log::info("Loading icon from file: {}", iconFile);
 #ifdef _WIN32
     static SDL_SysWMinfo pInfo;
     SDL_GetWindowWMInfo(mVideo.window(), &pInfo);
@@ -393,7 +393,7 @@ Client::Client(const Options &options):
     {
         mState = State::Error;
         errorMessage = err;
-        Log::warn("%s", err);
+        Log::warn("{}", err);
     }
 
     // Initialize keyboard
@@ -583,7 +583,7 @@ int Client::exec()
             catch (gcn::Exception e)
             {
                 const char *err = e.getMessage().c_str();
-                Log::warn("Guichan input exception: %s", err);
+                Log::warn("Guichan input exception: {}", err);
             }
         }
 
@@ -893,8 +893,8 @@ void Client::update()
             case State::Game:
                 if (Net::getNetworkType() != ServerType::Offline)
                 {
-                    Log::info("Memorizing selected character %s",
-                            local_player->getName().c_str());
+                    Log::info("Memorizing selected character {}",
+                            local_player->getName());
                     config.lastCharacter = local_player->getName();
                 }
 
@@ -940,7 +940,7 @@ void Client::update()
                 break;
 
             case State::RegisterAttempt:
-                Log::info("Username is %s", loginData.username.c_str());
+                Log::info("Username is {}", loginData.username);
                 Net::getLoginHandler()->registerAccount(&loginData);
                 loginData.password.clear();
                 break;
@@ -1042,7 +1042,7 @@ void Client::update()
 
             case State::Error:
                 Log::info("State: ERROR");
-                Log::error("%s", errorMessage.c_str());
+                Log::error("{}", errorMessage);
                 showErrorDialog(errorMessage, State::ChooseServer);
                 Net::getGameHandler()->disconnect();
                 break;
@@ -1110,12 +1110,12 @@ void Client::initRootDir()
     {
         if (!isDirWritable(mRootDir))
         {
-            Log::warn("Ignoring portable mode because install directory is not writable: %s",
-                      mRootDir.c_str());
+            Log::warn("Ignoring portable mode because install directory is not writable: {}",
+                      mRootDir);
             return;
         }
 
-        Log::info("Portable file: %s", portableName.c_str());
+        Log::info("Portable file: {}", portableName);
 
         XML::Document doc(portableName, false);
         auto options = readOptions(doc.rootNode());
@@ -1127,20 +1127,20 @@ void Client::initRootDir()
         if (mOptions.localDataDir.empty() && !portable.dataDir.empty())
         {
             mOptions.localDataDir = mRootDir + portable.dataDir;
-            Log::info("Portable data dir: %s", mOptions.localDataDir.c_str());
+            Log::info("Portable data dir: {}", mOptions.localDataDir);
         }
 
         if (mOptions.configDir.empty() && !portable.configDir.empty())
         {
             mOptions.configDir = mRootDir + portable.configDir;
-            Log::info("Portable config dir: %s", mOptions.configDir.c_str());
+            Log::info("Portable config dir: {}", mOptions.configDir);
         }
 
         if (mOptions.screenshotDir.empty() && !portable.screenshotDir.empty())
         {
             mOptions.screenshotDir = mRootDir + portable.screenshotDir;
-            Log::info("Portable screenshot dir: %s",
-                      mOptions.screenshotDir.c_str());
+            Log::info("Portable screenshot dir: {}",
+                      mOptions.screenshotDir);
         }
     }
 #endif
@@ -1190,16 +1190,16 @@ static void migrateLegacyConfig(const std::string &configPath)
             return;
 
         if (std::filesystem::copy_file(legacyPath, configPath, error))
-            Log::info("Migrated configuration from %s", legacyPath.c_str());
+            Log::info("Migrated configuration from {}", legacyPath);
         else
-            Log::warn("Failed to migrate configuration from %s: %s",
-                      legacyPath.c_str(), error.message().c_str());
+            Log::warn("Failed to migrate configuration from {}: {}",
+                      legacyPath, error.message());
     }
     catch (const std::exception &e)
     {
         // std::filesystem::path construction can throw, for example when a
         // string can't be converted to the native encoding
-        Log::warn("Failed to migrate configuration: %s", e.what());
+        Log::warn("Failed to migrate configuration: {}", e.what());
     }
 }
 
@@ -1258,7 +1258,7 @@ void Client::initConfiguration()
     if (doc.rootNode() && doc.rootNode().name() == "configuration")
         deserialize(doc.rootNode(), config);
     else
-        Log::info("Couldn't read configuration file: %s", configPath.c_str());
+        Log::info("Couldn't read configuration file: {}", configPath);
 }
 
 /**
@@ -1289,8 +1289,8 @@ bool Client::initUpdatesDir()
 
     mUpdatesDir = "updates/" + getDirectoryFromURL(mUpdateHost);
 
-    Log::info("Update host: %s", mUpdateHost.c_str());
-    Log::info("Updates dir: %s", mUpdatesDir.c_str());
+    Log::info("Update host: {}", mUpdateHost);
+    Log::info("Updates dir: {}", mUpdatesDir);
 
     // Verify that the updates directory exists. Create if necessary.
     if (!FS::isDirectory(mUpdatesDir))
@@ -1310,16 +1310,16 @@ bool Client::initUpdatesDir()
             if (!CreateDirectory(newDir.c_str(), 0) &&
                 GetLastError() != ERROR_ALREADY_EXISTS)
             {
-                Log::error("%s can't be made, but doesn't exist!",
-                           newDir.c_str());
+                Log::error("{} can't be made, but doesn't exist!",
+                           newDir);
                 errorMessage =
                     strformat(_("Error creating updates directory!\n({})"),
                                 newDir);
                 mState = State::Error;
             }
 #else
-            Log::error("%s/%s can't be made, but doesn't exist!",
-                       mLocalDataDir.c_str(), mUpdatesDir.c_str());
+            Log::error("{}/{} can't be made, but doesn't exist!",
+                       mLocalDataDir, mUpdatesDir);
             errorMessage =
                 strformat(_("Error creating updates directory!\n({}/{})"),
                             mLocalDataDir, mUpdatesDir);
@@ -1365,7 +1365,7 @@ void Client::initScreenshotDir()
 
 void Client::accountLogin(LoginData *loginData)
 {
-    Log::info("Username is %s", loginData->username.c_str());
+    Log::info("Username is {}", loginData->username);
 
     // Send login infos
     if (loginData->registerLogin)

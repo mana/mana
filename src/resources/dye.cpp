@@ -66,8 +66,8 @@ DyePalette::DyePalette(const std::string &description, bool withAlpha) :
             }
             else
             {
-                Log::info("Error, invalid embedded palette: %s",
-                          description.c_str());
+                Log::info("Error, invalid embedded palette: {}",
+                          description);
                 return;
             }
 
@@ -103,7 +103,7 @@ DyePalette::DyePalette(const std::string &description, bool withAlpha) :
         ++pos;
     }
 
-    Log::info("Error, invalid embedded palette: %s", description.c_str());
+    Log::info("Error, invalid embedded palette: {}", description);
 }
 
 void DyePalette::computeColor(int intensity, SDL_Color &color) const
@@ -254,13 +254,13 @@ Dye::Dye(const std::string &description)
                 ++next_pos;
                 continue;
             }
-            Log::info("Error, invalid dye: %s", description.c_str());
+            Log::info("Error, invalid dye: {}", description);
             return;
         }
 
         if (i < 0)
         {
-            Log::info("Error, invalid dye: %s", description.c_str());
+            Log::info("Error, invalid dye: {}", description);
             return;
         }
         mDyePalettes[i] = std::make_unique<DyePalette>(
@@ -362,7 +362,7 @@ void Dye::instantiate(std::string &target, const std::string &palettes)
         }
         else
         {
-            Log::info("Error, invalid dye placeholder: %s", target.c_str());
+            Log::info("Error, invalid dye placeholder: {}", target);
             return;
         }
 

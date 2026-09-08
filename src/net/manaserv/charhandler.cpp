@@ -257,9 +257,9 @@ void CharHandler::handleCharacterSelectResponse(MessageIn &msg)
         chatServer.hostname.assign(msg.readString());
         chatServer.port = msg.readInt16();
 
-        Log::info("Game server: %s:%d", gameServer.hostname.c_str(),
+        Log::info("Game server: {}:{}", gameServer.hostname,
                   gameServer.port);
-        Log::info("Chat server: %s:%d", chatServer.hostname.c_str(),
+        Log::info("Chat server: {}:{}", chatServer.hostname,
                   chatServer.port);
 
         local_player = mSelectedCharacter->dummy.release();

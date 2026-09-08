@@ -424,7 +424,7 @@ void ServerDialog::logic()
     case DownloadStatus::Canceled:
     case DownloadStatus::Error:
         mDownloadDone = true;
-        Log::info("Error retrieving server list: %s", mDownload->getError());
+        Log::info("Error retrieving server list: {}", mDownload->getError());
         mDownloadText->setCaption(_("Error retrieving server list!"));
         break;
 
@@ -477,7 +477,7 @@ void ServerDialog::loadServers()
     int version = rootNode.getProperty("version", 0);
     if (version != 1)
     {
-        Log::error("Unsupported online server list version: %d", version);
+        Log::error("Unsupported online server list version: {}", version);
         return;
     }
 
@@ -503,8 +503,8 @@ void ServerDialog::loadServer(XML::Node serverNode)
 #endif
         )
     {
-        Log::info("Ignoring server entry with unknown type: %s",
-                  type.c_str());
+        Log::info("Ignoring server entry with unknown type: {}",
+                  type);
         return;
     }
 

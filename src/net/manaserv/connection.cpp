@@ -44,7 +44,7 @@ Connection::~Connection()
 
 bool Connection::connect(const std::string &address, enet_uint16 port)
 {
-    Log::info("Net::Connection::connect(%s, %i)", address.c_str(), port);
+    Log::info("Net::Connection::connect({}, {})", address, port);
     if (mConnection)
         disconnect();
 

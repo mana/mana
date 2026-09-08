@@ -75,13 +75,13 @@ inline Mutex::~Mutex()
 inline void Mutex::lock()
 {
     if (SDL_mutexP(mMutex) == -1)
-        Log::info("Mutex locking failed: %s", SDL_GetError());
+        Log::info("Mutex locking failed: {}", SDL_GetError());
 }
 
 inline void Mutex::unlock()
 {
     if (SDL_mutexV(mMutex) == -1)
-        Log::info("Mutex unlocking failed: %s", SDL_GetError());
+        Log::info("Mutex unlocking failed: {}", SDL_GetError());
 }
 
 

@@ -74,7 +74,7 @@ ThemeInfo::ThemeInfo(const std::string &path)
     if (rootNode.attribute("name", name) && !name.empty())
         this->doc = std::move(doc);
     else
-        Log::error("Theme '%s' has no name!", path.c_str());
+        Log::error("Theme '{}' has no name!", path);
 }
 
 std::string ThemeInfo::getFullPath() const
@@ -234,8 +234,8 @@ Theme::Theme(const ThemeInfo &themeInfo)
 
     if (mPalettes.empty())
     {
-        Log::info("Error, theme did not define any palettes: %s",
-                  themeInfo.getPath().c_str());
+        Log::info("Error, theme did not define any palettes: {}",
+                  themeInfo.getPath());
 
         // Avoid crashing
         mPalettes.emplace_back(THEME_COLORS_END);
@@ -479,23 +479,19 @@ void Theme::event(Event::Channel channel, const Event &event)
     }
 }
 
-static bool check(bool value, const char *msg, ...)
+template<typename... Args>
+static bool check(bool value, fmt::format_string<Args...> msg, Args &&...args)
 {
     if (!value)
-    {
-        va_list ap;
-        va_start(ap, msg);
-        Log::vinfo(msg, ap);
-        va_end(ap);
-    }
+        Log::info(msg, std::forward<Args>(args)...);
     return !value;
 }
 
 bool Theme::readTheme(const ThemeInfo &themeInfo)
 {
-    Log::info("Loading %s theme from '%s'...",
-              themeInfo.getName().c_str(),
-              themeInfo.getPath().c_str());
+    Log::info("Loading {} theme from '{}'...",
+              themeInfo.getName(),
+              themeInfo.getPath());
 
     XML::Node rootNode = themeInfo.getDocument().rootNode();
 
@@ -513,7 +509,7 @@ bool Theme::readTheme(const ThemeInfo &themeInfo)
         else if (childNode.name() == "icon")
             readIconNode(childNode);
         else
-            Log::info("Theme: Unknown node '%s'!", childNode.name().data());
+            Log::info("Theme: Unknown node '{}'!", childNode.name());
     }
 
     Log::info("Finished loading theme.");
@@ -568,7 +564,7 @@ void Theme::readSkinNode(XML::Node node)
 {
     const auto skinTypeStr = node.getProperty("type", std::string());
     const auto skinType = readSkinType(skinTypeStr);
-    if (check(skinType.has_value(), "Theme: Unknown skin type '%s'", skinTypeStr.c_str()))
+    if (check(skinType.has_value(), "Theme: Unknown skin type '{}'", skinTypeStr))
         return;
 
     auto &skin = mSkins[*skinType];
@@ -665,7 +661,7 @@ void Theme::readSkinStateImgNode(XML::Node node, SkinState &state) const
         return;
 
     auto image = getImage(src);
-    if (check(image, "Theme: Failed to load image '%s'!", src.c_str()))
+    if (check(image, "Theme: Failed to load image '{}'!", src))
         return;
 
     int left = 0;
@@ -729,7 +725,7 @@ inline bool fromString(const char *str, gcn::Color &value)
     if (strlen(str) < 7 || str[0] != '#')
     {
     error:
-        Log::info("Error, invalid theme color palette: %s", str);
+        Log::info("Error, invalid theme color palette: {}", str);
         value = gcn::Color(0, 0, 0);
         return false;
     }
@@ -769,7 +765,7 @@ void Theme::readIconNode(XML::Node node)
         return;
 
     auto image = getImage(src);
-    if (check(image, "Theme: Failed to load image '%s'!", src.c_str()))
+    if (check(image, "Theme: Failed to load image '{}'!", src))
         return;
 
     int x = 0;
@@ -882,7 +878,7 @@ static void readColorNode(XML::Node node, Palette &palette)
 {
     const auto idStr = node.getProperty("id", std::string());
     const int id = readColorId(idStr);
-    if (check(id >= 0, "Theme: 'color' element has unknown 'id' attribute: '%s'!", idStr.c_str()))
+    if (check(id >= 0, "Theme: 'color' element has unknown 'id' attribute: '{}'!", idStr))
         return;
 
     gcn::Color color;
@@ -900,7 +896,7 @@ void Theme::readPaletteNode(XML::Node node)
 {
     int paletteId;
     if (node.attribute("id", paletteId) && static_cast<size_t>(paletteId) != mPalettes.size())
-        Log::info("Theme: Non-consecutive palette 'id' attribute with value %d!", paletteId);
+        Log::info("Theme: Non-consecutive palette 'id' attribute with value {}!", paletteId);
 
     Palette &palette = mPalettes.emplace_back(THEME_COLORS_END);
 
@@ -909,7 +905,7 @@ void Theme::readPaletteNode(XML::Node node)
         if (childNode.name() == "color")
             readColorNode(childNode, palette);
         else
-            Log::info("Theme: Unknown node '%s'!", childNode.name().data());
+            Log::info("Theme: Unknown node '{}'!", childNode.name());
     }
 }
 
@@ -941,7 +937,7 @@ void Theme::readProgressBarNode(XML::Node node)
 {
     const auto idStr = node.getProperty("id", std::string());
     const int id = readProgressId(idStr);
-    if (check(id >= 0, "Theme: 'progress' element has unknown 'id' attribute: '%s'!", idStr.c_str()))
+    if (check(id >= 0, "Theme: 'progress' element has unknown 'id' attribute: '{}'!", idStr))
         return;
 
     std::string color;
@@ -953,6 +949,6 @@ void Theme::readProgressBarNode(XML::Node node)
         if (childNode.name() == "text")
             readTextNode(childNode, mProgressTextFormats[id].emplace());
         else
-            Log::info("Theme: Unknown node '%s' in progressbar!", childNode.name().data());
+            Log::info("Theme: Unknown node '{}' in progressbar!", childNode.name());
     }
 }

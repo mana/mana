@@ -247,7 +247,7 @@ namespace Attributes {
 
         if (attributes.find(id) != attributes.end())
         {
-            Log::info("Attributes: Redefinition of stat ID %d", id);
+            Log::info("Attributes: Redefinition of stat ID {}", id);
         }
 
         std::string name = node.getProperty("name", "");
@@ -280,10 +280,10 @@ namespace Attributes {
             {
                 if (name.empty())
                 {
-                    Log::info("Attribute modifier in attribute %u:%s: "
+                    Log::info("Attribute modifier in attribute {}:{}: "
                               "Empty name definition "
                               "on empty tag definition, skipping.",
-                              a.id, a.name.c_str());
+                              a.id, a.name);
                     --count;
                     continue;
                 }
@@ -296,10 +296,10 @@ namespace Attributes {
              {
                 if (name.empty())
                 {
-                    Log::info("Attribute modifier in attribute %u:%s: "
+                    Log::info("Attribute modifier in attribute {}:{}: "
                               "Empty name definition "
                               "on empty effect definition, skipping.",
-                              a.id, a.name.c_str());
+                              a.id, a.name);
                     --count;
                     continue;
                 }
@@ -308,7 +308,7 @@ namespace Attributes {
              }
             tags.insert(std::make_pair(tag, effect));
          }
-        Log::info("Found %d tags for attribute %d.", count, id);
+        Log::info("Found {} tags for attribute {}.", count, id);
     }
 
     /**
@@ -321,7 +321,7 @@ namespace Attributes {
                                                        DEFAULT_MIN_PTS);
         attributeMaximum = node.getProperty("maximum",
                                                        DEFAULT_MAX_PTS);
-        Log::info("Loaded points: start: %i, min: %i, max: %i.",
+        Log::info("Loaded points: start: {}, min: {}, max: {}.",
                   creationPoints, attributeMinimum, attributeMaximum);
     }
 
@@ -330,7 +330,7 @@ namespace Attributes {
      */
     void checkStatus()
     {
-        Log::info("Found %d tags for %d attributes.", int(tags.size()),
+        Log::info("Found {} tags for {} attributes.", int(tags.size()),
                                                       int(attributes.size()));
 
         if (attributes.empty())

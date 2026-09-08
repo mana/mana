@@ -151,7 +151,7 @@ void AbilitiesWindow::rebuild(const std::map<int, Ability> &abilityData)
 
     for (auto &[id, ability] : abilityData)
     {
-        Log::info("Updating ability GUI for %d", id);
+        Log::info("Updating ability GUI for {}", id);
 
         AbilityInfo *info = AbilityDB::get(id);
         if (info)
@@ -166,7 +166,7 @@ void AbilitiesWindow::rebuild(const std::map<int, Ability> &abilityData)
         }
         else
         {
-            Log::warn("No info available of ability %d", id);
+            Log::warn("No info available of ability {}", id);
         }
     }
 }

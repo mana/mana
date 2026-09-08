@@ -32,8 +32,7 @@ std::string vstrformat(std::string_view format, fmt::format_args args)
     }
     catch (const std::exception &e)
     {
-        Log::warn("Invalid format string '%.*s': %s",
-                  static_cast<int>(format.size()), format.data(), e.what());
+        Log::warn("Invalid format string '{}': {}", format, e.what());
         return std::string(format);
     }
 }

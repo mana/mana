@@ -287,7 +287,7 @@ void CharSelectDialog::setCharacters(const Net::Characters &characters)
 
         if (characterSlot >= (int)mCharacterEntries.size())
         {
-            Log::warn("Slot out of range: %d", character.slot);
+            Log::warn("Slot out of range: {}", character.slot);
             continue;
         }
 

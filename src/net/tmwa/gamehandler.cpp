@@ -68,7 +68,7 @@ void GameHandler::handleMessage(MessageIn &msg)
             msg.readInt32();   // server tick
             msg.readCoordinates(x, y, direction);
             msg.skip(2);      // unknown
-            Log::info("Protocol: Player start position: (%d, %d), Direction: %d",
+            Log::info("Protocol: Player start position: ({}, {}), Direction: {}",
                       x, y, direction);
             // Switch now or we'll have problems
             Client::setState(State::Game);

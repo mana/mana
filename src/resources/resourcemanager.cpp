@@ -72,11 +72,11 @@ ResourceManager::~ResourceManager()
     {
         if (resource->mRefCount > 0)
         {
-            Log::info("ResourceManager::~ResourceManager() cleaning up %d "
-                      "reference%s to %s",
+            Log::info("ResourceManager::~ResourceManager() cleaning up {} "
+                      "reference{} to {}",
                       resource->mRefCount,
                       (resource->mRefCount == 1) ? "" : "s",
-                      resource->mIdPath.c_str());
+                      resource->mIdPath);
         }
 
         // Deleting the resource releases the ones it references, which are
@@ -116,7 +116,7 @@ void ResourceManager::cleanOrphans()
 
     for (Resource *res : expired)
     {
-        Log::info("Deleting orphaned resource: %s", res->mIdPath.c_str());
+        Log::info("Deleting orphaned resource: {}", res->mIdPath);
         delete res;
     }
 
@@ -127,10 +127,10 @@ bool ResourceManager::addToSearchPath(const std::string &path, bool append)
 {
     if (!FS::addToSearchPath(path, append))
     {
-        Log::error("Couldn't add search path: %s (%s)", path.c_str(), FS::getLastError());
+        Log::error("Couldn't add search path: {} ({})", path, FS::getLastError());
         return false;
     }
-    Log::info("Added search path: %s", path.c_str());
+    Log::info("Added search path: {}", path);
     return true;
 }
 

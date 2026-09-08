@@ -59,7 +59,7 @@ std::vector<UpdateFile> loadXMLFile(const std::string &fileName)
 
     if (!rootNode || rootNode.name() != "updates")
     {
-        Log::info("Error loading update file: %s", fileName.c_str());
+        Log::info("Error loading update file: {}", fileName);
         return files;
     }
 
@@ -224,7 +224,7 @@ void UpdaterWindow::loadUpdates()
         mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
         if (mUpdateFiles.empty())
         {
-            Log::warn("This server does not have a %s file", xmlUpdateFile);
+            Log::warn("This server does not have a {} file", xmlUpdateFile);
         }
     }
 
@@ -261,7 +261,7 @@ void UpdaterWindow::logic()
         // the update flow. Continue on to the resource list.
         if (mDialogState == DialogState::DownloadNews)
         {
-            Log::warn("Could not download news: %s", mDownload->getError());
+            Log::warn("Could not download news: {}", mDownload->getError());
 
             mBrowserBox->addRows(strformat(
                     _("News could not be downloaded: {}"),
@@ -328,7 +328,7 @@ void UpdaterWindow::downloadCompleted()
             mUpdateFiles = loadXMLFile(mUpdatesDir + "/" + xmlUpdateFile);
             if (mUpdateFiles.empty())
             {
-                Log::warn("This server does not have a %s file", xmlUpdateFile);
+                Log::warn("This server does not have a {} file", xmlUpdateFile);
             }
         }
 
@@ -364,7 +364,7 @@ void UpdaterWindow::downloadCompleted()
             else
             {
                 fclose(file);
-                Log::info("%s already here", thisFile.name.c_str());
+                Log::info("{} already here", thisFile.name);
             }
             mUpdateIndex++;
         }

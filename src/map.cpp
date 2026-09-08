@@ -991,7 +991,7 @@ void Map::addAnimation(int gid, TileAnimation animation)
     auto const [_, inserted] = mTileAnimations.try_emplace(gid, std::move(animation));
     if (!inserted)
     {
-        Log::warn("Duplicate tile animation for gid %d", gid);
+        Log::warn("Duplicate tile animation for gid {}", gid);
     }
 }
 

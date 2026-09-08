@@ -40,7 +40,7 @@ void HairDB::readHairColorNode(XML::Node node, const std::string &filename)
     int id = node.getProperty("id", 0);
 
     if (mHairColors.find(id) != mHairColors.end())
-        Log::info("HairDb: Redefinition of color Id %d in %s", id, filename.c_str());
+        Log::info("HairDb: Redefinition of color Id {} in {}", id, filename);
 
     mHairColors[id] = node.getProperty("value", COLOR_WHITE);
 }
@@ -71,7 +71,7 @@ void HairDB::addHairStyle(int id)
         id = -id;
 
     if (mHairStyles.find(id) != mHairStyles.end())
-        Log::warn("Redefinition of hairstyle id %i:", id);
+        Log::warn("Redefinition of hairstyle id {}:", id);
 
     mHairStyles.insert(id);
 }
@@ -87,7 +87,7 @@ const std::string &HairDB::getHairColor(int id) const
     if (it != mHairColors.end())
         return it->second;
 
-    Log::info("HairDb: Error, unknown color Id# %d", id);
+    Log::info("HairDb: Error, unknown color Id# {}", id);
     return mHairColors.at(0);
 }
 
