@@ -99,6 +99,7 @@ static std::string localeDir;
  */
 static std::string systemLanguage;
 
+#if ENABLE_NLS
 static void setEnvironmentVariable(const char *name, const std::string &value)
 {
 #ifdef _WIN32
@@ -159,12 +160,14 @@ static std::vector<std::string> getPreferredUILanguages()
     return languages;
 }
 #endif // _WIN32
+#endif // ENABLE_NLS
 
 /**
  * The language override that was applied, if any.
  */
 static std::string languageOverride;
 
+#if ENABLE_NLS
 /**
  * Returns the language of the message catalog gettext is currently using,
  * which is named in its header. Returns an empty string when no catalog is
@@ -183,6 +186,7 @@ static std::string currentLanguage()
     const size_t start = pos + field.size();
     return header.substr(start, header.find('\n', start) - start);
 }
+#endif // ENABLE_NLS
 
 void initInternationalization()
 {
