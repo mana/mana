@@ -74,6 +74,8 @@ void Menu::addSeparator()
 
 void Menu::clear()
 {
+    Container::clear();
+
     mItems.clear();
     mHoveredItem = -1;
 }

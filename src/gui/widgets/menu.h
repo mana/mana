@@ -76,9 +76,9 @@ class Menu : public Popup, public gcn::KeyListener
         void addSeparator();
 
         /**
-         * Removes all items from the menu.
+         * Removes all items from the menu, as well as any child widgets.
          */
-        void clear();
+        void clear() override;
 
         bool isEmpty() const { return mItems.empty(); }
 
