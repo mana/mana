@@ -3,6 +3,7 @@ Unreleased
 - Sell unstackable items to an NPC in a single request, instead of one per item
 - Fixed double-click in empty area of the server list triggering connect
 - Fixed sitting players staying seated when attacked
+- Fixed typed amounts being ignored when dropping, trading or storing items and in NPC number input
 
 0.8.0 (27 August 2026)
 - Added health bars to damaged and targeted monsters

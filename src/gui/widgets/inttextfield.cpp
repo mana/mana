@@ -25,6 +25,10 @@
 
 #include "utils/stringutils.h"
 
+#include <algorithm>
+#include <cctype>
+#include <cstdlib>
+
 IntTextField::IntTextField(int def):
     TextField(toString(def)),
     mDefault(def),
@@ -34,24 +38,39 @@ IntTextField::IntTextField(int def):
 
 void IntTextField::keyPressed(gcn::KeyEvent &event)
 {
-    const gcn::Key &key = event.getKey();
-
-    if (key.getValue() == Key::BACKSPACE ||
-        key.getValue() == Key::DELETE_KEY)
-    {
-        setText(std::string());
-        event.consume();
-    }
-
-    if (!key.isNumber())
-        return;
+    const std::string before = getText();
 
     TextField::keyPressed(event);
 
-    std::istringstream s(getText());
-    int i;
-    s >> i;
-    setValue(i);
+    if (getText() != before)
+        textChanged();
+}
+
+void IntTextField::textInput(const TextInput &textInput)
+{
+    const std::string &text = textInput.getText();
+    if (text.empty())
+        return;
+
+    for (const char c : text)
+        if (!std::isdigit(static_cast<unsigned char>(c)))
+            return;
+
+    TextField::textInput(textInput);
+    textChanged();
+}
+
+void IntTextField::textChanged()
+{
+    // Leave an emptied field empty so that a new value can be typed. In that
+    // case getValue() reports the minimum value.
+    if (!getText().empty())
+    {
+        const long value = std::strtol(getText().c_str(), nullptr, 10);
+        setValue(static_cast<int>(std::clamp<long>(value, mMin, mMax)));
+    }
+
+    distributeActionEvent();
 }
 
 void IntTextField::setRange(int min, int max)

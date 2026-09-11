@@ -110,7 +110,7 @@ class TextField : public gcn::TextField
         /**
          * Handle text input (should possibly be new event in Guichan).
          */
-        void textInput(const TextInput &textInput);
+        virtual void textInput(const TextInput &textInput);
 
         /**
          * Set the minimum value for a range

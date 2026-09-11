@@ -23,7 +23,6 @@
 
 #include "gui/widgets/window.h"
 
-#include <guichan/keylistener.hpp>
 #include <guichan/actionlistener.hpp>
 
 #include <list>
@@ -39,8 +38,7 @@ class Icon;
  * \ingroup Interface
  */
 class ItemAmountWindow : public Window,
-                         public gcn::ActionListener,
-                         public gcn::KeyListener
+                         public gcn::ActionListener
 {
     public:
         enum Usage {
@@ -68,8 +66,6 @@ class ItemAmountWindow : public Window,
          * Schedules the Item Amount window for deletion.
          */
         void close() override;
-
-        void keyReleased(gcn::KeyEvent &keyEvent) override;
 
         /**
          * Creates the dialog, or bypass it if there aren't enough items.

@@ -23,6 +23,8 @@
 
 #include "textfield.h"
 
+#include <limits>
+
 /**
  * TextBox which only accepts numbers as input.
  */
@@ -64,9 +66,19 @@ class IntTextField : public TextField
          */
         void keyPressed(gcn::KeyEvent &event) override;
 
+        /**
+         * Accepts text input, ignoring anything that is not a digit.
+         */
+        void textInput(const TextInput &textInput) override;
+
     private:
-        int mMin;            /**< Minimum value */
-        int mMax;            /**< Maximum value */
+        /**
+         * Updates the value from the text and notifies action listeners.
+         */
+        void textChanged();
+
+        int mMin = 0;        /**< Minimum value */
+        int mMax = std::numeric_limits<int>::max(); /**< Maximum value */
         int mDefault;        /**< Default value */
         int mValue;          /**< Current value */
 };

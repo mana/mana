@@ -110,7 +110,8 @@ ItemAmountWindow::ItemAmountWindow(Usage usage, Window *parent,
     mItemAmountTextField = new IntTextField(1);
     mItemAmountTextField->setRange(1, mMax);
     mItemAmountTextField->setWidth(35);
-    mItemAmountTextField->addKeyListener(this);
+    mItemAmountTextField->setActionEventId("amount");
+    mItemAmountTextField->addActionListener(this);
 
     // Slider
     mItemAmountSlide = new Slider(1.0, mMax);
@@ -210,6 +211,13 @@ void ItemAmountWindow::action(const gcn::ActionEvent &event)
     {
         close();
     }
+    else if (event.getId() == "amount")
+    {
+        // Typed amount: only sync the slider, so that the field can be
+        // cleared and retyped without being rewritten.
+        mItemAmountSlide->setValue(amount);
+        return;
+    }
     else if (event.getId() == "inc" && amount < mMax)
     {
         amount++;
@@ -240,11 +248,6 @@ void ItemAmountWindow::close()
 {
     keyboard.setEnabled(mEnabledKeyboard);
     scheduleDelete();
-}
-
-void ItemAmountWindow::keyReleased(gcn::KeyEvent &keyEvent)
-{
-    mItemAmountSlide->setValue(mItemAmountTextField->getValue());
 }
 
 void ItemAmountWindow::showWindow(Usage usage, Window *parent,
