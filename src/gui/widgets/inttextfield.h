@@ -34,7 +34,7 @@ class IntTextField : public TextField
         /**
          * Constructor, sets default value.
          */
-        IntTextField(int def = 0);
+        IntTextField(int value = 0);
 
         /**
          * Sets the minimum and maximum values of the text box.
@@ -47,19 +47,9 @@ class IntTextField : public TextField
         int getValue();
 
         /**
-         * Reset the field to the default value.
-         */
-        void reset();
-
-        /**
          * Set the value of the text box to the specified value.
          */
         void setValue(int value);
-
-        /**
-         * Set the default value of the text box to the specified value.
-         */
-        void setDefaultValue(int value);
 
         /**
          * Responds to key presses.
@@ -79,6 +69,5 @@ class IntTextField : public TextField
 
         int mMin = 0;        /**< Minimum value */
         int mMax = std::numeric_limits<int>::max(); /**< Maximum value */
-        int mDefault;        /**< Default value */
         int mValue;          /**< Current value */
 };

@@ -29,10 +29,9 @@
 #include <cctype>
 #include <cstdlib>
 
-IntTextField::IntTextField(int def):
-    TextField(toString(def)),
-    mDefault(def),
-    mValue(def)
+IntTextField::IntTextField(int value):
+    TextField(toString(value)),
+    mValue(value)
 {
 }
 
@@ -82,11 +81,6 @@ void IntTextField::setRange(int min, int max)
         mValue = mMin;
     else if (mValue > mMax)
         mValue = mMax;
-
-    if (mDefault < mMin)
-        mDefault = mMin;
-    else if (mDefault > mMax)
-        mDefault = mMax;
 }
 
 int IntTextField::getValue()
@@ -106,19 +100,4 @@ void IntTextField::setValue(int i)
     const std::string valStr = toString(mValue);
     setText(valStr);
     setCaretPosition(valStr.length() + 1);
-}
-
-void IntTextField::setDefaultValue(int value)
-{
-    if (value < mMin)
-        mDefault = mMin;
-    else if (value > mMax)
-        mDefault = mMax;
-    else
-        mDefault = value;
-}
-
-void IntTextField::reset()
-{
-    setValue(mDefault);
 }
