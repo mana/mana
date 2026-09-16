@@ -21,6 +21,7 @@
 
 #pragma once
 
+#include "guichanfwd.h"
 #include "particle.h"
 
 class TextParticle : public Particle

@@ -37,9 +37,11 @@ class ImageParticle : public Particle
         /**
          * Constructor. The image is reference counted by this particle.
          *
-         * @param image an Image instance, may not be NULL
+         * @param effect the effect definition this particle refers to, if any
+         * @param image an Image instance, may be null for subclasses that
+         *              set the image themselves
          */
-        explicit ImageParticle(Image *image);
+        ImageParticle(ResourceRef<ParticleEffectDef> effect, Image *image);
         ~ImageParticle() override;
 
         /**

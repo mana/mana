@@ -26,7 +26,6 @@
 #include "game.h"
 #include "graphics.h"
 #include "localplayer.h"
-#include "particle.h"
 
 #include "gui/okdialog.h"
 
@@ -503,7 +502,6 @@ void Setup_Video::action(const gcn::ActionEvent &event)
     else if (id == "particleeffects")
     {
         config.particleEffects = mParticleEffectsCheckBox->isSelected();
-        Particle::enabled = mParticleEffectsCheckBox->isSelected();
 
         if (Game::instance())
         {
@@ -522,7 +520,6 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         int val = (int) mParticleDetailSlider->getValue();
         mParticleDetailField->setCaption(particleDetailToString(val));
         config.particleEmitterSkip = 3 - val;
-        Particle::emitterSkip = 4 - val;
     }
     else if (id == "fpslimitcheckbox" || id == "fpslimitslider")
     {

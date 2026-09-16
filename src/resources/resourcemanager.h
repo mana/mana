@@ -31,6 +31,7 @@ class Image;
 class ImageSet;
 class Music;
 class SoundEffect;
+class ParticleEffectDef;
 class SpriteDef;
 
 /**
@@ -100,6 +101,12 @@ class ResourceManager
          * Loads a SpriteDef based on a given path and the supplied variant.
          */
         ResourceRef<SpriteDef> getSprite(const std::string &path, int variant = 0);
+
+        /**
+         * Loads a particle effect definition. The file name may be followed
+         * by a '|' and a set of dye palettes to apply to its images.
+         */
+        ResourceRef<ParticleEffectDef> getParticleEffect(const std::string &effectFile);
 
         /**
          * Returns an instance of the class, creating one if it does not

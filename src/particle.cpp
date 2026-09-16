@@ -24,37 +24,117 @@
 #include "animationparticle.h"
 #include "configuration.h"
 #include "imageparticle.h"
-#include "log.h"
-#include "map.h"
-#include "particleemitter.h"
+#include "particleengine.h"
 #include "rotationalparticle.h"
-#include "textparticle.h"
-
-#include "resources/dye.h"
-#include "resources/image.h"
-#include "resources/resourcemanager.h"
 
 #include "utils/dtor.h"
 #include "utils/mathutils.h"
-#include "utils/xml.h"
-
-#include <guichan/color.hpp>
 
 #include <cmath>
 
 #define SIN45 0.707106781f
+#define DEG_RAD_FACTOR 0.017453293f
 
 class Graphics;
-class Image;
 
 int Particle::particleCount = 0;
-int Particle::maxCount = 0;
-int Particle::fastPhysics = 0;
-int Particle::emitterSkip = 1;
-bool Particle::enabled = true;
 const float Particle::PARTICLE_SKY = 800.0f;
 
-Particle::Particle()
+ParticleEmitter::ParticleEmitter(ResourceRef<ParticleEffectDef> effect,
+                                 const ParticleEmitterDef &def,
+                                 Particle *target,
+                                 Map *map,
+                                 int rotation)
+    : mEffect(std::move(effect))
+    , mDef(&def)
+    , mTarget(target)
+    , mMap(map)
+    , mRotation(rotation)
+    , mOutputPauseLeft(def.outputPause.value(0))
+    , mPosX(def.posX)
+    , mPosY(def.posY)
+    , mOutput(def.output)
+{
+}
+
+Particles ParticleEmitter::createParticles(int tick)
+{
+    Particles newParticles;
+
+    if (mOutputPauseLeft > 0)
+    {
+        mOutputPauseLeft--;
+        return newParticles;
+    }
+    mOutputPauseLeft = mDef->outputPause.value(tick);
+
+    for (int i = mOutput.value(tick); i > 0; i--)
+    {
+        // Limit maximum particles
+        if (Particle::particleCount > config.particleMaxCount) break;
+
+        Particle *newParticle = Particle::create(mEffect, *mDef, mMap,
+                                                 mRotation, mTarget);
+
+        Vector position(mPosX.value(tick),
+                        mPosY.value(tick),
+                        mDef->posZ.value(tick));
+        newParticle->moveTo(position);
+
+        float angleH = mDef->angleHorizontal.value(tick) + mRotation * DEG_RAD_FACTOR;
+        float angleV = mDef->angleVertical.value(tick);
+        float power = mDef->power.value(tick);
+        newParticle->setVelocity(
+                cos(angleH) * cos(angleV) * power,
+                sin(angleH) * cos(angleV) * power,
+                sin(angleV) * power);
+
+        newParticle->setRandomness(mDef->randomness.value(tick));
+        newParticle->setGravity(mDef->gravity.value(tick));
+        newParticle->setBounce(mDef->bounce.value(tick));
+        newParticle->setFollow(mDef->follow);
+
+        newParticle->setDestination(mTarget,
+                                    mDef->acceleration.value(tick),
+                                    mDef->momentum.value(tick));
+        newParticle->setDieDistance(mDef->dieDistance.value(tick));
+
+        newParticle->setLifetime(mDef->lifetime.value(tick));
+        newParticle->setFadeOut(mDef->fadeOut.value(tick));
+        newParticle->setFadeIn(mDef->fadeIn.value(tick));
+        newParticle->setAlpha(mDef->alpha.value(tick));
+
+        newParticles.push_back(newParticle);
+    }
+
+    return newParticles;
+}
+
+void ParticleEmitter::adjustSize(int w, int h)
+{
+    if (w == 0 || h == 0) return; // new dimensions are illegal
+
+    // calculate the old rectangle
+    int oldWidth = mPosX.maxVal - mPosX.minVal;
+    int oldHeight = mPosY.maxVal - mPosY.minVal;
+    int oldArea = oldWidth * oldHeight;
+
+    // when the effect has no dimension it is not designed to be resizeable
+    if (oldArea == 0)
+        return;
+
+    // set the new dimensions
+    mPosX.set(0, w);
+    mPosY.set(0, h);
+    int newArea = w * h;
+    // adjust the output so that the particle density stays the same
+    float outputFactor = (float) newArea / oldArea;
+    mOutput.minVal *= outputFactor;
+    mOutput.maxVal *= outputFactor;
+}
+
+Particle::Particle(ResourceRef<ParticleEffectDef> effect)
+    : mEffect(std::move(effect))
 {
     Particle::particleCount++;
 }
@@ -67,13 +147,33 @@ Particle::~Particle()
     Particle::particleCount--;
 }
 
-void Particle::setupEngine()
+Particle *Particle::create(const ResourceRef<ParticleEffectDef> &effect,
+                           const ParticleBaseDef &def,
+                           Map *map,
+                           int rotation,
+                           Particle *target)
 {
-    Particle::maxCount = config.particleMaxCount;
-    Particle::fastPhysics = config.particleFastPhysics;
-    Particle::emitterSkip = config.particleEmitterSkip + 1;
-    Particle::enabled = config.particleEffects;
-    Log::info("Particle engine set up");
+    Particle *particle;
+
+    if (def.image)
+        particle = new ImageParticle(effect, def.image);
+    else if (def.rotation.getLength() > 0)
+        particle = new RotationalParticle(effect, &def.rotation);
+    else if (def.animation.getLength() > 0)
+        particle = new AnimationParticle(effect, &def.animation);
+    else
+        particle = new Particle(effect);
+
+    particle->setMap(map);
+    particle->setDeathEffect(&def.deathEffect);
+
+    if (!target)
+        target = particle;
+
+    for (const ParticleEmitterDef &emitterDef : def.emitters)
+        particle->addEmitter(ParticleEmitter(effect, emitterDef, target, map, rotation));
+
+    return particle;
 }
 
 bool Particle::draw(Graphics *, int, int) const
@@ -105,7 +205,7 @@ bool Particle::update()
             dist.x *= SIN45;
             float invHypotenuse;
 
-            switch (Particle::fastPhysics)
+            switch (config.particleFastPhysics)
             {
                 case 1:
                     invHypotenuse = fastInvSqrt(
@@ -173,7 +273,7 @@ bool Particle::update()
         }
 
         // Update child emitters
-        if ((mLifetimePast-1)%Particle::emitterSkip == 0)
+        if ((mLifetimePast - 1) % (config.particleEmitterSkip + 1) == 0)
         {
             for (auto &childEmitter : mChildEmitters)
             {
@@ -190,38 +290,40 @@ bool Particle::update()
     // create death effect when the particle died
     if (mAlive != ALIVE && mAlive != DEAD_LONG_AGO)
     {
-        if ((mAlive & mDeathEffectConditions) > 0x00 && !mDeathEffect.empty())
+        if (mDeathEffect && (mAlive & mDeathEffect->conditions) > 0x00
+            && !mDeathEffect->effect.empty())
         {
-            Particle* deathEffect = particleEngine->addEffect(mDeathEffect, 0, 0);
-            deathEffect->moveBy(mPos);
+            if (Particle *deathEffect = particleEngine->addEffect(mDeathEffect->effect, 0, 0))
+                deathEffect->moveBy(mPos);
         }
         mAlive = DEAD_LONG_AGO;
     }
 
-    Vector change = mPos - oldPos;
+    updateParticles(mChildParticles, mPos - oldPos);
 
-    // Update child particles
+    return isAlive() || !mChildParticles.empty() || !mAutoDelete;
+}
 
-    for (auto p = mChildParticles.begin(); p != mChildParticles.end(); )
+void Particle::updateParticles(Particles &particles, const Vector &parentChange)
+{
+    for (auto p = particles.begin(); p != particles.end(); )
     {
-        auto particle = *p;
-        //move particle with its parent if desired
+        Particle *particle = *p;
+
+        // Move particle with its parent if desired
         if (particle->doesFollow())
-        {
-            particle->moveBy(change);
-        }
+            particle->moveBy(parentChange);
+
         if (particle->update())
         {
-            p++;
+            ++p;
         }
         else
         {
             delete particle;
-            p = mChildParticles.erase(p);
+            p = particles.erase(p);
         }
     }
-
-    return isAlive() || !mChildParticles.empty() || !mAutoDelete;
 }
 
 void Particle::moveBy(const Vector &change)
@@ -236,168 +338,6 @@ void Particle::moveBy(const Vector &change)
 void Particle::moveTo(float x, float y)
 {
     moveTo(Vector(x, y, mPos.z));
-}
-
-Particle *Particle::createChild()
-{
-    auto *newParticle = new Particle;
-    newParticle->setMap(mMap);
-    mChildParticles.push_back(newParticle);
-    return newParticle;
-}
-
-Particle *Particle::addEffect(const std::string &particleEffectFile,
-                              int pixelX, int pixelY, int rotation)
-{
-    Particle *newParticle = nullptr;
-
-    std::string::size_type pos = particleEffectFile.find('|');
-    std::string dyePalettes;
-    if (pos != std::string::npos)
-        dyePalettes = particleEffectFile.substr(pos + 1);
-
-    XML::Document doc(particleEffectFile.substr(0, pos));
-    XML::Node rootNode = doc.rootNode();
-
-    if (!rootNode || rootNode.name() != "effect")
-    {
-        Log::info("Error loading particle: %s", particleEffectFile.c_str());
-        return nullptr;
-    }
-
-    ResourceManager *resman = ResourceManager::getInstance();
-
-    // Parse particles
-    for (auto effectChildNode : rootNode.children())
-    {
-        // We're only interested in particles
-        if (effectChildNode.name() != "particle")
-            continue;
-
-        // Determine the exact particle type
-        XML::Node node;
-
-        // Animation
-        if ((node = effectChildNode.findFirstChildByName("animation")))
-        {
-            newParticle = new AnimationParticle(node, dyePalettes);
-        }
-        // Rotational
-        else if ((node = effectChildNode.findFirstChildByName("rotation")))
-        {
-            newParticle = new RotationalParticle(node, dyePalettes);
-        }
-        // Image
-        else if ((node = effectChildNode.findFirstChildByName("image")))
-        {
-            std::string imageSrc { node.textContent() };
-            if (!imageSrc.empty() && !dyePalettes.empty())
-                Dye::instantiate(imageSrc, dyePalettes);
-
-            auto img = resman->getImage(imageSrc);
-            newParticle = new ImageParticle(img);
-        }
-        // Other
-        else
-        {
-            newParticle = new Particle;
-        }
-
-        newParticle->setMap(mMap);
-
-        // Read and set the basic properties of the particle
-        float offsetX = effectChildNode.getFloatProperty("position-x", 0);
-        float offsetY = effectChildNode.getFloatProperty("position-y", 0);
-        float offsetZ = effectChildNode.getFloatProperty("position-z", 0);
-        Vector position(mPos.x + (float)pixelX + offsetX,
-                        mPos.y + (float)pixelY + offsetY,
-                        mPos.z + offsetZ);
-        newParticle->moveTo(position);
-
-        int lifetime = effectChildNode.getProperty("lifetime", -1);
-        newParticle->setLifetime(lifetime);
-        bool resizeable = "false" != effectChildNode.getProperty("size-adjustable", "false");
-        newParticle->setAllowSizeAdjust(resizeable);
-
-        // Look for additional emitters for this particle
-        for (auto emitterNode : effectChildNode.children())
-        {
-            if (emitterNode.name() == "emitter")
-            {
-                newParticle->addEmitter(ParticleEmitter(emitterNode, newParticle, mMap,
-                                                        rotation, dyePalettes));
-            }
-            else if (emitterNode.name() == "deatheffect")
-            {
-                std::string deathEffect { emitterNode.textContent() };
-                unsigned char deathEffectConditions = 0x00;
-                if (emitterNode.getBoolProperty("on-floor", true))
-                {
-                    deathEffectConditions |= Particle::DEAD_FLOOR;
-                }
-                if (emitterNode.getBoolProperty("on-sky", true))
-                {
-                    deathEffectConditions |= Particle::DEAD_SKY;
-                }
-                if (emitterNode.getBoolProperty("on-other", false))
-                {
-                    deathEffectConditions |= Particle::DEAD_OTHER;
-                }
-                if (emitterNode.getBoolProperty("on-impact", true))
-                {
-                    deathEffectConditions |= Particle::DEAD_IMPACT;
-                }
-                if (emitterNode.getBoolProperty("on-timeout", true))
-                {
-                    deathEffectConditions |= Particle::DEAD_TIMEOUT;
-                }
-                newParticle->setDeathEffect(deathEffect, deathEffectConditions);
-            }
-        }
-
-        mChildParticles.push_back(newParticle);
-    }
-
-    return newParticle;
-}
-
-Particle *Particle::addTextSplashEffect(const std::string &text, int x, int y,
-                                        const gcn::Color *color,
-                                        gcn::Font *font, bool outline)
-{
-    Particle *newParticle = new TextParticle(text, color, font, outline);
-    newParticle->setMap(mMap);
-    newParticle->moveTo(x, y);
-    newParticle->setVelocity(((rand() % 100) - 50) / 200.0f,    // X
-                             ((rand() % 100) - 50) / 200.0f,    // Y
-                             ((rand() % 100) / 200.0f) + 4.0f); // Z
-    newParticle->setGravity(0.1f);
-    newParticle->setBounce(0.5f);
-    newParticle->setLifetime(200);
-    newParticle->setFadeOut(100);
-
-    mChildParticles.push_back(newParticle);
-
-    return newParticle;
-}
-
-Particle *Particle::addTextRiseFadeOutEffect(const std::string &text,
-                                             int x, int y,
-                                             const gcn::Color *color,
-                                             gcn::Font *font, bool outline)
-{
-    Particle *newParticle = new TextParticle(text, color, font, outline);
-    newParticle->setMap(mMap);
-    newParticle->moveTo(x, y);
-    newParticle->setVelocity(0.0f, 0.0f, 0.5f);
-    newParticle->setGravity(0.0015f);
-    newParticle->setLifetime(300);
-    newParticle->setFadeOut(50);
-    newParticle->setFadeIn(200);
-
-    mChildParticles.push_back(newParticle);
-
-    return newParticle;
 }
 
 void Particle::adjustEmitterSize(int w, int h)

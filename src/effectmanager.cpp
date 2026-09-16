@@ -23,7 +23,7 @@
 #include "being.h"
 #include "effectmanager.h"
 #include "log.h"
-#include "particle.h"
+#include "particleengine.h"
 #include "sound.h"
 
 #include "utils/xml.h"

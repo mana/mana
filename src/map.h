@@ -32,7 +32,7 @@
 class AmbientLayer;
 class Graphics;
 class MapLayer;
-class Particle;
+class ParticleEngine;
 class Tileset;
 
 const int DEFAULT_TILE_LENGTH = 32;
@@ -320,7 +320,7 @@ class Map : public Properties
         /**
          * Initializes all added particle effects
          */
-        void initializeParticleEffects(Particle* particleEngine);
+        void initializeParticleEffects(ParticleEngine *particleEngine);
 
         /**
          * Adds a tile animation to the map

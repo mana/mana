@@ -23,7 +23,7 @@
 
 #include "resources/animation.h"
 
-#include "utils/xml.h"
+#include <memory>
 
 class Graphics;
 
@@ -38,17 +38,17 @@ class SimpleAnimation final
          * Creates a simple animation with an already created \a animation.
          * Takes ownership over the given animation.
          */
-        SimpleAnimation(Animation animation);
+        explicit SimpleAnimation(Animation animation);
 
         /**
-         * Creates a simple animation that creates its animation from XML Data.
+         * Creates a simple animation playing the given \a animation, which
+         * needs to stay alive as long as this instance.
          */
-        SimpleAnimation(XML::Node animationNode,
-                        const std::string &dyePalettes = std::string());
+        explicit SimpleAnimation(const Animation *animation);
 
         void setFrame(int frame);
 
-        int getLength() const { return mAnimation.getLength(); }
+        int getLength() const { return mAnimation->getLength(); }
 
         void update(int dt);
 
@@ -62,8 +62,11 @@ class SimpleAnimation final
         Image *getCurrentImage() const;
 
     private:
-        /** The hosted animation. */
-        Animation mAnimation;
+        /** The hosted animation, when this instance owns it. */
+        std::unique_ptr<Animation> mOwnedAnimation;
+
+        /** The animation being played. */
+        const Animation *mAnimation;
 
         /** Time in milliseconds the current frame is shown. */
         int mAnimationTime = 0;
@@ -73,7 +76,4 @@ class SimpleAnimation final
 
         /** Current animation phase. */
         const Frame *mCurrentFrame = nullptr;
-
-        /**  Tell whether the animation is ready */
-        bool mInitialized = false;
 };

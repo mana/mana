@@ -24,16 +24,19 @@
 #include "imageparticle.h"
 #include "simpleanimation.h"
 
-#include "utils/xml.h"
+#include "resources/particleeffectdef.h"
 
 class Map;
 
 class AnimationParticle : public ImageParticle
 {
     public:
-        explicit AnimationParticle(Animation animation);
-        explicit AnimationParticle(XML::Node animationNode,
-                                   const std::string &dyePalettes = std::string());
+        /**
+         * @param effect    The effect definition the animation is part of.
+         * @param animation The animation to play, owned by the effect.
+         */
+        AnimationParticle(ResourceRef<ParticleEffectDef> effect,
+                          const Animation *animation);
 
         ~AnimationParticle() override;
 

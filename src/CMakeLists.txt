@@ -335,6 +335,8 @@ set(SRCS
     resources/soundeffect.cpp
     resources/abilitydb.cpp
     resources/abilitydb.h
+    resources/particleeffectdef.cpp
+    resources/particleeffectdef.h
     resources/spritedef.h
     resources/spritedef.cpp
     resources/statuseffectdb.cpp
@@ -442,9 +444,8 @@ set(SRCS
     openglgraphics.h
     particle.cpp
     particle.h
-    particleemitter.cpp
-    particleemitter.h
-    particleemitterprop.h
+    particleengine.cpp
+    particleengine.h
     party.cpp
     party.h
     playerinfo.cpp

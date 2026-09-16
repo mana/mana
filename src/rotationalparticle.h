@@ -24,18 +24,20 @@
 #include "imageparticle.h"
 #include "simpleanimation.h"
 
-#include "utils/xml.h"
+#include "resources/particleeffectdef.h"
 
-class Animation;
 class Map;
-class SimpleAnimation;
 
 class RotationalParticle : public ImageParticle
 {
     public:
-        explicit RotationalParticle(Animation animation);
-        explicit RotationalParticle(XML::Node animationNode,
-                                    const std::string &dyePalettes = std::string());
+        /**
+         * @param effect    The effect definition the animation is part of.
+         * @param animation The animation holding one frame per direction,
+         *                  owned by the effect.
+         */
+        RotationalParticle(ResourceRef<ParticleEffectDef> effect,
+                           const Animation *animation);
 
         ~RotationalParticle() override;
 

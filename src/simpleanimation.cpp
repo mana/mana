@@ -25,28 +25,20 @@
 
 #include "resources/animation.h"
 #include "resources/image.h"
-#include "resources/imageset.h"
-#include "resources/resourcemanager.h"
 
 SimpleAnimation::SimpleAnimation(Animation animation)
-    : mAnimation(std::move(animation))
-    , mInitialized(true)
+    : mOwnedAnimation(std::make_unique<Animation>(std::move(animation)))
+    , mAnimation(mOwnedAnimation.get())
 {
-    if (mAnimation.getLength() > 0)
-        mCurrentFrame = mAnimation.getFrame(0);
+    if (mAnimation->getLength() > 0)
+        mCurrentFrame = mAnimation->getFrame(0);
 }
 
-SimpleAnimation::SimpleAnimation(XML::Node animationNode,
-                                 const std::string &dyePalettes)
+SimpleAnimation::SimpleAnimation(const Animation *animation)
+    : mAnimation(animation)
 {
-    if (animationNode)
-    {
-        mAnimation = Animation::fromXML(animationNode, dyePalettes);
-        mInitialized = true;
-    }
-
-    if (mAnimation.getLength() > 0)
-        mCurrentFrame = mAnimation.getFrame(0);
+    if (mAnimation->getLength() > 0)
+        mCurrentFrame = mAnimation->getFrame(0);
 }
 
 bool SimpleAnimation::draw(Graphics *graphics, int posX, int posY) const
@@ -69,28 +61,28 @@ void SimpleAnimation::setFrame(int frame)
 {
     if (frame < 0)
         frame = 0;
-    if (frame >= mAnimation.getLength())
-        frame = mAnimation.getLength() - 1;
+    if (frame >= mAnimation->getLength())
+        frame = mAnimation->getLength() - 1;
     mAnimationPhase = frame;
-    mCurrentFrame = mAnimation.getFrame(mAnimationPhase);
+    mCurrentFrame = mAnimation->getFrame(mAnimationPhase);
 }
 
 void SimpleAnimation::update(int dt)
 {
-    if (mInitialized)
+    if (!mCurrentFrame)
+        return;
+
+    mAnimationTime += dt;
+
+    while (mAnimationTime > mCurrentFrame->delay && mCurrentFrame->delay > 0)
     {
-        mAnimationTime += dt;
+        mAnimationTime -= mCurrentFrame->delay;
+        mAnimationPhase++;
 
-        while (mAnimationTime > mCurrentFrame->delay && mCurrentFrame->delay > 0)
-        {
-            mAnimationTime -= mCurrentFrame->delay;
-            mAnimationPhase++;
+        if (mAnimationPhase >= mAnimation->getLength())
+            mAnimationPhase = 0;
 
-            if (mAnimationPhase >= mAnimation.getLength())
-                mAnimationPhase = 0;
-
-            mCurrentFrame = mAnimation.getFrame(mAnimationPhase);
-        }
+        mCurrentFrame = mAnimation->getFrame(mAnimationPhase);
     }
 }
 

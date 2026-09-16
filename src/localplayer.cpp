@@ -27,7 +27,7 @@
 #include "guild.h"
 #include "item.h"
 #include "map.h"
-#include "particle.h"
+#include "particleengine.h"
 #include "playerinfo.h"
 
 #include "gui/gui.h"

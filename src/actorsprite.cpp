@@ -24,7 +24,7 @@
 #include "event.h"
 #include "localplayer.h"
 #include "log.h"
-#include "particle.h"
+#include "particleengine.h"
 #include "simpleanimation.h"
 #include "sprite.h"
 
@@ -135,7 +135,7 @@ void ActorSprite::setupSpriteDisplay(const SpriteDisplay &display,
     mChildParticleEffects.clear();
 
     //setup particle effects
-    if (Particle::enabled)
+    if (config.particleEffects)
     {
         for (const auto &particle : display.particles)
             controlParticle(particleEngine->addEffect(particle, 0, 0));

@@ -24,15 +24,10 @@
 
 #define PI 3.14159265
 
-RotationalParticle::RotationalParticle(Animation animation):
-    ImageParticle(nullptr),
-    mAnimation(std::move(animation))
-{}
-
-RotationalParticle::RotationalParticle(XML::Node animationNode,
-                                       const std::string &dyePalettes):
-    ImageParticle(nullptr),
-    mAnimation(animationNode, dyePalettes)
+RotationalParticle::RotationalParticle(ResourceRef<ParticleEffectDef> effect,
+                                       const Animation *animation):
+    ImageParticle(std::move(effect), nullptr),
+    mAnimation(animation)
 {}
 
 RotationalParticle::~RotationalParticle() = default;

@@ -37,7 +37,7 @@
 #include "localplayer.h"
 #include "log.h"
 #include "map.h"
-#include "particle.h"
+#include "particleengine.h"
 #include "playerrelations.h"
 #include "sound.h"
 
@@ -113,7 +113,6 @@ SocialWindow *socialWindow;
 ActorSpriteManager *actorSpriteManager;
 ChannelManager *channelManager;
 CommandHandler *commandHandler;
-Particle *particleEngine;
 EffectManager *effectManager;
 Viewport *viewport;                     /**< Viewport on the map. */
 
@@ -131,8 +130,7 @@ static void initEngines()
     channelManager = new ChannelManager;
     effectManager = new EffectManager;
 
-    particleEngine = new Particle;
-    Particle::setupEngine();
+    particleEngine = new ParticleEngine;
 
     Event::trigger(Event::GameChannel, Event::EnginesInitialized);
 }

@@ -31,7 +31,7 @@
 #include "localplayer.h"
 #include "log.h"
 #include "map.h"
-#include "particle.h"
+#include "particleengine.h"
 #include "party.h"
 #include "playerrelations.h"
 #include "sound.h"
@@ -586,7 +586,7 @@ void Being::fireMissile(Being *victim, const std::string &particle)
 
     if (missile)
     {
-        Particle *target = particleEngine->createChild();
+        Particle *target = particleEngine->createParticle();
         target->moveBy(Vector(0.0f, 0.0f,
                        Game::instance()->getCurrentTileWidth()));
         target->setLifetime(1000);
@@ -653,7 +653,7 @@ void Being::setAction(Action action, int attackId)
                 mSprites.reset();
 
                 // Attack particle effect
-                if (Particle::enabled)
+                if (config.particleEffects)
                 {
                     int effectId = mInfo->getAttack(attackId).effectId;
                     int rotation = 0;

@@ -23,7 +23,7 @@
 
 #include "configuration.h"
 #include "event.h"
-#include "particle.h"
+#include "particleengine.h"
 #include "sound.h"
 #include "sprite.h"
 

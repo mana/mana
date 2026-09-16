@@ -25,7 +25,7 @@
 #include "configuration.h"
 #include "graphics.h"
 #include "log.h"
-#include "particle.h"
+#include "particleengine.h"
 #include "simpleanimation.h"
 #include "tileset.h"
 
@@ -968,7 +968,7 @@ void Map::addParticleEffect(const std::string &effectFile, int x, int y, int w,
     newEffect.h = h;
 }
 
-void Map::initializeParticleEffects(Particle *particleEngine)
+void Map::initializeParticleEffects(ParticleEngine *particleEngine)
 {
     if (config.particleEffects)
     {

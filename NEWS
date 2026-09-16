@@ -4,6 +4,8 @@ Unreleased
 - Fixed double-click in empty area of the server list triggering connect
 - Fixed sitting players staying seated when attacked
 - Fixed typed amounts being ignored when dropping, trading or storing items and in NPC number input
+- Particle effects are now loaded once and cached instead of being parsed from XML on every spawn
+- Fixed particle density of map particle effects that are resized to fit an object
 
 0.8.0 (27 August 2026)
 - Added health bars to damaged and targeted monsters

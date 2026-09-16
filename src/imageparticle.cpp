@@ -25,7 +25,8 @@
 
 #include "resources/image.h"
 
-ImageParticle::ImageParticle(Image *image):
+ImageParticle::ImageParticle(ResourceRef<ParticleEffectDef> effect, Image *image):
+    Particle(std::move(effect)),
     mImageRef(image)
 {
     mImage = mImageRef;

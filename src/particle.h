@@ -22,18 +22,77 @@
 #pragma once
 
 #include "actor.h"
-#include "guichanfwd.h"
-#include "particleemitter.h"
 #include "vector.h"
+
+#include "resources/particleeffectdef.h"
 
 #include <list>
 #include <string>
 
 class Map;
 class Particle;
-class ParticleEmitter;
 
 using Particles = std::list<Particle *>;
+
+/**
+ * Every Particle can have one or more particle emitters that create new
+ * particles when they are updated.
+ *
+ * An emitter instance only holds the state that differs between instances of
+ * the same effect. Its properties are read from the shared ParticleEmitterDef,
+ * which is kept alive by the reference to the ParticleEffectDef.
+ */
+class ParticleEmitter
+{
+    public:
+        /**
+         * @param effect   The effect definition the emitter definition is
+         *                 part of, kept alive by this emitter.
+         * @param def      The emitter definition.
+         * @param target   The target of the particles that are created.
+         * @param map      The map the particles are spawned on.
+         * @param rotation Rotation of the effect in degrees.
+         */
+        ParticleEmitter(ResourceRef<ParticleEffectDef> effect,
+                        const ParticleEmitterDef &def,
+                        Particle *target,
+                        Map *map,
+                        int rotation = 0);
+
+        /**
+         * Spawns new particles
+         * @return: a list of created particles
+         */
+        Particles createParticles(int tick);
+
+        /**
+         * Sets the target of the particles that are created
+         */
+        void setTarget(Particle *target)
+        { mTarget = target; }
+
+        /**
+         * Changes the size of the emitter so that the effect fills a
+         * rectangle of this size
+         */
+        void adjustSize(int w, int h);
+
+    private:
+        ResourceRef<ParticleEffectDef> mEffect;
+        const ParticleEmitterDef *mDef;
+
+        Particle *mTarget;      /**< The particle the spawned particles move towards */
+        Map *mMap;              /**< Map the particles are spawned on */
+        int mRotation;          /**< Rotation of the effect in degrees */
+        int mOutputPauseLeft;   /**< Ticks left until the next spawn */
+
+        /*
+         * Copies of the properties that adjustSize can change, so that the
+         * shared definition stays untouched.
+         */
+        ParticleEmitterProp<float> mPosX, mPosY;
+        ParticleEmitterProp<int> mOutput;
+};
 
 /**
  * A particle spawned by a ParticleEmitter.
@@ -52,14 +111,31 @@ class Particle : public Actor
             DEAD_LONG_AGO = 128
         };
         static const float PARTICLE_SKY; /**< Maximum Z position of particles */
-        static int fastPhysics;          /**< Mode of squareroot calculation */
         static int particleCount;        /**< Current number of particles */
-        static int maxCount;             /**< Maximum number of particles */
-        static int emitterSkip;          /**< Duration of pause between two emitter updates in ticks */
-        static bool enabled;   /**< true when non-crucial particle effects are disabled */
 
-        Particle();
+        /**
+         * @param effect The effect definition this particle refers to, if
+         *               any. Kept alive by the particle.
+         */
+        explicit Particle(ResourceRef<ParticleEffectDef> effect = nullptr);
         ~Particle() override;
+
+        /**
+         * Creates a particle from the shared part of its definition: the
+         * kind of particle, its death effect and its emitters.
+         *
+         * @param effect   The effect definition \a def is part of.
+         * @param def      The definition to instantiate.
+         * @param map      The map the particle belongs to.
+         * @param rotation Rotation of the effect in degrees.
+         * @param target   The target of the particles spawned by the
+         *                 emitters, or nullptr for the created particle.
+         */
+        static Particle *create(const ResourceRef<ParticleEffectDef> &effect,
+                                const ParticleBaseDef &def,
+                                Map *map,
+                                int rotation,
+                                Particle *target = nullptr);
 
         /**
          * Deletes all child particles and emitters.
@@ -67,16 +143,18 @@ class Particle : public Actor
         void clear();
 
         /**
-         * Gives a particle the properties of an engine root particle and loads
-         * the particle-related config settings.
-         */
-        static void setupEngine();
-
-        /**
          * Updates particle position, returns false when the particle should
          * be deleted.
          */
         virtual bool update();
+
+        /**
+         * Updates the given particles. Particles that follow their parent are
+         * first moved by the change in position of the parent. Particles that
+         * are finished are deleted and removed from the list.
+         */
+        static void updateParticles(Particles &particles,
+                                    const Vector &parentChange);
 
         /**
          * Draws the particle image.
@@ -88,33 +166,6 @@ class Particle : public Actor
          */
         bool drawnWhenBehind() const override
         { return false; }
-
-        /**
-         * Creates a blank particle as a child of the current particle
-         * Useful for creating target particles
-         */
-        Particle *createChild();
-
-        /**
-         * Creates a child particle that hosts some emitters described in the
-         * particleEffectFile.
-         */
-        Particle *addEffect(const std::string &particleEffectFile,
-                            int pixelX, int pixelY, int rotation = 0);
-
-        /**
-         * Creates a standalone text particle.
-         */
-        Particle *addTextSplashEffect(const std::string &text, int x, int y,
-                const gcn::Color *color, gcn::Font *font,
-                bool outline = false);
-
-        /**
-         * Creates a standalone text particle.
-         */
-        Particle *addTextRiseFadeOutEffect(const std::string &text,
-                int x, int y, const gcn::Color *color, gcn::Font *font,
-                bool outline = false);
 
         /**
          * Adds an emitter to the particle.
@@ -249,8 +300,13 @@ class Particle : public Actor
 
         void setAlpha(float alpha) override {}
 
-        void setDeathEffect(const std::string &effectFile, unsigned char conditions)
-        { mDeathEffect = effectFile; mDeathEffectConditions = conditions; }
+        /**
+         * Sets the effect to spawn when the particle dies. The death effect
+         * needs to outlive the particle, which is the case when it is part of
+         * the effect definition passed to the constructor.
+         */
+        void setDeathEffect(const DeathEffect *deathEffect)
+        { mDeathEffect = deathEffect; }
 
     protected:
         /** Opacity of the graphical representation of the particle */
@@ -272,8 +328,8 @@ class Particle : public Actor
         std::list<ParticleEmitter> mChildEmitters;  /**< List of child emitters. */
         Particles mChildParticles;      /**< List of particles controlled by this particle */
         bool mAllowSizeAdjust = false;  /**< Can the effect size be adjusted by the object props in the map file? */
-        std::string mDeathEffect;       /**< Particle effect file to be spawned when the particle dies */
-        unsigned char mDeathEffectConditions = 0;   /**< Bitfield of death conditions which trigger spawning of the death particle */
+        ResourceRef<ParticleEffectDef> mEffect; /**< Effect definition this particle refers to */
+        const DeathEffect *mDeathEffect = nullptr;  /**< Effect to be spawned when the particle dies */
 
         // dynamic particle
         float mGravity = 0.0f;          /**< Downward acceleration in pixels per game-tick. */
@@ -336,5 +392,3 @@ class ParticleHandle
     private:
         Particle *mParticle;
 };
-
-extern Particle *particleEngine;

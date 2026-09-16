@@ -25,16 +25,10 @@
 
 #include "utils/time.h"
 
-AnimationParticle::AnimationParticle(Animation animation):
-    ImageParticle(nullptr),
-    mAnimation(std::move(animation))
-{
-}
-
-AnimationParticle::AnimationParticle(XML::Node animationNode,
-                                     const std::string &dyePalettes):
-    ImageParticle(nullptr),
-    mAnimation(animationNode, dyePalettes)
+AnimationParticle::AnimationParticle(ResourceRef<ParticleEffectDef> effect,
+                                     const Animation *animation):
+    ImageParticle(std::move(effect), nullptr),
+    mAnimation(animation)
 {
 }
 

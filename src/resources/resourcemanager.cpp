@@ -29,6 +29,7 @@
 #include "resources/imageset.h"
 #include "resources/music.h"
 #include "resources/soundeffect.h"
+#include "resources/particleeffectdef.h"
 #include "resources/spritedef.h"
 
 #include "utils/filesystem.h"
@@ -269,6 +270,13 @@ ResourceRef<SpriteDef> ResourceManager::getSprite(const std::string &path, int v
 
     return static_cast<SpriteDef*>(get(idPath, [&] () -> Resource * {
         return SpriteDef::load(path, variant);
+    }));
+}
+
+ResourceRef<ParticleEffectDef> ResourceManager::getParticleEffect(const std::string &effectFile)
+{
+    return static_cast<ParticleEffectDef*>(get(effectFile, [&] () -> Resource * {
+        return ParticleEffectDef::load(effectFile);
     }));
 }
 
