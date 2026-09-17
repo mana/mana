@@ -24,6 +24,11 @@ concurrency:
   group: pages
   cancel-in-progress: true
 
+env:
+  EMSDK_VERSION: 5.0.1
+  # Where Emscripten keeps its built ports and system libraries
+  EM_CACHE: ${{ github.workspace }}/.em-cache
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -34,8 +39,19 @@ jobs:
 
       - uses: mymindstorm/setup-emsdk@v14
         with:
-          version: 5.0.1
+          version: ${{ env.EMSDK_VERSION }}
           actions-cache-folder: emsdk-cache
+
+      # The SDL2 ports and their dependencies are built from source on
+      # first use and land in the Emscripten cache, which setup-emsdk
+      # saved before they existed. Keeping that cache in the workspace
+      # lets it be restored between runs.
+      - name: Cache Emscripten ports
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.EM_CACHE }}
+          key: em-cache-${{ env.EMSDK_VERSION }}-${{ hashFiles('src/CMakeLists.txt') }}
+          restore-keys: em-cache-${{ env.EMSDK_VERSION }}-
 
       - name: Cache CPM sources
         uses: actions/cache@v4
@@ -43,10 +59,18 @@ jobs:
           path: .cpm-cache
           key: cpm-${{ hashFiles('CMakeLists.txt') }}
 
+      - name: Set up ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: web-${{ env.EMSDK_VERSION }}
+          max-size: 500M
+
       - name: Configure
         run: >
           emcmake cmake -S . -B build
           -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
           -DMANA_WEB_PROXY_URL="${{ vars.WEB_PROXY_URL }}"
           -DMANA_WEB_UPDATE_HOST="${{ vars.WEB_UPDATE_HOST }}"
           -DMANA_WEB_SERVER="${{ vars.WEB_SERVER }}"
