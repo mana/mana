@@ -1,0 +1,135 @@
+name: Web
+
+# Builds the WebAssembly client and publishes it on GitHub Pages.
+#
+# The page itself cannot host the WebSocket proxy or the updates, so the
+# repository variables WEB_PROXY_URL (for example
+# wss://play.themanaworld.org/tmwa/) and WEB_UPDATE_HOST (an update host that
+# sends CORS headers) are baked into the page as defaults. Both can still be
+# overridden with the "proxy" and "update-host" query parameters.
+
+on:
+  push:
+    branches: [wasm]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+env:
+  EMSDK_VERSION: 5.0.1
+  # Where Emscripten keeps its built ports and system libraries
+  EM_CACHE: ${{ github.workspace }}/.em-cache
+  # em++ is a script whose timestamp changes with every cache restore, so
+  # ccache identifies the compiler by its content instead
+  CCACHE_COMPILERCHECK: content
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      # The SDK is installed at a fixed path in the workspace rather than
+      # through setup-emsdk, whose install location changes from run to
+      # run and would defeat ccache, since the toolchain and header paths
+      # are part of every object's hash.
+      - name: Cache emsdk
+        uses: actions/cache@v6
+        with:
+          path: emsdk
+          key: emsdk-${{ env.EMSDK_VERSION }}
+
+      - name: Install emsdk
+        run: |
+          if [ ! -d emsdk ]; then
+            git clone --depth 1 https://github.com/emscripten-core/emsdk.git
+          fi
+          ./emsdk/emsdk install "$EMSDK_VERSION"
+          ./emsdk/emsdk activate "$EMSDK_VERSION"
+          source ./emsdk/emsdk_env.sh
+          echo "EMSDK=$EMSDK" >> "$GITHUB_ENV"
+          echo "EMSDK_NODE=$EMSDK_NODE" >> "$GITHUB_ENV"
+          echo "$EMSDK" >> "$GITHUB_PATH"
+          echo "$EMSDK/upstream/emscripten" >> "$GITHUB_PATH"
+
+      # The SDL2 ports and their dependencies are built from source on
+      # first use and land in the Emscripten cache (EM_CACHE above), kept
+      # apart from the SDK so that it is restored between runs.
+      - name: Cache Emscripten ports
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.EM_CACHE }}
+          key: em-cache-${{ env.EMSDK_VERSION }}-${{ hashFiles('src/CMakeLists.txt') }}
+          restore-keys: em-cache-${{ env.EMSDK_VERSION }}-
+
+      - name: Cache CPM sources
+        uses: actions/cache@v6
+        with:
+          path: .cpm-cache
+          key: cpm-${{ hashFiles('CMakeLists.txt') }}
+
+      - name: Set up ccache
+        uses: hendrikmuhs/ccache-action@v1.2.24
+        with:
+          key: web-${{ env.EMSDK_VERSION }}
+          max-size: 500M
+
+      - name: Configure
+        run: >
+          emcmake cmake -S . -B build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+          -DMANA_WEB_PROXY_URL="${{ vars.WEB_PROXY_URL }}"
+          -DMANA_WEB_UPDATE_HOST="${{ vars.WEB_UPDATE_HOST }}"
+
+      - name: Build
+        run: cmake --build build -j"$(nproc)"
+
+      - name: Assemble site
+        run: |
+          mkdir site
+          cp build/src/mana.js build/src/mana.wasm build/src/mana.data site/
+          cp build/src/mana.html site/index.html
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
+
+  # play.themanaworld.org is built from this branch by its own repository.
+  # Tell it about the new commit, so that it rebuilds without anyone having
+  # to press a button. Needs the PLAY_DISPATCH_TOKEN secret, a fine-grained
+  # token with write access to the contents of that repository; the step is
+  # skipped when the secret is absent.
+  notify-play:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.PLAY_DISPATCH_TOKEN }}
+    steps:
+      - name: Trigger the play.themanaworld.org rebuild
+        if: env.GH_TOKEN != ''
+        run: >
+          gh api repos/themanaworld/play.themanaworld.org/dispatches
+          -f event_type=client-updated
+          -f "client_payload[ref]=${{ github.ref_name }}"
+          -f "client_payload[sha]=${{ github.sha }}"
