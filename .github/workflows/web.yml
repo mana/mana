@@ -1,0 +1,72 @@
+name: Web
+
+# Builds the WebAssembly client and publishes it on GitHub Pages.
+#
+# The page itself cannot host the WebSocket proxy or the updates, so the
+# repository variables WEB_PROXY_URL (for example
+# wss://play.themanaworld.org/tmwa/) and WEB_UPDATE_HOST (an update host that
+# sends CORS headers) are baked into the page as defaults. Both can still be
+# overridden with the "proxy" and "update-host" query parameters.
+
+on:
+  push:
+    branches: [wasm]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: true
+
+      - uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: 5.0.1
+          actions-cache-folder: emsdk-cache
+
+      - name: Cache CPM sources
+        uses: actions/cache@v4
+        with:
+          path: .cpm-cache
+          key: cpm-${{ hashFiles('CMakeLists.txt') }}
+
+      - name: Configure
+        run: >
+          emcmake cmake -S . -B build
+          -DCMAKE_BUILD_TYPE=Release
+          -DMANA_WEB_PROXY_URL="${{ vars.WEB_PROXY_URL }}"
+          -DMANA_WEB_UPDATE_HOST="${{ vars.WEB_UPDATE_HOST }}"
+
+      - name: Build
+        run: cmake --build build -j"$(nproc)"
+
+      - name: Assemble site
+        run: |
+          mkdir site
+          cp build/src/mana.js build/src/mana.wasm build/src/mana.data site/
+          cp build/src/mana.html site/index.html
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -82,9 +82,15 @@
 
   var params = new URLSearchParams(window.location.search);
 
+  // Deployment defaults, filled in by CMake (MANA_WEB_PROXY_URL and
+  // MANA_WEB_UPDATE_HOST). Empty when not configured.
+  var buildProxyUrl = '@MANA_WEB_PROXY_URL@';
+  var buildUpdateHost = '@MANA_WEB_UPDATE_HOST@';
+
   // Base URL of the WebSocket-to-TCP proxy used to reach tmwAthena servers.
   // Defaults to the page origin with a ws/wss scheme and a "/tmwa/" path.
   function defaultProxyUrl() {
+    if (buildProxyUrl) return buildProxyUrl;
     var scheme = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     return scheme + '//' + window.location.host + '/tmwa/';
   }
@@ -96,7 +102,8 @@
     if (params.has('server')) args.push('-s', params.get('server'));
     if (params.has('port')) args.push('-p', params.get('port'));
     if (params.has('skip-update')) args.push('-u');
-    if (params.has('update-host')) args.push('--update-host', params.get('update-host'));
+    var updateHost = params.get('update-host') || buildUpdateHost;
+    if (updateHost) args.push('--update-host', updateHost);
     if (params.has('default')) args.push('-D');
     return args;
   }

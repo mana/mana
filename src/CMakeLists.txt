@@ -643,8 +643,12 @@ if(EMSCRIPTEN)
 
   target_compile_options(mana PRIVATE ${EMSCRIPTEN_PORT_FLAGS})
 
-  set(MANA_WEB_SHELL "${CMAKE_SOURCE_DIR}/packaging/web/shell.html")
+  # The shell gets the deployment defaults substituted in (see the root
+  # CMakeLists.txt for MANA_WEB_PROXY_URL and MANA_WEB_UPDATE_HOST)
+  set(MANA_WEB_SHELL "${CMAKE_CURRENT_BINARY_DIR}/shell.html")
   set(MANA_WEB_PRE_JS "${CMAKE_SOURCE_DIR}/packaging/web/pre.js")
+  configure_file("${CMAKE_SOURCE_DIR}/packaging/web/shell.html"
+                 "${MANA_WEB_SHELL}" @ONLY)
 
   target_link_options(
     mana

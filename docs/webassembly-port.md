@@ -98,6 +98,27 @@ and open the page with `?proxy=ws://127.0.0.1:8765/`. The page also accepts
 `server`, `port`, `update-host`, `skip-update` and `default` query parameters,
 which map to the matching command line options.
 
+For a deployment where the proxy and the updates are not served from the page
+origin, bake the defaults into the page at configure time:
+
+```
+emcmake cmake -S . -B build-wasm -DCMAKE_BUILD_TYPE=Release \
+    -DMANA_WEB_PROXY_URL=wss://play.example.org/tmwa/ \
+    -DMANA_WEB_UPDATE_HOST=https://updates.example.org/
+```
+
+The query parameters still override them.
+
+### GitHub Pages
+
+`.github/workflows/web.yml` builds the web client on every push to the `wasm`
+branch and publishes it with GitHub Pages (source: GitHub Actions). It reads
+the repository variables `WEB_PROXY_URL` and `WEB_UPDATE_HOST` for the
+defaults above, so the deployment can be pointed at a proxy and an update
+mirror without touching the code. The page cannot host either itself: the
+proxy needs a host that terminates TLS (`wss://`) and forwards to tmwAthena,
+and the update host has to send CORS headers for the page origin.
+
 ### Testing against a local tmwAthena
 
 This is how the port was verified (see step 8). A local server does not have
