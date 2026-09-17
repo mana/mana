@@ -86,6 +86,8 @@
   // MANA_WEB_UPDATE_HOST). Empty when not configured.
   var buildProxyUrl = '@MANA_WEB_PROXY_URL@';
   var buildUpdateHost = '@MANA_WEB_UPDATE_HOST@';
+  var buildServer = '@MANA_WEB_SERVER@';
+  var buildPort = '@MANA_WEB_PORT@';
 
   // Base URL of the WebSocket-to-TCP proxy used to reach tmwAthena servers.
   // Only set when the page names one explicitly, so that the client can tell
@@ -98,8 +100,10 @@
   // point straight at a server.
   function buildArguments() {
     var args = [];
-    if (params.has('server')) args.push('-s', params.get('server'));
-    if (params.has('port')) args.push('-p', params.get('port'));
+    var server = params.get('server') || buildServer;
+    var port = params.get('port') || buildPort;
+    if (server) args.push('-s', server);
+    if (port) args.push('-p', port);
     if (params.has('skip-update')) args.push('-u');
     var updateHost = params.get('update-host') || buildUpdateHost;
     if (updateHost) args.push('--update-host', updateHost);

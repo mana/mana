@@ -44,6 +44,13 @@ if(EMSCRIPTEN)
       "Default WebSocket proxy base URL of the web build (empty: page origin plus /tmwa/)")
   set(MANA_WEB_UPDATE_HOST "" CACHE STRING
       "Default update host of the web build (empty: the one the server sends)")
+
+  # A page dedicated to one game: with a server baked in, the client connects
+  # straight to it and never shows the server dialog.
+  set(MANA_WEB_SERVER "" CACHE STRING
+      "Server the web build connects to without asking (empty: show the server dialog)")
+  set(MANA_WEB_PORT "" CACHE STRING
+      "Port of MANA_WEB_SERVER (empty: the default port of the server type)")
 endif()
 
 option(WITH_OPENGL "Enable OpenGL support" ON)

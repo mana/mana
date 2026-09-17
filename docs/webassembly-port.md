@@ -116,7 +116,14 @@ emcmake cmake -S . -B build-wasm -DCMAKE_BUILD_TYPE=Release \
     -DMANA_WEB_UPDATE_HOST=https://updates.example.org/
 ```
 
-The query parameters still override them.
+A page dedicated to one game can also bake in the server, so that players
+never see the server dialog:
+
+```
+    -DMANA_WEB_SERVER=server.themanaworld.org -DMANA_WEB_PORT=6901
+```
+
+The query parameters still override all of them.
 
 ### WebSocket URL in the server list
 
@@ -145,9 +152,11 @@ every server, so it lists them all.
 
 `.github/workflows/web.yml` builds the web client on every push to the `wasm`
 branch and publishes it with GitHub Pages (source: GitHub Actions). It reads
-the repository variables `WEB_PROXY_URL` and `WEB_UPDATE_HOST` for the
-defaults above, so the deployment can be pointed at a proxy and an update
-mirror without touching the code. The page cannot host either itself: the
+the repository variables `WEB_PROXY_URL`, `WEB_UPDATE_HOST`, `WEB_SERVER` and
+`WEB_PORT` for the defaults above, so the deployment can be pointed at a
+proxy, an update mirror and a fixed server without touching the code. The
+`github-pages` environment has to allow deployments from the `wasm` branch;
+the deploy job is rejected otherwise. The page cannot host either itself: the
 proxy needs a host that terminates TLS (`wss://`) and forwards to tmwAthena,
 and the update host has to send CORS headers for the page origin.
 

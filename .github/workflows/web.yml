@@ -4,9 +4,11 @@ name: Web
 #
 # The page itself cannot host the WebSocket proxy or the updates, so the
 # repository variables WEB_PROXY_URL (for example
-# wss://play.themanaworld.org/tmwa/) and WEB_UPDATE_HOST (an update host that
-# sends CORS headers) are baked into the page as defaults. Both can still be
-# overridden with the "proxy" and "update-host" query parameters.
+# wss://server.themanaworld.org/tmwa/) and WEB_UPDATE_HOST (an update host that
+# sends CORS headers) are baked into the page as defaults. WEB_SERVER and
+# WEB_PORT bake in the server to connect to, so that the page never shows the
+# server dialog. All of them can still be overridden with the "proxy",
+# "update-host", "server" and "port" query parameters.
 
 on:
   push:
@@ -47,6 +49,8 @@ jobs:
           -DCMAKE_BUILD_TYPE=Release
           -DMANA_WEB_PROXY_URL="${{ vars.WEB_PROXY_URL }}"
           -DMANA_WEB_UPDATE_HOST="${{ vars.WEB_UPDATE_HOST }}"
+          -DMANA_WEB_SERVER="${{ vars.WEB_SERVER }}"
+          -DMANA_WEB_PORT="${{ vars.WEB_PORT }}"
 
       - name: Build
         run: cmake --build build -j"$(nproc)"
