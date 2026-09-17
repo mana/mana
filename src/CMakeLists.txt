@@ -308,6 +308,8 @@ set(SRCS
     net/serverstatusbackend.h
     net/abilityhandler.h
     net/tradehandler.h
+    net/websocketurl.cpp
+    net/websocketurl.h
     net/worldinfo.h
     resources/ambientlayer.cpp
     resources/ambientlayer.h
