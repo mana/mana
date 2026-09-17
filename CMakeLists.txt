@@ -81,6 +81,14 @@ if(EMSCRIPTEN)
   set(ENABLE_MANASERV OFF CACHE BOOL "Enable Manaserv support" FORCE)
   set(USE_SYSTEM_GUICHAN OFF CACHE BOOL "Use system Guichan" FORCE)
   set(BUILD_DYECMD OFF CACHE BOOL "Build the dyecmd image dye tool" FORCE)
+
+  # Defaults baked into the page for deployments where the WebSocket proxy
+  # and the updates are not served from the page origin. Both can still be
+  # overridden with the "proxy" and "update-host" query parameters.
+  set(MANA_WEB_PROXY_URL "" CACHE STRING
+      "Default WebSocket proxy base URL of the web build (empty: page origin plus /tmwa/)")
+  set(MANA_WEB_UPDATE_HOST "" CACHE STRING
+      "Default update host of the web build (empty: the one the server sends)")
 endif()
 
 option(WITH_OPENGL "Enable OpenGL support" ON)
