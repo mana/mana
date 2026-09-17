@@ -31,6 +31,10 @@
 
 #include <zlib.h>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten/emscripten.h>
+#endif
+
 #include <cassert>
 #include <cstdarg>
 #include <cstring>
@@ -70,10 +74,28 @@ unsigned long Download::fadler32(FILE *file)
  * frame.
  */
 
+/**
+ * Returns whether the page was loaded over HTTPS, in which case browsers
+ * refuse to fetch plain HTTP resources.
+ */
+static bool pageIsSecure()
+{
+    static const bool secure = EM_ASM_INT({
+        return location.protocol === "https:" ? 1 : 0;
+    }) != 0;
+    return secure;
+}
+
 Download::Download(const std::string &url)
     : mUrl(url)
 {
     mError[0] = 0;
+
+    // Game servers hand out plain http:// update hosts for the sake of old
+    // clients. From a secure page such a download would be blocked as mixed
+    // content, so it is upgraded to https:// instead.
+    if (pageIsSecure() && mUrl.compare(0, 7, "http://") == 0)
+        mUrl.replace(0, 7, "https://");
 }
 
 Download::~Download()
