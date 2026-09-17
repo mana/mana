@@ -118,3 +118,22 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v5
+
+  # play.themanaworld.org is built from this branch by its own repository.
+  # Tell it about the new commit, so that it rebuilds without anyone having
+  # to press a button. Needs the PLAY_DISPATCH_TOKEN secret, a fine-grained
+  # token with write access to the contents of that repository; the step is
+  # skipped when the secret is absent.
+  notify-play:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.PLAY_DISPATCH_TOKEN }}
+    steps:
+      - name: Trigger the play.themanaworld.org rebuild
+        if: env.GH_TOKEN != ''
+        run: >
+          gh api repos/themanaworld/play.themanaworld.org/dispatches
+          -f event_type=client-updated
+          -f "client_payload[ref]=${{ github.ref_name }}"
+          -f "client_payload[sha]=${{ github.sha }}"
