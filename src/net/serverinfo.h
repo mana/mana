@@ -46,6 +46,14 @@ public:
     std::string description;
     VersionString version = std::make_pair(0, std::string());
 
+    /**
+     * Base URL of the WebSocket endpoint through which this server can be
+     * reached from a browser, either a WebSocket-to-TCP proxy or the server
+     * itself. The client appends "<host>/<port>" to it. Only used by the
+     * WebAssembly build, which cannot open TCP connections.
+     */
+    std::string websocket;
+
     bool save = false;
     bool persistentIp = true;
 

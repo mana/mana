@@ -23,14 +23,16 @@
 
 #include "log.h"
 
+#include "net/serverinfo.h"
+#include "net/tmwa/network.h"
+#include "net/websocketurl.h"
+
 #include "utils/format.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
-#include <emscripten/emscripten.h>
 #include <emscripten/websocket.h>
 
-#include <cstdlib>
 #include <map>
 #include <memory>
 #include <set>
@@ -60,32 +62,6 @@ static Network *findNetwork(EMSCRIPTEN_WEBSOCKET_T socket)
     return it != networksBySocket.end() ? it->second : nullptr;
 }
 
-// EM_ASM blocks are not scanned for the JS library functions they use
-EM_JS_DEPS(mana_network, "$stringToNewUTF8");
-
-/**
- * Returns the base URL of the WebSocket-to-TCP proxy, always ending in a
- * slash. The page can point the client at a proxy by setting
- * Module.manaProxyUrl, otherwise the page origin with a "/tmwa/" path is
- * assumed.
- */
-static std::string proxyBaseUrl()
-{
-    char *url = (char *) EM_ASM_PTR({
-        var url = Module['manaProxyUrl'];
-        if (typeof url !== 'string' || url.length === 0) {
-            url = (location.protocol === 'https:' ? 'wss://' : 'ws://')
-                  + location.host + '/tmwa/';
-        }
-        if (url.charAt(url.length - 1) !== '/')
-            url += '/';
-        return stringToNewUTF8(url);
-    });
-
-    std::string result(url);
-    free(url);
-    return result;
-}
 
 void Network::initTransport()
 {
@@ -106,8 +82,10 @@ bool Network::connectTransport(const ServerInfo &server)
     // Release a socket left over by a previous connection attempt
     closeSocket();
 
-    const std::string url = proxyBaseUrl() + server.hostname + '/'
-                                           + toString(server.port);
+    mServer = server;
+
+    const std::string url = Net::webSocketUrl(server) + server.hostname
+                            + '/' + toString(server.port);
 
     Log::info("Network::Connecting through {}", url);
 

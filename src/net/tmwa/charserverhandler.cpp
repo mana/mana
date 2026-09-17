@@ -166,6 +166,9 @@ void CharServerHandler::handleMessage(MessageIn &msg)
 
             mapServer.port = msg.readInt16();
 
+            // The map server is reached through the same WebSocket endpoint
+            mapServer.websocket = charServer.websocket;
+
             local_player = mSelectedCharacter->dummy.release();
             PlayerInfo::setBackend(mSelectedCharacter->data);
             mSelectedCharacter = nullptr;
@@ -186,6 +189,7 @@ void CharServerHandler::handleMessage(MessageIn &msg)
             int y = msg.readInt16();
             mapServer.hostname = ipToString(msg.readInt32());
             mapServer.port = msg.readInt16();
+            mapServer.websocket = charServer.websocket;
 
             mNetwork->disconnect();
             Client::setState(State::ChangeMap);

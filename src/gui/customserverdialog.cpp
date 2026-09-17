@@ -57,6 +57,9 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
     auto *typeLabel = new Label(_("Server type:"));
 #endif
     auto *descriptionLabel = new Label(_("Description:"));
+#ifdef __EMSCRIPTEN__
+    auto *webSocketLabel = new Label(_("WebSocket URL:"));
+#endif
     mServerAddressField = new TextField(std::string());
     mPortField = new TextField(std::string());
 
@@ -68,6 +71,9 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
 
     mNameField = new TextField(std::string());
     mDescriptionField = new TextField(std::string());
+#ifdef __EMSCRIPTEN__
+    mWebSocketField = new TextField(std::string());
+#endif
 
     mOkButton = new Button(_("Ok"), "addServer", this);
     mCancelButton = new Button(_("Cancel"), "cancel", this);
@@ -87,8 +93,15 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
 #endif
     place(0, 4, descriptionLabel);
     place(1, 4, mDescriptionField, 4).setPadding(2);
+#ifdef __EMSCRIPTEN__
+    place(0, 5, webSocketLabel);
+    place(1, 5, mWebSocketField, 4).setPadding(2);
+    place(4, 6, mOkButton);
+    place(3, 6, mCancelButton);
+#else
     place(4, 5, mOkButton);
     place(3, 5, mCancelButton);
+#endif
 
     reflowLayout();
     setLocationRelativeTo(getParentWindow());
@@ -103,6 +116,9 @@ CustomServerDialog::CustomServerDialog(ServerDialog *parent, int index):
         mDescriptionField->setText(serverInfo.description);
         mServerAddressField->setText(serverInfo.hostname);
         mPortField->setText(toString(serverInfo.port));
+#ifdef __EMSCRIPTEN__
+        mWebSocketField->setText(serverInfo.websocket);
+#endif
 #ifdef MANASERV_SUPPORT
         mTypeField->setSelected(serverInfo.type == ServerType::TmwAthena ?
                                 0 : 1);
@@ -141,6 +157,9 @@ void CustomServerDialog::action(const gcn::ActionEvent &event)
             serverInfo.name = mNameField->getText();
             serverInfo.description = mDescriptionField->getText();
             serverInfo.hostname = mServerAddressField->getText();
+#ifdef __EMSCRIPTEN__
+            serverInfo.websocket = mWebSocketField->getText();
+#endif
 #ifdef MANASERV_SUPPORT
             switch (mTypeField->getSelected())
             {

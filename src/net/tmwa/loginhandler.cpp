@@ -300,6 +300,9 @@ void LoginHandler::chooseServer(unsigned int server)
 
     charServer.port = mWorlds[server]->port;
 
+    // The char server is reached through the same WebSocket endpoint
+    charServer.websocket = mServer.websocket;
+
     Client::setState(State::Update);
 }
 
