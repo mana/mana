@@ -344,7 +344,15 @@ bool Video::apply(const VideoSettings &videoSettings)
 
 void Video::updateWindowSize()
 {
+#ifdef __EMSCRIPTEN__
+    // In the browser the device pixels are the logical pixels. The device
+    // pixel ratio (browser zoom, HiDPI screen) is not applied on top of the
+    // chosen scale, so 1x means one game pixel per screen pixel and "Auto"
+    // decides based on the real pixel count.
+    SDL_GetWindowSizeInPixels(mWindow, &mSettings.width, &mSettings.height);
+#else
     SDL_GetWindowSize(mWindow, &mSettings.width, &mSettings.height);
+#endif
     mGraphics->updateSize(mSettings.width,
                           mSettings.height,
                           mSettings.scale());

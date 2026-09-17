@@ -67,9 +67,12 @@ gettext/libintl has no port; translations are disabled for now.
    config writes, update downloads and on exit.
 6. **Viewport**: the canvas is styled to fill the viewport. A resize callback
    sizes the canvas backing store to CSS size times devicePixelRatio and calls
-   `SDL_SetWindowSize` with the CSS size. The existing HiDPI logic in
-   `SDLGraphics::updateSize` then computes the display scale. Persisted
-   `screenwidth`/`screenheight` are ignored in the browser.
+   `SDL_SetWindowSize` with the CSS size. Unlike the desktop, the device
+   pixel ratio is not multiplied into the render scale: the backing store's
+   pixel size is the logical size, so the "Scale" setting alone decides how
+   big the game is (1x is one game pixel per screen pixel, "Auto" picks an
+   integer scale from the pixel size). Persisted `screenwidth`/`screenheight`
+   are ignored in the browser.
 7. **Translations**: off (`ENABLE_NLS=OFF`) until a libintl-free catalog
    reader lands (the `android-nls` branch has one).
 
@@ -304,10 +307,13 @@ Status markers: [x] done, [~] partially done, [ ] not started.
       windowInnerHeight)`. SDL's Emscripten backend then sizes the canvas
       backing store to that times `devicePixelRatio` (the window is created
       with `SDL_WINDOW_ALLOW_HIGHDPI`), and leaves the CSS size alone because
-      the page already styles the canvas. `SDL_GetRendererOutputSize` reports
-      the backing size, which `SDLGraphics::updateSize` turns into the
-      display scale. Verified against `SDL_emscriptenvideo.c` in the emsdk
-      port cache (SDL 2.32.8).
+      the page already styles the canvas. `Video::updateWindowSize` reads the
+      size with `SDL_GetWindowSizeInPixels` in the browser, so
+      `SDLGraphics::updateSize` sees a display scale of 1 and only the user's
+      scale setting applies; mouse coordinates still go through
+      `SDL_RenderWindowToLogical`, which accounts for the pixel ratio.
+      Verified against `SDL_emscriptenvideo.c` in the emsdk port cache
+      (SDL 2.32.8).
 - [x] `Video::initialize` under Emscripten ignores the stored
       `screenwidth`/`screenheight` and creates the window at the current
       canvas CSS size (falling back to `window.innerWidth/Height`), always
