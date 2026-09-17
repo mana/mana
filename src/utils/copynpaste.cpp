@@ -25,6 +25,9 @@
 bool insertFromClipboard(std::string &text, std::string::size_type &pos)
 {
     char *buf = SDL_GetClipboardText();
+    if (!buf)
+        return false;
+
     const size_t len = strlen(buf);
     if (len > 0) {
         text.insert(pos, buf);

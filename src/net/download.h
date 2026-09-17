@@ -18,15 +18,22 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#pragma once
+
 #include "utils/mutex.h"
 
 #include <cstdio>
 #include <optional>
 #include <string>
+#include <string_view>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten/fetch.h>
+
+#include <vector>
+#else
 #include <curl/curl.h>
-
-#pragma once
+#endif
 
 enum class DownloadStatus
 {
@@ -39,6 +46,12 @@ enum class DownloadStatus
 struct SDL_Thread;
 
 namespace Net {
+
+#ifdef __EMSCRIPTEN__
+constexpr size_t DOWNLOAD_ERROR_SIZE = 256;
+#else
+constexpr size_t DOWNLOAD_ERROR_SIZE = CURL_ERROR_SIZE;
+#endif
 
 class Download
 {
@@ -88,6 +101,24 @@ class Download
         static unsigned long fadler32(FILE *file);
 
     private:
+#ifdef __EMSCRIPTEN__
+        static void fetchSuccess(emscripten_fetch_t *fetch);
+        static void fetchError(emscripten_fetch_t *fetch);
+        static void fetchProgress(emscripten_fetch_t *fetch);
+
+        void handleSuccess(emscripten_fetch_t *fetch);
+        void handleError(emscripten_fetch_t *fetch);
+
+        /** Writes the received bytes to mFileName, checksum included. */
+        bool writeToFile(const char *data, size_t size);
+
+        bool startFetch();
+
+        /** Detaches and closes an in-flight fetch, if there is one. */
+        void closeFetch();
+
+        void setError(const char *format, ...);
+#else
         static int downloadProgress(void *clientp,
                                     curl_off_t dltotal, curl_off_t dlnow,
                                     curl_off_t ultotal, curl_off_t ulnow);
@@ -96,6 +127,7 @@ class Download
                                   void *stream);
 
         static int downloadThread(void *ptr);
+#endif
 
         ThreadSafe<State> mState;
         std::string mUrl;
@@ -103,9 +135,22 @@ class Download
         bool mMemoryWrite = false;
         std::string mFileName;
         std::optional<unsigned long> mAdler;
+#ifdef __EMSCRIPTEN__
+        emscripten_fetch_t *mFetch = nullptr;
+
+        /** Request headers, stored as alternating key and value strings. */
+        std::vector<std::string> mHeaders;
+
+        /** Null-terminated view on mHeaders, as emscripten_fetch wants it. */
+        std::vector<const char *> mHeaderPointers;
+
+        bool mStarted = false;
+        int mAttempts = 0;
+#else
         SDL_Thread *mThread = nullptr;
         curl_slist *mHeaders = nullptr;
-        char mError[CURL_ERROR_SIZE];
+#endif
+        char mError[DOWNLOAD_ERROR_SIZE];
 
         /** Byte count currently downloaded in mMemoryBuffer. */
         size_t mDownloadedBytes = 0;

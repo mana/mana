@@ -29,6 +29,11 @@
 #include "openglgraphics.h"
 #endif
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#include <emscripten/html5.h>
+#endif
+
 #include <algorithm>
 
 static constexpr int WINDOW_MIN_WIDTH = 640;
@@ -41,6 +46,13 @@ static constexpr int WINDOW_MIN_HEIGHT = 400;
  */
 static void limitToUsableBounds(int display, int &width, int &height)
 {
+#ifdef __EMSCRIPTEN__
+    // The canvas always covers the browser viewport, so there is nothing to
+    // limit it to.
+    (void) display;
+    (void) width;
+    (void) height;
+#else
     SDL_Rect usableBounds;
     if (SDL_GetDisplayUsableBounds(display, &usableBounds) != 0)
     {
@@ -50,7 +62,47 @@ static void limitToUsableBounds(int display, int &width, int &height)
 
     width = std::min(width, std::max(usableBounds.w, WINDOW_MIN_WIDTH));
     height = std::min(height, std::max(usableBounds.h, WINDOW_MIN_HEIGHT));
+#endif // __EMSCRIPTEN__
 }
+
+#ifdef __EMSCRIPTEN__
+/**
+ * Returns the size of the browser viewport, which is also the size of the
+ * canvas since it is styled to fill the page.
+ */
+static void getViewportSize(int &width, int &height)
+{
+    double cssWidth;
+    double cssHeight;
+
+    if (emscripten_get_element_css_size("#canvas", &cssWidth, &cssHeight) ==
+            EMSCRIPTEN_RESULT_SUCCESS && cssWidth >= 1 && cssHeight >= 1)
+    {
+        width = static_cast<int>(cssWidth);
+        height = static_cast<int>(cssHeight);
+        return;
+    }
+
+    width = EM_ASM_INT({ return window.innerWidth; });
+    height = EM_ASM_INT({ return window.innerHeight; });
+}
+
+/**
+ * Follows the browser viewport. SDL sizes the canvas backing store to the
+ * given size times the device pixel ratio, which the HiDPI handling in
+ * Graphics::updateSize then turns into a display scale.
+ */
+static EM_BOOL handleViewportResize(int eventType,
+                                    const EmscriptenUiEvent *event,
+                                    void *userData)
+{
+    auto *video = static_cast<Video*>(userData);
+    SDL_SetWindowSize(video->window(),
+                      event->windowInnerWidth,
+                      event->windowInnerHeight);
+    return EM_FALSE;
+}
+#endif // __EMSCRIPTEN__
 
 int VideoSettings::scale() const
 {
@@ -84,6 +136,13 @@ Video::~Video()
 Graphics *Video::initialize(const VideoSettings &settings)
 {
     mSettings = settings;
+
+#ifdef __EMSCRIPTEN__
+    // The canvas fills the browser viewport, so the configured size does not
+    // apply and there is no window to put in fullscreen mode.
+    mSettings.windowMode = WindowMode::Windowed;
+    getViewportSize(mSettings.width, mSettings.height);
+#endif
 
     if (!initDisplayModes())
     {
@@ -160,7 +219,14 @@ Graphics *Video::initialize(const VideoSettings &settings)
         return nullptr;
     }
 
+#ifdef __EMSCRIPTEN__
+    // Follow the browser viewport instead of enforcing a minimum size, which
+    // would keep the canvas from following a small browser window.
+    emscripten_set_resize_callback(EMSCRIPTEN_EVENT_TARGET_WINDOW, this, false,
+                                   handleViewportResize);
+#else
     SDL_SetWindowMinimumSize(mWindow, WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT);
+#endif
 
     if (mSettings.windowMode == WindowMode::Fullscreen)
     {

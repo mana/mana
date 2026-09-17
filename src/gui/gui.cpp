@@ -402,6 +402,17 @@ void Gui::loadCustomCursors()
 
     mCustomMouseCursors.clear();
 
+    constexpr int cursorSize = 40;
+    const int targetCursorSize = cursorSize * mCustomCursorScale;
+
+#ifdef __EMSCRIPTEN__
+    // Custom cursors become CSS cursor images, which browsers ignore above
+    // 128x128 pixels. Stick to the system cursors in that case, since those
+    // still convey the cursor type.
+    if (targetCursorSize > 128)
+        return;
+#endif
+
     const std::string cursorPath = mTheme->resolvePath("mouse.png");
     SDL_Surface *mouseSurface = loadSurface(cursorPath);
     if (!mouseSurface)
@@ -413,8 +424,6 @@ void Gui::loadCustomCursors()
 
     SDL_SetSurfaceBlendMode(mouseSurface, SDL_BLENDMODE_NONE);
 
-    constexpr int cursorSize = 40;
-    const int targetCursorSize = cursorSize * mCustomCursorScale;
     const int columns = mouseSurface->w / cursorSize;
 
     SDL_Surface *cursorSurface = SDL_CreateRGBSurfaceWithFormat(

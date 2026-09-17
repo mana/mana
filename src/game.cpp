@@ -82,6 +82,10 @@
 
 #include <guichan/focushandler.hpp>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #include <SDL_image.h>
 
 #include <cassert>
@@ -266,6 +270,34 @@ Game::~Game()
     Event::trigger(Event::GameChannel, Event::Destructed);
 }
 
+#ifdef __EMSCRIPTEN__
+/**
+ * Hands the saved screenshot to the browser as a download, since the file
+ * system it was written to is not visible to the user.
+ */
+static void downloadScreenshot(const std::string &path,
+                               const std::string &name)
+{
+    EM_ASM({
+        var path = UTF8ToString($0);
+        var name = UTF8ToString($1);
+        try {
+            var blob = new Blob([FS.readFile(path)], { type: "image/png" });
+            var url = URL.createObjectURL(blob);
+            var link = document.createElement("a");
+            link.href = url;
+            link.download = name;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Failed to download the screenshot", error);
+        }
+    }, path.c_str(), name.c_str());
+}
+#endif
+
 static bool saveScreenshot()
 {
     static unsigned int screenshotCount = 0;
@@ -327,6 +359,11 @@ static bool saveScreenshot()
 
     if (success)
     {
+#ifdef __EMSCRIPTEN__
+        downloadScreenshot(filename.str(), filenameSuffix.str());
+        FS::sync();
+#endif
+
         std::string screenshotLink = strprintf("@@screenshot:%s|%s@@",
                                                filenameSuffix.str().c_str(),
                                                filenameSuffix.str().c_str());
@@ -348,6 +385,11 @@ void Game::logic()
 {
     // Handle all necessary game logic
     actorSpriteManager->logic();
+
+    // Don't try to catch up more than a second, which can happen when the
+    // window was hidden or the browser tab was throttled
+    if (mParticleEngineTimer.elapsed() > 1000)
+        mParticleEngineTimer.set();
 
     // todo: make Particle::update work with variable time steps
     while (mParticleEngineTimer.passed())

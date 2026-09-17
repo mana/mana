@@ -1,22 +1,40 @@
-include(FindPkgConfig)
-pkg_check_modules(SDL2 REQUIRED
-  sdl2>=2.0.18
-  SDL2_image
-  SDL2_mixer
-  SDL2_net
-  SDL2_ttf>=2.0.18)
-find_package(PhysFS REQUIRED)
-find_package(CURL REQUIRED)
-find_package(LibXml2 REQUIRED)
-find_package(Intl REQUIRED)
-find_package(ZLIB REQUIRED)
+if(NOT EMSCRIPTEN)
+  include(FindPkgConfig)
+  pkg_check_modules(SDL2 REQUIRED
+    sdl2>=2.0.18
+    SDL2_image
+    SDL2_mixer
+    SDL2_net
+    SDL2_ttf>=2.0.18)
+  find_package(PhysFS REQUIRED)
+  find_package(CURL REQUIRED)
+  find_package(LibXml2 REQUIRED)
+  find_package(Intl REQUIRED)
+  find_package(ZLIB REQUIRED)
+endif()
+
+# The SDL2 stack and zlib come from Emscripten ports. The same flags have to be
+# passed when compiling (for the headers) and when linking (for the libraries).
+set(EMSCRIPTEN_PORT_FLAGS
+    -sUSE_SDL=2
+    -sUSE_SDL_IMAGE=2
+    -sSDL2_IMAGE_FORMATS=png
+    -sUSE_SDL_MIXER=2
+    -sSDL2_MIXER_FORMATS=ogg
+    -sUSE_SDL_TTF=2
+    -sUSE_ZLIB=1)
 
 add_compile_options(-Wall)
 
 add_compile_definitions(PACKAGE_VERSION="${PROJECT_VERSION}"
                         $<$<CONFIG:Debug>:DEBUG>)
 
-if(WIN32)
+if(EMSCRIPTEN)
+  # The data directory is preloaded at /data and the client appends "data" to
+  # PKG_DATADIR, so the package data dir is the root of the virtual filesystem.
+  add_compile_definitions(PKG_DATADIR="/"
+                          LOCALEDIR="/locale/")
+elseif(WIN32)
   add_compile_definitions(PKG_DATADIR="${CMAKE_INSTALL_DATADIR}/"
                           LOCALEDIR="${CMAKE_INSTALL_LOCALEDIR}/")
 elseif(NOT APPLE)
@@ -613,17 +631,62 @@ target_include_directories(mana
     ${PHYSFS_INCLUDE_DIR}
     ${Intl_INCLUDE_DIRS})
 
-target_link_libraries(
-  mana
-  PRIVATE
-    ${ENET_LIBRARIES}
-    ${SDL2_LINK_LIBRARIES}
-    CURL::libcurl
-    LibXml2::LibXml2
-    ZLIB::ZLIB
-    ${GUICHAN_LIBRARIES}
-    ${PHYSFS_LIBRARY}
-    ${Intl_LIBRARIES})
+if(EMSCRIPTEN)
+  # No curl (emscripten_fetch), no libintl (NLS is off) and no SDL2_net (the
+  # tmwAthena network code uses the browser WebSocket API instead).
+  target_link_libraries(
+    mana
+    PRIVATE
+      LibXml2::LibXml2
+      ${GUICHAN_LIBRARIES}
+      physfs-static)
+
+  target_compile_options(mana PRIVATE ${EMSCRIPTEN_PORT_FLAGS})
+
+  set(MANA_WEB_SHELL "${CMAKE_SOURCE_DIR}/packaging/web/shell.html")
+  set(MANA_WEB_PRE_JS "${CMAKE_SOURCE_DIR}/packaging/web/pre.js")
+
+  target_link_options(
+    mana
+    PRIVATE
+      ${EMSCRIPTEN_PORT_FLAGS}
+      -sFETCH
+      -lwebsocket.js
+      -lidbfs.js
+      -sALLOW_MEMORY_GROWTH=1
+      -sINITIAL_MEMORY=128MB
+      -sSTACK_SIZE=1MB
+      -sEXIT_RUNTIME=0
+      -sEXPORTED_RUNTIME_METHODS=FS,ccall,cwrap,stringToNewUTF8,UTF8ToString
+      -sEXPORTED_FUNCTIONS=_main,_malloc,_free
+      --preload-file "${CMAKE_SOURCE_DIR}/data@/data"
+      # Desktop-only icon formats, useless weight in the preload package.
+      # The SHELL: prefix keeps CMake from collapsing the repeated flag.
+      "SHELL:--exclude-file *.ico"
+      "SHELL:--exclude-file *.icns"
+      "SHELL:--exclude-file *.hqx"
+      --shell-file "${MANA_WEB_SHELL}"
+      --pre-js "${MANA_WEB_PRE_JS}"
+      $<$<CONFIG:Debug>:-g>
+      $<$<CONFIG:Debug>:-sASSERTIONS=1>
+      $<$<NOT:$<CONFIG:Debug>>:-O2>)
+
+  set_target_properties(mana PROPERTIES SUFFIX ".html")
+  set_property(TARGET mana APPEND PROPERTY
+               LINK_DEPENDS "${MANA_WEB_SHELL}" "${MANA_WEB_PRE_JS}")
+else()
+  target_link_libraries(
+    mana
+    PRIVATE
+      ${ENET_LIBRARIES}
+      ${SDL2_LINK_LIBRARIES}
+      CURL::libcurl
+      LibXml2::LibXml2
+      ZLIB::ZLIB
+      ${GUICHAN_LIBRARIES}
+      ${PHYSFS_LIBRARY}
+      ${Intl_LIBRARIES})
+endif()
 
 if(ENABLE_NLS)
   target_compile_definitions(mana PRIVATE ENABLE_NLS=1)
@@ -696,7 +759,7 @@ if(WIN32)
         DIRECTORIES "$ENV{MINGW_PREFIX}/bin"
       RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
   endif()
-else()
+elseif(NOT EMSCRIPTEN)
   install(
     TARGETS mana
     BUNDLE DESTINATION .

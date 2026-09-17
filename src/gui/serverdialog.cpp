@@ -41,6 +41,7 @@
 #include "resources/image.h"
 #include "resources/theme.h"
 
+#include "utils/filesystem.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -429,6 +430,7 @@ void ServerDialog::logic()
 
     case DownloadStatus::Complete:
         mDownloadDone = true;
+        FS::sync();
         loadServers();
         mServersListModel->checkServerStatus();
 

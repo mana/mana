@@ -77,6 +77,10 @@ void ItemLinkHandler::handleLink(const std::string &link)
     // Handle screenshots by constructing full file path
     if (startsWith(link, "screenshot:"))
     {
+#ifdef __EMSCRIPTEN__
+        // There is no file system the browser could open the screenshot from.
+        return;
+#else
         std::string filename = link.substr(11); // Remove "screenshot:" prefix
 
         // Prevent directory traversal attacks or opening malicious files
@@ -88,8 +92,12 @@ void ItemLinkHandler::handleLink(const std::string &link)
         }
 
         return;
+#endif
     }
 
+    // External links are opened with SDL_OpenURL, which maps to window.open in
+    // the browser. That is only allowed from a user gesture, which a link click
+    // and the confirmation dialog below both are.
     if (isUrl(link))
     {
         mLink = link;

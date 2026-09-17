@@ -58,7 +58,7 @@ ServerStatus::State ServerStatusBackend::update()
 
     // Sends the version request, or the disconnect request once the probe
     // finished. The server closes the connection in response to the latter,
-    // so that the worker thread exits by itself.
+    // which is what ends the probe.
     mNetworkOwner->flush();
 
     const int networkState = mNetworkOwner->getState();

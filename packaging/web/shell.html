@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Mana</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: hidden;
+    background: #101014;
+    color: #d8d8e0;
+    font: 14px/1.5 system-ui, sans-serif;
+  }
+  canvas {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: hidden;
+    background: #101014;
+  }
+  canvas:focus { outline: none; }
+
+  #overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: #101014;
+    text-align: center;
+  }
+  #overlay.hidden { display: none; }
+  #title {
+    font-size: 22px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: #8f8fa8;
+  }
+  #status { min-height: 1.5em; }
+  #progress {
+    width: 280px;
+    height: 6px;
+    border-radius: 3px;
+    background: #24242e;
+    overflow: hidden;
+  }
+  #progress > div {
+    height: 100%;
+    width: 0;
+    background: #6f8fd0;
+    transition: width 0.15s linear;
+  }
+  #progress.hidden { visibility: hidden; }
+</style>
+</head>
+<body>
+
+<canvas id="canvas" tabindex="-1" oncontextmenu="event.preventDefault()"></canvas>
+
+<div id="overlay">
+  <div id="title">Mana</div>
+  <div id="status">Loading...</div>
+  <div id="progress"><div id="progressBar"></div></div>
+</div>
+
+<script>
+(function () {
+  var overlay = document.getElementById('overlay');
+  var statusElement = document.getElementById('status');
+  var progressElement = document.getElementById('progress');
+  var progressBar = document.getElementById('progressBar');
+  var canvas = document.getElementById('canvas');
+
+  var params = new URLSearchParams(window.location.search);
+
+  // Base URL of the WebSocket-to-TCP proxy used to reach tmwAthena servers.
+  // Defaults to the page origin with a ws/wss scheme and a "/tmwa/" path.
+  function defaultProxyUrl() {
+    var scheme = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    return scheme + '//' + window.location.host + '/tmwa/';
+  }
+
+  // Command line arguments are taken from the query string, so that a link can
+  // point straight at a server.
+  function buildArguments() {
+    var args = [];
+    if (params.has('server')) args.push('-s', params.get('server'));
+    if (params.has('port')) args.push('-p', params.get('port'));
+    if (params.has('skip-update')) args.push('-u');
+    if (params.has('update-host')) args.push('--update-host', params.get('update-host'));
+    if (params.has('default')) args.push('-D');
+    return args;
+  }
+
+  var totalDependencies = 0;
+
+  var Module = {
+    canvas: canvas,
+    arguments: buildArguments(),
+    manaProxyUrl: params.get('proxy') || defaultProxyUrl(),
+
+    setStatus: function (text) {
+      if (Module.setStatus.last === text) return;
+      Module.setStatus.last = text;
+
+      // Emscripten reports progress as "text (current/total)"
+      var match = /([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/.exec(text);
+      if (match) {
+        statusElement.textContent = match[1].trim();
+        progressElement.classList.remove('hidden');
+        progressBar.style.width = (100 * parseFloat(match[2]) / parseFloat(match[4])) + '%';
+      } else {
+        statusElement.textContent = text;
+        if (!text) {
+          overlay.classList.add('hidden');
+        } else {
+          progressElement.classList.add('hidden');
+        }
+      }
+    },
+
+    monitorRunDependencies: function (left) {
+      totalDependencies = Math.max(totalDependencies, left);
+      if (left) {
+        Module.setStatus('Preparing... (' + (totalDependencies - left) + '/' + totalDependencies + ')');
+      } else {
+        Module.setStatus('');
+      }
+    },
+
+    print: function () {
+      console.log(Array.prototype.join.call(arguments, ' '));
+    },
+
+    printErr: function () {
+      console.error(Array.prototype.join.call(arguments, ' '));
+    },
+
+    onAbort: function (what) {
+      console.error('Mana aborted:', what);
+      overlay.classList.remove('hidden');
+      progressElement.classList.add('hidden');
+      statusElement.textContent = 'Something went wrong: ' + what;
+    }
+  };
+
+  Module.setStatus('Loading...');
+  window.Module = Module;
+
+  window.onerror = function (message) {
+    Module.setStatus('Exception thrown, see the browser console');
+    console.error(message);
+  };
+})();
+</script>
+
+{{{ SCRIPT }}}
+
+</body>
+</html>

@@ -32,8 +32,8 @@
 #include <zlib.h>
 
 #include <cassert>
-
-constexpr char DOWNLOAD_ERROR_MESSAGE_THREAD[] = "Could not create download thread!";
+#include <cstdarg>
+#include <cstring>
 
 namespace Net {
 
@@ -60,6 +60,335 @@ unsigned long Download::fadler32(FILE *file)
 
     return adler;
 }
+
+#ifdef __EMSCRIPTEN__
+
+/*
+ * In the browser there are no threads to spare and no libcurl. The download is
+ * an emscripten_fetch, whose callbacks run on the main thread between frames.
+ * The public interface is unchanged: callers still poll getState() once per
+ * frame.
+ */
+
+Download::Download(const std::string &url)
+    : mUrl(url)
+{
+    mError[0] = 0;
+}
+
+Download::~Download()
+{
+    mCancel = true;
+    closeFetch();
+
+    free(mBuffer);
+}
+
+void Download::addHeader(const char *header)
+{
+    assert(!mStarted);   // Cannot add headers after starting download
+
+    // emscripten_fetch wants the name and the value as separate strings
+    const char *colon = strchr(header, ':');
+    if (!colon)
+    {
+        mHeaders.emplace_back(header);
+        mHeaders.emplace_back();
+        return;
+    }
+
+    mHeaders.emplace_back(header, colon - header);
+
+    ++colon;
+    while (*colon == ' ')
+        ++colon;
+    mHeaders.emplace_back(colon);
+}
+
+void Download::noCache()
+{
+    addHeader("pragma: no-cache");
+    addHeader("Cache-Control: no-cache");
+}
+
+void Download::setFile(const std::string &filename,
+                       std::optional<unsigned long> adler32)
+{
+    assert(!mStarted);   // Cannot set file after starting download
+
+    mMemoryWrite = false;
+    mFileName = filename;
+    mAdler = adler32;
+}
+
+void Download::setUseBuffer()
+{
+    assert(!mStarted);   // Cannot set write function after starting download
+
+    mMemoryWrite = true;
+}
+
+bool Download::start()
+{
+    assert(!mStarted);   // Download already started
+    mStarted = true;
+
+    Log::info("Starting download: %s", mUrl.c_str());
+
+    // No more headers can be added from here on, so the strings are stable and
+    // it is safe to hand out pointers into them.
+    if (!mHeaders.empty())
+    {
+        mHeaderPointers.reserve(mHeaders.size() + 1);
+        for (const std::string &header : mHeaders)
+            mHeaderPointers.push_back(header.c_str());
+        mHeaderPointers.push_back(nullptr);
+    }
+
+    if (!startFetch())
+    {
+        setError("Could not start download of %s", mUrl.c_str());
+        Log::info("%s", mError);
+        mState.lock()->status = DownloadStatus::Error;
+        return false;
+    }
+
+    return true;
+}
+
+void Download::cancel()
+{
+    Log::info("Canceling download: %s", mUrl.c_str());
+
+    mCancel = true;
+    closeFetch();
+    mState.lock()->status = DownloadStatus::Canceled;
+}
+
+std::string_view Download::getBuffer() const
+{
+    assert(mMemoryWrite);   // Buffer not used
+    return std::string_view(mBuffer, mDownloadedBytes);
+}
+
+bool Download::startFetch()
+{
+    ++mAttempts;
+
+    emscripten_fetch_attr_t attr;
+    emscripten_fetch_attr_init(&attr);
+    strcpy(attr.requestMethod, "GET");
+    attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
+    attr.onsuccess = &Download::fetchSuccess;
+    attr.onerror = &Download::fetchError;
+    attr.onprogress = &Download::fetchProgress;
+    attr.userData = this;
+    if (!mHeaderPointers.empty())
+        attr.requestHeaders = mHeaderPointers.data();
+
+    Log::info("Downloading: %s", mUrl.c_str());
+
+    mFetch = emscripten_fetch(&attr, mUrl.c_str());
+    return mFetch != nullptr;
+}
+
+void Download::closeFetch()
+{
+    if (!mFetch)
+        return;
+
+    emscripten_fetch_t *fetch = mFetch;
+    mFetch = nullptr;
+
+    // Detach first, so a callback fired while closing cannot reach this object
+    fetch->userData = nullptr;
+    emscripten_fetch_close(fetch);
+}
+
+void Download::setError(const char *format, ...)
+{
+    va_list ap;
+    va_start(ap, format);
+    vsnprintf(mError, sizeof(mError), format, ap);
+    va_end(ap);
+}
+
+/**
+ * Called on the main thread once the whole response has been received.
+ */
+void Download::fetchSuccess(emscripten_fetch_t *fetch)
+{
+    auto *d = static_cast<Download *>(fetch->userData);
+    if (!d)
+        return;     // Canceled or deleted, the handle is no longer ours
+
+    d->mFetch = nullptr;
+    d->handleSuccess(fetch);
+    emscripten_fetch_close(fetch);
+}
+
+void Download::fetchError(emscripten_fetch_t *fetch)
+{
+    auto *d = static_cast<Download *>(fetch->userData);
+    if (!d)
+        return;
+
+    d->mFetch = nullptr;
+    d->handleError(fetch);
+    emscripten_fetch_close(fetch);
+}
+
+void Download::fetchProgress(emscripten_fetch_t *fetch)
+{
+    auto *d = static_cast<Download *>(fetch->userData);
+    if (!d)
+        return;
+
+    auto state = d->mState.lock();
+    state->status = DownloadStatus::InProgress;
+    state->progress = 0.0f;
+
+    if (fetch->totalBytes > 0)
+    {
+        const double received = static_cast<double>(fetch->dataOffset) +
+                                static_cast<double>(fetch->numBytes);
+        state->progress = static_cast<float>(received / fetch->totalBytes);
+    }
+}
+
+void Download::handleSuccess(emscripten_fetch_t *fetch)
+{
+    if (mCancel)
+    {
+        mState.lock()->status = DownloadStatus::Canceled;
+        return;
+    }
+
+    const size_t size = static_cast<size_t>(fetch->numBytes);
+
+    if (mMemoryWrite)
+    {
+        // Same ownership as the libcurl version: a malloc'd buffer owned by
+        // this object, freed in the destructor and read through getBuffer().
+        free(mBuffer);
+        mBuffer = nullptr;
+        mDownloadedBytes = 0;
+
+        if (size > 0)
+        {
+            mBuffer = (char *) malloc(size);
+            if (!mBuffer)
+            {
+                setError("Out of memory while downloading %s", mUrl.c_str());
+                Log::info("%s", mError);
+                mState.lock()->status = DownloadStatus::Error;
+                return;
+            }
+
+            memcpy(mBuffer, fetch->data, size);
+            mDownloadedBytes = size;
+        }
+    }
+    else if (!writeToFile(fetch->data, size))
+    {
+        // Either another attempt is in flight, or the error state is set
+        return;
+    }
+
+    auto state = mState.lock();
+    state->progress = 1.0f;
+    state->status = DownloadStatus::Complete;
+}
+
+void Download::handleError(emscripten_fetch_t *fetch)
+{
+    if (mCancel)
+    {
+        mState.lock()->status = DownloadStatus::Canceled;
+        return;
+    }
+
+    setError("HTTP %d: %s", fetch->status, fetch->statusText);
+    Log::info("fetch error %d: %s host: %s",
+              fetch->status, fetch->statusText, mUrl.c_str());
+
+    mState.lock()->status = DownloadStatus::Error;
+}
+
+/**
+ * Writes the received bytes to "<file>.part", verifies the checksum and moves
+ * the result into place. Returns whether the download is complete. On failure
+ * the state is set to Error, unless another attempt was started.
+ */
+bool Download::writeToFile(const char *data, size_t size)
+{
+    const std::string partialName = mFileName + ".part";
+
+    FILE *file = fopen(partialName.c_str(), "w+b");
+    if (!file)
+    {
+        setError("Could not open %s for writing", partialName.c_str());
+        Log::info("%s", mError);
+        mState.lock()->status = DownloadStatus::Error;
+        return false;
+    }
+
+    if (size > 0 && fwrite(data, 1, size, file) != size)
+    {
+        fclose(file);
+        ::remove(partialName.c_str());
+
+        setError("Could not write %s", partialName.c_str());
+        Log::info("%s", mError);
+        mState.lock()->status = DownloadStatus::Error;
+        return false;
+    }
+
+    // Check the checksum if available
+    if (mAdler)
+    {
+        const unsigned long adler = fadler32(file);
+
+        if (*mAdler != adler)
+        {
+            fclose(file);
+
+            // Remove the corrupted file
+            ::remove(partialName.c_str());
+            Log::info("Checksum for file %s failed: (%lx/%lx)",
+                      mFileName.c_str(), adler, *mAdler);
+
+            // Like the libcurl version, a failed checksum is retried up to
+            // three times in total before giving up.
+            if (mAttempts < 3 && !mCancel && startFetch())
+                return false;
+
+            setError("Checksum for file %s failed", mFileName.c_str());
+            mState.lock()->status = DownloadStatus::Error;
+            return false;
+        }
+    }
+
+    fclose(file);
+
+    // Any existing file with this name is deleted first, otherwise the rename
+    // will fail on Windows.
+    ::remove(mFileName.c_str());
+    if (::rename(partialName.c_str(), mFileName.c_str()) != 0)
+    {
+        setError("Could not rename %s to %s",
+                 partialName.c_str(), mFileName.c_str());
+        Log::info("%s", mError);
+        mState.lock()->status = DownloadStatus::Error;
+        return false;
+    }
+
+    return true;
+}
+
+#else // __EMSCRIPTEN__
+
+constexpr char DOWNLOAD_ERROR_MESSAGE_THREAD[] = "Could not create download thread!";
 
 Download::Download(const std::string &url)
     : mUrl(url)
@@ -317,5 +646,7 @@ int Download::downloadThread(void *ptr)
 
     return 0;
 }
+
+#endif // __EMSCRIPTEN__
 
 } // namespace Net

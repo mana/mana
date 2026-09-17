@@ -28,8 +28,12 @@
 #include "net/tmwa/messagehandler.h"
 #include "net/tmwa/messageout.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten/websocket.h>
+#else
 #include <SDL_net.h>
 #include <SDL_thread.h>
+#endif
 
 #include <map>
 #include <memory>
@@ -90,9 +94,12 @@ class Network
         };
 
     private:
+#ifndef __EMSCRIPTEN__
         friend int networkThread(void *data);
+#endif
         friend class MessageOut;
 
+#ifndef __EMSCRIPTEN__
         /**
          * Shared between a Network and its worker thread while connecting.
          * Since opening a connection can't be interrupted, the Network may
@@ -108,19 +115,54 @@ class Network
             const ServerInfo server;
             ThreadSafe<Network *> network;
         };
+#endif
 
         void setError(const std::string &error);
 
         uint16_t readWord(int pos);
 
+        /**
+         * Drops the bytes requested by skip() from the front of the incoming
+         * buffer. Called with mMutex held.
+         */
+        void applyToSkip();
+
         static const PacketInfo *findPacketInfo(uint16_t id);
 
+#ifdef __EMSCRIPTEN__
+        /**
+         * Closes and releases the WebSocket, if there is one. Afterwards no
+         * further events can arrive for this Network.
+         */
+        void closeSocket();
+
+        static bool onOpen(int eventType,
+                           const EmscriptenWebSocketOpenEvent *event,
+                           void *userData);
+        static bool onMessage(int eventType,
+                              const EmscriptenWebSocketMessageEvent *event,
+                              void *userData);
+        static bool onError(int eventType,
+                            const EmscriptenWebSocketErrorEvent *event,
+                            void *userData);
+        static bool onClose(int eventType,
+                            const EmscriptenWebSocketCloseEvent *event,
+                            void *userData);
+
+        EMSCRIPTEN_WEBSOCKET_T mSocket = 0;
+        ServerInfo mServer;
+        bool mOpened = false;
+#else
         void receive();
 
         TCPsocket mSocket = nullptr;
+#endif
 
         char *mInBuffer, *mOutBuffer;
         unsigned int mInSize = 0;
+#ifdef __EMSCRIPTEN__
+        unsigned int mInCapacity = 0;
+#endif
         unsigned int mOutSize = 0;
 
         unsigned int mToSkip = 0;
@@ -128,8 +170,10 @@ class Network
         int mState = IDLE;
         std::string mError;
 
+#ifndef __EMSCRIPTEN__
         SDL_Thread *mWorkerThread = nullptr;
         std::shared_ptr<ConnectRequest> mConnectRequest;
+#endif
         Mutex mMutex;
 
         std::map<uint16_t, MessageHandler *> mMessageHandlers;

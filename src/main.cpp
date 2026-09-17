@@ -227,6 +227,14 @@ int main(int argc, char *argv[])
 
     XML::init();
 
+#ifdef __EMSCRIPTEN__
+    // The client needs to outlive main(), since the browser keeps calling the
+    // main loop after main() has returned. It is deleted once the client
+    // wants to exit.
+    auto *client = new Client(options);
+    return client->exec();
+#else
     Client client(options);
     return client.exec();
+#endif
 }

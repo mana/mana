@@ -39,7 +39,7 @@ class LoginData;
 class Window;
 class QuitDialog;
 
-extern volatile int fps;
+extern int fps;
 
 extern std::string errorMessage;
 extern LoginData loginData;
@@ -148,6 +148,12 @@ public:
 
     int exec();
 
+    /**
+     * Runs a single iteration of the main loop: handles the pending events
+     * and updates the client.
+     */
+    void runFrame();
+
     void update();
 
     /**
@@ -239,8 +245,9 @@ private:
 
     SDL_Surface *mIcon = nullptr;
 
-    SDL_TimerID mSecondsCounterId = 0;
     FpsManager mFpsManager;
+    uint32_t mFpsSecondStart = 0;   /**< Start of the second being counted */
+    int mFrameCount = 0;            /**< Frames drawn in the current second */
 
 #if defined(_WIN32) || defined(__APPLE__)
     /**

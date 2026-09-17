@@ -30,8 +30,15 @@
 #include "utils/stringutils.h"
 
 #include <cassert>
+#include <cstring>
 #include <sstream>
 #include <unordered_map>
+
+#ifdef __EMSCRIPTEN__
+#include <emscripten/emscripten.h>
+
+#include <cstdlib>
+#endif
 
 namespace TmwAthena {
 
@@ -229,6 +236,8 @@ static constexpr PacketInfo packet_infos[] = {
 
 const unsigned int BUFFER_SIZE = 65536;
 
+#ifndef __EMSCRIPTEN__
+
 int networkThread(void *data)
 {
     std::unique_ptr<std::shared_ptr<Network::ConnectRequest>> ref(
@@ -290,11 +299,17 @@ int networkThread(void *data)
     return 0;
 }
 
+#endif // !__EMSCRIPTEN__
+
 Network::Network():
     mInBuffer(new char[BUFFER_SIZE]),
     mOutBuffer(new char[BUFFER_SIZE])
 {
+#ifdef __EMSCRIPTEN__
+    mInCapacity = BUFFER_SIZE;
+#else
     SDLNet_Init();
+#endif
 }
 
 Network::~Network()
@@ -305,8 +320,54 @@ Network::~Network()
     delete[] mInBuffer;
     delete[] mOutBuffer;
 
+#ifndef __EMSCRIPTEN__
     SDLNet_Quit();
+#endif
 }
+
+#ifdef __EMSCRIPTEN__
+
+/**
+ * The live Network instances by WebSocket handle. WebSocket events arrive
+ * asynchronously, so an event can still be delivered for a socket whose
+ * Network is already gone. Looking the instance up here keeps that harmless.
+ */
+static std::map<EMSCRIPTEN_WEBSOCKET_T, Network *> networksBySocket;
+
+static Network *findNetwork(EMSCRIPTEN_WEBSOCKET_T socket)
+{
+    auto it = networksBySocket.find(socket);
+    return it != networksBySocket.end() ? it->second : nullptr;
+}
+
+// EM_ASM blocks are not scanned for the JS library functions they use
+EM_JS_DEPS(mana_network, "$stringToNewUTF8");
+
+/**
+ * Returns the base URL of the WebSocket-to-TCP proxy, always ending in a
+ * slash. The page can point the client at a proxy by setting
+ * Module.manaProxyUrl, otherwise the page origin with a "/tmwa/" path is
+ * assumed.
+ */
+static std::string proxyBaseUrl()
+{
+    char *url = (char *) EM_ASM_PTR({
+        var url = Module['manaProxyUrl'];
+        if (typeof url !== 'string' || url.length === 0) {
+            url = (location.protocol === 'https:' ? 'wss://' : 'ws://')
+                  + location.host + '/tmwa/';
+        }
+        if (url.charAt(url.length - 1) !== '/')
+            url += '/';
+        return stringToNewUTF8(url);
+    });
+
+    std::string result(url);
+    free(url);
+    return result;
+}
+
+#endif // __EMSCRIPTEN__
 
 bool Network::connect(const ServerInfo &server)
 {
@@ -323,14 +384,60 @@ bool Network::connect(const ServerInfo &server)
         return false;
     }
 
+#ifndef __EMSCRIPTEN__
     Log::info("Network::Connecting to %s:%i", server.hostname.c_str(),
                                               server.port);
+#endif
 
     // Reset to sane values
     mOutSize = 0;
     mInSize = 0;
     mToSkip = 0;
 
+#ifdef __EMSCRIPTEN__
+    if (!emscripten_websocket_is_supported())
+    {
+        setError(_("This browser does not support WebSockets"));
+        return false;
+    }
+
+    // Release a socket left over by a previous connection attempt
+    closeSocket();
+
+    mServer = server;
+
+    const std::string url = proxyBaseUrl() + server.hostname + '/'
+                                           + toString(server.port);
+
+    Log::info("Network::Connecting to %s:%i through %s",
+              server.hostname.c_str(), server.port, url.c_str());
+
+    EmscriptenWebSocketCreateAttributes attributes;
+    emscripten_websocket_init_create_attributes(&attributes);
+    attributes.url = url.c_str();
+    attributes.protocols = "binary";
+    attributes.createOnMainThread = true;
+
+    const EMSCRIPTEN_WEBSOCKET_T socket = emscripten_websocket_new(&attributes);
+    if (socket <= 0)
+    {
+        setError(strprintf(_("Unable to open a WebSocket to \"%s\""),
+                           url.c_str()));
+        return false;
+    }
+
+    mSocket = socket;
+    mOpened = false;
+    networksBySocket[socket] = this;
+
+    emscripten_websocket_set_onopen_callback(socket, nullptr, onOpen);
+    emscripten_websocket_set_onmessage_callback(socket, nullptr, onMessage);
+    emscripten_websocket_set_onerror_callback(socket, nullptr, onError);
+    emscripten_websocket_set_onclose_callback(socket, nullptr, onClose);
+
+    mState = CONNECTING;
+    return true;
+#else
     mConnectRequest = std::make_shared<ConnectRequest>(server, this);
 
     // The thread holds its own reference, so that the request outlives the
@@ -348,7 +455,36 @@ bool Network::connect(const ServerInfo &server)
     }
 
     return true;
+#endif // __EMSCRIPTEN__
 }
+
+#ifdef __EMSCRIPTEN__
+
+void Network::closeSocket()
+{
+    if (!mSocket)
+        return;
+
+    // Dropping the registration first makes sure that no event still in
+    // flight reaches this Network.
+    networksBySocket.erase(mSocket);
+
+    emscripten_websocket_close(mSocket, 1000, "Client disconnected");
+    emscripten_websocket_delete(mSocket);
+
+    mSocket = 0;
+    mOpened = false;
+}
+
+void Network::disconnect()
+{
+    closeSocket();
+
+    mState = IDLE;
+    mServer = ServerInfo();
+}
+
+#else
 
 void Network::disconnect()
 {
@@ -386,10 +522,16 @@ void Network::disconnect()
     }
 }
 
+#endif // __EMSCRIPTEN__
+
 const ServerInfo &Network::getServer() const
 {
+#ifdef __EMSCRIPTEN__
+    return mServer;
+#else
     static const ServerInfo noServer;
     return mConnectRequest ? mConnectRequest->server : noServer;
+#endif
 }
 
 void Network::registerHandler(MessageHandler *handler)
@@ -503,15 +645,21 @@ void Network::flush()
     if (!mOutSize || mState != CONNECTED)
         return;
 
-    int ret;
-
     MutexLocker lock(&mMutex);
-    ret = SDLNet_TCP_Send(mSocket, mOutBuffer, mOutSize);
+
+#ifdef __EMSCRIPTEN__
+    // The browser queues the data, so this never blocks
+    if (emscripten_websocket_send_binary(mSocket, mOutBuffer, mOutSize) < 0)
+        setError(_("Failed to send data to the server"));
+#else
+    const int ret = SDLNet_TCP_Send(mSocket, mOutBuffer, mOutSize);
     if (ret < (int)mOutSize)
     {
         setError("Error in SDLNet_TCP_Send(): " +
                  std::string(SDLNet_GetError()));
     }
+#endif
+
     mOutSize = 0;
 }
 
@@ -519,7 +667,12 @@ void Network::skip(int len)
 {
     MutexLocker lock(&mMutex);
     mToSkip += len;
-    if (!mInSize)
+    applyToSkip();
+}
+
+void Network::applyToSkip()
+{
+    if (!mToSkip || !mInSize)
         return;
 
     if (mInSize >= mToSkip)
@@ -534,6 +687,8 @@ void Network::skip(int len)
         mInSize = 0;
     }
 }
+
+#ifndef __EMSCRIPTEN__
 
 void Network::receive()
 {
@@ -586,20 +741,7 @@ void Network::receive()
                 else
                 {
                     mInSize += ret;
-                    if (mToSkip)
-                    {
-                        if (mInSize >= mToSkip)
-                        {
-                            mInSize -= mToSkip;
-                            memmove(mInBuffer, mInBuffer + mToSkip, mInSize);
-                            mToSkip = 0;
-                        }
-                        else
-                        {
-                            mToSkip -= mInSize;
-                            mInSize = 0;
-                        }
-                    }
+                    applyToSkip();
                 }
                 break;
             }
@@ -622,6 +764,112 @@ void Network::receive()
 
     SDLNet_FreeSocketSet(set);
 }
+
+#else // __EMSCRIPTEN__
+
+bool Network::onOpen(int, const EmscriptenWebSocketOpenEvent *event, void *)
+{
+    Network *network = findNetwork(event->socket);
+    if (!network)
+        return true;
+
+    Log::info("Network::Started session with %s:%i",
+              network->mServer.hostname.c_str(), network->mServer.port);
+
+    network->mOpened = true;
+    network->mState = CONNECTED;
+
+    // Messages may already have been written before the socket was open
+    network->flush();
+
+    return true;
+}
+
+bool Network::onMessage(int, const EmscriptenWebSocketMessageEvent *event,
+                        void *)
+{
+    Network *network = findNetwork(event->socket);
+    if (!network)
+        return true;
+
+    if (event->isText)
+    {
+        Log::info("Network: Ignoring text frame of %u bytes", event->numBytes);
+        return true;
+    }
+
+    MutexLocker lock(&network->mMutex);
+
+    // Unlike the desktop receive loop, which reads at most a buffer's worth
+    // at a time, all data that arrived since the last frame ends up here at
+    // once. So the buffer grows as needed.
+    const unsigned int needed = network->mInSize + event->numBytes;
+    if (needed > network->mInCapacity)
+    {
+        unsigned int capacity = network->mInCapacity;
+        while (capacity < needed)
+            capacity *= 2;
+
+        char *buffer = new char[capacity];
+        memcpy(buffer, network->mInBuffer, network->mInSize);
+        delete[] network->mInBuffer;
+        network->mInBuffer = buffer;
+        network->mInCapacity = capacity;
+    }
+
+    memcpy(network->mInBuffer + network->mInSize, event->data,
+           event->numBytes);
+    network->mInSize += event->numBytes;
+    network->applyToSkip();
+
+    return true;
+}
+
+bool Network::onError(int, const EmscriptenWebSocketErrorEvent *event, void *)
+{
+    Network *network = findNetwork(event->socket);
+    if (!network)
+        return true;
+
+    // The browser does not tell us what went wrong. A close event normally
+    // follows with the code and reason, replacing this message.
+    network->setError(strprintf(_("Unable to reach %s:%d"),
+                                network->mServer.hostname.c_str(),
+                                network->mServer.port));
+
+    return true;
+}
+
+bool Network::onClose(int, const EmscriptenWebSocketCloseEvent *event, void *)
+{
+    Network *network = findNetwork(event->socket);
+    if (!network)
+        return true;
+
+    const bool wasOpen = network->mOpened;
+    network->mOpened = false;
+
+    if (wasOpen && event->wasClean && event->code == 1000)
+    {
+        // The server hung up, which is how a session normally ends
+        network->mState = IDLE;
+        Log::info("Disconnected.");
+    }
+    else if (event->reason[0])
+    {
+        network->setError(strprintf(_("Connection closed (%d): %s"),
+                                    (int) event->code, event->reason));
+    }
+    else
+    {
+        network->setError(strprintf(_("Connection closed (%d)"),
+                                    (int) event->code));
+    }
+
+    return true;
+}
+
+#endif // __EMSCRIPTEN__
 
 void Network::setError(const std::string &error)
 {

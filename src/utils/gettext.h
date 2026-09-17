@@ -25,7 +25,12 @@
 #include "config.h"
 #endif
 
+// The fallback macros below would mangle the declarations in <libintl.h>, so
+// the header has to come first wherever it exists. Platforms without it (a
+// gettext-less toolchain) fall through to the macros.
+#if __has_include(<libintl.h>)
 #include <libintl.h>
+#endif
 
 #if ENABLE_NLS
 
@@ -35,6 +40,7 @@
 #else
 
 #define gettext(s) ((char const *)s)
+#define ngettext(s1, s2, n) ((char const *)((n) == 1 ? (s1) : (s2)))
 #define _(s) ((char const *)s)
 #define N_(s) ((char const *)s)
 

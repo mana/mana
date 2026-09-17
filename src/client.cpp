@@ -83,6 +83,10 @@
 
 #include <SDL_image.h>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #ifdef _WIN32
 #include <SDL_syswm.h>
 #include <winuser.h>
@@ -115,8 +119,7 @@ HairDB hairDB;                /**< Hair styles and colors info database */
 
 Sound sound;
 
-volatile int fps = 0;         /**< Frames counted in the last second */
-volatile int frame_count = 0; /**< Counts the frames during one second */
+int fps = 0;                  /**< Frames counted in the last second */
 
 #ifdef _WIN32
 static bool isDirWritable(const std::string &dir)
@@ -132,18 +135,6 @@ static bool isDirWritable(const std::string &dir)
     return true;
 }
 #endif
-
-/**
- * Updates fps.
- * Called every seconds by SDL_AddTimer()
- */
-static Uint32 nextSecond(Uint32 interval, void *param)
-{
-    fps = frame_count;
-    frame_count = 0;
-
-    return interval;
-}
 
 /**
  * Returns whether an Alt key is held down.
@@ -180,6 +171,12 @@ bool isDoubleClick(int selected)
  */
 void FpsManager::limitFps(int fpsLimit)
 {
+#ifdef __EMSCRIPTEN__
+    // The browser paces the main loop through requestAnimationFrame, and
+    // sleeping would block the page.
+    return;
+#endif
+
     if (fpsLimit <= 0)
         return;
 
@@ -342,6 +339,11 @@ Client::Client(const Options &options):
     // Try to set the desired video mode and create the graphics context
     graphics = mVideo.initialize(videoSettings);
 
+#ifdef __EMSCRIPTEN__
+    // Without this, SDL does not deliver any SDL_TEXTINPUT events
+    SDL_StartTextInput();
+#endif
+
     SDL_SetWindowTitle(mVideo.window(), branding.name().c_str());
 
     std::string iconFile = branding.appIcon;
@@ -468,17 +470,12 @@ Client::Client(const Options &options):
         }
     }
 
-    // Initialize seconds counter
-    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, nullptr);
-
     // Initialize PlayerInfo
     PlayerInfo::init();
 }
 
 Client::~Client()
 {
-    SDL_RemoveTimer(mSecondsCounterId);
-
     // Unload XML databases
     SettingsManager::unload();
     CharDB::unload();
@@ -505,99 +502,152 @@ Client::~Client()
     Log::info("Quitting");
     delete userPalette;
 
-    XML::Writer writer(mConfigDir + "/client.xml");
-    if (writer.isValid())
-        serialize(writer, config);
+    {
+        XML::Writer writer(mConfigDir + "/client.xml");
+        if (writer.isValid())
+            serialize(writer, config);
+    }
+
+    FS::sync();     // make sure the configuration is stored persistently
 
     mInstance = nullptr;
 }
 
+#ifdef __EMSCRIPTEN__
+/**
+ * Runs one iteration of the main loop and takes care of the shutdown once the
+ * client wants to exit, since there is no loop to fall out of.
+ */
+static void emscriptenFrame(void *data)
+{
+    auto *client = static_cast<Client*>(data);
+
+    client->runFrame();
+
+    if (Client::getState() != State::Exit)
+        return;
+
+    emscripten_cancel_main_loop();
+
+    Net::unload();
+    delete client;          // writes the configuration
+    FS::sync();
+
+    EM_ASM({
+        var message = "Mana has quit. You can close this tab.";
+        if (typeof Module !== "undefined" && Module.setStatus)
+            Module.setStatus(message);
+        document.title = message;
+    });
+}
+#endif
+
 int Client::exec()
 {
     Time::beginFrame();     // Prevent startup lag influencing the first frame
+    mFpsSecondStart = Time::absoluteTimeMs();
 
+#ifdef __EMSCRIPTEN__
+    // The browser drives the main loop, one iteration per animation frame.
+    // The shutdown that follows the loop below happens in emscriptenFrame.
+    emscripten_set_main_loop_arg(emscriptenFrame, this, 0, 0);
+    return 0;
+#else
     while (mState != State::Exit)
-    {
-        // Handle SDL events
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                mState = State::Exit;
-                break;
-
-            case SDL_WINDOWEVENT:
-                switch (event.window.event) {
-                case SDL_WINDOWEVENT_SIZE_CHANGED:
-                    handleWindowSizeChanged(event.window.data1,
-                                            event.window.data2);
-                    break;
-                }
-                break;
-
-            case SDL_KEYDOWN:
-                if ((event.key.keysym.sym == SDLK_RETURN ||
-                     event.key.keysym.sym == SDLK_KP_ENTER) &&
-                        isAltDown(event.key.keysym.mod) &&
-                        !event.key.repeat)
-                {
-                    toggleFullscreen();
-                    continue;
-                }
-
-                if (keyboard.isEnabled())
-                {
-                    const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
-                    if (tKey == KeyboardConfig::KEY_WINDOW_SETUP)
-                    {
-                        setupWindow->setVisible(!setupWindow->isVisible());
-                        if (setupWindow->isVisible())
-                            setupWindow->requestMoveToTop();
-                        continue;
-                    }
-                }
-
-                if (setupWindow->isVisible() &&
-                    keyboard.getNewKeyIndex() > KeyboardConfig::KEY_NO_VALUE)
-                {
-                    keyboard.setNewKey(event.key.keysym.sym);
-                    keyboard.callbackNewKey();
-                    keyboard.setNewKeyIndex(KeyboardConfig::KEY_NO_VALUE);
-                    continue;
-                }
-
-                // Check whether the game will handle the event
-                if (mGame && mGame->keyDownEvent(event.key))
-                    continue;
-
-                break;
-            }
-
-            // Push input to GUI when not used
-            try
-            {
-                guiInput->pushInput(event);
-            }
-            catch (gcn::Exception e)
-            {
-                const char *err = e.getMessage().c_str();
-                Log::warn("Guichan input exception: %s", err);
-            }
-        }
-
-        update();
-    }
+        runFrame();
 
     Net::unload();
 
     return 0;
+#endif
+}
+
+void Client::runFrame()
+{
+    // Handle SDL events
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        switch (event.type)
+        {
+        case SDL_QUIT:
+            mState = State::Exit;
+            break;
+
+        case SDL_WINDOWEVENT:
+            switch (event.window.event) {
+            case SDL_WINDOWEVENT_SIZE_CHANGED:
+                handleWindowSizeChanged(event.window.data1,
+                                        event.window.data2);
+                break;
+            }
+            break;
+
+        case SDL_KEYDOWN:
+            if ((event.key.keysym.sym == SDLK_RETURN ||
+                 event.key.keysym.sym == SDLK_KP_ENTER) &&
+                    isAltDown(event.key.keysym.mod) &&
+                    !event.key.repeat)
+            {
+                toggleFullscreen();
+                continue;
+            }
+
+            if (keyboard.isEnabled())
+            {
+                const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
+                if (tKey == KeyboardConfig::KEY_WINDOW_SETUP)
+                {
+                    setupWindow->setVisible(!setupWindow->isVisible());
+                    if (setupWindow->isVisible())
+                        setupWindow->requestMoveToTop();
+                    continue;
+                }
+            }
+
+            if (setupWindow->isVisible() &&
+                keyboard.getNewKeyIndex() > KeyboardConfig::KEY_NO_VALUE)
+            {
+                keyboard.setNewKey(event.key.keysym.sym);
+                keyboard.callbackNewKey();
+                keyboard.setNewKeyIndex(KeyboardConfig::KEY_NO_VALUE);
+                continue;
+            }
+
+            // Check whether the game will handle the event
+            if (mGame && mGame->keyDownEvent(event.key))
+                continue;
+
+            break;
+        }
+
+        // Push input to GUI when not used
+        try
+        {
+            guiInput->pushInput(event);
+        }
+        catch (gcn::Exception e)
+        {
+            const char *err = e.getMessage().c_str();
+            Log::warn("Guichan input exception: %s", err);
+        }
+    }
+
+    update();
 }
 
 void Client::update()
 {
     Time::beginFrame();
+
+    // Publish the number of frames drawn in the last second
+    const uint32_t now = Time::absoluteTimeMs();
+    if (now - mFpsSecondStart >= 1000)
+    {
+        fps = mFrameCount;
+        mFrameCount = 0;
+        mFpsSecondStart = now;
+    }
 
     mVideo.updateWindowSize();
     checkGraphicsSize();
@@ -618,7 +668,7 @@ void Client::update()
     // Update the screen when application is active, delay otherwise.
     if (isActive())
     {
-        frame_count++;
+        mFrameCount++;
         gui->draw();
         mVideo.present();
         mFpsManager.limitFps(config.fpsLimit);
@@ -1146,6 +1196,7 @@ void Client::initRootDir()
 #endif
 }
 
+#ifndef __EMSCRIPTEN__
 /**
  * Returns the configuration directory used by Mana 0.6 and earlier for the
  * given application name.
@@ -1202,6 +1253,7 @@ static void migrateLegacyConfig(const std::string &configPath)
         Log::warn("Failed to migrate configuration: %s", e.what());
     }
 }
+#endif // __EMSCRIPTEN__
 
 /**
  * Initializes the directory in which the client stores its configuration,
@@ -1213,12 +1265,18 @@ void Client::initHomeDir()
 
     if (mLocalDataDir.empty())
     {
+#ifdef __EMSCRIPTEN__
+        // This is the directory the page mounts as IDBFS before main runs. It
+        // is the only place where writes survive a reload.
+        mLocalDataDir = "/home/web_user/mana";
+#else
         if (const char *prefDir = FS::getPrefDir("manasource",
                                                  branding.shortName().c_str()))
             mLocalDataDir = prefDir;
         else
             Log::critical(_("Failed to determine the directory for storing "
                             "settings and downloads! Exiting."));
+#endif
     }
 
     if (mkdir_r(mLocalDataDir.c_str()))
@@ -1249,9 +1307,11 @@ void Client::initConfiguration()
 
     const std::string configPath = mConfigDir + "/client.xml";
 
+#ifndef __EMSCRIPTEN__
     // Don't migrate into a directory that was given on the command line
     if (mOptions.configDir.empty() && mOptions.localDataDir.empty())
         migrateLegacyConfig(configPath);
+#endif
 
     XML::Document doc(configPath, false);
 
@@ -1338,6 +1398,14 @@ void Client::initScreenshotDir()
     {
         mScreenshotDir = mOptions.screenshotDir;
     }
+#ifdef __EMSCRIPTEN__
+    else
+    {
+        // Screenshots are saved in the persistent directory and are also
+        // offered to the browser as a download.
+        mScreenshotDir = mLocalDataDir + "/screenshots";
+    }
+#else
     else if (mScreenshotDir.empty())
     {
 #ifdef _WIN32
@@ -1361,6 +1429,7 @@ void Client::initScreenshotDir()
             }
         }
     }
+#endif // __EMSCRIPTEN__
 }
 
 void Client::accountLogin(LoginData *loginData)
@@ -1405,6 +1474,11 @@ void Client::toggleFullscreen()
 
 void Client::handleWindowSizeChanged(int width, int height)
 {
+#ifdef __EMSCRIPTEN__
+    // The canvas follows the browser viewport, so there is no size to store.
+    (void) width;
+    (void) height;
+#else
     // Store the new size in the configuration. Only the windowed size is worth
     // remembering, since a fullscreen window is as large as the display.
     if (mVideo.settings().windowMode == WindowMode::Windowed)
@@ -1412,6 +1486,7 @@ void Client::handleWindowSizeChanged(int width, int height)
         config.screenWidth = width;
         config.screenHeight = height;
     }
+#endif
 }
 
 void Client::checkGraphicsSize()

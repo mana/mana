@@ -45,3 +45,8 @@ Xcode/mana.xcodeproj/project.xcworkspace/xcuserdata
 
 # Claude
 .claude/
+
+# CPM package source cache (WebAssembly build)
+.cpm-cache/
+build-wasm/
+build-native/

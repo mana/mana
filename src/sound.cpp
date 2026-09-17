@@ -74,6 +74,10 @@ void Sound::init()
 
     const size_t audioBuffer = 4096;
 
+    // In a browser the WebAudio context starts out suspended until the user
+    // interacts with the page. SDL's Emscripten audio backend deals with this
+    // by itself: it feeds silence to the mixer and resumes the context once
+    // the browser reports a user activation, so no hook is needed here.
     const int res = Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT,
                                   MIX_DEFAULT_CHANNELS, audioBuffer);
     if (res < 0)

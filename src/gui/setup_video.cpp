@@ -182,6 +182,16 @@ private:
 };
 
 
+static std::vector<std::string> windowModeStrings()
+{
+    std::vector<std::string> modes { _("Windowed"), _("Windowed Fullscreen") };
+#ifndef __EMSCRIPTEN__
+    // In the browser there is no exclusive fullscreen mode.
+    modes.emplace_back(_("Fullscreen"));
+#endif
+    return modes;
+}
+
 static const char *overlayDetailToString(int detail)
 {
     if (detail == -1)
@@ -218,7 +228,7 @@ Setup_Video::Setup_Video():
     mFps(config.fpsLimit),
     mSDLTransparencyDisabled(config.disableTransparency),
     mReduceInputLagEnabled(config.reduceInputLag),
-    mWindowModeListModel(new StringListModel({ _("Windowed"), _("Windowed Fullscreen"), _("Fullscreen") })),
+    mWindowModeListModel(new StringListModel(windowModeStrings())),
     mResolutionListModel(new ResolutionListModel),
     mScaleListModel(new ScaleListModel(mVideoSettings)),
     mWindowModeDropDown(new DropDown(mWindowModeListModel.get())),
@@ -270,6 +280,15 @@ Setup_Video::Setup_Video():
                                                                       mVideoSettings.height));
     mResolutionDropDown->setEnabled(mVideoSettings.windowMode != WindowMode::WindowedFullscreen);
     mScaleDropDown->setSelected(mVideoSettings.userScale);
+
+#ifdef __EMSCRIPTEN__
+    // The browser viewport dictates the size, the renderer is always
+    // SDL_Renderer and glFinish does not exist here.
+    mResolutionDropDown->setEnabled(false);
+    mVSyncCheckBox->setEnabled(false);
+    mReduceInputLagCheckBox->setSelected(false);
+    mReduceInputLagCheckBox->setEnabled(false);
+#endif
 
     // Set actions
     mWindowModeDropDown->setActionEventId("windowmode");
@@ -351,12 +370,14 @@ void Setup_Video::apply()
 
     mVideoSettings.windowMode = static_cast<WindowMode>(mWindowModeDropDown->getSelected());
 
+#ifndef __EMSCRIPTEN__
     if (mResolutionDropDown->getSelected() > 0)
     {
         const auto &mode = mResolutionListModel->getModeAt(mResolutionDropDown->getSelected());
         mVideoSettings.width = mode.width;
         mVideoSettings.height = mode.height;
     }
+#endif
 
     mVideoSettings.userScale = std::max(0, mScaleDropDown->getSelected());
     mVideoSettings.vsync = mVSyncCheckBox->isSelected();
@@ -486,7 +507,9 @@ void Setup_Video::action(const gcn::ActionEvent &event)
         }
         else
         {
+#ifndef __EMSCRIPTEN__
             mResolutionDropDown->setEnabled(true);
+#endif
         }
 
         refreshScaleList();
