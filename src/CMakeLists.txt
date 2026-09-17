@@ -657,6 +657,23 @@ if(EMSCRIPTEN)
   # CMakeLists.txt for MANA_WEB_PROXY_URL and MANA_WEB_UPDATE_HOST)
   set(MANA_WEB_SHELL "${CMAKE_CURRENT_BINARY_DIR}/shell.html")
   set(MANA_WEB_PRE_JS "${CMAKE_SOURCE_DIR}/packaging/web/pre.js")
+
+  # Quotes a value as a JavaScript string literal, so that a stray quote or
+  # a "</script>" in a configured value cannot break the page.
+  function(mana_js_string var)
+    string(REPLACE "\\" "\\\\" quoted "${${var}}")
+    string(REPLACE "\"" "\\\"" quoted "${quoted}")
+    string(REPLACE "\n" "\\n" quoted "${quoted}")
+    string(REPLACE "\r" "\\r" quoted "${quoted}")
+    string(REPLACE "</" "<\\/" quoted "${quoted}")
+    set(${var} "\"${quoted}\"" PARENT_SCOPE)
+  endfunction()
+
+  foreach(var MANA_WEB_PROXY_URL MANA_WEB_UPDATE_HOST MANA_WEB_SERVER
+          MANA_WEB_PORT)
+    mana_js_string(${var})
+  endforeach()
+
   configure_file("${CMAKE_SOURCE_DIR}/packaging/web/shell.html"
                  "${MANA_WEB_SHELL}" @ONLY)
 
