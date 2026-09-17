@@ -1,0 +1,22 @@
+[package]
+name = "ws-tcp-proxy"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+description = "Proxies WebSocket connections to TCP for the WebAssembly build of Mana"
+license = "GPL-2.0-or-later"
+
+[[bin]]
+name = "ws-tcp-proxy"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", default-features = false, features = ["std", "derive", "help", "usage", "error-context"] }
+env_logger = { version = "0.11", default-features = false, features = ["humantime"] }
+futures-util = { version = "0.3", default-features = false, features = ["std", "sink"] }
+log = "0.4"
+tokio = { version = "1", features = ["rt-multi-thread", "net", "io-util", "macros", "signal", "time"] }
+tokio-tungstenite = { version = "0.30", default-features = false, features = ["handshake"] }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt-multi-thread", "net", "io-util", "macros", "time"] }

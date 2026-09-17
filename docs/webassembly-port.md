@@ -63,8 +63,8 @@ gettext/libintl has no port; translations are disabled for now.
    Servers hopped to (char server, map server) inherit the URL of the server
    the client came from. In the browser build the server dialog hides online
    servers without a `<websocket>` element, unless the page set a proxy, which
-   is then assumed to reach every server. A development proxy is provided in
-   `tools/ws-tcp-proxy.py`.
+   is then assumed to reach every server. The proxy is `tools/ws-tcp-proxy`, a small Rust
+   program that also serves as the production proxy.
 4. **HTTP downloads**: `Net::Download` is re-implemented with
    `emscripten_fetch`, keeping its public API and the per-frame `getState()`
    polling used by `UpdaterWindow` and `ServerDialog`. Update files are
@@ -100,7 +100,7 @@ for a smoke test) and open `mana.html`.
 To reach a tmwAthena server from the page, run the proxy:
 
 ```
-python3 tools/ws-tcp-proxy.py --listen 127.0.0.1:8765 --allow 127.0.0.1
+cargo run --release --manifest-path tools/ws-tcp-proxy/Cargo.toml -- --listen 127.0.0.1:8765 --allow 127.0.0.1
 ```
 
 and open the page with `?proxy=ws://127.0.0.1:8765/`. The page also accepts
@@ -314,7 +314,8 @@ Status markers: [x] done, [~] partially done, [ ] not started.
       whether it may be reached. The `<websocket>` URL of the server that was
       selected is carried over to the char server and the map server, so every
       hop uses the same endpoint.
-- [x] `tools/ws-tcp-proxy.py` development proxy with an allowlist.
+- [x] `tools/ws-tcp-proxy`, a Rust WebSocket-to-TCP proxy with an allowlist
+      (it started as a Python script and was ported for production use).
       `--listen HOST:PORT`, repeatable `--allow HOST[:PORT]` (default
       `127.0.0.1` and `localhost`) and `--verbose`. The request path is
       `/<host>/<port>`, and any prefix before those two segments is ignored,
@@ -425,7 +426,7 @@ All checked with Emscripten 5.0.1 and headless Chromium on 2026-09-17.
       changed to 800x500 without any window event from the page.
 - [x] Quit writes `client.xml` to the IDBFS directory and a reload finds
       `client.xml`, `serverlist.xml`, `mana.log` and `logs/` again.
-- [x] Against a local tmwAthena through `tools/ws-tcp-proxy.py`: the login
+- [x] Against a local tmwAthena through `tools/ws-tcp-proxy`: the login
       dialog appears, registering an account works, login hops to the char
       server and then to the map server, a character is created, the map
       renders with NPCs, minimap and HUD at 60 FPS, a chat line is echoed
@@ -441,10 +442,11 @@ Filled in as work progresses.
 
 ### Networking
 
-- The proxy in `tools/ws-tcp-proxy.py` is for development only. It has no
-  rate limiting, no origin check and no connection limit. A public
-  deployment wants nginx (or another front end) terminating TLS and
-  proxying `/tmwa/` to it, or websockify in front of a fixed target.
+- The proxy in `tools/ws-tcp-proxy` has a connection limit and an optional
+  idle timeout, but no rate limiting and no origin check. A public
+  deployment wants a front end terminating TLS and proxying `/tmwa/` to it;
+  on server.themanaworld.org that is Caddy, deployed by the `tmwa-ws-proxy`
+  role of the TMW Ansible repository.
 - A page served over HTTPS can only open `wss://`, so a public deployment
   needs a certificate for the proxy host. Serving the proxy under the page
   origin, which is what the client falls back to when neither the server nor
