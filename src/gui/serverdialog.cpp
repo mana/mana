@@ -320,6 +320,7 @@ void ServerDialog::action(const gcn::ActionEvent &event)
             mServerInfo->name = serverInfo.name;
             mServerInfo->port = serverInfo.port;
             mServerInfo->type = serverInfo.type;
+            mServerInfo->websocket = serverInfo.websocket;
 
             // Save the selected server
             mServerInfo->save = true;
