@@ -532,11 +532,11 @@ Filled in as work progresses.
   `android-nls` branch has `src/utils/messagecatalog.{cpp,h}` for exactly
   this, behind a `USE_LIBINTL` option; once that lands, the browser build can
   preload `po/` catalogs and turn `ENABLE_NLS` back on.
-- The update host of The Mana World (`updates.themanaworld.org`) sends no
-  `Access-Control-Allow-Origin` header, so the browser build can only play
-  there once the page is served from that origin, the host adds CORS headers,
-  or a same-origin reverse proxy for `/updates/` is deployed next to the
-  WebSocket proxy.
+- The update host of The Mana World (`updates.themanaworld.org`) answers
+  CORS preflights and allows any origin since September 2026 (Caddy config
+  in the `website-server` role of the TMW Ansible repository), so the browser
+  build can download its updates from any page origin. Other update hosts
+  need the same headers.
 - Manaserv support is compiled out, since ENet is UDP. Supporting it would
   need a WebRTC data channel or a WebSocket bridge that speaks ENet.
 - No CI job builds the wasm target yet. The first build needs network access
