@@ -151,12 +151,25 @@ every server, so it lists them all.
 ### GitHub Pages
 
 `.github/workflows/web.yml` builds the web client on every push to the `wasm`
-branch and publishes it with GitHub Pages (source: GitHub Actions). It reads
-the repository variables `WEB_PROXY_URL`, `WEB_UPDATE_HOST`, `WEB_SERVER` and
-`WEB_PORT` for the defaults above, so the deployment can be pointed at a
-proxy, an update mirror and a fixed server without touching the code. The
+branch and publishes it with GitHub Pages (source: GitHub Actions) at
+https://mana.github.io/mana/, the generic client that shows the server list.
+It reads the repository variables `WEB_PROXY_URL`, `WEB_UPDATE_HOST`,
+`WEB_SERVER` and `WEB_PORT` for the defaults above, all unset there. The
 `github-pages` environment has to allow deployments from the `wasm` branch;
-the deploy job is rejected otherwise. The page cannot host either itself: the
+the deploy job is rejected otherwise.
+
+The workflow installs the SDK at a fixed path in the workspace and caches
+it, the Emscripten ports (`EM_CACHE`), the CPM sources and a ccache
+directory; a warm run builds in under four minutes with every object served
+from ccache.
+
+https://play.themanaworld.org/ is a second Pages site, built by
+https://github.com/themanaworld/play.themanaworld.org from the same `wasm`
+branch with `server.themanaworld.org`, its WebSocket proxy and update host
+baked in, so players never see the server dialog. It rebuilds on a push to
+that repository, on a manual dispatch, or on a `client-updated` repository
+dispatch event, which the client workflow could send after its own build
+once a token for that is set up. The page cannot host either itself: the
 proxy needs a host that terminates TLS (`wss://`) and forwards to tmwAthena,
 and the update host has to send CORS headers for the page origin.
 
