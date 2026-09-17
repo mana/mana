@@ -127,6 +127,13 @@ static void serialize(XML::Writer &writer, const ServerInfo &server)
         writer.endElement();
     }
 
+    if (!server.websocket.empty())
+    {
+        writer.startElement("websocket");
+        writer.writeText(server.websocket);
+        writer.endElement();
+    }
+
     if (!server.persistentIp)
     {
         writer.startElement("persistentIp");
@@ -359,6 +366,8 @@ void deserialize(XML::Node node, ServerInfo &server)
             node.attribute("port", server.port);
         } else if (node.name() == "description") {
             server.description = node.textContent();
+        } else if (node.name() == "websocket") {
+            server.websocket = node.textContent();
         } else if (node.name() == "persistentIp") {
             const std::string value { node.textContent() };
             server.persistentIp = getBoolFromString(value, server.persistentIp);

@@ -53,9 +53,18 @@ gettext/libintl has no port; translations are disabled for now.
    instead of SDL_net. A raw TCP connection to `host:port` becomes a
    WebSocket to `<proxy base>/<host>/<port>` carrying the binary subprotocol.
    This avoids Emscripten's fake-DNS socket emulation and gives explicit
-   open/close/error events. The proxy base URL comes from the page
-   (`Module.manaProxyUrl`), defaulting to `<page origin>/tmwa/`.
-   A development proxy is provided in `tools/ws-tcp-proxy.py`.
+   open/close/error events. The base URL is resolved by
+   `Net::webSocketUrl()` in `src/net/websocketurl.{cpp,h}`, in this order:
+   the `<websocket>` element of the server entry, then the proxy the page set
+   in `Module.manaProxyUrl` (only set when the `proxy` query parameter or the
+   build-time default names one), then the page origin plus `/tmwa/`. A
+   trailing slash is added when it is missing. The URL a server gives may be a
+   proxy, or the server itself once tmwAthena speaks WebSocket directly.
+   Servers hopped to (char server, map server) inherit the URL of the server
+   the client came from. In the browser build the server dialog hides online
+   servers without a `<websocket>` element, unless the page set a proxy, which
+   is then assumed to reach every server. A development proxy is provided in
+   `tools/ws-tcp-proxy.py`.
 4. **HTTP downloads**: `Net::Download` is re-implemented with
    `emscripten_fetch`, keeping its public API and the per-frame `getState()`
    polling used by `UpdaterWindow` and `ServerDialog`. Update files are
@@ -108,6 +117,29 @@ emcmake cmake -S . -B build-wasm -DCMAKE_BUILD_TYPE=Release \
 ```
 
 The query parameters still override them.
+
+### WebSocket URL in the server list
+
+A server can name its own WebSocket endpoint in the online server list, so
+that the browser build reaches it without the page knowing about it:
+
+```xml
+<server name="The Mana World" type="tmwathena">
+    <connection hostname="server.themanaworld.org" port="6901"/>
+    <websocket>wss://server.themanaworld.org/tmwa/</websocket>
+</server>
+```
+
+The client appends `<host>/<port>` to that base URL, so the example connects
+to `wss://server.themanaworld.org/tmwa/server.themanaworld.org/6901`, and to
+the address the login and char servers hand out after each hop. The same
+element is written for custom servers in `client.xml`, where the browser
+build's custom server dialog offers a "WebSocket URL" field for it.
+
+Servers without the element are left out of the list in the browser build,
+since there is no way to connect to them, unless the page set a proxy of its
+own with `?proxy=` or `MANA_WEB_PROXY_URL`. That proxy is expected to reach
+every server, so it lists them all.
 
 ### GitHub Pages
 
@@ -260,17 +292,19 @@ Status markers: [x] done, [~] partially done, [ ] not started.
       `SDL_net`. The desktop implementation is unchanged, next to it under
       `#ifndef __EMSCRIPTEN__`.
 - [x] Proxy URL construction. A TCP connection to `host:port` becomes a
-      WebSocket to `<proxy base><host>/<port>` with the `binary`
-      subprotocol. The base is read once per connect from
-      `Module.manaProxyUrl` (through `EM_ASM_PTR` and `stringToNewUTF8`) and
-      falls back to `ws(s)://<page host>/tmwa/`. A missing trailing slash is
-      added. The resolved URL is logged on every connect.
+      WebSocket to `<base><host>/<port>` with the `binary` subprotocol. The
+      base is resolved per connect by `Net::webSocketUrl()`: the server's own
+      `<websocket>` URL, then `Module.manaProxyUrl` (read through `EM_ASM_PTR`
+      and `stringToNewUTF8`), then `ws(s)://<page host>/tmwa/`. A missing
+      trailing slash is added. The resolved URL is logged on every connect.
       `ServerStatusBackend` needs nothing of its own: it probes through a
       `Network` of its own and so gets the same URL handling.
 - [x] Server hopping (login to char to map) keeps working. No name
       resolution happens in the client, so the raw IP the login and char
       servers hand out is passed to the proxy as-is, and the proxy decides
-      whether it may be reached.
+      whether it may be reached. The `<websocket>` URL of the server that was
+      selected is carried over to the char server and the map server, so every
+      hop uses the same endpoint.
 - [x] `tools/ws-tcp-proxy.py` development proxy with an allowlist.
       `--listen HOST:PORT`, repeatable `--allow HOST[:PORT]` (default
       `127.0.0.1` and `localhost`) and `--verbose`. The request path is
@@ -404,8 +438,8 @@ Filled in as work progresses.
   proxying `/tmwa/` to it, or websockify in front of a fixed target.
 - A page served over HTTPS can only open `wss://`, so a public deployment
   needs a certificate for the proxy host. Serving the proxy under the page
-  origin, so that the default `Module.manaProxyUrl` applies, avoids that
-  problem entirely.
+  origin, which is what the client falls back to when neither the server nor
+  the page names one, avoids that problem entirely.
 - The in-buffer grows on demand in the browser build, since everything that
   arrived between two frames lands in it at once, unlike the desktop receive
   loop that reads at most 64 KiB at a time. It never shrinks again.

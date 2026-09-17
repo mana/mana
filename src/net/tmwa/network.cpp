@@ -26,6 +26,10 @@
 #include "net/tmwa/messagein.h"
 #include "net/tmwa/protocol.h"
 
+#ifdef __EMSCRIPTEN__
+#include "net/websocketurl.h"
+#endif
+
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -33,12 +37,6 @@
 #include <cstring>
 #include <sstream>
 #include <unordered_map>
-
-#ifdef __EMSCRIPTEN__
-#include <emscripten/emscripten.h>
-
-#include <cstdlib>
-#endif
 
 namespace TmwAthena {
 
@@ -340,33 +338,6 @@ static Network *findNetwork(EMSCRIPTEN_WEBSOCKET_T socket)
     return it != networksBySocket.end() ? it->second : nullptr;
 }
 
-// EM_ASM blocks are not scanned for the JS library functions they use
-EM_JS_DEPS(mana_network, "$stringToNewUTF8");
-
-/**
- * Returns the base URL of the WebSocket-to-TCP proxy, always ending in a
- * slash. The page can point the client at a proxy by setting
- * Module.manaProxyUrl, otherwise the page origin with a "/tmwa/" path is
- * assumed.
- */
-static std::string proxyBaseUrl()
-{
-    char *url = (char *) EM_ASM_PTR({
-        var url = Module['manaProxyUrl'];
-        if (typeof url !== 'string' || url.length === 0) {
-            url = (location.protocol === 'https:' ? 'wss://' : 'ws://')
-                  + location.host + '/tmwa/';
-        }
-        if (url.charAt(url.length - 1) !== '/')
-            url += '/';
-        return stringToNewUTF8(url);
-    });
-
-    std::string result(url);
-    free(url);
-    return result;
-}
-
 #endif // __EMSCRIPTEN__
 
 bool Network::connect(const ServerInfo &server)
@@ -406,8 +377,8 @@ bool Network::connect(const ServerInfo &server)
 
     mServer = server;
 
-    const std::string url = proxyBaseUrl() + server.hostname + '/'
-                                           + toString(server.port);
+    const std::string url = Net::webSocketUrl(server) + server.hostname
+                            + '/' + toString(server.port);
 
     Log::info("Network::Connecting to %s:%i through %s",
               server.hostname.c_str(), server.port, url.c_str());

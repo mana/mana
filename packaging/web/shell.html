@@ -88,12 +88,11 @@
   var buildUpdateHost = '@MANA_WEB_UPDATE_HOST@';
 
   // Base URL of the WebSocket-to-TCP proxy used to reach tmwAthena servers.
-  // Defaults to the page origin with a ws/wss scheme and a "/tmwa/" path.
-  function defaultProxyUrl() {
-    if (buildProxyUrl) return buildProxyUrl;
-    var scheme = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    return scheme + '//' + window.location.host + '/tmwa/';
-  }
+  // Only set when the page names one explicitly, so that the client can tell
+  // this case apart from a server list in which every server names its own
+  // WebSocket URL. Without either, the client assumes the page origin with a
+  // ws/wss scheme and a "/tmwa/" path.
+  var proxyUrl = params.get('proxy') || buildProxyUrl;
 
   // Command line arguments are taken from the query string, so that a link can
   // point straight at a server.
@@ -113,7 +112,6 @@
   var Module = {
     canvas: canvas,
     arguments: buildArguments(),
-    manaProxyUrl: params.get('proxy') || defaultProxyUrl(),
 
     setStatus: function (text) {
       if (Module.setStatus.last === text) return;
@@ -159,6 +157,8 @@
       statusElement.textContent = 'Something went wrong: ' + what;
     }
   };
+
+  if (proxyUrl) Module.manaProxyUrl = proxyUrl;
 
   Module.setStatus('Loading...');
   window.Module = Module;

@@ -77,6 +77,9 @@ class CustomServerDialog : public Window,
         TextField *mPortField;
         TextField *mNameField;
         TextField *mDescriptionField;
+#ifdef __EMSCRIPTEN__
+        TextField *mWebSocketField;
+#endif
         Button *mOkButton;
         Button *mCancelButton;
 #ifdef MANASERV_SUPPORT

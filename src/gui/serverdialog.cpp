@@ -38,6 +38,10 @@
 #include "gui/widgets/listbox.h"
 #include "gui/widgets/scrollarea.h"
 
+#ifdef __EMSCRIPTEN__
+#include "net/websocketurl.h"
+#endif
+
 #include "resources/image.h"
 #include "resources/theme.h"
 
@@ -540,12 +544,28 @@ void ServerDialog::loadServer(XML::Node serverNode)
         {
             server.description = subNode.textContent();
         }
+        else if (subNode.name() == "websocket")
+        {
+            server.websocket = subNode.textContent();
+        }
         else if (subNode.name() == "persistentIp")
         {
             const auto text = subNode.textContent();
             server.persistentIp = text == "1" || text == "true";
         }
     }
+
+#ifdef __EMSCRIPTEN__
+    // The browser can only reach a server over a WebSocket. Unless the page
+    // named a proxy that reaches every server, only the servers that give a
+    // WebSocket URL of their own are usable.
+    if (server.websocket.empty() && !Net::hasPageWebSocketProxy())
+    {
+        Log::info("Skipping server \"%s\": no WebSocket URL",
+                  server.name.c_str());
+        return;
+    }
+#endif
 
     server.version.first = gui->getFont()->getWidth(version);
     server.version.second = version;
@@ -561,6 +581,7 @@ void ServerDialog::loadServer(XML::Node serverNode)
             s.name = server.name;
             s.version = server.version;
             s.description = server.description;
+            s.websocket = server.websocket;
             mServersListModel->setVersionString(i, version);
             found = true;
             break;
