@@ -39,7 +39,7 @@ static std::string pageProxyUrl()
     char *url = (char *) EM_ASM_PTR({
         var url = Module['manaProxyUrl'];
         if (typeof url !== 'string')
-            url = '';
+            url = "";
         return stringToNewUTF8(url);
     });
 
