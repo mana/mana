@@ -37,7 +37,7 @@ jobs:
         with:
           submodules: true
 
-      - uses: mymindstorm/setup-emsdk@v14
+      - uses: mymindstorm/setup-emsdk@v16
         with:
           version: ${{ env.EMSDK_VERSION }}
           actions-cache-folder: emsdk-cache
@@ -47,20 +47,20 @@ jobs:
       # saved before they existed. Keeping that cache in the workspace
       # lets it be restored between runs.
       - name: Cache Emscripten ports
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ${{ env.EM_CACHE }}
           key: em-cache-${{ env.EMSDK_VERSION }}-${{ hashFiles('src/CMakeLists.txt') }}
           restore-keys: em-cache-${{ env.EMSDK_VERSION }}-
 
       - name: Cache CPM sources
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: .cpm-cache
           key: cpm-${{ hashFiles('CMakeLists.txt') }}
 
       - name: Set up ccache
-        uses: hendrikmuhs/ccache-action@v1.2
+        uses: hendrikmuhs/ccache-action@v1.2.24
         with:
           key: web-${{ env.EMSDK_VERSION }}
           max-size: 500M
@@ -85,7 +85,7 @@ jobs:
           cp build/src/mana.js build/src/mana.wasm build/src/mana.data site/
           cp build/src/mana.html site/index.html
 
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: site
 
@@ -97,4 +97,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
