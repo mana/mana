@@ -28,6 +28,9 @@ env:
   EMSDK_VERSION: 5.0.1
   # Where Emscripten keeps its built ports and system libraries
   EM_CACHE: ${{ github.workspace }}/.em-cache
+  # em++ is a script whose timestamp changes with every cache restore, so
+  # ccache identifies the compiler by its content instead
+  CCACHE_COMPILERCHECK: content
 
 jobs:
   build:
@@ -37,15 +40,32 @@ jobs:
         with:
           submodules: true
 
-      - uses: mymindstorm/setup-emsdk@v16
+      # The SDK is installed at a fixed path in the workspace rather than
+      # through setup-emsdk, whose install location changes from run to
+      # run and would defeat ccache, since the toolchain and header paths
+      # are part of every object's hash.
+      - name: Cache emsdk
+        uses: actions/cache@v6
         with:
-          version: ${{ env.EMSDK_VERSION }}
-          actions-cache-folder: emsdk-cache
+          path: emsdk
+          key: emsdk-${{ env.EMSDK_VERSION }}
+
+      - name: Install emsdk
+        run: |
+          if [ ! -d emsdk ]; then
+            git clone --depth 1 https://github.com/emscripten-core/emsdk.git
+          fi
+          ./emsdk/emsdk install "$EMSDK_VERSION"
+          ./emsdk/emsdk activate "$EMSDK_VERSION"
+          source ./emsdk/emsdk_env.sh
+          echo "EMSDK=$EMSDK" >> "$GITHUB_ENV"
+          echo "EMSDK_NODE=$EMSDK_NODE" >> "$GITHUB_ENV"
+          echo "$EMSDK" >> "$GITHUB_PATH"
+          echo "$EMSDK/upstream/emscripten" >> "$GITHUB_PATH"
 
       # The SDL2 ports and their dependencies are built from source on
-      # first use and land in the Emscripten cache, which setup-emsdk
-      # saved before they existed. Keeping that cache in the workspace
-      # lets it be restored between runs.
+      # first use and land in the Emscripten cache (EM_CACHE above), kept
+      # apart from the SDK so that it is restored between runs.
       - name: Cache Emscripten ports
         uses: actions/cache@v6
         with:
