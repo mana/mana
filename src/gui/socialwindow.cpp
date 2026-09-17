@@ -389,22 +389,36 @@ SocialWindow::SocialWindow() :
     place(0, 0, mCreateButton);
     place(1, 0, mInviteButton);
     place(2, 0, mLeaveButton);
-    place(0, 1, mTabs, 4, 4);
-
-    // Determine minimum size
-    int width = 0, height = 0;
-    getLayout().reflow(width, height);
-    setMinimumContentSize(width, height);
-
-    setDefaultSize(590, 200, 150, 124);
-    loadWindowState();
-
-    mMenu = new Menu("SocialMenu");
+    place(0, 1, mTabs, 4);
+    getLayout().setRowHeight(0, 0); // Keep the buttons at their own height
+    getLayout().setRowHeight(1, Layout::AUTO_SET); // Give the tabs all remaining space
 
     mPlayerListTab = new PlayerListTab;
     mPlayerListTab->setCaption(strformat(_("Online ({})"), 0u));
 
     mTabs->addTab(mPlayerListTab, mPlayerListTab->mScroll.get());
+
+    // Determine minimum size, leaving room for a few player list entries
+    constexpr int minVisibleRows = 3;
+    constexpr int defaultVisibleRows = 12;
+
+    int width = 0, height = 0;
+    getLayout().reflow(width, height);
+
+    // Height taken by the tab bar and the frames around the player list
+    const auto &scroll = mPlayerListTab->mScroll;
+    const auto &list = mPlayerListTab->mList;
+    const int listOverhead = mTabs->getHeight() - mTabs->getContainerHeight()
+            + 2 * scroll->getFrameSize() + 2 * list->getFrameSize();
+    const int rowHeight = list->getRowHeight();
+
+    setMinimumContentSize(width, height + listOverhead
+                                         + minVisibleRows * rowHeight);
+    setDefaultSize(590, 200, 150, getMinHeight()
+                   + (defaultVisibleRows - minVisibleRows) * rowHeight);
+    loadWindowState();
+
+    mMenu = new Menu("SocialMenu");
 
     if (local_player->getParty())
         addTab(local_player->getParty());
