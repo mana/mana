@@ -185,6 +185,13 @@ struct ParticleEmitterDef : ParticleBaseDef
     /** Pause in frames between two spawns. */
     ParticleEmitterProp<int> outputPause;
 
+    /**
+     * Pause in frames before the first spawn. Defaults to outputPause for
+     * emitters directly on a root particle and to 0 for emitters nested
+     * inside another emitter.
+     */
+    ParticleEmitterProp<int> startDelay;
+
     ParticleEmitterProp<float> alpha { 1.0f };
 };
 

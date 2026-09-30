@@ -50,7 +50,7 @@ ParticleEmitter::ParticleEmitter(ResourceRef<ParticleEffectDef> effect,
     , mTarget(target)
     , mMap(map)
     , mRotation(rotation)
-    , mOutputPauseLeft(def.outputPause.value(0))
+    , mOutputPauseLeft(def.startDelay.value(0))
     , mPosX(def.posX)
     , mPosY(def.posY)
     , mOutput(def.output)

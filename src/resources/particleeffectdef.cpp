@@ -89,9 +89,11 @@ static ResourceRef<Image> loadImage(std::string imagePath,
 }
 
 static ParticleEmitterDef readEmitter(XML::Node emitterNode,
-                                      const std::string &dyePalettes)
+                                      const std::string &dyePalettes,
+                                      bool onRootParticle)
 {
     ParticleEmitterDef def;
+    bool hasStartDelay = false;
 
     for (auto propertyNode : emitterNode.children())
     {
@@ -169,6 +171,11 @@ static ParticleEmitterDef readEmitter(XML::Node emitterNode,
             {
                 def.outputPause = readParticleEmitterProp(propertyNode, 0);
             }
+            else if (name == "start-delay")
+            {
+                def.startDelay = readParticleEmitterProp(propertyNode, 0);
+                hasStartDelay = true;
+            }
             else if (name == "acceleration")
             {
                 def.acceleration = readParticleEmitterProp(propertyNode, 0.0f);
@@ -205,7 +212,7 @@ static ParticleEmitterDef readEmitter(XML::Node emitterNode,
         }
         else if (propertyNode.name() == "emitter")
         {
-            def.emitters.push_back(readEmitter(propertyNode, dyePalettes));
+            def.emitters.push_back(readEmitter(propertyNode, dyePalettes, false));
         }
         else if (propertyNode.name() == "rotation")
         {
@@ -220,6 +227,11 @@ static ParticleEmitterDef readEmitter(XML::Node emitterNode,
             def.deathEffect = readDeathEffect(propertyNode);
         }
     }
+
+    // Emitters on root particles traditionally waited out an initial output
+    // pause, while emitters on spawned particles started right away.
+    if (!hasStartDelay && onRootParticle)
+        def.startDelay = def.outputPause;
 
     return def;
 }
@@ -244,7 +256,7 @@ static ParticleDef readParticle(XML::Node particleNode,
         else if (childNode.name() == "rotation")
             def.rotation = Animation::fromXML(childNode, dyePalettes);
         else if (childNode.name() == "emitter")
-            def.emitters.push_back(readEmitter(childNode, dyePalettes));
+            def.emitters.push_back(readEmitter(childNode, dyePalettes, true));
         else if (childNode.name() == "deatheffect")
             def.deathEffect = readDeathEffect(childNode);
     }
