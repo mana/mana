@@ -7,6 +7,7 @@ Unreleased
 - Particle effects are now loaded once and cached instead of being parsed from XML on every spawn
 - Fixed particle density of map particle effects that are resized to fit an object
 - Added a start-delay property to particle emitters, controlling the pause before the first spawn
+- Added support for the S and A dye channels, which replace exact colors in images
 
 0.8.0 (27 August 2026)
 - Added health bars to damaged and targeted monsters

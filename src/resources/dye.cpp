@@ -26,7 +26,8 @@
 #include <cmath>
 #include <sstream>
 
-DyePalette::DyePalette(const std::string &description)
+DyePalette::DyePalette(const std::string &description, bool withAlpha) :
+    mWithAlpha(withAlpha)
 {
     int size = description.length();
     if (size == 0)
@@ -37,14 +38,15 @@ DyePalette::DyePalette(const std::string &description)
         return;
     }
 
+    const int digits = withAlpha ? 8 : 6;
     int pos = 1;
     for (;;)
     {
-        if (pos + 6 > size)
+        if (pos + digits > size)
             break;
 
         int v = 0;
-        for (int i = 0; i < 6; ++i)
+        for (int i = 0; i < digits; ++i)
         {
             char c = description[pos + i];
             int n;
@@ -70,9 +72,23 @@ DyePalette::DyePalette(const std::string &description)
 
             v = (v << 4) | n;
         }
-        Color c = { (unsigned char) (v >> 16), (unsigned char) (v >> 8), (unsigned char) v };
+        Color c;
+        if (withAlpha)
+        {
+            c.r = (unsigned char) (v >> 24);
+            c.g = (unsigned char) (v >> 16);
+            c.b = (unsigned char) (v >> 8);
+            c.a = (unsigned char) v;
+        }
+        else
+        {
+            c.r = (unsigned char) (v >> 16);
+            c.g = (unsigned char) (v >> 8);
+            c.b = (unsigned char) v;
+            c.a = 255;
+        }
         mColors.push_back(c);
-        pos += 6;
+        pos += digits;
 
         if (pos == size)
             return;
@@ -176,6 +192,26 @@ void DyePalette::getColor(double intensity, int color[3]) const
     color[2] = (rest * b1 + intensity * b2);
 }
 
+bool DyePalette::replaceColor(int color[4]) const
+{
+    for (std::size_t i = 0; i + 1 < mColors.size(); i += 2)
+    {
+        const Color &from = mColors[i];
+        if (from.r == color[0] && from.g == color[1] && from.b == color[2] &&
+            (!mWithAlpha || from.a == color[3]))
+        {
+            const Color &to = mColors[i + 1];
+            color[0] = to.r;
+            color[1] = to.g;
+            color[2] = to.b;
+            if (mWithAlpha)
+                color[3] = to.a;
+            return true;
+        }
+    }
+    return false;
+}
+
 Dye::Dye(const std::string &description)
 {
     for (auto &dyePalette : mDyePalettes)
@@ -193,14 +229,7 @@ Dye::Dye(const std::string &description)
         if (next_pos == std::string::npos)
             next_pos = length;
 
-        if (next_pos <= pos + 3 || description[pos + 1] != ':')
-        {
-            Log::info("Error, invalid dye: %s", description.c_str());
-            return;
-        }
-
-        int i = 0;
-
+        int i;
         switch (description[pos])
         {
             case 'R': i = 0; break;
@@ -210,12 +239,32 @@ Dye::Dye(const std::string &description)
             case 'M': i = 4; break;
             case 'C': i = 5; break;
             case 'W': i = 6; break;
-            default:
-                Log::info("Error, invalid dye: %s", description.c_str());
-                return;
+            case 'S': i = 7; break;
+            case 'A': i = 8; break;
+            default:  i = -1; break;
+        }
+
+        if (next_pos <= pos + 3 || description[pos + 1] != ':')
+        {
+            // A bare channel letter is a placeholder that no palette was
+            // provided for. The channel is left undyed.
+            if (i >= 0 && next_pos == pos + 1)
+            {
+                ++next_pos;
+                continue;
+            }
+            Log::info("Error, invalid dye: %s", description.c_str());
+            return;
+        }
+
+        if (i < 0)
+        {
+            Log::info("Error, invalid dye: %s", description.c_str());
+            return;
         }
         mDyePalettes[i] = new DyePalette(description.substr(pos + 2,
-                                                            next_pos - pos - 2));
+                                                            next_pos - pos - 2),
+                                         i == 8);
         ++next_pos;
     }
     while (next_pos < length);
@@ -227,8 +276,21 @@ Dye::~Dye()
         delete dyePalette;
 }
 
-void Dye::update(int color[3]) const
+void Dye::update(int color[4]) const
 {
+    // The S and A channels replace exact colors and take precedence over
+    // the intensity-based channels.
+    if (mDyePalettes[7])
+    {
+        mDyePalettes[7]->replaceColor(color);
+        return;
+    }
+    if (mDyePalettes[8])
+    {
+        mDyePalettes[8]->replaceColor(color);
+        return;
+    }
+
     int cmax = std::max(color[0], std::max(color[1], color[2]));
     if (cmax == 0)
         return;

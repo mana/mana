@@ -34,8 +34,11 @@ class DyePalette
          * Creates a palette based on the given string.
          * The string is either a file name or a sequence of hexadecimal RGB
          * values separated by ',' and starting with '#'.
+         *
+         * When withAlpha is set, the values are RGBA (used by the A dye
+         * channel).
          */
-        DyePalette(const std::string &description);
+        DyePalette(const std::string &description, bool withAlpha = false);
 
         /**
          * Gets a pixel color depending on its intensity. First color is
@@ -48,15 +51,24 @@ class DyePalette
          */
         void getColor(double intensity, int color[3]) const;
 
+        /**
+         * If the color exactly matches one of the odd-indexed colors in the
+         * palette, replace it with the following color and return true.
+         * Used by the S (simple) and A (simple with alpha) dye channels.
+         */
+        bool replaceColor(int color[4]) const;
+
     private:
         struct Color
         {
             unsigned char r;
             unsigned char g;
             unsigned char b;
+            unsigned char a;
         };
 
         std::vector<Color> mColors;
+        bool mWithAlpha;
 };
 
 /**
@@ -79,9 +91,9 @@ class Dye
         ~Dye();
 
         /**
-         * Modifies a pixel color.
+         * Modifies a pixel color. color holds red, green, blue and alpha.
          */
-        void update(int color[3]) const;
+        void update(int color[4]) const;
 
         /**
          * Fills the blank in a dye placeholder with some palette names.
@@ -94,7 +106,9 @@ class Dye
         /**
          * The order of the palettes, as well as their uppercase letter, is:
          *
-         * Red, Green, Yellow, Blue, Magenta, White (or rather gray).
+         * Red, Green, Yellow, Blue, Magenta, Cyan, White (or rather gray),
+         * Simple (replaces exact colors, ignoring alpha) and Alpha (like
+         * Simple but including alpha).
          */
-        DyePalette *mDyePalettes[7];
+        DyePalette *mDyePalettes[9];
 };
