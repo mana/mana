@@ -1,13 +1,8 @@
 stages:
   - build
 
-ubuntu-build:
+.ubuntu-build:
   stage: build
-  parallel:
-    matrix:
-      - UBUNTU_VERSION: "22.04"
-      - UBUNTU_VERSION: "24.04"
-      - UBUNTU_VERSION: "26.04"
   image: ubuntu:$UBUNTU_VERSION
   cache:
     paths:
@@ -53,6 +48,18 @@ ubuntu-build:
     # Package the oldest still-supported build as an AppImage, since
     # AppImages should be built against the oldest supported glibc
     - if [ "$UBUNTU_VERSION" = "22.04" ]; then ./packaging/appimage/build-appimage.sh; fi
+
+ubuntu-build:
+  extends: .ubuntu-build
+  parallel:
+    matrix:
+      - UBUNTU_VERSION: "24.04"
+      - UBUNTU_VERSION: "26.04"
+
+ubuntu-appimage:
+  extends: .ubuntu-build
+  variables:
+    UBUNTU_VERSION: "22.04"
   artifacts:
     name: "appimage-$CI_COMMIT_REF_SLUG"
     paths:
