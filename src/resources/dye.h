@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <array>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -67,8 +69,15 @@ class DyePalette
             unsigned char a;
         };
 
+        /**
+         * Computes the ramp color for the given intensity. Used to build
+         * the lookup table.
+         */
+        void computeColor(int intensity, Color &color) const;
+
         std::vector<Color> mColors;
         bool mWithAlpha;
+        Color mIntensityLut[256];
 };
 
 /**
@@ -110,5 +119,5 @@ class Dye
          * Simple (replaces exact colors, ignoring alpha) and Alpha (like
          * Simple but including alpha).
          */
-        DyePalette *mDyePalettes[9];
+        std::array<std::unique_ptr<DyePalette>, 9> mDyePalettes;
 };

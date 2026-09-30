@@ -23,6 +23,7 @@
 
 #include "log.h"
 
+#include <algorithm>
 #include <cmath>
 #include <sstream>
 
@@ -91,7 +92,11 @@ DyePalette::DyePalette(const std::string &description, bool withAlpha) :
         pos += digits;
 
         if (pos == size)
+        {
+            for (int i = 0; i < 256; ++i)
+                computeColor(i, mIntensityLut[i]);
             return;
+        }
         if (description[pos] != ',')
             break;
 
@@ -101,50 +106,49 @@ DyePalette::DyePalette(const std::string &description, bool withAlpha) :
     Log::info("Error, invalid embedded palette: %s", description.c_str());
 }
 
-void DyePalette::getColor(int intensity, int color[3]) const
+void DyePalette::computeColor(int intensity, Color &color) const
 {
     if (intensity == 0)
     {
-        color[0] = 0;
-        color[1] = 0;
-        color[2] = 0;
+        color = {0, 0, 0, 255};
         return;
     }
 
-    int last = mColors.size();
-    if (last == 0) return;
-
+    const int last = mColors.size();
     int i = intensity * last / 255;
     int t = intensity * last % 255;
 
     int j = t != 0 ? i : i - 1;
     // Get the exact color if any, the next color otherwise.
-    int r2 = mColors[j].r,
-        g2 = mColors[j].g,
-        b2 = mColors[j].b;
+    const Color &c2 = mColors[j];
 
     if (t == 0)
     {
         // Exact color.
-        color[0] = r2;
-        color[1] = g2;
-        color[2] = b2;
+        color = c2;
         return;
     }
 
     // Get the previous color. First color is implicitly black.
-    int r1 = 0, g1 = 0, b1 = 0;
+    Color c1 = {0, 0, 0, 255};
     if (i > 0)
-    {
-        r1 = mColors[i - 1].r;
-        g1 = mColors[i - 1].g;
-        b1 = mColors[i - 1].b;
-    }
+        c1 = mColors[i - 1];
 
     // Perform a linear interpolation.
-    color[0] = ((255 - t) * r1 + t * r2) / 255;
-    color[1] = ((255 - t) * g1 + t * g2) / 255;
-    color[2] = ((255 - t) * b1 + t * b2) / 255;
+    color.r = ((255 - t) * c1.r + t * c2.r) / 255;
+    color.g = ((255 - t) * c1.g + t * c2.g) / 255;
+    color.b = ((255 - t) * c1.b + t * c2.b) / 255;
+}
+
+void DyePalette::getColor(int intensity, int color[3]) const
+{
+    if (mColors.empty())
+        return;
+
+    const Color &c = mIntensityLut[std::clamp(intensity, 0, 255)];
+    color[0] = c.r;
+    color[1] = c.g;
+    color[2] = c.b;
 }
 
 void DyePalette::getColor(double intensity, int color[3]) const
@@ -214,9 +218,6 @@ bool DyePalette::replaceColor(int color[4]) const
 
 Dye::Dye(const std::string &description)
 {
-    for (auto &dyePalette : mDyePalettes)
-        dyePalette = nullptr;
-
     if (description.empty())
         return;
 
@@ -262,19 +263,14 @@ Dye::Dye(const std::string &description)
             Log::info("Error, invalid dye: %s", description.c_str());
             return;
         }
-        mDyePalettes[i] = new DyePalette(description.substr(pos + 2,
-                                                            next_pos - pos - 2),
-                                         i == 8);
+        mDyePalettes[i] = std::make_unique<DyePalette>(
+            description.substr(pos + 2, next_pos - pos - 2), i == 8);
         ++next_pos;
     }
     while (next_pos < length);
 }
 
-Dye::~Dye()
-{
-    for (auto &dyePalette : mDyePalettes)
-        delete dyePalette;
-}
+Dye::~Dye() = default;
 
 void Dye::update(int color[4]) const
 {
@@ -315,14 +311,17 @@ void Dye::instantiate(std::string &target, const std::string &palettes)
 {
     std::string::size_type next_pos = target.find('|');
 
-    if (next_pos == std::string::npos || palettes.empty())
+    if (next_pos == std::string::npos)
         return;
 
     ++next_pos;
 
     std::ostringstream s;
-    s << target.substr(0, next_pos);
-    std::string::size_type last_pos = target.length(), pal_pos = 0;
+    s << target.substr(0, next_pos - 1);
+    const std::string::size_type last_pos = target.length();
+    std::string::size_type pal_pos =
+        palettes.empty() ? std::string::npos : 0;
+    bool wroteSeparator = false;
     do
     {
         std::string::size_type pos = next_pos;
@@ -331,30 +330,48 @@ void Dye::instantiate(std::string &target, const std::string &palettes)
         if (next_pos == std::string::npos)
             next_pos = last_pos;
 
-        if (next_pos == pos + 1 && pal_pos != std::string::npos)
+        std::string segment;
+        if (next_pos == pos + 1)
         {
-            std::string::size_type pal_next_pos = palettes.find(';', pal_pos);
-            s << target[pos] << ':';
-            if (pal_next_pos == std::string::npos)
+            // A single letter is a placeholder filled positionally from
+            // palettes. When no palette is left it is dropped.
+            if (pal_pos != std::string::npos)
             {
-                s << palettes.substr(pal_pos);
-                s << target.substr(next_pos);
-                pal_pos = std::string::npos;
-                break;
+                std::string::size_type pal_next_pos =
+                    palettes.find(';', pal_pos);
+                segment += target[pos];
+                segment += ':';
+                if (pal_next_pos == std::string::npos)
+                {
+                    segment += palettes.substr(pal_pos);
+                    pal_pos = std::string::npos;
+                }
+                else
+                {
+                    segment += palettes.substr(pal_pos,
+                                               pal_next_pos - pal_pos);
+                    pal_pos = pal_next_pos + 1;
+                    if (pal_pos >= palettes.size())
+                        pal_pos = std::string::npos;
+                }
             }
-            s << palettes.substr(pal_pos, pal_next_pos - pal_pos);
-            pal_pos = pal_next_pos + 1;
         }
         else if (next_pos > pos + 2)
         {
-            s << target.substr(pos, next_pos - pos);
+            segment = target.substr(pos, next_pos - pos);
         }
         else
         {
             Log::info("Error, invalid dye placeholder: %s", target.c_str());
             return;
         }
-        s << target[next_pos];
+
+        if (!segment.empty())
+        {
+            s << (wroteSeparator ? ';' : '|');
+            wroteSeparator = true;
+            s << segment;
+        }
         ++next_pos;
     }
     while (next_pos < last_pos);
