@@ -75,3 +75,5 @@ pre-filled mappings (`X:palette`), which are passed through unchanged.
   separately.
 - `DyePalette::getColor` implements the intensity ramp interpolation;
   `DyePalette::replaceColor` implements the S/A pair replacement.
+- The `dyecmd` tool (built by default, `-DBUILD_DYECMD=OFF` to disable)
+  applies dyes to images and can report how many pixels a spec affects.

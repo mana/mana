@@ -33,6 +33,7 @@ option(ENABLE_NLS "Enable building of translations" ON)
 option(ENABLE_MANASERV "Enable Manaserv support" ON)
 option(USE_SYSTEM_ENET "Use system ENet" ON)
 option(USE_SYSTEM_GUICHAN "Use system Guichan" ON)
+option(BUILD_DYECMD "Build the dyecmd image dye tool" ON)
 
 # Translations are on by default and hard-require the gettext tools, so that a
 # machine without them fails to configure instead of silently producing a build
@@ -87,6 +88,10 @@ set(CPACK_PACKAGE_EXECUTABLES "mana;Mana")
 set(CPACK_VERBATIM_VARIABLES TRUE)
 
 add_subdirectory(src)
+
+if(BUILD_DYECMD)
+  add_subdirectory(tools/dyecmd)
+endif()
 
 if(ENABLE_NLS)
   add_subdirectory(po)

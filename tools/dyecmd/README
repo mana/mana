@@ -1,12 +1,23 @@
 DYECMD
-=======
+======
 
 This tool is used to dye item graphics used by the Mana client according to the
-specification described here: http://wiki.themanaworld.org/index.php/Image_dyeing
+specification described in docs/dye.md.
 
-The tool expects 3 parameters:
+Usage:
 
 dyecmd <source_image> <target_image> <dye_string>
+dyecmd "<source_image>|<dye_string>" <target_image>
+    Recolor source_image using the dye specification and write target_image.
+
+dyecmd analyze <image> [dye]
+    Count how many pixels each channel or S/A color pair would affect.
+
+dyecmd instantiate <target> <palettes>
+    Print the target with channel placeholders filled from the palette list,
+    like SpriteDef does when a sprite path carries a "|" suffix.
+
 e.g.:
 dyecmd "armor-legs-shorts.png" "armor-legs-shorts2.png" "W:#222255,6666ff"
-
+dyecmd "armor-legs-shorts.png|W:#222255,6666ff" "armor-legs-shorts2.png"
+dyecmd analyze santahat.png "S:#780000,3a3a3a"
