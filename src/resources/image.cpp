@@ -124,8 +124,8 @@ Resource *Image::load(SDL_RWops *rw, const Dye &dye)
 
     if (surf->format->format != SDL_PIXELFORMAT_RGBA32)
     {
-        Log::warn("Image format is %s, not SDL_PIXELFORMAT_RGBA32. Converting...",
-                  SDL_GetPixelFormatName(surf->format->format));
+        Log::debug("Image format is %s, not SDL_PIXELFORMAT_RGBA32. Converting...",
+                   SDL_GetPixelFormatName(surf->format->format));
 
         SDL_Surface *convertedSurf = SDL_ConvertSurfaceFormat(surf, SDL_PIXELFORMAT_RGBA32, 0);
         SDL_FreeSurface(surf);
