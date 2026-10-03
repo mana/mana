@@ -73,7 +73,7 @@ DyePalette::DyePalette(const std::string &description, bool withAlpha) :
 
             v = (v << 4) | n;
         }
-        Color c;
+        SDL_Color c;
         if (withAlpha)
         {
             c.r = (unsigned char) (v >> 24);
@@ -106,7 +106,7 @@ DyePalette::DyePalette(const std::string &description, bool withAlpha) :
     Log::info("Error, invalid embedded palette: %s", description.c_str());
 }
 
-void DyePalette::computeColor(int intensity, Color &color) const
+void DyePalette::computeColor(int intensity, SDL_Color &color) const
 {
     if (intensity == 0)
     {
@@ -120,7 +120,7 @@ void DyePalette::computeColor(int intensity, Color &color) const
 
     int j = t != 0 ? i : i - 1;
     // Get the exact color if any, the next color otherwise.
-    const Color &c2 = mColors[j];
+    const SDL_Color &c2 = mColors[j];
 
     if (t == 0)
     {
@@ -130,7 +130,7 @@ void DyePalette::computeColor(int intensity, Color &color) const
     }
 
     // Get the previous color. First color is implicitly black.
-    Color c1 = {0, 0, 0, 255};
+    SDL_Color c1 = {0, 0, 0, 255};
     if (i > 0)
         c1 = mColors[i - 1];
 
@@ -140,18 +140,18 @@ void DyePalette::computeColor(int intensity, Color &color) const
     color.b = ((255 - t) * c1.b + t * c2.b) / 255;
 }
 
-void DyePalette::getColor(int intensity, int color[3]) const
+void DyePalette::getColor(int intensity, SDL_Color &color) const
 {
     if (mColors.empty())
         return;
 
-    const Color &c = mIntensityLut[std::clamp(intensity, 0, 255)];
-    color[0] = c.r;
-    color[1] = c.g;
-    color[2] = c.b;
+    const SDL_Color &c = mIntensityLut[std::clamp(intensity, 0, 255)];
+    color.r = c.r;
+    color.g = c.g;
+    color.b = c.b;
 }
 
-void DyePalette::getColor(double intensity, int color[3]) const
+void DyePalette::getColor(double intensity, SDL_Color &color) const
 {
     // Nothing to do here
     if (mColors.empty())
@@ -173,9 +173,9 @@ void DyePalette::getColor(double intensity, int color[3]) const
     if (i == j)
     {
         // Exact color.
-        color[0] = mColors[i].r;
-        color[1] = mColors[i].g;
-        color[2] = mColors[i].b;
+        color.r = mColors[i].r;
+        color.g = mColors[i].g;
+        color.b = mColors[i].b;
         return;
     }
 
@@ -191,25 +191,25 @@ void DyePalette::getColor(double intensity, int color[3]) const
         b2 = mColors[j].b;
 
     // Perform the interpolation.
-    color[0] = (rest * r1 + intensity * r2);
-    color[1] = (rest * g1 + intensity * g2);
-    color[2] = (rest * b1 + intensity * b2);
+    color.r = (rest * r1 + intensity * r2);
+    color.g = (rest * g1 + intensity * g2);
+    color.b = (rest * b1 + intensity * b2);
 }
 
-bool DyePalette::replaceColor(int color[4]) const
+bool DyePalette::replaceColor(SDL_Color &color) const
 {
     for (std::size_t i = 0; i + 1 < mColors.size(); i += 2)
     {
-        const Color &from = mColors[i];
-        if (from.r == color[0] && from.g == color[1] && from.b == color[2] &&
-            (!mWithAlpha || from.a == color[3]))
+        const SDL_Color &from = mColors[i];
+        if (from.r == color.r && from.g == color.g && from.b == color.b &&
+            (!mWithAlpha || from.a == color.a))
         {
-            const Color &to = mColors[i + 1];
-            color[0] = to.r;
-            color[1] = to.g;
-            color[2] = to.b;
+            const SDL_Color &to = mColors[i + 1];
+            color.r = to.r;
+            color.g = to.g;
+            color.b = to.b;
             if (mWithAlpha)
-                color[3] = to.a;
+                color.a = to.a;
             return true;
         }
     }
@@ -272,7 +272,7 @@ Dye::Dye(const std::string &description)
 
 Dye::~Dye() = default;
 
-void Dye::update(int color[4]) const
+void Dye::update(SDL_Color &color) const
 {
     // The S and A channels replace exact colors and take precedence over
     // the intensity-based channels.
@@ -287,12 +287,12 @@ void Dye::update(int color[4]) const
         return;
     }
 
-    int cmax = std::max(color[0], std::max(color[1], color[2]));
+    int cmax = std::max(color.r, std::max(color.g, color.b));
     if (cmax == 0)
         return;
 
-    int cmin = std::min(color[0], std::min(color[1], color[2]));
-    int intensity = color[0] + color[1] + color[2];
+    int cmin = std::min(color.r, std::min(color.g, color.b));
+    int intensity = color.r + color.g + color.b;
 
     if (cmin != cmax &&
         (cmin != 0 || (intensity != cmax && intensity != 2 * cmax)))
@@ -301,7 +301,7 @@ void Dye::update(int color[4]) const
         return;
     }
 
-    int i = (color[0] != 0) | ((color[1] != 0) << 1) | ((color[2] != 0) << 2);
+    int i = (color.r != 0) | ((color.g != 0) << 1) | ((color.b != 0) << 2);
 
     if (mDyePalettes[i - 1])
         mDyePalettes[i - 1]->getColor(cmax, color);

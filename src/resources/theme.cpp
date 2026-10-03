@@ -318,12 +318,12 @@ const gcn::Color &Theme::getThemeColor(int type)
 
 gcn::Color Theme::getProgressColor(int type, float progress)
 {
-    int color[3] = {0, 0, 0};
+    SDL_Color color = {0, 0, 0, 255};
 
     if (const auto &dye = gui->getTheme()->mProgressColors[type])
         dye->getColor(progress, color);
 
-    return gcn::Color(color[0], color[1], color[2]);
+    return gcn::Color(color.r, color.g, color.b);
 }
 
 const Palette &Theme::getPalette(size_t index) const

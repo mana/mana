@@ -21,6 +21,8 @@
 
 #pragma once
 
+#include <SDL_pixels.h>
+
 #include <array>
 #include <memory>
 #include <string>
@@ -44,40 +46,33 @@ class DyePalette
 
         /**
          * Gets a pixel color depending on its intensity. First color is
-         * implicitly black (0, 0, 0).
+         * implicitly black (0, 0, 0). Only r, g and b are written.
          */
-        void getColor(int intensity, int color[3]) const;
+        void getColor(int intensity, SDL_Color &color) const;
 
         /**
-         * Gets a pixel color depending on its intensity.
+         * Gets a pixel color depending on its intensity. Only r, g and b
+         * are written.
          */
-        void getColor(double intensity, int color[3]) const;
+        void getColor(double intensity, SDL_Color &color) const;
 
         /**
          * If the color exactly matches one of the odd-indexed colors in the
          * palette, replace it with the following color and return true.
          * Used by the S (simple) and A (simple with alpha) dye channels.
          */
-        bool replaceColor(int color[4]) const;
+        bool replaceColor(SDL_Color &color) const;
 
     private:
-        struct Color
-        {
-            unsigned char r;
-            unsigned char g;
-            unsigned char b;
-            unsigned char a;
-        };
-
         /**
          * Computes the ramp color for the given intensity. Used to build
          * the lookup table.
          */
-        void computeColor(int intensity, Color &color) const;
+        void computeColor(int intensity, SDL_Color &color) const;
 
-        std::vector<Color> mColors;
+        std::vector<SDL_Color> mColors;
         bool mWithAlpha;
-        Color mIntensityLut[256];
+        SDL_Color mIntensityLut[256];
 };
 
 /**
@@ -100,9 +95,9 @@ class Dye
         ~Dye();
 
         /**
-         * Modifies a pixel color. color holds red, green, blue and alpha.
+         * Modifies a pixel color in place.
          */
-        void update(int color[4]) const;
+        void update(SDL_Color &color) const;
 
         /**
          * Fills the blank in a dye placeholder with some palette names.

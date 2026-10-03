@@ -143,13 +143,7 @@ Resource *Image::load(SDL_RWops *rw, const Dye &dye)
         if (!pixels->a)
             continue;
 
-        int v[4] = { pixels->r, pixels->g, pixels->b, pixels->a };
-        dye.update(v);
-
-        pixels->r = v[0];
-        pixels->g = v[1];
-        pixels->b = v[2];
-        pixels->a = v[3];
+        dye.update(*pixels);
     }
 
     Image *image = load(surf);

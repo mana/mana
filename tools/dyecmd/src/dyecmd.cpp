@@ -77,17 +77,13 @@ static int recolor(SDL_Surface *surface, const Dye &dye)
     {
         if (p->a == 0)
             continue;
-        int color[4] = {p->r, p->g, p->b, p->a};
-        dye.update(color);
-        if (color[0] != p->r || color[1] != p->g || color[2] != p->b ||
-            color[3] != p->a)
+        const SDL_Color before = *p;
+        dye.update(*p);
+        if (p->r != before.r || p->g != before.g || p->b != before.b ||
+            p->a != before.a)
         {
             ++changed;
         }
-        p->r = color[0];
-        p->g = color[1];
-        p->b = color[2];
-        p->a = color[3];
     }
 
     if (SDL_MUSTLOCK(surface))
