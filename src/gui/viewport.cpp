@@ -549,10 +549,13 @@ void Viewport::mouseMoved(gcn::MouseEvent &event)
     const int y = (event.getY() + (int) mPixelViewY);
 
     mHoverBeing = actorSpriteManager->findBeingByPixel(x, y);
-    mBeingPopup->show(getMouseX(), getMouseY(), mHoverBeing);
-
     mHoverItem = actorSpriteManager->findItem(x / mMap->getTileWidth(),
                                               y / mMap->getTileHeight());
+
+    if (mHoverBeing || !mHoverItem)
+        mBeingPopup->show(getMouseX(), getMouseY(), mHoverBeing);
+    else
+        mBeingPopup->show(getMouseX(), getMouseY(), mHoverItem);
 
     updateCursorType();
 }
@@ -606,6 +609,10 @@ void Viewport::event(Event::Channel channel, const Event &event)
             mHoverBeing = nullptr;
 
         if (mHoverItem == actor)
+        {
             mHoverItem = nullptr;
+            if (!mHoverBeing)
+                hideBeingPopup();
+        }
     }
 }

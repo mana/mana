@@ -43,7 +43,7 @@
 
 #define ITEMPOPUP_WRAP_WIDTH 196
 
-static int getColorIdFromItemType(ItemType type)
+int getColorIdFromItemType(ItemType type)
 {
     switch (type)
     {

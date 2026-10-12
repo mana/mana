@@ -32,10 +32,12 @@
 FloorItem::FloorItem(int id,
                      int itemId,
                      const Vector &position,
-                     Map *map):
+                     Map *map,
+                     int amount):
     ActorSprite(id),
     mItemId(itemId),
-    mX(0), mY(0)
+    mX(0), mY(0),
+    mAmount(amount)
 {
     mPos = position;
 

@@ -31,6 +31,11 @@ class Label;
 class TextBox;
 
 /**
+ * Returns the theme color ID used for the name of items of the given type.
+ */
+int getColorIdFromItemType(ItemType type);
+
+/**
  * A popup that displays information about an item.
  */
 class ItemPopup : public Popup

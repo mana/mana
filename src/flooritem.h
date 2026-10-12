@@ -38,11 +38,13 @@ class FloorItem final : public ActorSprite
          * @param itemId        the item ID
          * @param position      the position in pixels
          * @param map           the map this item is on
+         * @param amount        the amount of items in this drop
          */
         FloorItem(int id,
                   int itemId,
                   const Vector &position,
-                  Map *map);
+                  Map *map,
+                  int amount);
 
         Type getType() const override { return FLOOR_ITEM; }
 
@@ -52,6 +54,11 @@ class FloorItem final : public ActorSprite
          * Returns the item ID.
          */
         int getItemId() const { return mItemId; }
+
+        /**
+         * Returns the amount of items in this drop.
+         */
+        int getAmount() const { return mAmount; }
 
         /**
          * Returns the item info for this floor item. Useful for adding an item
@@ -65,5 +72,6 @@ class FloorItem final : public ActorSprite
     private:
         int mItemId;
         int mX, mY;
+        int mAmount;
         ResourceRef<Image> mImage;
 };

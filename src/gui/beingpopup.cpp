@@ -21,10 +21,12 @@
 #include "gui/beingpopup.h"
 
 #include "being.h"
+#include "flooritem.h"
 #include "localplayer.h"
 #include "playerinfo.h"
 
 #include "gui/gui.h"
+#include "gui/itempopup.h"
 
 #include "gui/widgets/label.h"
 
@@ -51,9 +53,15 @@ BeingPopup::BeingPopup():
     // Being's level
     mBeingLevel = new Label("A");
 
+    // Item name (when hovering a floor item)
+    mItemName = new Label("A");
+    mItemName->setFont(boldFont);
+    mItemName->setPosition(0, 0);
+
     add(mBeingName);
     add(mBeingParty);
     add(mBeingLevel);
+    add(mItemName);
 
     addMouseListener(this);
 }
@@ -68,6 +76,8 @@ void BeingPopup::show(int x, int y, Being *b)
         setVisible(false);
         return;
     }
+
+    mItemName->setCaption(std::string());
 
     mBeingName->setCaption(b->getName());
     mBeingName->adjustSize();
@@ -108,4 +118,36 @@ void BeingPopup::show(int x, int y, Being *b)
     setContentSize(minWidth, height);
 
     position(x, y);
+}
+
+void BeingPopup::show(int x, int y, FloorItem *item)
+{
+    if (!item)
+    {
+        setVisible(false);
+        return;
+    }
+
+    const ItemInfo &info = item->getInfo();
+
+    std::string caption = info.name;
+    const int amount = item->getAmount();
+    if (amount > 1)
+        caption += strprintf(" x%d", amount);
+
+    mItemName->setCaption(caption);
+    mItemName->adjustSize();
+
+    auto &palette = gui->getTheme()->getPalette(getSkin().palette);
+    const int colorId = getColorIdFromItemType(info.type);
+    mItemName->setForegroundColor(palette.getColor(colorId));
+    mItemName->setOutlineColor(palette.getOutlineColor(colorId));
+
+    mBeingName->setCaption(std::string());
+    mBeingParty->setCaption(std::string());
+    mBeingLevel->setCaption(std::string());
+
+    setContentSize(mItemName->getWidth(), getFont()->getHeight());
+
+    position(x, y, true);
 }

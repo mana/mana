@@ -63,8 +63,10 @@ class ActorSpriteManager : public EventListener
          * @param id            the unique ID of this item instance
          * @param itemId        the item ID
          * @param position      the position in pixels
+         * @param amount        the amount of items in this drop
          */
-        FloorItem *createItem(int id, int itemId, const Vector &position);
+        FloorItem *createItem(int id, int itemId, const Vector &position,
+                              int amount = 1);
 
         /**
          * Immediately destroys the given \a actor.

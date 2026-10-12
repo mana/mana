@@ -155,10 +155,12 @@ class Popup : public Container, public gcn::MouseListener
         /**
          * Sets the location to display the popup. Tries to horizontally center
          * the popup and provide a vertical buffer between the given point and
-         * the popup. Prevents the popup from extending off-screen, if
-         * possible.
+         * the popup. By default the popup is placed below the point, or above
+         * it when \a preferAbove is set; it switches sides when it would
+         * otherwise go off-screen. Prevents the popup from extending
+         * off-screen, if possible.
          */
-        void position(int x, int y);
+        void position(int x, int y, bool preferAbove = false);
 
         /**
          * Returns the Skin used by this popup.

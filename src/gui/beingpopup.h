@@ -23,10 +23,11 @@
 #include "gui/widgets/popup.h"
 
 class Being;
+class FloorItem;
 class Label;
 
 /**
- * A popup that displays information about a being.
+ * A popup that displays information about a being or floor item.
  */
 class BeingPopup : public Popup
 {
@@ -40,10 +41,16 @@ class BeingPopup : public Popup
          */
         void show(int x, int y, Being *b);
 
+        /**
+         * Sets the info to be displayed given a particular floor item.
+         */
+        void show(int x, int y, FloorItem *item);
+
         // TODO: Add a version for monsters, NPCs, etc?
 
     private:
         Label *mBeingName;
         Label *mBeingParty;
         Label *mBeingLevel;
+        Label *mItemName;
 };

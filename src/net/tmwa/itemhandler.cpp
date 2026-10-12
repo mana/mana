@@ -53,7 +53,17 @@ void ItemHandler::handleMessage(MessageIn &msg)
                 msg.readInt8();  // identify flag
                 int x = msg.readInt16();
                 int y = msg.readInt16();
-                msg.skip(4);     // amount,subX,subY / subX,subY,amount
+                int amount;
+                if (msg.getId() == SMSG_ITEM_VISIBLE)
+                {
+                    amount = msg.readInt16();
+                    msg.skip(2);     // subX,subY
+                }
+                else
+                {
+                    msg.skip(2);     // subX,subY
+                    amount = msg.readInt16();
+                }
 
                 Game *game = Game::instance();
                 if (!game)
@@ -61,7 +71,8 @@ void ItemHandler::handleMessage(MessageIn &msg)
 
                 if (Map *map = game->getCurrentMap())
                     actorSpriteManager->createItem(id, itemId,
-                                                   map->getTileCenter(x, y));
+                                                   map->getTileCenter(x, y),
+                                                   amount);
             }
             break;
 
