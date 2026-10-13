@@ -59,7 +59,7 @@ int ActorSprite::getDrawOrder() const
     return Actor::getDrawOrder() + paths.spriteOffsetY;
 }
 
-bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
+void ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     int px = getPixelX() + offsetX;
     int py = getPixelY() + offsetY;
@@ -67,13 +67,13 @@ bool ActorSprite::draw(Graphics *graphics, int offsetX, int offsetY) const
     if (mUsedTargetCursor)
         mUsedTargetCursor->draw(graphics, px, py);
 
-    return drawSpriteAt(graphics, px, py);
+    drawSpriteAt(graphics, px, py);
 }
 
-bool ActorSprite::drawSpriteAt(Graphics *graphics, int x, int y) const
+void ActorSprite::drawSpriteAt(Graphics *graphics, int x, int y) const
 {
     y += paths.spriteOffsetY;
-    return mSprites.draw(graphics, x, y);
+    mSprites.draw(graphics, x, y);
 }
 
 void ActorSprite::logic()

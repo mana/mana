@@ -34,10 +34,10 @@ ImageParticle::ImageParticle(ResourceRef<ParticleEffectDef> effect, Image *image
 
 ImageParticle::~ImageParticle() = default;
 
-bool ImageParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
+void ImageParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     if (!isAlive() || !mImage)
-        return false;
+        return;
 
     int screenX = (int) mPos.x + offsetX - mImage->getWidth() / 2;
     int screenY = (int) mPos.y - (int)mPos.z + offsetY - mImage->getHeight()/2;
@@ -47,8 +47,8 @@ bool ImageParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
         || screenX > graphics->getWidth()
         || screenY + mImage->getHeight() < 0
         || screenY > graphics->getHeight())
-        return false;
+        return;
 
     mImage->setAlpha(getCurrentAlpha());
-    return graphics->drawImage(mImage, screenX, screenY);
+    graphics->drawImage(mImage, screenX, screenY);
 }

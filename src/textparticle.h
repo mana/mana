@@ -34,7 +34,7 @@ class TextParticle : public Particle
         /**
          * Draws the particle image.
          */
-        bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
+        void draw(Graphics *graphics, int offsetX, int offsetY) const override;
 
         // hack to improve text visibility
         int getDrawOrder() const override

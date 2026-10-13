@@ -159,7 +159,7 @@ class Particle : public Actor
         /**
          * Draws the particle image.
          */
-        bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
+        void draw(Graphics *graphics, int offsetX, int offsetY) const override;
 
         /**
          * Do not draw particles when behind other objects.

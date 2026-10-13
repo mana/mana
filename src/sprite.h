@@ -78,7 +78,7 @@ class Sprite
          * Draw the current animation frame at the coordinates given in screen
          * pixels.
          */
-        bool draw(Graphics *graphics, int posX, int posY) const;
+        void draw(Graphics *graphics, int posX, int posY) const;
 
         /**
          * Gets the width in pixels of the image

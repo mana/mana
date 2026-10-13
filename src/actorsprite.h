@@ -72,9 +72,9 @@ public:
 
     int getDrawOrder() const override;
 
-    bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
+    void draw(Graphics *graphics, int offsetX, int offsetY) const override;
 
-    bool drawSpriteAt(Graphics *graphics, int x, int y) const;
+    void drawSpriteAt(Graphics *graphics, int x, int y) const;
 
     virtual void logic();
 

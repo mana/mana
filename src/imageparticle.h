@@ -47,7 +47,7 @@ class ImageParticle : public Particle
         /**
          * Draws the particle image
          */
-        bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
+        void draw(Graphics *graphics, int offsetX, int offsetY) const override;
 
     protected:
         Image *mImage;   /**< The image used for this particle. */

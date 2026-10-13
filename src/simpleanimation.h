@@ -52,7 +52,7 @@ class SimpleAnimation final
 
         void update(int dt);
 
-        bool draw(Graphics *graphics, int posX, int posY) const;
+        void draw(Graphics *graphics, int posX, int posY) const;
 
         /**
          * Resets the animation.

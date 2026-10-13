@@ -73,25 +73,27 @@ bool CompoundSprite::update(int time)
     return ret;
 }
 
-bool CompoundSprite::draw(Graphics *graphics, int posX, int posY) const
+void CompoundSprite::draw(Graphics *graphics, int posX, int posY) const
 {
     doRedraw();
 
     if (mSprites.empty()) // Nothing to draw
-        return false;
+        return;
 
     posX += mOffsetX;
     posY += mOffsetY;
 
     if (mAlpha == 1.0f && mImage)
     {
-        return graphics->drawImage(mImage, posX, posY);
+        graphics->drawImage(mImage, posX, posY);
+        return;
     }
 
     if (mAlpha && mAlphaImage)
     {
         mAlphaImage->setAlpha(mAlpha);
-        return graphics->drawImage(mAlphaImage, posX, posY);
+        graphics->drawImage(mAlphaImage, posX, posY);
+        return;
     }
 
     for (auto sprite : mSprites)
@@ -102,8 +104,6 @@ bool CompoundSprite::draw(Graphics *graphics, int posX, int posY) const
             sprite->draw(graphics, posX - sprite->getWidth() / 2, posY - sprite->getHeight());
         }
     }
-
-    return false;
 }
 
 int CompoundSprite::getMinOffsetY() const

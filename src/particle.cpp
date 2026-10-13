@@ -176,9 +176,8 @@ Particle *Particle::create(const ResourceRef<ParticleEffectDef> &effect,
     return particle;
 }
 
-bool Particle::draw(Graphics *, int, int) const
+void Particle::draw(Graphics *, int, int) const
 {
-    return false;
 }
 
 bool Particle::update()

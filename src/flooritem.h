@@ -46,7 +46,7 @@ class FloorItem final : public ActorSprite
 
         Type getType() const override { return FLOOR_ITEM; }
 
-        bool draw(Graphics *graphics, int offsetX, int offsetY) const override;
+        void draw(Graphics *graphics, int offsetX, int offsetY) const override;
 
         /**
          * Returns the item ID.

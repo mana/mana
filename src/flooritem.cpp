@@ -60,17 +60,18 @@ FloorItem::FloorItem(int id,
     }
 }
 
-bool FloorItem::draw(Graphics *graphics, int offsetX, int offsetY) const
+void FloorItem::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     if (mImage)
     {
         mImage->setAlpha(getAlpha());
-        return graphics->drawImage(mImage,
-                                   getPixelX() + offsetX - mImage->getWidth() / 2,
-                                   getPixelY() + offsetY - mImage->getHeight() / 2);
+        graphics->drawImage(mImage,
+                            getPixelX() + offsetX - mImage->getWidth() / 2,
+                            getPixelY() + offsetY - mImage->getHeight() / 2);
+        return;
     }
 
-    return ActorSprite::draw(graphics, offsetX, offsetY);
+    ActorSprite::draw(graphics, offsetX, offsetY);
 }
 
 const ItemInfo &FloorItem::getInfo() const

@@ -35,10 +35,10 @@ TextParticle::TextParticle(const std::string &text,
 {
 }
 
-bool TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
+void TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
 {
     if (!isAlive())
-        return false;
+        return;
 
     int screenX = (int) mPos.x + offsetX;
     int screenY = (int) mPos.y - (int) mPos.z + offsetY;
@@ -49,6 +49,4 @@ bool TextParticle::draw(Graphics *graphics, int offsetX, int offsetY) const
     graphics->drawText(mText,
             screenX, screenY, gcn::Graphics::CENTER,
             color, mTextFont, mOutline, false);
-
-    return true;
 }

@@ -36,7 +36,7 @@ public:
     bool reset();
     bool play(const std::string &action);
     bool update(int time);
-    bool draw(Graphics *graphics, int posX, int posY) const;
+    void draw(Graphics *graphics, int posX, int posY) const;
 
     /**
      * Gets the width in pixels of the first sprite in the list.

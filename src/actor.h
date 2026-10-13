@@ -45,7 +45,7 @@ public:
      * would support setting a translation offset. It already does this
      * partly with the clipping rectangle support.
      */
-    virtual bool draw(Graphics *graphics, int offsetX, int offsetY) const = 0;
+    virtual void draw(Graphics *graphics, int offsetX, int offsetY) const = 0;
 
     /**
      * Returns the pixel position of this actor.

@@ -41,14 +41,14 @@ SimpleAnimation::SimpleAnimation(const Animation *animation)
         mCurrentFrame = mAnimation->getFrame(0);
 }
 
-bool SimpleAnimation::draw(Graphics *graphics, int posX, int posY) const
+void SimpleAnimation::draw(Graphics *graphics, int posX, int posY) const
 {
     if (!mCurrentFrame || !mCurrentFrame->image)
-        return false;
+        return;
 
-    return graphics->drawImage(mCurrentFrame->image,
-                               posX + mCurrentFrame->offsetX,
-                               posY + mCurrentFrame->offsetY);
+    graphics->drawImage(mCurrentFrame->image,
+                        posX + mCurrentFrame->offsetX,
+                        posY + mCurrentFrame->offsetY);
 }
 
 void SimpleAnimation::reset()

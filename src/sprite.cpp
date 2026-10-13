@@ -129,20 +129,20 @@ bool Sprite::updateCurrentAnimation(int dt)
     return true;
 }
 
-bool Sprite::draw(Graphics *graphics, int posX, int posY) const
+void Sprite::draw(Graphics *graphics, int posX, int posY) const
 {
     if (!mFrame)
-        return false;
+        return;
 
     if (!mFrame->image)
-        return false;
+        return;
 
     if (mFrame->image->getAlpha() != mAlpha)
         mFrame->image->setAlpha(mAlpha);
 
-    return graphics->drawImage(mFrame->image,
-                               posX + mFrame->offsetX,
-                               posY + mFrame->offsetY);
+    graphics->drawImage(mFrame->image,
+                        posX + mFrame->offsetX,
+                        posY + mFrame->offsetY);
 }
 
 bool Sprite::setDirection(SpriteDirection direction)
