@@ -133,7 +133,7 @@ bool SDLGraphics::drawRescaledImage(const Image *image,
     dstRect.h = desiredHeight;
 
     setColorAlphaMod(image);
-    return SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect) != 0;
+    return SDL_RenderCopy(mRenderer, image->mTexture, &srcRect, &dstRect) == 0;
 }
 
 bool SDLGraphics::drawRescaledImageF(const Image *image,
