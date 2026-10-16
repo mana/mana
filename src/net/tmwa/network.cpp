@@ -35,6 +35,7 @@
 
 #include <cassert>
 #include <cstring>
+#include <set>
 #include <sstream>
 #include <unordered_map>
 
@@ -332,6 +333,15 @@ Network::~Network()
  */
 static std::map<EMSCRIPTEN_WEBSOCKET_T, Network *> networksBySocket;
 
+/*
+ * Sockets closed locally whose emscripten handle is kept until the close
+ * event arrives. Deleting the handle right away lets the runtime recycle
+ * the id for the next emscripten_websocket_new call, after which the late
+ * close event is attributed to the new connection and shows up as a bogus
+ * "Connection closed (1000)" failure.
+ */
+static std::set<EMSCRIPTEN_WEBSOCKET_T> pendingClose;
+
 static Network *findNetwork(EMSCRIPTEN_WEBSOCKET_T socket)
 {
     auto it = networksBySocket.find(socket);
@@ -437,11 +447,13 @@ void Network::closeSocket()
         return;
 
     // Dropping the registration first makes sure that no event still in
-    // flight reaches this Network.
+    // flight reaches this Network. The handle itself is deleted once its
+    // close event arrives (see pendingClose) so the id cannot be recycled
+    // while that event is pending.
     networksBySocket.erase(mSocket);
+    pendingClose.insert(mSocket);
 
     emscripten_websocket_close(mSocket, 1000, "Client disconnected");
-    emscripten_websocket_delete(mSocket);
 
     mSocket = 0;
     mOpened = false;
@@ -813,6 +825,12 @@ bool Network::onError(int, const EmscriptenWebSocketErrorEvent *event, void *)
 
 bool Network::onClose(int, const EmscriptenWebSocketCloseEvent *event, void *)
 {
+    if (pendingClose.erase(event->socket))
+    {
+        emscripten_websocket_delete(event->socket);
+        return true;
+    }
+
     Network *network = findNetwork(event->socket);
     if (!network)
         return true;
@@ -836,6 +854,12 @@ bool Network::onClose(int, const EmscriptenWebSocketCloseEvent *event, void *)
         network->setError(strprintf(_("Connection closed (%d)"),
                                     (int) event->code));
     }
+
+    // The close event already arrived, so the handle can go now instead
+    // of waiting in pendingClose for an event that will not come again.
+    networksBySocket.erase(event->socket);
+    emscripten_websocket_delete(event->socket);
+    network->mSocket = 0;
 
     return true;
 }
