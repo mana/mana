@@ -395,6 +395,21 @@ static SDL_Surface *loadSurface(const std::string &path)
     return nullptr;
 }
 
+static void premultiplyAlpha(SDL_Surface *surface)
+{
+    for (int y = 0; y < surface->h; ++y)
+    {
+        auto *row = static_cast<Uint8*>(surface->pixels) + y * surface->pitch;
+        for (int x = 0; x < surface->w; ++x, row += 4)
+        {
+            const Uint8 a = row[3];
+            row[0] = row[0] * a / 255;
+            row[1] = row[1] * a / 255;
+            row[2] = row[2] * a / 255;
+        }
+    }
+}
+
 void Gui::loadCustomCursors()
 {
     for (auto cursor : mCustomMouseCursors)
@@ -421,6 +436,26 @@ void Gui::loadCustomCursors()
                 0, targetCursorSize, targetCursorSize, 32,
                 SDL_PIXELFORMAT_RGBA32);
 
+    // SDL's X11 backend uploads the surface to Xcursor verbatim, but Xcursor
+    // expects premultiplied alpha (fixed in SDL 3.6.0). sdl2-compat exposes
+    // the backing SDL3 version via SDL3_VERSION, allowing the workaround to
+    // be limited to unfixed releases.
+    bool premultiply =
+        SDL_GetCurrentVideoDriver() &&
+        SDL_strcmp(SDL_GetCurrentVideoDriver(), "x11") == 0;
+
+    if (premultiply && SDL_getenv("SDL2_COMPAT"))
+    {
+        const char *sdl3Version = SDL_getenv("SDL3_VERSION");
+        int major = 0, minor = 0, micro = 0;
+        if (sdl3Version &&
+            SDL_sscanf(sdl3Version, "%d.%d.%d", &major, &minor, &micro) == 3 &&
+            SDL_VERSIONNUM(major, minor, micro) >= SDL_VERSIONNUM(3, 6, 0))
+        {
+            premultiply = false;
+        }
+    }
+
     for (int i = 0; i < static_cast<int>(Cursor::Count); ++i)
     {
         int x = i % columns * cursorSize;
@@ -429,6 +464,9 @@ void Gui::loadCustomCursors()
         SDL_Rect srcrect = { x, y, cursorSize, cursorSize };
         SDL_Rect dstrect = { 0, 0, targetCursorSize, targetCursorSize };
         SDL_BlitScaled(mouseSurface, &srcrect, cursorSurface, &dstrect);
+
+        if (premultiply)
+            premultiplyAlpha(cursorSurface);
 
         SDL_Cursor *cursor = SDL_CreateColorCursor(cursorSurface,
                                                    15 * mCustomCursorScale,
