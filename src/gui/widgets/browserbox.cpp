@@ -47,7 +47,7 @@ static void replaceKeys(std::string &text)
 
     while (keyStart != std::string::npos)
     {
-        const auto keyEnd = text.find(";", keyStart + 3);
+        const auto keyEnd = text.find(';', keyStart + 3);
         if (keyEnd == std::string::npos)
             break;
 
@@ -149,7 +149,7 @@ void BrowserBox::addRow(std::string_view row)
         auto linkStart = row.find("@@");
         while (linkStart != std::string::npos)
         {
-            const auto linkSep = row.find("|", linkStart);
+            const auto linkSep = row.find('|', linkStart);
             const auto linkEnd = row.find("@@", linkSep);
 
             if (linkSep == std::string::npos || linkEnd == std::string::npos)
@@ -360,8 +360,10 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
     auto prevColor = context.color;
     auto prevOutlineColor = context.outlineColor;
 
+    // Position of the next control sequence, remembered while still ahead
+    std::string::size_type nextControl = 0;
+
     // TODO: Check if we must take texture size limits into account here
-    // TODO: Check if some of the O(n) calls can be removed
     for (std::string::size_type start = 0, end = std::string::npos;
             start != std::string::npos;
             start = end, end = std::string::npos)
@@ -377,7 +379,7 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
         if (mUseLinksAndUserColors || start == 0)
         {
             // Check for color or font change in format "##x", x = [<,>,B,p,0..9]
-            while (row.text.size() > start + 2 && row.text.find("##", start) == start)
+            while (row.text.size() > start + 2 && row.text.compare(start, 2, "##") == 0)
             {
                 const char c = row.text.at(start + 2);
                 start += 3;
@@ -436,70 +438,72 @@ void BrowserBox::layoutTextRow(TextRow &row, LayoutContext &context)
 
         // "Tokenize" the string at control sequences
         if (mUseLinksAndUserColors)
-            end = row.text.find("##", start + 1);
-
-        std::string::size_type len =
-            end == std::string::npos ? end : end - start;
-
-        std::string part = row.text.substr(start, len);
-        int partWidth = context.font->getWidth(part);
-
-        // Auto wrap mode
-        if (mMode == AUTO_WRAP && getWidth() > 0
-            && partWidth > 0
-            && (x + partWidth) > getWidth())
         {
-            bool forced = false;
+            if (nextControl != std::string::npos && nextControl <= start)
+                nextControl = row.text.find("##", start + 1);
+            end = nextControl;
+        }
 
-            /* FIXME: This code layout makes it easy to crash remote
-               clients by talking garbage. Forged long utf-8 characters
-               will cause either a buffer underflow in substr or an
-               infinite loop in the main loop. */
-            do
+        const auto tokenEnd = std::min(end, row.text.size());
+        auto partEnd = tokenEnd;
+        auto *font = static_cast<TrueTypeFont *>(context.font);
+        int partWidth = -1;     // Unknown
+
+        // Auto wrap mode, determine how much of the text fits in the
+        // available width
+        if (mMode == AUTO_WRAP && getWidth() > 0)
+        {
+            // Text up to the end of the row is measured in place, while a
+            // token followed by a control sequence needs to be terminated
+            std::string token;
+            const char *text = row.text.c_str() + start;
+            if (tokenEnd < row.text.size())
             {
-                if (!forced)
-                    end = row.text.rfind(' ', end);
+                token = row.text.substr(start, tokenEnd - start);
+                text = token.c_str();
+            }
 
-                // Check if we have to (stupidly) force-wrap
-                if (end == std::string::npos || end <= start)
+            size_t fit = font->measureString(text, getWidth() - x, &partWidth);
+            if (start + fit < tokenEnd)
+            {
+                // Prefer to wrap at a space
+                const auto space = std::string_view(text, fit + 1).rfind(' ');
+                if (space != std::string::npos && space > 0)
                 {
-                    forced = true;
-                    end = row.text.size();
-                    x += context.tildeWidth; // Account for the wrap-notifier
-                    continue;
+                    partEnd = start + space;
+                    end = partEnd + 1;  // Continue after the space
+                }
+                else
+                {
+                    // No space to wrap at, so force a wrap, leaving space for
+                    // the wrap-notifier
+                    fit = font->measureString(
+                        text, getWidth() - x - context.tildeWidth);
+
+                    // Wrap at least one character to avoid an endless loop
+                    if (fit == 0)
+                        fit = utf8CharLength(text);
+
+                    partEnd = end = start + fit;
+
+                    row.parts.push_back(LinePart {
+                                            getWidth() - context.tildeWidth,
+                                            context.y,
+                                            context.color,
+                                            context.outlineColor,
+                                            "~",
+                                            getFont()
+                                        });
                 }
 
-                // Skip to the start of the current character
-                while ((row.text[end] & 192) == 128)
-                    end--;
-                end--; // And then to the last byte of the previous one
-
-                part = row.text.substr(start, end - start + 1);
-                partWidth = context.font->getWidth(part);
+                partWidth = -1;
+                wrapped = true;
             }
-            while (end > start && partWidth > 0
-                   && (x + partWidth) > getWidth());
-
-            if (forced)
-            {
-                x -= context.tildeWidth; // Remove the wrap-notifier accounting
-                row.parts.push_back(LinePart {
-                                        getWidth() - context.tildeWidth,
-                                        context.y,
-                                        context.color,
-                                        context.outlineColor,
-                                        "~",
-                                        getFont()
-                                    });
-                end++; // Skip to the next character
-            }
-            else
-            {
-                end += 2; // Skip to after the space
-            }
-
-            wrapped = true;
         }
+
+        std::string part = row.text.substr(start, partEnd - start);
+        if (partWidth < 0)
+            partWidth = font->getWidth(part);
 
         row.parts.push_back(context.linePart(x, std::move(part)));
         row.width = std::max(row.width, x + partWidth);

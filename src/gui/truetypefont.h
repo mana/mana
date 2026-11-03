@@ -59,6 +59,14 @@ class TrueTypeFont : public gcn::Font
         int getHeight() const override;
 
         /**
+         * Returns the number of bytes of the given null-terminated text that
+         * fit within the given width in pixels. When \a width is given, it is
+         * set to the width of the part that fits.
+         */
+        size_t measureString(const char *text, int maxWidth,
+                             int *width = nullptr) const;
+
+        /**
          * Returns the height of a line of text. This is not the visual height
          * as returned by getHeight() but the recommended spacing between lines
          * of text.

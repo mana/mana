@@ -136,6 +136,22 @@ inline bool endsWith(std::string_view str, std::string_view suffix)
 }
 
 /**
+ * Returns the number of bytes of the UTF-8 character at the start of the
+ * given null-terminated string. Only as many continuation bytes as the lead
+ * byte declares are included, so that invalid sequences are counted the same
+ * way as by SDL_ttf.
+ */
+inline size_t utf8CharLength(const char *str)
+{
+    const unsigned char c = str[0];
+    int left = c >= 0xF0 ? 3 : c >= 0xE0 ? 2 : c >= 0xC0 ? 1 : 0;
+    size_t length = 1;
+    while (left-- > 0 && (str[length] & 0xC0) == 0x80)
+        ++length;
+    return length;
+}
+
+/**
  * Tells wether the character is a word separator.
  */
 bool isWordSeparator(char chr);

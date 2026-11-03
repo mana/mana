@@ -26,25 +26,16 @@
 
 #include "resources/image.h"
 
+#include "utils/stringutils.h"
+
 #include <guichan/color.hpp>
 #include <guichan/exception.hpp>
 
 #include <cmath>
+#include <cstring>
 #include <memory>
 
 const unsigned int CACHE_SIZE = 256;
-
-static const char *getSafeUtf8String(const std::string &text)
-{
-    static int UTF8_MAX_SIZE = 10;
-
-    static char buf[4096];
-    const int len = std::min(text.size(), sizeof(buf) - UTF8_MAX_SIZE);
-    memcpy(buf, text.c_str(), len);
-    memset(buf + len, 0, UTF8_MAX_SIZE);
-    return buf;
-}
-
 
 class TextChunk
 {
@@ -74,9 +65,7 @@ void TextChunk::render(Graphics *graphics,
     {
         // Always render in white, we'll use color modulation when rendering
         constexpr SDL_Color white = { 255, 255, 255, 255 };
-        SDL_Surface *surface = TTF_RenderUTF8_Blended(font,
-                                                      getSafeUtf8String(text),
-                                                      white);
+        SDL_Surface *surface = TTF_RenderUTF8_Blended(font, text.c_str(), white);
 
         if (surface)
         {
@@ -212,8 +201,42 @@ int TrueTypeFont::getWidth(const std::string &text) const
 
     // If the image wasn't created yet, just calculate the width of the text
     int w, h;
-    TTF_SizeUTF8(mFont, getSafeUtf8String(text), &w, &h);
+    TTF_SizeUTF8(mFont, text.c_str(), &w, &h);
     return std::ceil(w / mScale);
+}
+
+size_t TrueTypeFont::measureString(const char *text, int maxWidth,
+                                   int *width) const
+{
+    // A width of 0 would disable measuring and leave count unset
+    const int scaledMaxWidth = maxWidth * mScale;
+    if (scaledMaxWidth <= 0)
+    {
+        if (width)
+            *width = 0;
+        return 0;
+    }
+
+    int extent;
+    int count;
+    if (TTF_MeasureUTF8(mFont, text, scaledMaxWidth, &extent, &count) != 0)
+    {
+        if (width)
+            *width = getWidth(text);
+        return std::strlen(text);
+    }
+
+    if (width)
+        *width = std::ceil(extent / mScale);
+
+    // Translate the number of characters to a byte offset
+    size_t bytes = 0;
+    while (count > 0 && text[bytes] != '\0')
+    {
+        bytes += utf8CharLength(text + bytes);
+        --count;
+    }
+    return bytes;
 }
 
 int TrueTypeFont::getHeight() const
