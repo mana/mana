@@ -268,6 +268,10 @@ Client::Client(const Options &options):
 
     SDL_SetHint(SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH, "1");
 
+    // Event watches run when the event is pushed, so this also covers app
+    // lifecycle events on mobile, where the event loop blocks in background.
+    SDL_AddEventWatch(onAppEvent, this);
+
     if (!FS::setWriteDir(mLocalDataDir))
     {
         Log::critical("{} couldn't be set as write directory! "
@@ -498,10 +502,9 @@ Client::~Client()
     Log::info("Quitting");
     delete userPalette;
 
-    XML::Writer writer(mConfigDir + "/client.xml");
-    if (writer.isValid())
-        serialize(writer, config);
+    saveConfig();
 
+    SDL_DelEventWatch(onAppEvent, this);
     mInstance = nullptr;
 }
 
@@ -1383,8 +1386,6 @@ void Client::accountLogin(LoginData *loginData)
     // Clear the password, avoids auto login when returning to login
     loginData->password.clear();
 
-    // TODO This is not the best place to save the config, but at least better
-    // than the login gui window
     if (config.remember)
         config.username = loginData->username;
 }
@@ -1408,6 +1409,23 @@ void Client::toggleFullscreen()
     }
 
     config.windowMode = videoSettings.windowMode;
+}
+
+void Client::saveConfig()
+{
+    XML::Writer writer(mConfigDir + "/client.xml");
+    if (writer.isValid())
+        serialize(writer, config);
+}
+
+int Client::onAppEvent(void *userdata, SDL_Event *event)
+{
+    if (event->type == SDL_APP_WILLENTERBACKGROUND ||
+        event->type == SDL_APP_TERMINATING)
+    {
+        static_cast<Client *>(userdata)->saveConfig();
+    }
+    return 0;
 }
 
 void Client::handleWindowSizeChanged(int width, int height)

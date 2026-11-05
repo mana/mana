@@ -216,6 +216,9 @@ private:
     void initScreenshotDir();
 
     void accountLogin(LoginData *loginData);
+    void saveConfig();
+
+    static int onAppEvent(void *userdata, SDL_Event *event);
 
     static Client *mInstance;
 
