@@ -149,6 +149,11 @@ public:
 
     int exec();
 
+    /**
+     * Polls pending SDL events and pushes them to the GUI input.
+     */
+    void pollEvents();
+
     void update();
 
     /**

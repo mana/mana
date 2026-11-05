@@ -518,81 +518,85 @@ int Client::exec()
 
     while (mState != State::Exit)
     {
-        // Handle SDL events
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT:
-                mState = State::Exit;
-                break;
-
-            case SDL_WINDOWEVENT:
-                switch (event.window.event) {
-                case SDL_WINDOWEVENT_SIZE_CHANGED:
-                    handleWindowSizeChanged(event.window.data1,
-                                            event.window.data2);
-                    break;
-                }
-                break;
-
-            case SDL_KEYDOWN:
-                if ((event.key.keysym.sym == SDLK_RETURN ||
-                     event.key.keysym.sym == SDLK_KP_ENTER) &&
-                        isAltDown(event.key.keysym.mod) &&
-                        !event.key.repeat)
-                {
-                    toggleFullscreen();
-                    continue;
-                }
-
-                if (keyboard.isEnabled())
-                {
-                    const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
-                    if (tKey == KeyboardConfig::KEY_WINDOW_SETUP)
-                    {
-                        setupWindow->setVisible(!setupWindow->isVisible());
-                        if (setupWindow->isVisible())
-                            setupWindow->requestMoveToTop();
-                        continue;
-                    }
-                }
-
-                if (setupWindow->isVisible() &&
-                    keyboard.getNewKeyIndex() > KeyboardConfig::KEY_NO_VALUE)
-                {
-                    keyboard.setNewKey(event.key.keysym.sym);
-                    keyboard.callbackNewKey();
-                    keyboard.setNewKeyIndex(KeyboardConfig::KEY_NO_VALUE);
-                    continue;
-                }
-
-                // Check whether the game will handle the event
-                if (mGame && mGame->keyDownEvent(event.key))
-                    continue;
-
-                break;
-            }
-
-            // Push input to GUI when not used
-            try
-            {
-                guiInput->pushInput(event);
-            }
-            catch (gcn::Exception e)
-            {
-                const char *err = e.getMessage().c_str();
-                Log::warn("Guichan input exception: {}", err);
-            }
-        }
-
+        pollEvents();
         update();
     }
 
     Net::unload();
 
     return 0;
+}
+
+void Client::pollEvents()
+{
+    // Handle SDL events
+    SDL_Event event;
+    while (SDL_PollEvent(&event))
+    {
+        switch (event.type)
+        {
+        case SDL_QUIT:
+            mState = State::Exit;
+            break;
+
+        case SDL_WINDOWEVENT:
+            switch (event.window.event) {
+            case SDL_WINDOWEVENT_SIZE_CHANGED:
+                handleWindowSizeChanged(event.window.data1,
+                                        event.window.data2);
+                break;
+            }
+            break;
+
+        case SDL_KEYDOWN:
+            if ((event.key.keysym.sym == SDLK_RETURN ||
+                 event.key.keysym.sym == SDLK_KP_ENTER) &&
+                    isAltDown(event.key.keysym.mod) &&
+                    !event.key.repeat)
+            {
+                toggleFullscreen();
+                continue;
+            }
+
+            if (keyboard.isEnabled())
+            {
+                const int tKey = keyboard.getKeyIndex(event.key.keysym.sym);
+                if (tKey == KeyboardConfig::KEY_WINDOW_SETUP)
+                {
+                    setupWindow->setVisible(!setupWindow->isVisible());
+                    if (setupWindow->isVisible())
+                        setupWindow->requestMoveToTop();
+                    continue;
+                }
+            }
+
+            if (setupWindow->isVisible() &&
+                keyboard.getNewKeyIndex() > KeyboardConfig::KEY_NO_VALUE)
+            {
+                keyboard.setNewKey(event.key.keysym.sym);
+                keyboard.callbackNewKey();
+                keyboard.setNewKeyIndex(KeyboardConfig::KEY_NO_VALUE);
+                continue;
+            }
+
+            // Check whether the game will handle the event
+            if (mGame && mGame->keyDownEvent(event.key))
+                continue;
+
+            break;
+        }
+
+        // Push input to GUI when not used
+        try
+        {
+            guiInput->pushInput(event);
+        }
+        catch (gcn::Exception e)
+        {
+            const char *err = e.getMessage().c_str();
+            Log::warn("Guichan input exception: {}", err);
+        }
+    }
 }
 
 void Client::update()
