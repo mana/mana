@@ -43,8 +43,6 @@ docs/SOURCE/warnings.log
 *.a
 
 # OSX
-Xcode/mana.xcodeproj/xcuserdata
-Xcode/mana.xcodeproj/project.xcworkspace/xcuserdata
 .DS_Store
 
 # Claude

@@ -8,7 +8,6 @@ name="mana-$1"
 git ls-files --recurse-submodules -z \
     | grep -z --invert-match \
         -e '^\.' \
-        -e '^Xcode/' \
     | tar caf $name-source.tar.gz --xform s:^:$name/: --null -T-
 
 echo "Release ready as $name-source.tar.gz"

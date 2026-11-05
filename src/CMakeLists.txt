@@ -659,7 +659,9 @@ set_target_properties(
              MACOSX_BUNDLE_COPYRIGHT "(C) 2004-2024 ${CPACK_PACKAGE_VENDOR}"
              MACOSX_BUNDLE_LONG_VERSION_STRING ${PROJECT_VERSION}
              MACOSX_BUNDLE_SHORT_VERSION_STRING
-             ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
+             ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+             MACOSX_BUNDLE_INFO_PLIST
+             ${CMAKE_SOURCE_DIR}/packaging/macos/ManaInfo.plist.in)
 
 if(WIN32)
   # Install the executable along with the DLLs it depends on. This works for
