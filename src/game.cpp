@@ -347,6 +347,10 @@ void Game::logic()
     // Handle all necessary game logic
     actorSpriteManager->logic();
 
+    // Don't try to catch up more than a second
+    if (mParticleEngineTimer.elapsed() > 1000)
+        mParticleEngineTimer.set();
+
     // todo: make Particle::update work with variable time steps
     while (mParticleEngineTimer.passed())
     {
