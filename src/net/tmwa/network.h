@@ -113,6 +113,12 @@ class Network
 
         uint16_t readWord(int pos);
 
+        /**
+         * Drops the bytes requested by skip() from the front of the incoming
+         * buffer. Called with mMutex held.
+         */
+        void applyToSkip();
+
         static const PacketInfo *findPacketInfo(uint16_t id);
 
         void receive();

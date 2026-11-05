@@ -519,7 +519,12 @@ void Network::skip(int len)
 {
     MutexLocker lock(&mMutex);
     mToSkip += len;
-    if (!mInSize)
+    applyToSkip();
+}
+
+void Network::applyToSkip()
+{
+    if (!mToSkip || !mInSize)
         return;
 
     if (mInSize >= mToSkip)
@@ -586,20 +591,7 @@ void Network::receive()
                 else
                 {
                     mInSize += ret;
-                    if (mToSkip)
-                    {
-                        if (mInSize >= mToSkip)
-                        {
-                            mInSize -= mToSkip;
-                            memmove(mInBuffer, mInBuffer + mToSkip, mInSize);
-                            mToSkip = 0;
-                        }
-                        else
-                        {
-                            mToSkip -= mInSize;
-                            mInSize = 0;
-                        }
-                    }
+                    applyToSkip();
                 }
                 break;
             }
