@@ -116,8 +116,7 @@ HairDB hairDB;                /**< Hair styles and colors info database */
 
 Sound sound;
 
-std::atomic<int> fps = 0;         /**< Frames counted in the last second */
-std::atomic<int> frame_count = 0; /**< Counts the frames during one second */
+int fps = 0;                  /**< Frames counted in the last second */
 
 #ifdef _WIN32
 static bool isDirWritable(const std::string &dir)
@@ -133,17 +132,6 @@ static bool isDirWritable(const std::string &dir)
     return true;
 }
 #endif
-
-/**
- * Updates fps.
- * Called every seconds by SDL_AddTimer()
- */
-static Uint32 nextSecond(Uint32 interval, void *param)
-{
-    fps = frame_count.exchange(0);
-
-    return interval;
-}
 
 /**
  * Returns whether an Alt key is held down.
@@ -468,17 +456,12 @@ Client::Client(const Options &options):
         }
     }
 
-    // Initialize seconds counter
-    mSecondsCounterId = SDL_AddTimer(1000, nextSecond, nullptr);
-
     // Initialize PlayerInfo
     PlayerInfo::init();
 }
 
 Client::~Client()
 {
-    SDL_RemoveTimer(mSecondsCounterId);
-
     // Unload XML databases
     SettingsManager::unload();
     CharDB::unload();
@@ -515,6 +498,7 @@ Client::~Client()
 int Client::exec()
 {
     Time::beginFrame();     // Prevent startup lag influencing the first frame
+    mFpsSecondStart = Time::absoluteTimeMs();
 
     while (mState != State::Exit)
     {
@@ -603,6 +587,15 @@ void Client::update()
 {
     Time::beginFrame();
 
+    // Publish the number of frames drawn in the last second
+    const uint32_t now = Time::absoluteTimeMs();
+    if (now - mFpsSecondStart >= 1000)
+    {
+        fps = mFrameCount;
+        mFrameCount = 0;
+        mFpsSecondStart = now;
+    }
+
     mVideo.updateWindowSize();
     checkGraphicsSize();
 
@@ -622,7 +615,7 @@ void Client::update()
     // Update the screen when application is active, delay otherwise.
     if (isActive())
     {
-        frame_count++;
+        mFrameCount++;
         gui->draw();
         mVideo.present();
         mFpsManager.limitFps(config.fpsLimit);

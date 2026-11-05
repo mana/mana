@@ -86,7 +86,7 @@ public:
         if (!isVisible())
             return;
 
-        mFPSLabel->setCaption(strformat(mFPSText, fps.load()));
+        mFPSLabel->setCaption(strformat(mFPSText, fps));
 
         if (const Map *map = Game::instance()->getCurrentMap())
         {

@@ -30,7 +30,6 @@
 
 #include <SDL.h>
 
-#include <atomic>
 #include <string>
 
 class Game;
@@ -40,7 +39,7 @@ class LoginData;
 class Window;
 class QuitDialog;
 
-extern std::atomic<int> fps;
+extern int fps;
 
 extern std::string errorMessage;
 extern LoginData loginData;
@@ -245,8 +244,9 @@ private:
 
     SDL_Surface *mIcon = nullptr;
 
-    SDL_TimerID mSecondsCounterId = 0;
     FpsManager mFpsManager;
+    uint32_t mFpsSecondStart = 0;   /**< Start of the second being counted */
+    int mFrameCount = 0;            /**< Frames drawn in the current second */
 
 #if defined(_WIN32) || defined(__APPLE__)
     /**
