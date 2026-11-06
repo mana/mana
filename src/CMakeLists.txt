@@ -27,7 +27,7 @@ endif()
 if(ENABLE_MANASERV)
   if(NOT USE_SYSTEM_ENET)
     message(STATUS "Using ENet submodule")
-    set(ENET_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/libs/enet/include")
+    set(ENET_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/libs/enet/include")
     set(ENET_LIBRARIES enet)
   else()
     message(STATUS "Using system ENet")
@@ -596,7 +596,7 @@ if(WIN32)
 endif(WIN32)
 
 set(APP_ICON_NAME "mana.icns")
-set(APP_ICON_FILE "${CMAKE_SOURCE_DIR}/data/icons/${APP_ICON_NAME}")
+set(APP_ICON_FILE "${PROJECT_SOURCE_DIR}/data/icons/${APP_ICON_NAME}")
 set_source_files_properties(${APP_ICON_FILE} PROPERTIES MACOSX_PACKAGE_LOCATION
                                                         "Resources")
 
@@ -661,7 +661,7 @@ set_target_properties(
              MACOSX_BUNDLE_SHORT_VERSION_STRING
              ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
              MACOSX_BUNDLE_INFO_PLIST
-             ${CMAKE_SOURCE_DIR}/packaging/macos/ManaInfo.plist.in)
+             ${PROJECT_SOURCE_DIR}/packaging/macos/ManaInfo.plist.in)
 
 if(WIN32)
   # Install the executable along with the DLLs it depends on. This works for
@@ -695,7 +695,7 @@ if(WIN32)
         set(MANA_SEARCH_DIRS \"${DLL_SEARCH_DIRS}\")
         set(MANA_EXTRA_DLLS \"${EXTRA_DLLS}\")
         set(MANA_DESTINATION \"${CMAKE_INSTALL_BINDIR}\")")
-    install(SCRIPT "${CMAKE_SOURCE_DIR}/CMake/Modules/InstallRuntimeDlls.cmake")
+    install(SCRIPT "${PROJECT_SOURCE_DIR}/CMake/Modules/InstallRuntimeDlls.cmake")
   else()
     install(
       TARGETS mana

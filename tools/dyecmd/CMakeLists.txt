@@ -5,10 +5,10 @@ pkg_check_modules(SDL2 REQUIRED IMPORTED_TARGET
 
 add_executable(dyecmd
   src/dyecmd.cpp
-  ${CMAKE_SOURCE_DIR}/src/log.cpp
-  ${CMAKE_SOURCE_DIR}/src/resources/dye.cpp)
+  ${PROJECT_SOURCE_DIR}/src/log.cpp
+  ${PROJECT_SOURCE_DIR}/src/resources/dye.cpp)
 
-target_include_directories(dyecmd PRIVATE ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(dyecmd PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_link_libraries(dyecmd PRIVATE PkgConfig::SDL2)
 
 if(USE_FMT)

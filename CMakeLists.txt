@@ -63,7 +63,7 @@ endif()
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # where to look for cmake modules
-set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake/Modules)
 
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME ${PROJECT_NAME})
 
@@ -119,8 +119,8 @@ endif()
 
 # Set generic CPack properties here so they may be used in subdirectories
 set(CPACK_PACKAGE_VENDOR "Mana Development Team")
-set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/README.md")
-set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/COPYING")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_SOURCE_DIR}/README.md")
+set(CPACK_RESOURCE_FILE_LICENSE "${PROJECT_SOURCE_DIR}/COPYING")
 # By default the install directory includes the version
 set(CPACK_PACKAGE_INSTALL_DIRECTORY "${PROJECT_NAME}")
 set(CPACK_PACKAGE_EXECUTABLES "mana;Mana")
@@ -153,10 +153,10 @@ endif()
 
 # Windows NSIS installer
 if(WIN32)
-  set(CPACK_NSIS_MUI_ICON "${CMAKE_SOURCE_DIR}/data/icons/mana.ico")
+  set(CPACK_NSIS_MUI_ICON "${PROJECT_SOURCE_DIR}/data/icons/mana.ico")
   set(CPACK_NSIS_INSTALLED_ICON_NAME "mana.exe")
   set(CPACK_NSIS_MUI_WELCOMEFINISHPAGE_BITMAP
-      "${CMAKE_SOURCE_DIR}\\packaging\\windows\\setup_welcome.bmp")
+      "${PROJECT_SOURCE_DIR}\\packaging\\windows\\setup_welcome.bmp")
   set(CPACK_NSIS_URL_INFO_ABOUT ${PROJECT_HOMEPAGE_URL})
   set(CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
   set(CPACK_NSIS_MUI_FINISHPAGE_RUN "mana.exe")
@@ -168,7 +168,7 @@ if(WIN32)
   endif()
   string(REPLACE "/" "\\\\" PORTABLE_MARKER_PATH_NSIS "${_portable_marker_path}")
   configure_file(
-    "${CMAKE_SOURCE_DIR}/packaging/windows/nsis-portable-guard.nsi.in"
+    "${PROJECT_SOURCE_DIR}/packaging/windows/nsis-portable-guard.nsi.in"
     "${CMAKE_CURRENT_BINARY_DIR}/nsis-portable-guard.nsi"
     @ONLY
   )
@@ -186,7 +186,7 @@ if(WIN32)
   set(CPACK_COMPONENT_PORTABLE_DESCRIPTION "Portable mode. Settings and updates are stored in the installation folder.")
   set(CPACK_COMPONENT_PORTABLE_DISABLED TRUE)
   install(
-    FILES "${CMAKE_SOURCE_DIR}/packaging/windows/portable.xml"
+    FILES "${PROJECT_SOURCE_DIR}/packaging/windows/portable.xml"
     DESTINATION ${CMAKE_INSTALL_BINDIR}
     COMPONENT Portable
   )
