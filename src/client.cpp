@@ -313,6 +313,16 @@ Client::Client(const Options &options):
     // Add the local data directory to PhysicsFS search path
     ResourceManager::addToSearchPath(mLocalDataDir, false);
 
+    // Fail early when the client data files cannot be found.
+    auto themes = Theme::getAvailableThemes();
+    if (themes.empty())
+    {
+        Log::critical(_("The client data files could not be found.\n\n"
+                        "Make sure the client is properly installed, or "
+                        "launch it from the directory containing the data "
+                        "files."));
+    }
+
     bool useOpenGL = !mOptions.noOpenGL && config.opengl;
 
     // Set up the transparency option for low CPU when not using OpenGL.
@@ -365,7 +375,7 @@ Client::Client(const Options &options):
     itemShortcut = new ItemShortcut;
     emoteShortcut = new EmoteShortcut;
 
-    gui = new Gui(graphics, Theme::prepareThemePath());
+    gui = new Gui(graphics, std::move(themes), Theme::prepareThemePath());
 
     // Initialize sound engine
     try

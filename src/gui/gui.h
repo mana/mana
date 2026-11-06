@@ -85,7 +85,8 @@ class Gui final : public gcn::Gui,
                   public gcn::KeyListener
 {
     public:
-        Gui(Graphics *screen, const std::string &themePath);
+        Gui(Graphics *screen, std::vector<ThemeInfo> themes,
+            const std::string &themePath);
 
         ~Gui() override;
 

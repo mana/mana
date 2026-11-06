@@ -39,23 +39,23 @@
 #include <algorithm>
 
 /**
- * Initializes the directory in which the client looks for GUI themes, which at
+ * Returns the directory in which the client looks for GUI themes, which at
  * the same time functions as a fallback directory when looking up files
- * relevant for the GUI theme.
+ * relevant for the GUI theme. Determined on first use.
  */
-static std::string defaultThemePath;
-
-static void initDefaultThemePath()
+static const std::string &getDefaultThemePath()
 {
-    defaultThemePath = branding.guiThemePath;
+    static const std::string defaultThemePath =
+        !branding.guiThemePath.empty() && FS::isDirectory(branding.guiThemePath)
+            ? branding.guiThemePath
+            : "graphics/gui/";
 
-    if (defaultThemePath.empty() || !FS::isDirectory(defaultThemePath))
-        defaultThemePath = "graphics/gui/";
+    return defaultThemePath;
 }
 
 static bool isThemePath(const std::string &theme)
 {
-    return FS::exists(defaultThemePath + theme + "/theme.xml");
+    return FS::exists(getDefaultThemePath() + theme + "/theme.xml");
 }
 
 
@@ -79,7 +79,7 @@ ThemeInfo::ThemeInfo(const std::string &path)
 
 std::string ThemeInfo::getFullPath() const
 {
-    return defaultThemePath + path;
+    return getDefaultThemePath() + path;
 }
 
 
@@ -250,8 +250,6 @@ Theme::~Theme()
 
 std::string Theme::prepareThemePath()
 {
-    initDefaultThemePath();
-
     // Try theme from settings
     if (isThemePath(config.theme))
         return config.theme;
@@ -266,9 +264,13 @@ std::string Theme::prepareThemePath()
 std::vector<ThemeInfo> Theme::getAvailableThemes()
 {
     std::vector<ThemeInfo> themes;
-    themes.emplace_back(std::string());
 
-    for (const auto &entry : FS::enumerateFiles(defaultThemePath))
+    // Only include the default theme when it could actually be loaded, so
+    // that a missing data set results in an empty list.
+    if (ThemeInfo defaultTheme{std::string()}; defaultTheme.isValid())
+        themes.push_back(std::move(defaultTheme));
+
+    for (const auto &entry : FS::enumerateFiles(getDefaultThemePath()))
     {
         ThemeInfo theme{entry};
         if (theme.isValid())
@@ -298,7 +300,7 @@ std::string Theme::resolvePath(const std::string &path) const
         return mThemePath + "/" + path;
 
     // Backup
-    return defaultThemePath + "/" + path;
+    return getDefaultThemePath() + "/" + path;
 }
 
 ResourceRef<Image> Theme::getImage(const std::string &path) const
@@ -489,6 +491,9 @@ static bool check(bool value, fmt::format_string<Args...> msg, Args &&...args)
 
 bool Theme::readTheme(const ThemeInfo &themeInfo)
 {
+    if (!themeInfo.isValid())
+        return false;
+
     Log::info("Loading {} theme from '{}'...",
               themeInfo.getName(),
               themeInfo.getPath());

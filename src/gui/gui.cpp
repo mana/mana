@@ -56,8 +56,9 @@ gcn::Font *monoFont = nullptr;
 
 bool Gui::debugDraw;
 
-Gui::Gui(Graphics *graphics, const std::string &themePath)
-    : mAvailableThemes(Theme::getAvailableThemes())
+Gui::Gui(Graphics *graphics, std::vector<ThemeInfo> themes,
+         const std::string &themePath)
+    : mAvailableThemes(std::move(themes))
     , mCustomCursorScale(Client::getVideo().settings().scale())
 {
     // Try to find the requested theme, using the first one as fallback
