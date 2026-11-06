@@ -89,16 +89,14 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
     Window::setWindowContainer(guiTop);
     setTop(guiTop);
 
-    // Set global font
-    std::string path = ResourceManager::getPath(branding.font);
-
     // Initialize the font scale before creating the fonts
     TrueTypeFont::updateFontScale(graphics->getScale());
 
+    // Set global font
     try
     {
-        mGuiFont = new TrueTypeFont(path, config.fontSize);
-        mInfoParticleFont = new TrueTypeFont(path, config.fontSize,
+        mGuiFont = new TrueTypeFont(branding.font, config.fontSize);
+        mInfoParticleFont = new TrueTypeFont(branding.font, config.fontSize,
                                              TTF_STYLE_BOLD);
     }
     catch (gcn::Exception e)
@@ -108,10 +106,9 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
     }
 
     // Set bold font
-    path = ResourceManager::getPath(branding.boldFont);
     try
     {
-        boldFont = new TrueTypeFont(path, config.fontSize);
+        boldFont = new TrueTypeFont(branding.boldFont, config.fontSize);
     }
     catch (gcn::Exception e)
     {
@@ -120,10 +117,9 @@ Gui::Gui(Graphics *graphics, const std::string &themePath)
     }
 
     // Set mono font
-    path = ResourceManager::getPath(branding.monoFont);
     try
     {
-        monoFont = new TrueTypeFont(path, config.fontSize);
+        monoFont = new TrueTypeFont(branding.monoFont, config.fontSize);
     }
     catch (gcn::Exception e)
     {

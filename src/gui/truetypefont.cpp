@@ -26,6 +26,7 @@
 
 #include "resources/image.h"
 
+#include "utils/filesystem.h"
 #include "utils/stringutils.h"
 
 #include <guichan/color.hpp>
@@ -101,8 +102,8 @@ TrueTypeFont::TrueTypeFont(const std::string &filename, int size, int style)
             std::string(TTF_GetError()));
     }
 
-    mFont = TTF_OpenFont(filename.c_str(), size * mScale);
-    mFontOutline = TTF_OpenFont(filename.c_str(), size * mScale);
+    mFont = TTF_OpenFontRW(FS::openRWops(filename), 1, size * mScale);
+    mFontOutline = TTF_OpenFontRW(FS::openRWops(filename), 1, size * mScale);
 
     if (!mFont || !mFontOutline)
     {
