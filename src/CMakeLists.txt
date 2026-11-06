@@ -738,8 +738,21 @@ if(APPLE)
     endif()
   endforeach()
 
+  # The directories fixup_bundle searches for the libraries to copy into
+  # the bundle. Derived from the resolved paths of the libraries we link
+  # against, so this works whether they were installed by a package
+  # manager or into a private prefix (like CI's deps/).
+  set(BUNDLE_LIB_DIRS "/usr/local/lib;/opt/homebrew/lib")
+  foreach(_lib IN LISTS SDL2_LINK_LIBRARIES Intl_LIBRARIES ITEMS ${PHYSFS_LIBRARY})
+    if(IS_ABSOLUTE "${_lib}")
+      get_filename_component(_lib_dir "${_lib}" DIRECTORY)
+      list(APPEND BUNDLE_LIB_DIRS "${_lib_dir}")
+    endif()
+  endforeach()
+  list(REMOVE_DUPLICATES BUNDLE_LIB_DIRS)
+
   install(
     CODE "include(BundleUtilities)
-      fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/Mana.app\" \"${BUNDLE_EXTRA_LIBS}\" \"/usr/local/lib;/opt/homebrew/lib\")"
+      fixup_bundle(\"\${CMAKE_INSTALL_PREFIX}/Mana.app\" \"${BUNDLE_EXTRA_LIBS}\" \"${BUNDLE_LIB_DIRS}\")"
   )
 endif()

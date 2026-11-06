@@ -18,6 +18,10 @@ po/translatable-files
 src/mana
 build/*
 
+# local dependency prefix built by tools/ci/build-macos-deps.sh
+deps/
+deps-build/
+
 # files created during Windows build
 *.dll
 *.exe

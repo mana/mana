@@ -90,6 +90,7 @@ jobs:
 
   macos-build:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - arch: arm64
@@ -107,39 +108,37 @@ jobs:
         with:
           submodules: true
 
-      - name: Untap aws/tap
-        # The runner image ships an untrusted tap, which Homebrew warns about
-        run: brew untap aws/tap || true
-
       - name: Setup ccache
         uses: hendrikmuhs/ccache-action@v1.2.23
         with:
           max-size: 250M
+          # Download a prebuilt binary instead of installing via Homebrew
+          install: binary
 
-      - name: Install dependencies (${{ matrix.arch }})
+      - name: Cache dependencies
+        uses: actions/cache@v6
+        with:
+          path: deps
+          key: macos-deps-${{ matrix.arch }}-${{ hashFiles('tools/ci/build-macos-deps.sh') }}
+
+      - name: Build dependencies (${{ matrix.arch }})
+        # No Homebrew: the Intel runner is Tier 3 without bottles. The
+        # script builds all non-system dependencies into deps/
+        env:
+          ARCH: ${{ matrix.arch }}
+          MACOSX_DEPLOYMENT_TARGET: ${{ matrix.deployment-target }}
         run: |
-          brew update
-          # Tolerate failure, since upgrading unrelated pre-installed packages
-          # fails on the Intel runners now that they are a Homebrew Tier 3
-          # configuration without bottles for some of them. The packages we
-          # need are still upgraded, by this command or by the brew install
-          # below.
-          brew upgrade || true
-          brew install \
-            enet \
-            fmt \
-            guichan \
-            physfs \
-            sdl2 \
-            sdl2_image \
-            sdl2_mixer \
-            sdl2_net \
-            sdl2_ttf
+          tools/ci/build-macos-deps.sh
+          echo "$GITHUB_WORKSPACE/deps/bin" >> "$GITHUB_PATH"
 
       - name: Configure (${{ matrix.arch }})
+        env:
+          PKG_CONFIG_PATH: ${{ github.workspace }}/deps/lib/pkgconfig
         run: cmake -B build -DCMAKE_BUILD_TYPE=Release
             -DCMAKE_OSX_ARCHITECTURES=${{ matrix.arch }}
             -DCMAKE_OSX_DEPLOYMENT_TARGET=${{ matrix.deployment-target }}
+            -DCMAKE_PREFIX_PATH=${{ github.workspace }}/deps
+            -DUSE_SYSTEM_ENET=OFF -DUSE_SYSTEM_GUICHAN=OFF
 
       - name: Build (${{ matrix.arch }})
         run: cmake --build build
@@ -148,9 +147,8 @@ jobs:
         run: cmake --install build --prefix $PWD/install
 
       - name: Smoke test bundle (${{ matrix.arch }})
-        # Hide Homebrew's libraries from dyld's fallback search to make sure
-        # the bundle also launches on machines without them (this catches
-        # libraries missing from the bundle, which abort at load time)
+        # Restrict dyld's fallback search to the system libraries, so
+        # libraries missing from the bundle abort at load time
         run: DYLD_FALLBACK_LIBRARY_PATH=/usr/lib install/Mana.app/Contents/MacOS/Mana --version
 
       - name: Archive bundle (${{ matrix.arch }})
