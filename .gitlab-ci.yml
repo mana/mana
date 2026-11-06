@@ -124,8 +124,15 @@ macos-build:
     - macos
   variables:
     GIT_SUBMODULE_STRATEGY: normal
+    # The dependency prefix lives outside the workspace, so it survives
+    # the runner's per-build git clean
+    DEPS_PREFIX: "$CI_BUILDS_DIR/mana-deps"
+    MACOSX_DEPLOYMENT_TARGET: "13.3"
+    PKG_CONFIG_PATH: "$CI_BUILDS_DIR/mana-deps/lib/pkgconfig"
   script:
-    - cmake -G Ninja -B build .
+    - export PATH="/usr/local/bin:$DEPS_PREFIX/bin:$PATH"
+    - tools/ci/build-macos-deps.sh
+    - cmake -G Ninja -B build . -DCMAKE_PREFIX_PATH="$DEPS_PREFIX" -DUSE_SYSTEM_ENET=OFF -DUSE_SYSTEM_GUICHAN=OFF
     - cmake --build build
     - cd build
     - cpack -G DragNDrop
@@ -133,8 +140,8 @@ macos-build:
     # project version, and a stable name gives the latest artifact a stable
     # download URL usable on the website
     - mv Mana-*.dmg ../Mana.dmg
-    # Smoke test the packaged app with Homebrew's libraries hidden from
-    # dyld's fallback search, to make sure the bundle also launches on
+    # Smoke test the packaged app with dyld's fallback search restricted
+    # to the system libraries, to make sure the bundle also launches on
     # machines without them (this catches libraries missing from the
     # bundle, which abort at load time)
     - hdiutil attach ../Mana.dmg -mountpoint "/tmp/mana-smoke-$CI_JOB_ID" -nobrowse

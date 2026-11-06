@@ -1,0 +1,28 @@
+name: Brew
+on: [push, pull_request]
+
+jobs:
+  macos-brew:
+    # Build and bundle against Homebrew-provided dependencies, to keep
+    # covering the path a user with brew installed would take
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install dependencies
+        # gettext is keg-only, so its tools are exposed explicitly
+        run: |
+          brew install enet guichan physfs sdl2 sdl2_image sdl2_mixer sdl2_net sdl2_ttf gettext
+          echo "$(brew --prefix)/opt/gettext/bin" >> "$GITHUB_PATH"
+
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Install
+        run: cmake --install build --prefix $PWD/install
+
+      - name: Smoke test bundle
+        run: DYLD_FALLBACK_LIBRARY_PATH=/usr/lib install/Mana.app/Contents/MacOS/Mana --version
