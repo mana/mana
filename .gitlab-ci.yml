@@ -125,16 +125,21 @@ macos-build:
     - macos
   variables:
     GIT_SUBMODULE_STRATEGY: normal
-    # The dependency prefix lives outside the workspace, so it survives
-    # the runner's per-build git clean
+    # The dependency prefix and the ccache directory live outside the
+    # workspace, so they survive the runner's per-build git clean
     DEPS_PREFIX: "$CI_BUILDS_DIR/mana-deps"
+    CCACHE_BASEDIR: "$CI_PROJECT_DIR"
+    CCACHE_DIR: "$CI_BUILDS_DIR/mana-ccache"
+    CCACHE_COMPILERCHECK: content
     MACOSX_DEPLOYMENT_TARGET: "13.3"
     PKG_CONFIG_PATH: "$CI_BUILDS_DIR/mana-deps/lib/pkgconfig"
   script:
     - export PATH="/usr/local/bin:$DEPS_PREFIX/bin:$PATH"
     - tools/ci/build-macos-deps.sh
-    - cmake -G Ninja -B build . -DCMAKE_PREFIX_PATH="$DEPS_PREFIX" -DUSE_SYSTEM_ENET=OFF -DUSE_SYSTEM_GUICHAN=OFF
+    - ccache --zero-stats || true
+    - cmake -G Ninja -B build . -DCMAKE_PREFIX_PATH="$DEPS_PREFIX" -DUSE_SYSTEM_ENET=OFF -DUSE_SYSTEM_GUICHAN=OFF -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
     - cmake --build build
+    - ccache --show-stats
     - cd build
     - cpack -G DragNDrop
     # No version in the file name, since CPack always stamps the static
