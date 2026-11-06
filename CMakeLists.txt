@@ -62,6 +62,10 @@ else()
 endif()
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+# No C++ modules are used, and the dependency scanning CMake enables for
+# C++20 on newer compilers makes compilations uncacheable by ccache
+set(CMAKE_CXX_SCAN_FOR_MODULES OFF)
+
 # where to look for cmake modules
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake/Modules)
 
