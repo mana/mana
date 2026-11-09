@@ -1,0 +1,278 @@
+/*
+ *  The Mana Client
+ *  Copyright (C) 2009-2026  The Mana Developers
+ *
+ *  This file is part of The Mana Client.
+ *
+ *  This program is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+#include "net/download.h"
+
+#include "configuration.h"
+#include "log.h"
+#include "main.h"
+
+#include "utils/format.h"
+
+#include <SDL.h>
+#include <SDL_thread.h>
+
+#include <curl/curl.h>
+
+#include <cassert>
+#include <cstdlib>
+#include <cstring>
+
+namespace Net {
+
+static_assert(CURL_ERROR_SIZE <= DOWNLOAD_ERROR_SIZE);
+
+
+constexpr char DOWNLOAD_ERROR_MESSAGE_THREAD[] = "Could not create download thread!";
+
+Download::Download(std::string url)
+    : mUrl(std::move(url))
+{
+    mError[0] = 0;
+}
+
+Download::~Download()
+{
+    mCancel = true;
+    SDL_WaitThread(mThread, nullptr);
+
+    curl_slist_free_all(mHeaders);
+    free(mBuffer);
+}
+
+void Download::addHeader(const char *header)
+{
+    assert(!mStarted);   // Cannot add headers after starting download
+
+    mHeaders = curl_slist_append(mHeaders, header);
+}
+
+bool Download::start()
+{
+    assert(!mStarted);   // Download already started
+    mStarted = true;
+
+    Log::info("Starting download: {}", mUrl);
+
+    mThread = SDL_CreateThread(&Download::downloadThread,
+                                        "Download", this);
+
+    if (!mThread)
+    {
+        Log::info("{}", DOWNLOAD_ERROR_MESSAGE_THREAD);
+        setError(DOWNLOAD_ERROR_MESSAGE_THREAD);
+        mState.lock()->status = DownloadStatus::Error;
+        return false;
+    }
+
+    return true;
+}
+
+void Download::cancel()
+{
+    Log::info("Canceling download: {}", mUrl);
+    mCancel = true;
+}
+
+/**
+ * A libcurl callback for reporting progress.
+ */
+int Download::downloadProgress(void *clientp,
+                               curl_off_t dltotal, curl_off_t dlnow,
+                               curl_off_t ultotal, curl_off_t ulnow)
+{
+    auto *d = reinterpret_cast<Download*>(clientp);
+
+    auto state = d->mState.lock();
+    state->status = DownloadStatus::InProgress;
+    state->progress = 0.0f;
+    if (dltotal > 0)
+        state->progress = static_cast<float>(dlnow) / dltotal;
+
+    return d->mCancel;
+}
+
+/**
+ * A libcurl callback for writing to memory.
+ */
+size_t Download::writeBuffer(char *ptr, size_t size, size_t nmemb,
+                             void *stream)
+{
+    auto *d = reinterpret_cast<Download *>(stream);
+
+    const size_t totalMem = size * nmemb;
+    char *newBuffer = static_cast<char*>(realloc(d->mBuffer, d->mDownloadedBytes + totalMem));
+    if (newBuffer)
+    {
+        d->mBuffer = newBuffer;
+        memcpy(d->mBuffer + d->mDownloadedBytes, ptr, totalMem);
+        d->mDownloadedBytes += totalMem;
+    }
+
+    return totalMem;
+}
+
+int Download::downloadThread(void *ptr)
+{
+    auto *d = reinterpret_cast<Download*>(ptr);
+    bool complete = false;
+    std::string outFilename;
+
+    if (!d->mMemoryWrite)
+        outFilename = d->mFileName + ".part";
+
+    for (int attempts = 0; attempts < 3 && !complete && !d->mCancel; ++attempts)
+    {
+        CURL *curl = curl_easy_init();
+        if (!curl)
+            break;
+
+        Log::info("Downloading: {}", d->mUrl);
+
+        curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1);
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, d->mHeaders);
+
+        FILE *file = nullptr;
+
+        if (d->mMemoryWrite)
+        {
+            curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &Download::writeBuffer);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, ptr);
+        }
+        else
+        {
+            file = fopen(outFilename.c_str(), "w+b");
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, file);
+        }
+
+        const std::string appShort = branding.shortName();
+        const std::string userAgent =
+                fmt::format(PACKAGE_EXTENDED_VERSION, appShort);
+
+        curl_easy_setopt(curl, CURLOPT_USERAGENT, userAgent.c_str());
+        curl_easy_setopt(curl, CURLOPT_ERRORBUFFER, d->mError);
+        curl_easy_setopt(curl, CURLOPT_URL, d->mUrl.c_str());
+        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
+        curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION,
+                         &Download::downloadProgress);
+        curl_easy_setopt(curl, CURLOPT_XFERINFODATA, ptr);
+        curl_easy_setopt(curl, CURLOPT_NOSIGNAL, 1);
+        curl_easy_setopt(curl, CURLOPT_CONNECTTIMEOUT, 15);
+
+#if defined(_WIN32) && defined(CURLSSLOPT_NATIVE_CA)
+        // Verify against the certificate store of Windows. Without this, an
+        // OpenSSL based libcurl looks for a CA bundle at the path it was
+        // compiled with, which does not exist on the user's machine.
+        curl_easy_setopt(curl, CURLOPT_SSL_OPTIONS, CURLSSLOPT_NATIVE_CA);
+#endif
+
+        const CURLcode res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+
+        if (res == CURLE_ABORTED_BY_CALLBACK)
+        {
+            d->mCancel = true;
+
+            if (file)
+            {
+                fclose(file);
+                ::remove(outFilename.c_str());
+            }
+
+            break;
+        }
+
+        if (res != CURLE_OK)
+        {
+            Log::info("curl error {}: {} host: {}",
+                      static_cast<int>(res), d->mError, d->mUrl);
+
+            if (file)
+            {
+                fclose(file);
+                ::remove(outFilename.c_str());
+            }
+
+            break;
+        }
+
+        if (!d->mMemoryWrite)
+        {
+            // Check the checksum if available
+            if (d->mAdler)
+            {
+                unsigned long adler = fadler32(file);
+
+                if (d->mAdler != adler)
+                {
+                    if (file)
+                        fclose(file);
+
+                    // Remove the corrupted file
+                    ::remove(outFilename.c_str());
+                    Log::info("Checksum for file {} failed: ({:x}/{:x})",
+                              d->mFileName,
+                              adler, *d->mAdler);
+
+                    continue; // Bail out here to avoid the renaming
+                }
+            }
+
+            if (file)
+                fclose(file);
+
+            // Any existing file with this name is deleted first, otherwise
+            // the rename will fail on Windows.
+            ::remove(d->mFileName.c_str());
+            ::rename(outFilename.c_str(), d->mFileName.c_str());
+
+            // Check if we can open it and no errors were encountered
+            // during renaming
+            file = fopen(d->mFileName.c_str(), "rb");
+            if (file)
+            {
+                fclose(file);
+                file = nullptr;
+                complete = true;
+            }
+        }
+        else
+        {
+            // It's stored in memory, we're done
+            complete = true;
+        }
+
+        if (file)
+            fclose(file);
+    }
+
+    auto state = d->mState.lock();
+    if (d->mCancel)
+        state->status = DownloadStatus::Canceled;
+    else if (complete)
+        state->status = DownloadStatus::Complete;
+    else
+        state->status = DownloadStatus::Error;
+
+    return 0;
+}
+
+} // namespace Net

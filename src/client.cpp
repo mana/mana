@@ -84,6 +84,10 @@
 
 #include <SDL_image.h>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #ifdef _WIN32
 #include <SDL_syswm.h>
 #include <winuser.h>
@@ -166,30 +170,41 @@ bool isDoubleClick(int selected)
  * A simple but effective frame rate limiter.
  * Based on FPSmanager in SDL2_gfx.
  */
-void FpsManager::limitFps(int fpsLimit)
+uint32_t FpsManager::getDelay(int fpsLimit)
 {
-    if (fpsLimit <= 0)
-        return;
-
     const auto ticks = SDL_GetTicks();
 
-    // Need to reset if the FPS limit changes
-    if (mBaseTicks > 0 && mFpsLimit == fpsLimit)
+    // Reset when the limit changes or the tick counter wraps.
+    if (mFpsLimit != fpsLimit || ticks < mBaseTicks)
     {
-        ++mFrameCount;
-        const auto targetTicks = mBaseTicks + mFrameCount * 1000 / mFpsLimit;
-
-        // Make sure ticks hasn't wrapped
-        if (ticks > mBaseTicks && targetTicks > ticks)
-        {
-            SDL_Delay(targetTicks - ticks);
-            return;
-        }
+        mFpsLimit = fpsLimit;
+        mFrameCount = 0;
+        mBaseTicks = ticks;
     }
 
-    mFpsLimit = fpsLimit;
-    mFrameCount = 0;
-    mBaseTicks = ticks;
+    if (fpsLimit <= 0)
+        return 0;
+
+    const auto targetTicks = mBaseTicks + static_cast<uint64_t>(mFrameCount) * 1000 / fpsLimit;
+    return targetTicks > ticks ? targetTicks - ticks : 0;
+}
+
+void FpsManager::limitFps(int fpsLimit)
+{
+    ++mFrameCount;
+    const auto delay = getDelay(fpsLimit);
+    if (delay == 0)
+    {
+        // Start a new schedule when a frame takes too long.
+        mFrameCount = 0;
+        mBaseTicks = SDL_GetTicks();
+    }
+#ifndef __EMSCRIPTEN__
+    else
+    {
+        SDL_Delay(delay);
+    }
+#endif
 }
 
 
@@ -343,6 +358,11 @@ Client::Client(const Options &options):
 
     // Try to set the desired video mode and create the graphics context
     graphics = mVideo.initialize(videoSettings);
+
+#ifdef __EMSCRIPTEN__
+    // Without this, SDL does not deliver any SDL_TEXTINPUT events
+    SDL_StartTextInput();
+#endif
 
     SDL_SetWindowTitle(mVideo.window(), branding.name().c_str());
 
@@ -504,15 +524,53 @@ Client::~Client()
 
     saveConfig();
 
+    FS::sync();     // make sure the configuration is stored persistently
+
     SDL_DelEventWatch(onAppEvent, this);
     mInstance = nullptr;
 }
+
+#ifdef __EMSCRIPTEN__
+/**
+ * Runs one iteration of the main loop and takes care of the shutdown once the
+ * client wants to exit, since there is no loop to fall out of.
+ */
+static void emscriptenFrame(void *data)
+{
+    auto *client = static_cast<Client*>(data);
+
+    client->pollEvents();
+    client->update();
+
+    if (Client::getState() != State::Exit)
+        return;
+
+    emscripten_cancel_main_loop();
+
+    Net::unload();
+    delete client;          // writes the configuration
+    FS::sync();
+
+    EM_ASM({
+        var message = "Mana has quit. You can close this tab.";
+        if (typeof Module !== "undefined" && Module.setStatus)
+            Module.setStatus(message);
+        document.title = message;
+    });
+}
+#endif
 
 int Client::exec()
 {
     Time::beginFrame();     // Prevent startup lag influencing the first frame
     mFpsSecondStart = Time::absoluteTimeMs();
 
+#ifdef __EMSCRIPTEN__
+    // The browser drives the main loop, one iteration per animation frame.
+    // The shutdown that follows the loop below happens in emscriptenFrame.
+    emscripten_set_main_loop_arg(emscriptenFrame, this, 0, 0);
+    return 0;
+#else
     while (mState != State::Exit)
     {
         pollEvents();
@@ -522,6 +580,7 @@ int Client::exec()
     Net::unload();
 
     return 0;
+#endif
 }
 
 void Client::pollEvents()
@@ -598,6 +657,12 @@ void Client::pollEvents()
 
 void Client::update()
 {
+#ifdef __EMSCRIPTEN__
+    // Wait for the next animation callback instead of blocking the browser.
+    if (mFpsManager.getDelay(isActive() ? config.fpsLimit : 10) > 0)
+        return;
+#endif
+
     Time::beginFrame();
 
     // Publish the number of frames drawn in the last second
@@ -1156,6 +1221,7 @@ void Client::initRootDir()
 #endif
 }
 
+#ifndef __EMSCRIPTEN__
 /**
  * Returns the configuration directory used by Mana 0.6 and earlier for the
  * given application name.
@@ -1212,6 +1278,7 @@ static void migrateLegacyConfig(const std::string &configPath)
         Log::warn("Failed to migrate configuration: {}", e.what());
     }
 }
+#endif // __EMSCRIPTEN__
 
 /**
  * Initializes the directory in which the client stores its configuration,
@@ -1223,6 +1290,8 @@ void Client::initHomeDir()
 
     if (mLocalDataDir.empty())
     {
+        // Under Emscripten this points at the IDBFS mount in pre.js, the only
+        // place where writes survive a reload.
         if (const char *prefDir = FS::getPrefDir("manasource",
                                                  branding.shortName().c_str()))
             mLocalDataDir = prefDir;
@@ -1259,9 +1328,11 @@ void Client::initConfiguration()
 
     const std::string configPath = mConfigDir + "/client.xml";
 
+#ifndef __EMSCRIPTEN__
     // Don't migrate into a directory that was given on the command line
     if (mOptions.configDir.empty() && mOptions.localDataDir.empty())
         migrateLegacyConfig(configPath);
+#endif
 
     XML::Document doc(configPath, false);
 
@@ -1430,6 +1501,11 @@ int Client::onAppEvent(void *userdata, SDL_Event *event)
 
 void Client::handleWindowSizeChanged(int width, int height)
 {
+#ifdef __EMSCRIPTEN__
+    // The canvas follows the browser viewport, so there is no size to store.
+    (void) width;
+    (void) height;
+#else
     // Store the new size in the configuration. Only the windowed size is worth
     // remembering, since a fullscreen window is as large as the display.
     if (mVideo.settings().windowMode == WindowMode::Windowed)
@@ -1437,6 +1513,7 @@ void Client::handleWindowSizeChanged(int width, int height)
         config.screenWidth = width;
         config.screenHeight = height;
     }
+#endif
 }
 
 void Client::checkGraphicsSize()

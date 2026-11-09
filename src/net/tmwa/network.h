@@ -28,8 +28,12 @@
 #include "net/tmwa/messagehandler.h"
 #include "net/tmwa/messageout.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten/websocket.h>
+#else
 #include <SDL_net.h>
 #include <SDL_thread.h>
+#endif
 
 #include <map>
 #include <memory>
@@ -90,9 +94,57 @@ class Network
         };
 
     private:
-        friend int networkThread(void *data);
         friend class MessageOut;
 
+        void setError(const std::string &error);
+
+        uint16_t readWord(int pos);
+
+        /**
+         * Drops the bytes requested by skip() from the front of the incoming
+         * buffer. Called with mMutex held.
+         */
+        void applyToSkip();
+
+        /**
+         * Appends bytes received by the transport to the incoming buffer.
+         */
+        void received(const char *data, size_t size);
+
+        static const PacketInfo *findPacketInfo(uint16_t id);
+
+        /**
+         * Implemented by the transport that is compiled in.
+         */
+        void initTransport();
+        void deinitTransport();
+        bool connectTransport(const ServerInfo &server);
+        void disconnectTransport();
+        void sendTransport(const char *data, size_t size);
+
+#ifdef __EMSCRIPTEN__
+        /**
+         * Closes and releases the WebSocket, if there is one. Afterwards no
+         * further events can arrive for this Network.
+         */
+        void closeSocket();
+
+        static bool onOpen(int eventType,
+                           const EmscriptenWebSocketOpenEvent *event,
+                           void *userData);
+        static bool onMessage(int eventType,
+                              const EmscriptenWebSocketMessageEvent *event,
+                              void *userData);
+        static bool onError(int eventType,
+                            const EmscriptenWebSocketErrorEvent *event,
+                            void *userData);
+        static bool onClose(int eventType,
+                            const EmscriptenWebSocketCloseEvent *event,
+                            void *userData);
+
+        EMSCRIPTEN_WEBSOCKET_T mSocket = 0;
+        bool mOpened = false;
+#else
         /**
          * Shared between a Network and its worker thread while connecting.
          * Since opening a connection can't be interrupted, the Network may
@@ -109,24 +161,17 @@ class Network
             ThreadSafe<Network *> network;
         };
 
-        void setError(const std::string &error);
-
-        uint16_t readWord(int pos);
-
-        /**
-         * Drops the bytes requested by skip() from the front of the incoming
-         * buffer. Called with mMutex held.
-         */
-        void applyToSkip();
-
-        static const PacketInfo *findPacketInfo(uint16_t id);
-
+        static int networkThread(void *data);
         void receive();
 
         TCPsocket mSocket = nullptr;
+        SDL_Thread *mWorkerThread = nullptr;
+        std::shared_ptr<ConnectRequest> mConnectRequest;
+#endif
 
         char *mInBuffer, *mOutBuffer;
         unsigned int mInSize = 0;
+        unsigned int mInCapacity = 0;
         unsigned int mOutSize = 0;
 
         unsigned int mToSkip = 0;
@@ -134,8 +179,7 @@ class Network
         int mState = IDLE;
         std::string mError;
 
-        SDL_Thread *mWorkerThread = nullptr;
-        std::shared_ptr<ConnectRequest> mConnectRequest;
+        ServerInfo mServer;
         Mutex mMutex;
 
         std::map<uint16_t, MessageHandler *> mMessageHandlers;

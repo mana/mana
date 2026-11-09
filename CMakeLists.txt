@@ -71,6 +71,18 @@ set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMake/Modules)
 
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME ${PROJECT_NAME})
 
+if(EMSCRIPTEN)
+  # The browser build has no fixed-function OpenGL, no ENet/UDP, no libintl, no
+  # system Guichan and no use for the dyecmd tool. These are forced rather than
+  # defaulted, so that a stale cache or a stray -D cannot produce a
+  # configuration that cannot link.
+  set(WITH_OPENGL OFF CACHE BOOL "Enable OpenGL support" FORCE)
+  set(ENABLE_NLS OFF CACHE BOOL "Enable building of translations" FORCE)
+  set(ENABLE_MANASERV OFF CACHE BOOL "Enable Manaserv support" FORCE)
+  set(USE_SYSTEM_GUICHAN OFF CACHE BOOL "Use system Guichan" FORCE)
+  set(BUILD_DYECMD OFF CACHE BOOL "Build the dyecmd image dye tool" FORCE)
+endif()
+
 option(WITH_OPENGL "Enable OpenGL support" ON)
 option(ENABLE_NLS "Enable building of translations" ON)
 option(ENABLE_MANASERV "Enable Manaserv support" ON)
@@ -121,6 +133,71 @@ if(NOT USE_SYSTEM_GUICHAN)
   add_subdirectory(libs/guichan EXCLUDE_FROM_ALL)
 endif()
 
+if(EMSCRIPTEN)
+  # Emscripten ships ports for the SDL2 stack and zlib, but not for PhysicsFS
+  # or libxml2, so those two are built from source with CPM.
+  if(NOT CPM_SOURCE_CACHE AND NOT DEFINED ENV{CPM_SOURCE_CACHE})
+    set(CPM_SOURCE_CACHE "${CMAKE_SOURCE_DIR}/.cpm-cache")
+  endif()
+  include(${CMAKE_SOURCE_DIR}/cmake/get_cpm.cmake)
+
+  # Make sure the options passed below are not ignored by the fetched projects
+  set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+
+  # PhysicsFS declares compatibility with CMake versions older than 3.5, which
+  # CMake 4 refuses to configure without this variable (see the ENet block).
+  set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
+  CPMAddPackage(
+    NAME physfs
+    GITHUB_REPOSITORY icculus/physfs
+    GIT_TAG release-3.2.0
+    OPTIONS
+      "PHYSFS_BUILD_SHARED OFF"
+      "PHYSFS_BUILD_TEST OFF"
+      "PHYSFS_BUILD_DOCS OFF"
+      "PHYSFS_DISABLE_INSTALL ON"
+      # The client only ever reads plain directories and ZIP updates
+      "PHYSFS_ARCHIVE_7Z OFF"
+      "PHYSFS_ARCHIVE_GRP OFF"
+      "PHYSFS_ARCHIVE_WAD OFF"
+      "PHYSFS_ARCHIVE_HOG OFF"
+      "PHYSFS_ARCHIVE_MVL OFF"
+      "PHYSFS_ARCHIVE_QPAK OFF"
+      "PHYSFS_ARCHIVE_SLB OFF"
+      "PHYSFS_ARCHIVE_ISO9660 OFF"
+      "PHYSFS_ARCHIVE_VDF OFF")
+  unset(CMAKE_POLICY_VERSION_MINIMUM)
+
+  CPMAddPackage(
+    NAME libxml2
+    GITHUB_REPOSITORY GNOME/libxml2
+    GIT_TAG v2.13.8
+    OPTIONS
+      "BUILD_SHARED_LIBS OFF"
+      # Only SAX1 parsing into a tree and xmlTextWriter (which needs the push
+      # parser) are used; everything else on by default is turned off
+      "LIBXML2_WITH_C14N OFF"
+      "LIBXML2_WITH_CATALOG OFF"
+      "LIBXML2_WITH_DEBUG OFF"
+      "LIBXML2_WITH_HTML OFF"
+      "LIBXML2_WITH_ICONV OFF"
+      "LIBXML2_WITH_ISO8859X OFF"
+      "LIBXML2_WITH_MODULES OFF"
+      "LIBXML2_WITH_PATTERN OFF"
+      "LIBXML2_WITH_PROGRAMS OFF"
+      "LIBXML2_WITH_PYTHON OFF"
+      "LIBXML2_WITH_READER OFF"
+      "LIBXML2_WITH_REGEXPS OFF"
+      "LIBXML2_WITH_SCHEMAS OFF"
+      "LIBXML2_WITH_SCHEMATRON OFF"
+      "LIBXML2_WITH_TESTS OFF"
+      "LIBXML2_WITH_THREADS OFF"
+      "LIBXML2_WITH_VALID OFF"
+      "LIBXML2_WITH_XINCLUDE OFF"
+      "LIBXML2_WITH_XPATH OFF"
+      "LIBXML2_WITH_XPTR OFF")
+endif()
+
 # Set generic CPack properties here so they may be used in subdirectories
 set(CPACK_PACKAGE_VENDOR "Mana Development Team")
 set(CPACK_PACKAGE_DESCRIPTION_FILE "${PROJECT_SOURCE_DIR}/README.md")
@@ -140,7 +217,7 @@ if(ENABLE_NLS)
   add_subdirectory(po)
 endif()
 
-if(UNIX AND NOT APPLE)
+if(UNIX AND NOT APPLE AND NOT EMSCRIPTEN)
   install(FILES org.manasource.Mana.desktop
           DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
   install(FILES org.manasource.Mana.metainfo.xml

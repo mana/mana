@@ -40,6 +40,7 @@
 #include "resources/resourcemanager.h"
 
 #include "utils/format.h"
+#include "utils/filesystem.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 #include "utils/xml.h"
@@ -289,6 +290,7 @@ void UpdaterWindow::logic()
     }
 
     case DownloadStatus::Complete:
+        FS::sync();     // downloaded files should survive a page reload
         downloadCompleted();
         break;
     }

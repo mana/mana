@@ -276,8 +276,11 @@ static bool saveScreenshot()
     {
         local_player->setShowIp(false);
         actorSpriteManager->updatePlayerNames();
-        gui->draw();
     }
+
+    // The back buffer is undefined after presenting (and cleared by WebGL), so
+    // draw a fresh frame to read from
+    gui->draw();
 
     SDL_Surface *screenshot = graphics->getScreenshot();
 

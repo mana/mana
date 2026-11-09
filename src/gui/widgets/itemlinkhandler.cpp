@@ -40,6 +40,31 @@
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+
+/**
+ * Offers a file from the virtual file system as a browser download.
+ */
+static void downloadFile(const std::string &path, const std::string &name)
+{
+    EM_ASM({
+        try {
+            var blob = new Blob([FS.readFile(UTF8ToString($0))]);
+            var url = URL.createObjectURL(blob);
+            var link = document.createElement("a");
+            link.href = url;
+            link.download = UTF8ToString($1);
+            link.click();
+            // Revoking right away can cancel the download in some browsers
+            setTimeout(function () { URL.revokeObjectURL(url); }, 10000);
+        } catch (error) {
+            console.error("Failed to download " + UTF8ToString($0), error);
+        }
+    }, path.c_str(), name.c_str());
+}
+#endif
+
 ItemLinkHandler::ItemLinkHandler(Window *parent)
     : mParent(parent)
 {
@@ -82,9 +107,13 @@ void ItemLinkHandler::handleLink(const std::string &link)
         // Prevent directory traversal attacks or opening malicious files
         if (filename.find("..") == std::string::npos && endsWith(filename, ".png"))
         {
+#ifdef __EMSCRIPTEN__
+            downloadFile(Client::getScreenshotDirectory() + "/" + filename, filename);
+#else
             std::string fileUrl = "file://" + Client::getScreenshotDirectory() + "/" + filename;
             if (SDL_OpenURL(fileUrl.c_str()) == -1)
                 new OkDialog(_("Open URL Failed"), SDL_GetError(), true, mParent);
+#endif
         }
 
         return;
@@ -92,10 +121,16 @@ void ItemLinkHandler::handleLink(const std::string &link)
 
     if (isUrl(link))
     {
+#ifdef __EMSCRIPTEN__
+        // No need to confirm, since we're already in a browser
+        if (SDL_OpenURL(link.c_str()) == -1)
+            new OkDialog(_("Open URL Failed"), SDL_GetError(), true, mParent);
+#else
         mLink = link;
 
         auto confirmDialog = new ConfirmDialog(_("Open URL?"), link, mParent);
         confirmDialog->addActionListener(this);
+#endif
         return;
     }
 
