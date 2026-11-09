@@ -97,6 +97,8 @@ class FpsManager
     uint32_t mBaseTicks = 0;
 
 public:
+    // Checking the deadline does not advance the frame count.
+    uint32_t getDelay(int fpsLimit);
     void limitFps(int fpsLimit);
 };
 

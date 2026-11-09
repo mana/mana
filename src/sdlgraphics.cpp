@@ -211,6 +211,7 @@ void SDLGraphics::updateScreen()
 {
     SDL_RenderPresent(mRenderer);
 
+#ifndef __EMSCRIPTEN__
     // When the SDL renderer uses an OpenGL backend, call glFinish() to
     // prevent the GPU pipeline from getting ahead, reducing resize lag
     // on Wayland by avoiding triple buffering. The function is resolved
@@ -228,6 +229,7 @@ void SDLGraphics::updateScreen()
         if (glFinish)
             glFinish();
     }
+#endif
 }
 
 void SDLGraphics::windowToLogical(int windowX, int windowY,

@@ -30,6 +30,11 @@
 #include "openglgraphics.h"
 #endif
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#include <emscripten/html5.h>
+#endif
+
 #include <algorithm>
 
 static constexpr int WINDOW_MIN_WIDTH = 640;
@@ -42,6 +47,13 @@ static constexpr int WINDOW_MIN_HEIGHT = 400;
  */
 static void limitToUsableBounds(int display, int &width, int &height)
 {
+#ifdef __EMSCRIPTEN__
+    // The canvas always covers the browser viewport, so there is nothing to
+    // limit it to.
+    (void) display;
+    (void) width;
+    (void) height;
+#else
     SDL_Rect usableBounds;
     if (SDL_GetDisplayUsableBounds(display, &usableBounds) != 0)
     {
@@ -51,7 +63,32 @@ static void limitToUsableBounds(int display, int &width, int &height)
 
     width = std::min(width, std::max(usableBounds.w, WINDOW_MIN_WIDTH));
     height = std::min(height, std::max(usableBounds.h, WINDOW_MIN_HEIGHT));
+#endif // __EMSCRIPTEN__
 }
+
+#ifdef __EMSCRIPTEN__
+/**
+ * Returns the size of the browser viewport, which is also the size of the
+ * canvas since it is styled to fill the page.
+ */
+static void getViewportSize(int &width, int &height)
+{
+    double cssWidth;
+    double cssHeight;
+
+    if (emscripten_get_element_css_size("#canvas", &cssWidth, &cssHeight) ==
+            EMSCRIPTEN_RESULT_SUCCESS && cssWidth >= 1 && cssHeight >= 1)
+    {
+        width = static_cast<int>(cssWidth);
+        height = static_cast<int>(cssHeight);
+        return;
+    }
+
+    width = EM_ASM_INT({ return window.innerWidth; });
+    height = EM_ASM_INT({ return window.innerHeight; });
+}
+
+#endif // __EMSCRIPTEN__
 
 int VideoSettings::scale() const
 {
@@ -85,6 +122,13 @@ Video::~Video()
 Graphics *Video::initialize(const VideoSettings &settings)
 {
     mSettings = settings;
+
+#ifdef __EMSCRIPTEN__
+    // The canvas fills the browser viewport, so the configured size does not
+    // apply and there is no window to put in fullscreen mode.
+    mSettings.windowMode = WindowMode::Windowed;
+    getViewportSize(mSettings.width, mSettings.height);
+#endif
 
     if (!initDisplayModes())
     {
@@ -161,7 +205,9 @@ Graphics *Video::initialize(const VideoSettings &settings)
         return nullptr;
     }
 
+#ifndef __EMSCRIPTEN__
     SDL_SetWindowMinimumSize(mWindow, WINDOW_MIN_WIDTH, WINDOW_MIN_HEIGHT);
+#endif
 
     if (mSettings.windowMode == WindowMode::Fullscreen)
     {
@@ -279,7 +325,13 @@ bool Video::apply(const VideoSettings &videoSettings)
 
 void Video::updateWindowSize()
 {
+#ifdef __EMSCRIPTEN__
+    // SDL_GetWindowSize gives the canvas CSS size; use the backing store
+    // size, so that 1x is one game pixel per device pixel.
+    SDL_GetWindowSizeInPixels(mWindow, &mSettings.width, &mSettings.height);
+#else
     SDL_GetWindowSize(mWindow, &mSettings.width, &mSettings.height);
+#endif
     mGraphics->updateSize(mSettings.width,
                           mSettings.height,
                           mSettings.scale());

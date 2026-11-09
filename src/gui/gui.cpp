@@ -426,7 +426,12 @@ void Gui::loadCustomCursors()
     SDL_SetSurfaceBlendMode(mouseSurface, SDL_BLENDMODE_NONE);
 
     constexpr int cursorSize = 40;
-    const int targetCursorSize = cursorSize * mCustomCursorScale;
+    int targetCursorSize = cursorSize * mCustomCursorScale;
+#ifdef __EMSCRIPTEN__
+    // Browsers ignore CSS cursor images larger than 128x128 pixels
+    targetCursorSize = std::min(targetCursorSize, 128);
+#endif
+    const float cursorScale = static_cast<float>(targetCursorSize) / cursorSize;
     const int columns = mouseSurface->w / cursorSize;
 
     SDL_Surface *cursorSurface = SDL_CreateRGBSurfaceWithFormat(
@@ -466,8 +471,8 @@ void Gui::loadCustomCursors()
             premultiplyAlpha(cursorSurface);
 
         SDL_Cursor *cursor = SDL_CreateColorCursor(cursorSurface,
-                                                   15 * mCustomCursorScale,
-                                                   17 * mCustomCursorScale);
+                                                   15 * cursorScale,
+                                                   17 * cursorScale);
         if (!cursor)
         {
             Log::warn("Unable to create cursor: {}", SDL_GetError());

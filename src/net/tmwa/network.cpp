@@ -26,11 +26,10 @@
 #include "net/tmwa/messagein.h"
 #include "net/tmwa/protocol.h"
 
-#include "utils/format.h"
 #include "utils/gettext.h"
-#include "utils/stringutils.h"
 
 #include <cassert>
+#include <cstring>
 #include <unordered_map>
 
 namespace TmwAthena {
@@ -229,72 +228,12 @@ static constexpr PacketInfo packet_infos[] = {
 
 const unsigned int BUFFER_SIZE = 65536;
 
-int networkThread(void *data)
-{
-    std::unique_ptr<std::shared_ptr<Network::ConnectRequest>> ref(
-                static_cast<std::shared_ptr<Network::ConnectRequest>*>(data));
-    Network::ConnectRequest &request = **ref;
-    const ServerInfo &server = request.server;
-
-    // Resolve and connect without touching the Network, since it may be
-    // destroyed in the meantime
-    IPaddress ipAddress;
-    TCPsocket socket = nullptr;
-    std::string error;
-
-    if (SDLNet_ResolveHost(&ipAddress, server.hostname.c_str(),
-                           server.port) == -1)
-    {
-        error = strformat(_("Unable to resolve host \"{}\""),
-                          server.hostname);
-        Log::info("SDLNet_ResolveHost: {}", error);
-    }
-    else
-    {
-        socket = SDLNet_TCP_Open(&ipAddress);
-        if (!socket)
-        {
-            error = SDLNet_GetError();
-            Log::info("Error in SDLNet_TCP_Open(): {}", error);
-        }
-    }
-
-    Network *network;
-    {
-        auto lockedNetwork = request.network.lock();
-        network = *lockedNetwork;
-
-        if (!network)
-        {
-            // The connection was abandoned
-            if (socket)
-                SDLNet_TCP_Close(socket);
-            return 0;
-        }
-
-        if (!socket)
-        {
-            network->setError(error);
-            return -1;
-        }
-
-        Log::info("Network::Started session with {}:{}",
-                  ipToString(ipAddress.host), ipAddress.port);
-
-        network->mSocket = socket;
-        network->mState = Network::CONNECTED;
-    }
-
-    network->receive();
-
-    return 0;
-}
-
 Network::Network():
     mInBuffer(new char[BUFFER_SIZE]),
-    mOutBuffer(new char[BUFFER_SIZE])
+    mOutBuffer(new char[BUFFER_SIZE]),
+    mInCapacity(BUFFER_SIZE)
 {
-    SDLNet_Init();
+    initTransport();
 }
 
 Network::~Network()
@@ -302,10 +241,10 @@ Network::~Network()
     clearHandlers();
     disconnect();
 
+    deinitTransport();
+
     delete[] mInBuffer;
     delete[] mOutBuffer;
-
-    SDLNet_Quit();
 }
 
 bool Network::connect(const ServerInfo &server)
@@ -331,65 +270,23 @@ bool Network::connect(const ServerInfo &server)
     mInSize = 0;
     mToSkip = 0;
 
-    mConnectRequest = std::make_shared<ConnectRequest>(server, this);
-
-    // The thread holds its own reference, so that the request outlives the
-    // Network when the thread is abandoned
-    auto *ref = new std::shared_ptr<ConnectRequest>(mConnectRequest);
-
+    mServer = server;
     mState = CONNECTING;
-    mWorkerThread = SDL_CreateThread(networkThread, "Network", ref);
-    if (!mWorkerThread)
-    {
-        delete ref;
-        mConnectRequest.reset();
-        setError("Unable to create network worker thread");
-        return false;
-    }
 
-    return true;
+    return connectTransport(server);
 }
 
 void Network::disconnect()
 {
-    if (mWorkerThread)
-    {
-        bool abandon;
-        {
-            // Opening a connection can take very long and can't be
-            // interrupted, so rather than waiting for it, the thread is
-            // abandoned and closes the socket itself once it is done.
-            auto network = mConnectRequest->network.lock();
-            abandon = mState == CONNECTING;
-            if (abandon)
-                *network = nullptr;
-
-            // Makes the receive loop exit
-            mState = IDLE;
-        }
-
-        if (abandon)
-            SDL_DetachThread(mWorkerThread);
-        else
-            SDL_WaitThread(mWorkerThread, nullptr);
-
-        mWorkerThread = nullptr;
-        mConnectRequest.reset();
-    }
+    disconnectTransport();
 
     mState = IDLE;
-
-    if (mSocket)
-    {
-        SDLNet_TCP_Close(mSocket);
-        mSocket = nullptr;
-    }
+    mServer = ServerInfo();
 }
 
 const ServerInfo &Network::getServer() const
 {
-    static const ServerInfo noServer;
-    return mConnectRequest ? mConnectRequest->server : noServer;
+    return mServer;
 }
 
 void Network::registerHandler(MessageHandler *handler)
@@ -503,15 +400,10 @@ void Network::flush()
     if (!mOutSize || mState != CONNECTED)
         return;
 
-    int ret;
-
     MutexLocker lock(&mMutex);
-    ret = SDLNet_TCP_Send(mSocket, mOutBuffer, mOutSize);
-    if (ret < (int)mOutSize)
-    {
-        setError("Error in SDLNet_TCP_Send(): " +
-                 std::string(SDLNet_GetError()));
-    }
+
+    sendTransport(mOutBuffer, mOutSize);
+
     mOutSize = 0;
 }
 
@@ -540,78 +432,30 @@ void Network::applyToSkip()
     }
 }
 
-void Network::receive()
+void Network::received(const char *data, size_t size)
 {
-    SDLNet_SocketSet set;
+    MutexLocker lock(&mMutex);
 
-    if (!(set = SDLNet_AllocSocketSet(1)))
+    // A transport may deliver more bytes at once than the buffer can hold
+    // (the WebSocket backend passes on each whole frame), so the buffer
+    // grows as needed.
+    const unsigned int needed = mInSize + size;
+    if (needed > mInCapacity)
     {
-        setError("Error in SDLNet_AllocSocketSet(): " +
-                 std::string(SDLNet_GetError()));
-        return;
+        unsigned int capacity = mInCapacity;
+        while (capacity < needed)
+            capacity *= 2;
+
+        char *buffer = new char[capacity];
+        memcpy(buffer, mInBuffer, mInSize);
+        delete[] mInBuffer;
+        mInBuffer = buffer;
+        mInCapacity = capacity;
     }
 
-    if (SDLNet_TCP_AddSocket(set, mSocket) == -1)
-    {
-        setError("Error in SDLNet_AddSocket(): " +
-                 std::string(SDLNet_GetError()));
-    }
-
-    while (mState == CONNECTED)
-    {
-        // TODO Try to get this to block all the time while still being able
-        // to escape the loop
-        int numReady = SDLNet_CheckSockets(set, ((Uint32)500));
-        int ret;
-        switch (numReady)
-        {
-            case -1:
-                Log::error("SDLNet_CheckSockets");
-                // FALLTHROUGH
-            case 0:
-                break;
-
-            case 1:
-            {
-                // Receive data from the socket
-                MutexLocker lock(&mMutex);
-                ret = SDLNet_TCP_Recv(mSocket, mInBuffer + mInSize, BUFFER_SIZE - mInSize);
-
-                if (!ret)
-                {
-                    // We got disconnected
-                    mState = IDLE;
-                    Log::info("Disconnected.");
-                }
-                else if (ret < 0)
-                {
-                    setError(_("Connection to server terminated. ") +
-                             std::string(SDLNet_GetError()));
-                }
-                else
-                {
-                    mInSize += ret;
-                    applyToSkip();
-                }
-                break;
-            }
-
-            default:
-                // more than one socket is ready..
-                // this should not happen since we only listen once socket.
-                setError(fmt::format("Error in SDLNet_TCP_Recv(), {} sockets "
-                                     "are ready: {}",
-                                     numReady, SDLNet_GetError()));
-                break;
-        }
-    }
-
-    if (SDLNet_TCP_DelSocket(set, mSocket) == -1)
-    {
-        Log::info("Error in SDLNet_DelSocket(): {}", SDLNet_GetError());
-    }
-
-    SDLNet_FreeSocketSet(set);
+    memcpy(mInBuffer + mInSize, data, size);
+    mInSize += size;
+    applyToSkip();
 }
 
 void Network::setError(const std::string &error)

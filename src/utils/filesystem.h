@@ -25,6 +25,10 @@
 
 #include "utils/physfsrwops.h"
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #include <optional>
 #include <string>
 
@@ -112,6 +116,25 @@ inline bool isDirectory(const std::string &path)
         return stat.filetype == PHYSFS_FILETYPE_DIRECTORY;
     }
     return false;
+}
+
+/**
+ * Makes sure that everything written so far is stored persistently.
+ *
+ * Only does something in the browser, where the write directory is an IDBFS
+ * mount that needs to be pushed to IndexedDB explicitly. The sync itself is
+ * asynchronous, so it may still be in flight when this function returns.
+ */
+inline void sync()
+{
+#ifdef __EMSCRIPTEN__
+    EM_ASM({
+        FS.syncfs(false, function(err) {
+            if (err)
+                console.error("IDBFS sync failed", err);
+        });
+    });
+#endif
 }
 
 /**

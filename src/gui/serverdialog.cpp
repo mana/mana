@@ -42,6 +42,7 @@
 #include "resources/theme.h"
 
 #include "utils/format.h"
+#include "utils/filesystem.h"
 #include "utils/gettext.h"
 #include "utils/stringutils.h"
 
@@ -430,6 +431,7 @@ void ServerDialog::logic()
 
     case DownloadStatus::Complete:
         mDownloadDone = true;
+        FS::sync();
         loadServers();
         mServersListModel->checkServerStatus();
 
@@ -458,7 +460,7 @@ void ServerDialog::downloadServerList()
     if (listFile.empty())
         listFile = "https://www.manasource.org/serverlist.xml";
 
-    mDownload = std::make_unique<Net::Download>(listFile);
+    mDownload = std::make_unique<Net::Download>(std::move(listFile));
     mDownload->setFile(mDir + "/serverlist.xml");
     mDownload->start();
 }

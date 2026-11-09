@@ -23,6 +23,10 @@
 
 #include <SDL.h>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #include <fstream>
 #include <iostream>
 #include <sys/time.h>
@@ -123,6 +127,25 @@ void Log::critical(const std::string &text)
         std::cerr << getLogPriorityPrefix(SDL_LOG_PRIORITY_CRITICAL) << text << std::endl;
     }
 
+#ifdef __EMSCRIPTEN__
+    // There is no message box in the browser, so the message is shown in the
+    // page instead. The main loop is stopped first, since exit() unwinds out
+    // of it.
+    emscripten_cancel_main_loop();
+
+    EM_ASM({
+        var text = UTF8ToString($0);
+        if (typeof Module !== "undefined" && Module.setStatus)
+            Module.setStatus(text);
+        else
+            alert(text);
+    }, text.c_str());
+#else
     SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", text.c_str(), nullptr);
+#endif
+
+    // Several callers can't handle this function returning, so it stays fatal.
+    // Emscripten turns the exit into an abort, which leaves the message above
+    // on the page.
     exit(1);
 }
