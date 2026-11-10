@@ -664,6 +664,8 @@ if(EMSCRIPTEN)
       -sALLOW_MEMORY_GROWTH=1
       -sINITIAL_MEMORY=128MB
       -sSTACK_SIZE=1MB
+      -sMIN_WEBGL_VERSION=2
+      -sMAX_WEBGL_VERSION=2
       -sEXIT_RUNTIME=0
       -sEXPORTED_RUNTIME_METHODS=FS,ccall,cwrap,stringToNewUTF8,UTF8ToString
       -sEXPORTED_FUNCTIONS=_main,_malloc,_free
