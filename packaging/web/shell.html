@@ -165,7 +165,25 @@
 })();
 </script>
 
+<!-- Inert until cloned into the page below -->
+<template id="mana-script">
 {{{ SCRIPT }}}
+</template>
+
+<script>
+// Load the client only when the browser supports WebGL 2, which the build
+// requires. This also spares WebGL 1 users the download.
+if (!document.createElement("canvas").getContext("webgl2")) {
+    document.getElementById("progress").classList.add("hidden");
+    document.getElementById("status").innerHTML =
+        "This browser does not support WebGL 2, which the web client " +
+        'requires. <a href="https://manasource.org/downloads">Download the ' +
+        "native client</a> instead.";
+} else {
+    var template = document.getElementById("mana-script");
+    document.body.appendChild(template.content.cloneNode(true));
+}
+</script>
 
 </body>
 </html>
