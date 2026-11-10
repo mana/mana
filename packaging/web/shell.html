@@ -171,18 +171,43 @@
 </template>
 
 <script>
-// Load the client only when the browser supports WebGL 2, which the build
-// requires. This also spares WebGL 1 users the download.
-if (!document.createElement("canvas").getContext("webgl2")) {
-    document.getElementById("progress").classList.add("hidden");
-    document.getElementById("status").innerHTML =
-        "This browser does not support WebGL 2, which the web client " +
-        'requires. <a href="https://manasource.org/downloads">Download the ' +
-        "native client</a> instead.";
-} else {
-    var template = document.getElementById("mana-script");
+(function () {
+  var statusElement = document.getElementById('status');
+  var progressElement = document.getElementById('progress');
+
+  // Load the client only when the browser supports WebGL 2, which the build
+  // requires. This also spares WebGL 1 users the download.
+  function load() {
+    if (!document.createElement('canvas').getContext('webgl2')) {
+      progressElement.classList.add('hidden');
+      statusElement.innerHTML =
+          'This browser does not support WebGL 2, which the web client ' +
+          'requires. <a href="https://manasource.org/downloads">Download the ' +
+          'native client</a> instead.';
+      return;
+    }
+
+    statusElement.textContent = 'Loading...';
+    var template = document.getElementById('mana-script');
     document.body.appendChild(template.content.cloneNode(true));
-}
+  }
+
+  // On Android, suggest the native build first, which is looking for testers
+  if (/Android/i.test(navigator.userAgent)) {
+    progressElement.classList.add('hidden');
+    statusElement.innerHTML =
+        'An experimental Android version is available. Please help test it ' +
+        'by installing it from <a href="https://manasource.org/downloads">' +
+        'manasource.org/downloads</a>.<br><br>' +
+        '<a href="#" id="use-browser">Continue in the browser</a>';
+    document.getElementById('use-browser').onclick = function (event) {
+      event.preventDefault();
+      load();
+    };
+  } else {
+    load();
+  }
+})();
 </script>
 
 </body>
