@@ -51,6 +51,7 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
         int mPickupRange;
         double mOpacity;
         Being::Speech mSpeechMode;
+        bool mFontSubpixelHintingEnabled;
 
         std::unique_ptr<gcn::ListModel> mLanguageListModel;
         std::unique_ptr<gcn::ListModel> mThemesListModel;
@@ -75,5 +76,6 @@ class Setup_Interface : public SetupTab, public gcn::ActionListener,
         gcn::DropDown *mLanguageDropDown = nullptr;
         gcn::DropDown *mThemeDropDown;
         gcn::DropDown *mFontSizeDropDown;
+        gcn::CheckBox *mSubpixelHintingCheckBox;
 
 };

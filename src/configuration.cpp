@@ -225,6 +225,7 @@ void serdeOptions(T option)
     option("pickupRange",                   &Config::pickupRange);
     option("showMinimap",                   &Config::showMinimap);
     option("fontSize",                      &Config::fontSize);
+    option("fontSubpixelHinting",           &Config::fontSubpixelHinting);
     option("ReturnToggles",                 &Config::returnTogglesChat);
     option("ScrollLaziness",                &Config::scrollLaziness);
     option("ScrollRadius",                  &Config::scrollRadius);

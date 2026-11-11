@@ -24,6 +24,7 @@
 #include "configuration.h"
 
 #include "gui/okdialog.h"
+#include "gui/truetypefont.h"
 #include "gui/widgets/checkbox.h"
 #include "gui/widgets/dropdown.h"
 #include "gui/widgets/label.h"
@@ -171,6 +172,7 @@ Setup_Interface::Setup_Interface():
     mPickupRange(config.pickupRange),
     mOpacity(config.guiAlpha),
     mSpeechMode(config.speech),
+    mFontSubpixelHintingEnabled(config.fontSubpixelHinting),
     mVisibleNamesCheckBox(new CheckBox(_("Visible names"),
                                        mVisibleNamesEnabled)),
     mNameCheckBox(new CheckBox(_("Show own name"), mNameEnabled)),
@@ -185,7 +187,9 @@ Setup_Interface::Setup_Interface():
     mPickupRangeValueLabel(new Label(std::string())),
     mSpeechSlider(new Slider(0, 3)),
     mSpeechLabel(new Label(std::string())),
-    mAlphaSlider(new Slider(0.2, 1.0))
+    mAlphaSlider(new Slider(0.2, 1.0)),
+    mSubpixelHintingCheckBox(new CheckBox(_("Subpixel font rendering"),
+                                          mFontSubpixelHintingEnabled))
 {
     setName(_("Interface"));
 
@@ -229,6 +233,7 @@ Setup_Interface::Setup_Interface():
     mThemeDropDown->setActionEventId("theme");
     mAlphaSlider->setActionEventId("guialpha");
     mSpeechSlider->setActionEventId("speech");
+    mSubpixelHintingCheckBox->setActionEventId("subpixelhinting");
 
     // Set Listeners
     mShowMonsterDamageCheckBox->addActionListener(this);
@@ -241,6 +246,7 @@ Setup_Interface::Setup_Interface():
     mThemeDropDown->addActionListener(this);
     mAlphaSlider->addActionListener(this);
     mSpeechSlider->addActionListener(this);
+    mSubpixelHintingCheckBox->addActionListener(this);
 
     mPickupRangeValueLabel->setCaption(pickupRangeToString(mPickupRange));
     mPickupRangeSlider->setValue(mPickupRange);
@@ -297,6 +303,9 @@ Setup_Interface::Setup_Interface():
     place(2, row, mFontSizeDropDown, 2).setPadding(2);
     ++row;
 
+    place(0, row, mSubpixelHintingCheckBox, 4);
+    ++row;
+
     place(0, row, space, 1, 1);
     ++row;
 
@@ -329,6 +338,7 @@ void Setup_Interface::apply()
     }
     config.theme = theme.getPath();
     config.fontSize = fontSize;
+    mFontSubpixelHintingEnabled = config.fontSubpixelHinting;
     if (languageChanged)
         config.language = LanguageListModel::getLanguageCode(
                     mLanguageDropDown->getSelected());
@@ -356,6 +366,12 @@ void Setup_Interface::cancel()
                     LanguageListModel::getLanguageIndex(config.language));
     mThemeDropDown->setSelected(ThemesListModel::getThemeIndex(config.theme));
     mFontSizeDropDown->setSelected(config.fontSize - 10);
+    mSubpixelHintingCheckBox->setSelected(mFontSubpixelHintingEnabled);
+    if (config.fontSubpixelHinting != mFontSubpixelHintingEnabled)
+    {
+        config.fontSubpixelHinting = mFontSubpixelHintingEnabled;
+        TrueTypeFont::updateFontHinting();
+    }
     mAlphaSlider->setValue(mOpacity);
     //mAlphaSlider->setEnabled(!mSDLTransparencyDisabled);
     mPickupRangeSlider->setValue(mPickupRange);
@@ -417,5 +433,10 @@ void Setup_Interface::action(const gcn::ActionEvent &event)
     else if (id == "lognpc")
     {
         config.logNpcInGui = mNPCLogCheckBox->isSelected();
+    }
+    else if (id == "subpixelhinting")
+    {
+        config.fontSubpixelHinting = mSubpixelHintingCheckBox->isSelected();
+        TrueTypeFont::updateFontHinting();
     }
 }

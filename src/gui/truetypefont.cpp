@@ -22,6 +22,8 @@
 
 #include "gui/truetypefont.h"
 
+#include "configuration.h"
+
 #include "graphics.h"
 
 #include "resources/image.h"
@@ -117,8 +119,10 @@ TrueTypeFont::TrueTypeFont(const std::string &filename, int size, int style)
     TTF_SetFontStyle(mFont, style);
     TTF_SetFontStyle(mFontOutline, style);
 
-    TTF_SetFontHinting(mFont, TTF_HINTING_LIGHT);
-    TTF_SetFontHinting(mFontOutline, TTF_HINTING_LIGHT);
+    const int hinting = config.fontSubpixelHinting
+        ? TTF_HINTING_LIGHT_SUBPIXEL : TTF_HINTING_LIGHT;
+    TTF_SetFontHinting(mFont, hinting);
+    TTF_SetFontHinting(mFontOutline, hinting);
 
     TTF_SetFontOutline(mFontOutline, static_cast<int>(mScale));
 
@@ -197,6 +201,20 @@ void TrueTypeFont::updateFontScale(float scale)
         TTF_SetFontSizeDPI(font->mFont, font->mPointSize, dpi, dpi);
         TTF_SetFontSizeDPI(font->mFontOutline, font->mPointSize, dpi, dpi);
         TTF_SetFontOutline(font->mFontOutline, mScale);
+
+        font->mCache.clear();
+    }
+}
+
+void TrueTypeFont::updateFontHinting()
+{
+    const int hinting = config.fontSubpixelHinting
+        ? TTF_HINTING_LIGHT_SUBPIXEL : TTF_HINTING_LIGHT;
+
+    for (auto font : mFonts)
+    {
+        TTF_SetFontHinting(font->mFont, hinting);
+        TTF_SetFontHinting(font->mFontOutline, hinting);
 
         font->mCache.clear();
     }

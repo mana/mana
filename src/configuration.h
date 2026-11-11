@@ -132,6 +132,7 @@ struct Config
     int pickupRange = 1;
     bool showMinimap = true;
     int fontSize = 12;
+    bool fontSubpixelHinting = false;
     bool returnTogglesChat = false;
     int scrollLaziness = 16;
     int scrollRadius = 0;

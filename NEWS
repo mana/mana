@@ -1,7 +1,7 @@
 Unreleased
 - Show the name and amount of floor items on mouse hover
 - Made the Mini-Map window resizable and added panning
-- Improved font rendering quality
+- Improved font rendering quality and added subpixel rendering option
 - Added support for the S and A dye channels, which replace exact colors in images
 - Added support for the sellProtected item attribute, which asks for confirmation before selling
 - Added a start-delay property to particle emitters, controlling the pause before the first spawn

@@ -92,6 +92,11 @@ class TrueTypeFont : public gcn::Font
 
         static void updateFontScale(float scale);
 
+        /**
+         * Updates the hinting mode of all fonts.
+         */
+        static void updateFontHinting();
+
     private:
         TextChunk &getChunk(const std::string &text) const;
 
